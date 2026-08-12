@@ -3,107 +3,78 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>מערכת למידת שפה - Meta-Learning System</title>
+    <title>לימוד ערבית מדוברת</title>
     <style>
         :root {
-            --bg-color: #f1f5f9;
+            --primary-color: #1b365d;
+            --secondary-color: #008080;
+            --accent-color: #e67e22;
+            --bg-color: #f4f7f6;
             --card-bg: #ffffff;
-            --primary: #1e3a8a;
-            --primary-light: #3b82f6;
-            --primary-hover: #1e40af;
-            --text-main: #0f172a;
-            --text-muted: #64748b;
-            --border: #cbd5e1;
-            --success: #059669;
-            --success-bg: #ecfdf5;
-            --warning-border: #dc2626;
-            --warning-bg: #fef2f2;
-            --radius: 8px;
-            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.07);
-        }
-
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            --text-color: #333333;
+            --border-color: #e0e0e0;
         }
 
         body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background-color: var(--bg-color);
-            color: var(--text-main);
-            padding: 24px 16px;
-            max-width: 960px;
-            margin: 0 auto;
-            line-height: 1.5;
+            color: var(--text-color);
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
         }
 
         header {
-            text-align: right;
-            margin-bottom: 24px;
-            border-bottom: 1px solid var(--border);
-            padding-bottom: 16px;
+            background-color: var(--primary-color);
+            color: white;
+            text-align: center;
+            padding: 2rem 1rem;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
         }
 
         header h1 {
-            font-size: 1.5rem;
-            font-weight: 700;
-            color: var(--primary);
-            letter-spacing: -0.02em;
+            margin: 0;
+            font-size: 2.5rem;
         }
 
         header p {
-            color: var(--text-muted);
-            font-size: 0.9rem;
-            margin-top: 2px;
+            margin-top: 0.5rem;
+            opacity: 0.9;
         }
 
-        /* Navigation Tabs */
-        .nav-tabs {
+        nav {
+            background-color: var(--secondary-color);
             display: flex;
-            gap: 4px;
-            margin-bottom: 20px;
-            border-bottom: 1px solid var(--border);
-            overflow-x: auto;
-            padding-bottom: 1px;
+            justify-content: center;
+            gap: 10px;
+            padding: 10px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
         }
 
-        .tab-btn {
+        nav button {
             background: none;
             border: none;
-            padding: 10px 14px;
-            font-size: 0.875rem;
-            font-weight: 500;
-            color: var(--text-muted);
+            color: white;
+            padding: 10px 20px;
+            font-size: 1rem;
+            font-weight: bold;
             cursor: pointer;
-            border-bottom: 2px solid transparent;
-            transition: all 0.2s;
-            white-space: nowrap;
-            display: flex;
-            align-items: center;
-            gap: 8px;
+            border-radius: 5px;
+            transition: background-color 0.3s;
         }
 
-        .tab-btn svg {
-            width: 16px;
-            height: 16px;
-            stroke: currentColor;
-            fill: none;
-            stroke-width: 2;
+        nav button:hover, nav button.active {
+            background-color: rgba(255,255,255,0.2);
         }
 
-        .tab-btn:hover {
-            color: var(--primary);
+        .container {
+            max-width: 1000px;
+            margin: 20px auto;
+            padding: 0 20px;
         }
 
-        .tab-btn.active {
-            color: var(--primary);
-            border-bottom-color: var(--primary);
-            font-weight: 600;
-        }
-
-        /* Tab Content */
         .tab-content {
             display: none;
         }
@@ -112,1288 +83,278 @@
             display: block;
         }
 
-        /* Card Styles */
-        .box {
-            background: var(--card-bg);
-            border: 1px solid var(--border);
-            border-radius: var(--radius);
-            padding: 24px;
-            margin-bottom: 16px;
-            box-shadow: var(--shadow-sm);
-        }
-
-        .box h2 {
-            font-size: 1.15rem;
-            font-weight: 600;
-            margin-bottom: 8px;
-            color: var(--text-main);
-        }
-
-        /* Practice Hub Cards */
-        .practice-card {
-            border: 1px solid var(--border);
-            border-radius: var(--radius);
-            padding: 16px 20px;
-            margin-bottom: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            background: white;
-            transition: border-color 0.2s, box-shadow 0.2s;
-        }
-
-        .practice-card:hover {
-            border-color: var(--primary-light);
-            box-shadow: var(--shadow-sm);
-        }
-
-        .practice-info h3 {
-            font-size: 1rem;
-            font-weight: 600;
-            margin-bottom: 4px;
-        }
-
-        .practice-info p {
-            font-size: 0.875rem;
-            color: var(--text-muted);
-        }
-
-        .action-arrow {
-            background: #f1f5f9;
-            color: var(--primary);
-            border: 1px solid var(--border);
-            border-radius: 4px;
-            width: 36px;
-            height: 36px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            justify-content: center;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            flex-shrink: 0;
-            margin-right: 12px;
-        }
-
-        .action-arrow:hover {
-            background: var(--primary);
-            color: white;
-            border-color: var(--primary);
-        }
-
-        .action-arrow svg {
-            width: 16px;
-            height: 16px;
-            stroke: currentColor;
-            fill: none;
-            stroke-width: 2;
-        }
-
-        .routine-item {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 12px;
-            padding: 14px 0;
-            border-bottom: 1px solid var(--bg-color);
-        }
-
-        .routine-item:last-child {
-            border-bottom: none;
-        }
-
-        .routine-main {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
-        .routine-item input[type="checkbox"] {
-            width: 18px;
-            height: 18px;
-            accent-color: var(--primary);
-            cursor: pointer;
-        }
-
-        /* Back Link */
-        .back-link {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            font-size: 0.85rem;
-            color: var(--text-muted);
-            cursor: pointer;
-            margin-bottom: 16px;
-            background: none;
-            border: none;
-            padding: 0;
-        }
-
-        .back-link:hover {
-            color: var(--primary);
-        }
-
-        .back-link svg {
-            width: 14px;
-            height: 14px;
-            stroke: currentColor;
-            fill: none;
-            stroke-width: 2;
-        }
-
-        /* Flashcard Component */
-        .flashcard-container {
-            perspective: 1000px;
-            width: 100%;
-            height: 220px;
-            margin: 20px 0;
-            cursor: pointer;
-        }
-
-        .flashcard {
-            width: 100%;
-            height: 100%;
-            position: relative;
-            transform-style: preserve-3d;
-            transition: transform 0.5s ease;
-            border-radius: var(--radius);
-        }
-
-        .flashcard.flipped {
-            transform: rotateY(180deg);
-        }
-
-        .card-face {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            backface-visibility: hidden;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            border-radius: var(--radius);
-            border: 1px solid var(--border);
-            background: white;
-            padding: 24px;
-            text-align: center;
-            box-shadow: var(--shadow-md);
-        }
-
-        .card-face.mastered {
-            background: var(--success-bg) !important;
-            border-color: var(--success) !important;
-        }
-
-        .card-face.struggling {
-            background: var(--warning-bg) !important;
-            border-color: var(--warning-border) !important;
-        }
-
-        .card-back {
-            transform: rotateY(180deg);
-        }
-
-        .card-text {
-            font-size: 1.75rem;
-            font-weight: 700;
-            margin-bottom: 6px;
-            letter-spacing: 0.01em;
-        }
-
-        .card-subtext {
-            font-size: 0.875rem;
-            color: var(--text-muted);
-        }
-
-        .controls {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            gap: 12px;
-            margin-bottom: 16px;
-        }
-
-        .feedback-btns {
-            display: flex;
-            justify-content: center;
-            gap: 12px;
-        }
-
-        .btn {
-            background-color: var(--primary);
-            color: white;
-            border: none;
-            padding: 8px 16px;
-            border-radius: var(--radius);
-            font-size: 0.875rem;
-            font-weight: 500;
-            cursor: pointer;
-            transition: background 0.2s;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 6px;
-        }
-
-        .btn:hover {
-            background-color: var(--primary-hover);
-        }
-
-        .btn-outline {
-            background: transparent;
-            color: var(--text-main);
-            border: 1px solid var(--border);
-        }
-
-        .btn-outline:hover {
-            background: #f8fafc;
-        }
-
-        .btn-success {
-            background-color: var(--success);
-        }
-
-        .btn-danger {
-            background-color: var(--warning-border);
-        }
-
-        .data-actions {
-            display: flex;
-            gap: 8px;
-            margin-bottom: 16px;
-            flex-wrap: wrap;
-        }
-
-        /* Vocab Grid */
-        .vocab-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
-            gap: 10px;
-            margin-top: 16px;
-        }
-
-        .vocab-card {
-            background: white;
-            border: 1px solid var(--border);
-            border-radius: 6px;
-            padding: 10px;
-            text-align: center;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            position: relative;
-            min-height: 85px;
-            overflow: hidden;
-            transition: border-color 0.2s ease, transform 0.15s ease;
-        }
-
-        .vocab-card:hover {
-            border-color: var(--primary-light);
-            transform: translateY(-1px);
-        }
-
-        /* Special Add Word Block */
-        .vocab-card.add-card {
-            border: 2px dashed var(--primary-light);
-            background: #f8fafc;
-            cursor: pointer;
-            align-items: center;
-            justify-content: center;
-            color: var(--primary);
-            transition: all 0.2s ease;
-        }
-
-        .vocab-card.add-card:hover {
-            background: #eff6ff;
-            border-color: var(--primary);
-            transform: translateY(-2px);
-        }
-
-        .add-card svg {
-            width: 24px;
-            height: 24px;
-            stroke: currentColor;
-            fill: none;
-            stroke-width: 2.5;
-            margin-bottom: 4px;
-        }
-
-        .add-card span {
-            font-size: 0.8rem;
-            font-weight: 600;
-        }
-
-        .vocab-word {
-            font-size: 1.05rem;
-            font-weight: 600;
-            color: var(--text-main);
-            margin-bottom: 2px;
-            word-break: break-word;
-        }
-
-        .vocab-translation {
-            font-size: 0.8rem;
-            color: var(--text-muted);
-            margin-bottom: 8px;
-        }
-
-        .progress-container {
-            width: 100%;
-            height: 4px;
-            background-color: #e2e8f0;
-            border-radius: 2px;
-            overflow: hidden;
-        }
-
-        .progress-bar {
-            height: 100%;
-            background-color: var(--primary-light);
-            width: 0%;
-            transition: width 0.3s ease;
-        }
-
-        .vocab-card.mastered {
-            background-color: var(--success-bg);
-            border-color: var(--success);
-        }
-
-        .vocab-card.mastered .vocab-word {
-            color: #065f46;
-        }
-
-        .vocab-card.mastered .progress-bar {
-            background-color: var(--success);
-        }
-
-        .vocab-card.struggling {
-            background-color: var(--warning-bg);
-            border-color: var(--warning-border);
-        }
-
-        /* Modal Styles */
-        .modal-overlay {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(15, 23, 42, 0.4);
-            backdrop-filter: blur(2px);
-            z-index: 1000;
-            align-items: center;
-            justify-content: center;
-            padding: 16px;
-        }
-
-        .modal-overlay.active {
-            display: flex;
-        }
-
-        .modal-content {
-            background: white;
-            border-radius: var(--radius);
-            padding: 24px;
-            width: 100%;
-            max-width: 440px;
-            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
-            position: relative;
-        }
-
-        .modal-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 16px;
-        }
-
-        .modal-header h3 {
-            font-size: 1.1rem;
-            color: var(--primary);
-        }
-
-        .close-modal {
-            background: none;
-            border: none;
-            font-size: 1.25rem;
-            color: var(--text-muted);
-            cursor: pointer;
-            padding: 4px;
-        }
-
-        .form-group {
-            display: flex;
-            flex-direction: column;
-            gap: 4px;
-            margin-bottom: 12px;
-        }
-
-        .form-group label {
-            font-size: 0.8rem;
-            font-weight: 600;
-            color: var(--text-main);
-        }
-
-        .form-control {
-            padding: 8px 12px;
-            border: 1px solid var(--border);
-            border-radius: var(--radius);
-            font-size: 0.9rem;
-            outline: none;
-            transition: border-color 0.2s;
-        }
-
-        .form-control:focus {
-            border-color: var(--primary-light);
-        }
-
-        /* Alphabet Grid */
-        .alphabet-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
-            gap: 10px;
-            margin-top: 16px;
-        }
-
-        .letter-card {
-            background: white;
-            border: 1px solid var(--border);
-            border-radius: var(--radius);
-            padding: 14px;
-            text-align: center;
-        }
-
-        .letter-symbol {
-            font-size: 1.75rem;
-            font-weight: 700;
-            color: var(--primary);
-            margin-bottom: 2px;
-        }
-
-        .letter-name {
-            font-size: 0.85rem;
-            font-weight: 500;
-            color: var(--text-main);
-        }
-
-        .letter-sound {
-            font-size: 0.75rem;
-            color: var(--text-muted);
-            margin-top: 2px;
-        }
-
-        /* Shadowing Dynamic Component Styles */
-        .shadow-main-tabs {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 16px;
-            border-bottom: 2px solid var(--border);
+        .card {
+            background-color: var(--card-bg);
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            border: 1px solid var(--border-color);
+        }
+
+        h2 {
+            color: var(--primary-color);
+            border-bottom: 2px solid var(--secondary-color);
             padding-bottom: 8px;
+            margin-top: 0;
         }
 
-        .shadow-main-btn {
-            background: none;
-            border: none;
-            font-size: 0.95rem;
-            font-weight: 600;
-            color: var(--text-muted);
-            cursor: pointer;
-            padding: 6px 12px;
-            border-bottom: 2px solid transparent;
-            transition: all 0.2s ease;
+        .search-box {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 20px;
+            font-size: 1rem;
+            border: 1px solid var(--border-color);
+            border-radius: 5px;
+            box-sizing: border-box;
         }
 
-        .shadow-main-btn.active {
-            color: var(--primary-light);
-            border-bottom-color: var(--primary-light);
-        }
-
-        .sub-tabs {
-            display: flex;
-            gap: 8px;
-            margin-bottom: 16px;
-            flex-wrap: wrap;
-        }
-
-        .sub-tab-btn {
-            padding: 6px 14px;
-            cursor: pointer;
-            border: 1px solid var(--border);
-            background: #fff;
-            border-radius: 20px;
-            font-size: 0.85rem;
-            transition: all 0.2s ease;
-        }
-
-        .sub-tab-btn.active {
-            background: var(--primary-light);
-            color: white;
-            border-color: var(--primary-light);
-        }
-
-        .audio-player-container {
-            background: #f8fafc;
-            border: 1px solid var(--border);
-            padding: 12px 16px;
-            border-radius: var(--radius);
-            margin-bottom: 16px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            flex-wrap: wrap;
-            gap: 10px;
-        }
-
-        .audio-player-container span {
-            font-weight: 600;
-            font-size: 0.9rem;
-            color: var(--primary);
-        }
-
-        audio {
-            max-width: 300px;
-            height: 36px;
-        }
-
-        .data-table {
+        table {
             width: 100%;
             border-collapse: collapse;
             margin-top: 10px;
         }
 
-        .data-table th, .data-table td {
-            padding: 10px 12px;
+        th, td {
+            padding: 12px;
             text-align: right;
-            border-bottom: 1px solid var(--border);
-            font-size: 0.9rem;
+            border-bottom: 1px solid var(--border-color);
         }
 
-        .data-table th {
-            background-color: #f1f5f9;
-            color: var(--primary);
-            font-weight: 600;
+        th {
+            background-color: var(--primary-color);
+            color: white;
         }
 
-        .data-table tr:hover {
-            background-color: #f8fafc;
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
         }
 
         .arabic-text {
-            font-size: 1.05em;
-            font-weight: 600;
-            color: var(--text-main);
+            font-family: 'Traditional Arabic', 'Amiri', serif;
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: var(--secondary-color);
+            direction: rtl;
         }
 
-        .num-col {
-            width: 40px;
-            color: var(--text-muted);
+        .proverb-box {
+            background-color: #eef7f7;
+            border-right: 4px solid var(--secondary-color);
+            padding: 15px;
+            margin-top: 20px;
+            border-radius: 0 8px 8px 0;
         }
 
-        .shadow-tab-content {
-            display: none;
+        .proverb-box p {
+            margin: 5px 0;
         }
 
-        .shadow-tab-content.active {
-            display: block;
+        @media (max-width: 600px) {
+            nav {
+                flex-direction: column;
+            }
+            th, td {
+                padding: 8px;
+                font-size: 0.9rem;
+            }
         }
     </style>
 </head>
 <body>
 
     <header>
-        <h1>מערכת למידת שפה</h1>
-        <p>שליפה פעילה, קלט מובן ומעקב מתקדם</p>
+        <h1>ערבית מדוברת - קורס מלא</h1>
+        <p>ערכת לימוד אינטראקטיבית: אותיות, אוצר מילים וכללים</p>
     </header>
 
-    <!-- Navigation Tabs -->
-    <div class="nav-tabs">
-        <button class="tab-btn active" id="tab-nav-routine" onclick="switchTab('routine')">
-            <svg viewBox="0 0 24 24"><path d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
-            רוטינה יומית
-        </button>
-        <button class="tab-btn" id="tab-nav-practice" onclick="switchTab('practice')">
-            <svg viewBox="0 0 24 24"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-            שיטות תרגול
-        </button>
-        <button class="tab-btn" id="tab-nav-vocab" onclick="switchTab('vocab')">
-            <svg viewBox="0 0 24 24"><path d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
-            אוצר מילים
-        </button>
-        <button class="tab-btn" id="tab-nav-alphabet" onclick="switchTab('alphabet')">
-            <svg viewBox="0 0 24 24"><path d="M3 5h12M9 3v2m1 14l5-10 5 10m-8-3h6"/></svg>
-            אלף-בית
-        </button>
-    </div>
+    <nav>
+        <button class="active" onclick="openTab('alphabet')">אותיות האַלֶף-בֵּית</button>
+        <button onclick="openTab('vocab')">אוצר מילים - מפגש 1</button>
+    </nav>
 
-    <!-- TAB 1: Routine Tracker -->
-    <div id="routine" class="tab-content active">
-        <div class="box">
-            <h2>משימות היום</h2>
-            <p style="color: var(--text-muted); font-size: 0.875rem; margin-bottom: 16px;">סמן כל חלק עם סיומו, או לחץ על החץ לתרגול ישיר:</p>
+    <div class="container">
 
-            <div class="routine-item">
-                <div class="routine-main">
-                    <input type="checkbox" id="task1">
-                    <label for="task1">
-                        <strong>בוקר (10 דק'):</strong> חזרה על כרטיסיות (שליפה פעילה)
-                    </label>
-                </div>
-                <button class="action-arrow" title="עבור לתרגול כרטיסיות" onclick="openPracticeMode('flashcards')">
-                    <svg viewBox="0 0 24 24"><path d="M15 19l-7-7 7-7"/></svg>
-                </button>
-            </div>
+        <!-- כרטיסיית אלפבית -->
+        <div id="alphabet" class="tab-content active">
+            <div class="card">
+                <h2>28 האותיות בכתב הערבי</h2>
+                <p>בשפה הערבית ישנן 28 אותיות לעומת 22 אותיות בשפה העברית.</p>
+                
+                <input type="text" id="alphabetSearch" class="search-box" onkeyup="filterTable('alphabetSearch', 'alphabetTable')" placeholder="חפש אות, תעתיק או שם האות...">
 
-            <div class="routine-item">
-                <div class="routine-main">
-                    <input type="checkbox" id="task2">
-                    <label for="task2">
-                        <strong>צהריים (10-15 דק'):</strong> הקשבה לקלט מובן
-                    </label>
-                </div>
-                <button class="action-arrow" title="עבור לקלט ו-Shadowing" onclick="openPracticeMode('shadowing')">
-                    <svg viewBox="0 0 24 24"><path d="M15 19l-7-7 7-7"/></svg>
-                </button>
-            </div>
-
-            <div class="routine-item">
-                <div class="routine-main">
-                    <input type="checkbox" id="task3">
-                    <label for="task3">
-                        <strong>ערב (10 דק'):</strong> תרגול Shadowing והרכבת משפטים
-                    </label>
-                </div>
-                <button class="action-arrow" title="עבור לקלט ו-Shadowing" onclick="openPracticeMode('shadowing')">
-                    <svg viewBox="0 0 24 24"><path d="M15 19l-7-7 7-7"/></svg>
-                </button>
-            </div>
-        </div>
-    </div>
-
-    <!-- TAB 2: Practice Zone Hub -->
-    <div id="practice" class="tab-content">
-        <div class="box">
-            <h2>שיטות תרגול</h2>
-            <p style="color: var(--text-muted); font-size: 0.875rem; margin-bottom: 20px;">בחר את שיטת האימון הרצויה כדי להתחיל:</p>
-
-            <div class="practice-card">
-                <div class="practice-info">
-                    <h3>תרגול כרטיסיות (Active Recall)</h3>
-                    <p>בחינת הזיכרון ללא רמזים ויזואליים וחיזוק שליפת מילים מהירה.</p>
-                </div>
-                <button class="action-arrow" title="התחל תרגול כרטיסיות" onclick="openPracticeMode('flashcards')">
-                    <svg viewBox="0 0 24 24"><path d="M15 19l-7-7 7-7"/></svg>
-                </button>
-            </div>
-
-            <div class="practice-card">
-                <div class="practice-info">
-                    <h3>קלט מובן ו-Shadowing</h3>
-                    <p>הקשבה, קריאה במקביל לדובר והרכבת משפטים עצמאיים.</p>
-                </div>
-                <button class="action-arrow" title="התחל תרגול Shadowing" onclick="openPracticeMode('shadowing')">
-                    <svg viewBox="0 0 24 24"><path d="M15 19l-7-7 7-7"/></svg>
-                </button>
-            </div>
-        </div>
-    </div>
-
-    <!-- SUB-VIEW: Flashcards Practice Screen -->
-    <div id="flashcards" class="tab-content">
-        <button class="back-link" onclick="switchTab('practice')">
-            <svg viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"/></svg>
-            חזרה לשיטות תרגול
-        </button>
-
-        <div class="box">
-            <div style="display:flex; justify-content:space-between; align-items:center;">
-                <h2>תרגול כרטיסיות</h2>
-                <span id="card-counter" style="color: var(--text-muted); font-size: 0.875rem;">1 / 1</span>
-            </div>
-
-            <div class="flashcard-container" onclick="flipCard()">
-                <div class="flashcard" id="card">
-                    <div class="card-face card-front" id="card-front">
-                        <div class="card-text" id="card-front-text">טוען...</div>
-                        <div class="card-subtext">(לחץ להפיכה)</div>
-                    </div>
-                    <div class="card-face card-back" id="card-back">
-                        <div class="card-text" id="card-back-text">תרגום...</div>
-                        <div class="card-subtext" id="card-notes-text">הערות / משפט דוגמה</div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="controls">
-                <button class="btn btn-outline" onclick="prevCard()">קודם</button>
-                <button class="btn btn-outline" onclick="nextCard()">הבא</button>
-            </div>
-
-            <div class="feedback-btns">
-                <button class="btn btn-danger" onclick="markCard(false)">לא ידעתי</button>
-                <button class="btn btn-success" onclick="markCard(true)">ידעתי</button>
-            </div>
-            <p style="text-align: center; font-size: 0.8rem; color: var(--text-muted); margin-top: 12px;" id="card-stats">
-                הצלחות: 0 | כשלונות: 0
-            </p>
-        </div>
-    </div>
-
-    <!-- SUB-VIEW: Shadowing & Input Screen (משולב) -->
-    <div id="shadowing" class="tab-content">
-        <button class="back-link" onclick="switchTab('practice')">
-            <svg viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"/></svg>
-            חזרה לשיטות תרגול
-        </button>
-
-        <div class="box">
-            <h2>תרגול Shadowing וקריאה</h2>
-            <p style="color: var(--text-muted); font-size: 0.875rem; margin-bottom: 16px;">
-                הקשב לשמע וחזור בקול רם, או תרגל קריאה והבנת פתגמים.
-            </p>
-
-            <!-- לשוניות ראשיות פנימיות -->
-            <div class="shadow-main-tabs">
-                <button class="shadow-main-btn active" onclick="switchShadowTab(event, 'shadow-practice-tab')">תרגול שיטות (Shadowing)</button>
-                <button class="shadow-main-btn" onclick="switchShadowTab(event, 'shadow-reading-tab')">קריאה (פתגמים וביטויים)</button>
-            </div>
-
-            <!-- תוכן לשונית Shadowing -->
-            <div id="shadow-practice-tab" class="shadow-tab-content active">
-                <div class="sub-tabs">
-                    <button class="sub-tab-btn active" onclick="switchShadowSubTab(event, 'introductions')">1. הצגה והיכרות</button>
-                    <button class="sub-tab-btn" onclick="switchShadowSubTab(event, 'vocabPart1')">2. אוצר מילים (חלק 1)</button>
-                    <button class="sub-tab-btn" onclick="switchShadowSubTab(event, 'vocabPart2')">3. אוצר מילים (חלק 2)</button>
-                </div>
-
-                <div class="audio-player-container">
-                    <span id="current-audio-label">קובץ שמע: image_9.png</span>
-                    <audio id="main-audio-player" controls>
-                        <source id="audio-source" src="image_9.png" type="audio/mp3">
-                        הדפדפן שלך אינו תומך בנגן שמע.
-                    </audio>
-                </div>
-
-                <table class="data-table">
+                <table id="alphabetTable">
                     <thead>
                         <tr>
-                            <th class="num-col">#</th>
-                            <th>תעתיק / ערבית</th>
-                            <th>תרגום לעברית</th>
+                            <th>אות</th>
+                            <th>תעתיק עברי</th>
+                            <th>שם האות</th>
+                            <th>אופן ההגייה / הערות</th>
                         </tr>
                     </thead>
-                    <tbody id="shadowing-table-body">
-                        <!-- יוטען דינמית -->
+                    <tbody>
+                        <tr><td class="arabic-text">أ</td><td><b>א</b></td><td>אַלֶף</td><td>מבוטאת כ- <b>א</b> או משמשת כאם קריאה (לא נהגית).</td></tr>
+                        <tr><td class="arabic-text">ب</td><td><b>ב</b></td><td>בַּא</td><td>מבוטאת כ- <b>בּ</b> דגושה (<b>ב רפויה לא קיימת בערבית</b>).</td></tr>
+                        <tr><td class="arabic-text">ت</td><td><b>ת</b></td><td>תַּא</td><td>מבוטאת כ- <b>תּ</b> דגושה.</td></tr>
+                        <tr><td class="arabic-text">ث</td><td><b>ת'</b></td><td>תַ'א</td><td>עיירים/עירוניים מבטאים לעיתים כ- <b>תּ</b> דגושה / <b>ס</b>, אצל הכפריים והבדואים נבטא כ- <b>ת</b> רפויה.</td></tr>
+                        <tr><td class="arabic-text">ج</td><td><b>ג'</b></td><td>גִ'ים</td><td>מבוטאת כ- <b>ג'</b> כמו במילה <i>מַגָ'זִין</i>.</td></tr>
+                        <tr><td class="arabic-text">ح</td><td><b>ח</b></td><td>חַא</td><td>מבוטאת כ- <b>ח</b> גרונית / מזרחית.</td></tr>
+                        <tr><td class="arabic-text">خ</td><td><b>ח'</b></td><td>חַ'א</td><td>מבוטאת כאות <b>כ</b> שאינה דגושה (כ- <b>ח</b> אשכנזית).</td></tr>
+                        <tr><td class="arabic-text">د</td><td><b>ד</b></td><td>דַאל</td><td>מבוטאת כ- <b>ד</b>.</td></tr>
+                        <tr><td class="arabic-text">ذ</td><td><b>ד'</b></td><td>דַ'אל</td><td>מבוטאת לעיתים כ- <b>ד</b> רגילה ולעיתים כ- <b>ז</b>, ועיירים/כפריים/בדואים כ- <b>ד</b> רפויה.</td></tr>
+                        <tr><td class="arabic-text">ر</td><td><b>ר</b></td><td>רַא</td><td>מבוטאת כ- <b>ר</b> מזרחית.</td></tr>
+                        <tr><td class="arabic-text">ز</td><td><b>ז</b></td><td>זַאי</td><td>מבוטאת כ- <b>ז</b>.</td></tr>
+                        <tr><td class="arabic-text">س</td><td><b>ס</b></td><td>סִין</td><td>מבוטאת כ- <b>ס</b>.</td></tr>
+                        <tr><td class="arabic-text">ش</td><td><b>ש</b></td><td>שִין</td><td>מבוטאת כ- <b>ש</b>.</td></tr>
+                        <tr><td class="arabic-text">ص</td><td><b>צ</b></td><td>צַאד</td><td>מבוטאת כ- <b>צ</b> תימנית / מזרחית (<b>ס נחצית / עבה</b>).</td></tr>
+                        <tr><td class="arabic-text">ض</td><td><b>צ'</b></td><td>צַ'אד</td><td>מבוטאת כ- <b>ד</b> נחצית עבה (<b>אות ייחודית לשפה הערבית</b>).</td></tr>
+                        <tr><td class="arabic-text">ط</td><td><b>ט</b></td><td>טַא</td><td>מבוטאת כ- <b>ט</b> מזרחית (<b>ת דגושה ונחצית / עבה</b>).</td></tr>
+                        <tr><td class="arabic-text">ظ</td><td><b>ט'</b></td><td>טַ'א</td><td>לעיתים מבוטאת כ- <b>ז</b> נחצית ולעיתים כ- <b>צ'</b>.</td></tr>
+                        <tr><td class="arabic-text">ع</td><td><b>ע</b></td><td>עַיְן</td><td>מבוטאת כ- <b>ע</b> גרונית (מזרחית).</td></tr>
+                        <tr><td class="arabic-text">غ</td><td><b>ע'</b></td><td>עַ'יְן</td><td>מבוטאת כ- <b>ר</b> צרפתית.</td></tr>
+                        <tr><td class="arabic-text">ف</td><td><b>פ</b></td><td>פַא</td><td>מבוטאת כ- <b>פ</b> רפויה (<b>פ דגושה לא קיימת בערבית</b>).</td></tr>
+                        <tr><td class="arabic-text">ق</td><td><b>ק</b></td><td>קַאפ</td><td>מבוטאת כ- <b>ק</b> גרונית בכפרים, כ- <b>א</b> עיירים/עירוניים וכ- <b>ג</b> רגילה עייר בדואים.</td></tr>
+                        <tr><td class="arabic-text">ك</td><td><b>כ</b></td><td>כַּאפ</td><td>מבוטאת כ- <b>כּ</b> דגושה.</td></tr>
+                        <tr><td class="arabic-text">ل</td><td><b>ל</b></td><td>לַאם</td><td>מבוטאת כ- <b>ל</b>.</td></tr>
+                        <tr><td class="arabic-text">م</td><td><b>מ</b></td><td>מִים</td><td>מבוטאת כ- <b>מ</b>.</td></tr>
+                        <tr><td class="arabic-text">ن</td><td><b>נ</b></td><td>נוּן</td><td>מבוטאת כ- <b>נ</b>.</td></tr>
+                        <tr><td class="arabic-text">ه</td><td><b>ה</b></td><td>הַא</td><td>מבוטאת כ- <b>ה</b>.</td></tr>
+                        <tr><td class="arabic-text">و</td><td><b>ו</b></td><td>וַאוּ</td><td>מבוטאת כ- <b>ו</b> דגושה (כמו <b>W</b> באנגלית, <b>ו רפויה לא קיימת בערבית</b>) או משמשת כאם קריאה (לא נהגית).</td></tr>
+                        <tr><td class="arabic-text">ي</td><td><b>י</b></td><td>יַא</td><td>מבוטאת כ- <b>י</b> או משמשת כאם קריאה (לא נהגית).</td></tr>
                     </tbody>
                 </table>
-            </div>
 
-            <!-- תוכן לשונית קריאה -->
-            <div id="shadow-reading-tab" class="shadow-tab-content">
-                <table class="data-table">
+                <div class="proverb-box">
+                    <h3>פתגם לסיכום:</h3>
+                    <p class="arabic-text" style="font-size: 1.5rem;">مَنْ عَلَّمَنِي حَرْفًا كُنْتُ لَهُ عَبْدًا</p>
+                    <p><b>מַן עַלַּמַנִי חַרְפַן כַּנְתּ לַהוּ עַבְדַן</b></p>
+                    <p><i>"מי שלימדני אות נהייתי לו עבד"</i> (משפט על גדולת האדם המלמד את חברו אפילו אם זאת רק אות אחת).</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- כרטיסיית אוצר מילים -->
+        <div id="vocab" class="tab-content">
+            <div class="card">
+                <h2>אוצר מילים - מפגש 1</h2>
+                <input type="text" id="vocabSearch" class="search-box" onkeyup="filterTable('vocabSearch', 'vocabTable')" placeholder="חפש מילה בעברית או בתעתיק...">
+
+                <table id="vocabTable">
                     <thead>
                         <tr>
-                            <th class="num-col">#</th>
-                            <th>ביטוי בערבית</th>
-                            <th>פירוש מילולי</th>
-                            <th>תרגום / משמעות</th>
+                            <th>#</th>
+                            <th>מילה / ביטוי</th>
+                            <th>תרגום / פירוש</th>
                         </tr>
                     </thead>
-                    <tbody id="reading-table-body">
-                        <!-- יוטען דינמית -->
+                    <tbody>
+                        <tr><td>1</td><td><b>צַבַּאח (אל)חַ'יְר</b></td><td>בוקר טוב</td></tr>
+                        <tr><td>2</td><td><b>צַבַּאח (אל)נּוּר</b></td><td>בוקר אור</td></tr>
+                        <tr><td>3</td><td><b>מַסַא (אל)חַ'יְר</b></td><td>ערב טוב</td></tr>
+                        <tr><td>4</td><td><b>מַסַא (אל)נּוּר</b></td><td>ערב אור</td></tr>
+                        <tr><td>5</td><td><b>מַרְחַבַּא</b></td><td>שלום רב</td></tr>
+                        <tr><td>6</td><td><b>מַרְחַבְּתֵיְן</b></td><td>רב שלומות</td></tr>
+                        <tr><td>7</td><td><b>אַהְלַן וַסַהְלַן</b></td><td>שלום וברכה</td></tr>
+                        <tr><td>8</td><td><b>אַהְלַן וַסַהְלַן בִיכּ</b></td><td>שלום וברכה לך</td></tr>
+                        <tr><td>9</td><td><b>אִסְם (ר) אַסְאַמִי</b></td><td>שם (ר) שמות</td></tr>
+                        <tr><td>10</td><td><b>אַמִיר (ר) אַמַרַאא</b></td><td>נסיך (ר) נסיכים</td></tr>
+                        <tr><td>11</td><td><b>מַעַלֵּם (ר) מַעַלְמִין</b></td><td>מוֹרֶה (ר) מורים <i>(משמש גם כ: אחראי)</i></td></tr>
+                        <tr><td>12</td><td><b>מַעַלְמַה (ר) מַעַלְמַאת</b></td><td>מורָה (ר) מורות</td></tr>
+                        <tr><td>13</td><td><b>בִּ = פִי</b></td><td>ב... <i>(המילה פִי משמשת גם במשמעות: יש)</i></td></tr>
+                        <tr><td>14</td><td><b>מַע</b></td><td>עם</td></tr>
+                        <tr><td>15</td><td><b>דַוְרַה (ר) דַוְרַאת</b></td><td>קורס (ר) קורסים</td></tr>
+                        <tr><td>16</td><td><b>טַאלִבּ (ר) טֻלַּאבּ</b></td><td>סטודנט (ר) סטודנטים</td></tr>
+                        <tr><td>17</td><td><b>טַאלִבַּה (ר) טַאלִבַּאת</b></td><td>סטודנטית (ר) סטודנטיות</td></tr>
+                        <tr><td>18</td><td><b>גַ'אמִעַה (ר) גַ'אמִעַאת</b></td><td>אוניברסיטה (ר) אוניברסיטאות</td></tr>
+                        <tr><td>19</td><td><b>סִכְרִתֵירַא (ר) סִכְרִתֵירַאת</b></td><td>מזכירה (ר) מזכירות</td></tr>
+                        <tr><td>20</td><td><b>סִכְרִתֵיר (ר) סִכְרִתֵירִיּוֹן</b></td><td>מזכיר (ר) מזכירים</td></tr>
+                        <tr><td>21</td><td><b>אַמִין</b></td><td>מזכיר של גוף רשמי, ישר/אמין, שם של גבר</td></tr>
+                        <tr><td>22</td><td><b>אַמִינַה</b></td><td>מזכירה של גוף רשמי, ישרה/אמינה, שם של בחורה</td></tr>
+                        <tr><td>23</td><td><b>מַדְרַסַה (ר) מַדַארִס</b></td><td>בית ספר (ר) בתי ספר</td></tr>
+                        <tr><td>24</td><td><b>מֻדִיר (ר) מֻדַרַאא</b></td><td>מנהל (ר) מנהלים</td></tr>
+                        <tr><td>25</td><td><b>מֻדִירַה (ר) מֻדִירַאת</b></td><td>מנהלת (ר) מנהלות</td></tr>
+                        <tr><td>26</td><td><b>שַרִכַּה (ר) שַרִכַּאת</b></td><td>חברה</td></tr>
+                        <tr><td>27</td><td><b>מֻחַאמִי (ר) מֻחַאמִיִּן</b></td><td>עו"ד (ר) עורכי דין</td></tr>
+                        <tr><td>28</td><td><b>מֻחַאמִיַּה (ר) מֻחַאמִיַּאת</b></td><td>עורכת דין (ר) עורכות דין</td></tr>
+                        <tr><td>29</td><td><b>וִזַארַה (ר) וִזַארַאת</b></td><td>משרד ממשלתי (ר) משרדי ממשלה</td></tr>
+                        <tr><td>30</td><td><b>עַדְל</b></td><td>צדק</td></tr>
+                        <tr><td>31</td><td><b>תִלְמִיד' (ר) תַלַאמִיד'</b></td><td>תלמיד (ר) תלמידים</td></tr>
+                        <tr><td>32</td><td><b>תִלְמִידַ'ה (ר) תִלְמִידַ'את</b></td><td>תלמידה (ר) תלמידות</td></tr>
+                        <tr><td>33</td><td><b>צַאַחִבּ (ר) אַצְחַאבּ</b></td><td>חבר (ר) חברים, בעל מקום/חברה</td></tr>
+                        <tr><td>34</td><td><b>צַאַחִבַּה (ר) צַאַחִבַּאת</b></td><td>חברה (ר) חברות, בעלת מקום/חברה</td></tr>
+                        <tr><td>35</td><td><b>דַאר (ר) דוּר</b></td><td>בית (ר) בתים</td></tr>
+                        <tr><td>36</td><td><b>וַלַד (ר) וַלַאד</b></td><td>ילד (ר) ילדים</td></tr>
+                        <tr><td>37</td><td><b>אִבְּן (ר) אַבְּנַאא-</b></td><td>בן (ר) בנים</td></tr>
+                        <tr><td>38</td><td><b>בִּנְת (ר) בַּנַאת</b></td><td>ילדה / בת (ר) ילדות / בנות</td></tr>
+                        <tr><td>39</td><td><b>עַם (ר) עֻמוּם</b></td><td>דוד מצד האב; <b>עַמַּה (ר) עַמַּאת</b> – דודה מצד האב</td></tr>
+                        <tr><td>40</td><td><b>חַ'אל (ר) אַחְ'וַאל</b></td><td>דוד מצד האם; <b>חַ'אלַה (ר) חַ'אלַאת</b> – דודה מצד האם</td></tr>
+                        <tr><td>41</td><td><b>סַלַאמַה</b></td><td>בריאות / שלמות</td></tr>
+                        <tr><td>42</td><td><b>צַף (ר) צֻפוּף</b></td><td>כיתה (ר) כיתות</td></tr>
+                        <tr><td>43</td><td><b>בַּאבּ (ר) אַבְּוַאבּ</b></td><td>דלת (ר) דלתות, שער (ר) שערים</td></tr>
+                        <tr><td>44</td><td><b>שֻבַּאכּ (ר) שַבַּאבִּיכּ</b></td><td>חלון (ר) חלונות</td></tr>
+                        <tr><td>45</td><td><b>חֵיט (ר) חִיטַאן</b></td><td>קיר (ר) קירות</td></tr>
+                        <tr><td>46</td><td><b>כֻּרְסִי (ר) כַּרַאסִי</b></td><td>כסא (ר) כסאות</td></tr>
+                        <tr><td>47</td><td><b>טַאווּלַה (ר) טַאווּלַאת</b></td><td>שולחן (ר) שולחנות</td></tr>
+                        <tr><td>48</td><td><b>לוֹח (ר) אַלְוַאח</b></td><td>לוח (ר) לוחות</td></tr>
+                        <tr><td>49</td><td><b>קַלַם (ר) קַלַאם</b></td><td>עט (ר) עטים</td></tr>
+                        <tr><td>50</td><td><b>קַלַם רַצַאץ (ר) קַלַאם רַצַאץ</b></td><td>עיפרון (ר) עפרונות</td></tr>
+                        <tr><td>51</td><td><b>דַפְתַר (ר) דַפַאתִר</b></td><td>מחברת (ר) מחברות</td></tr>
+                        <tr><td>52</td><td><b>כִּתַאבּ (ר) כֻּתֻבּ</b></td><td>ספר (ר) ספרים</td></tr>
+                        <tr><td>53</td><td><b>כֻּרַּאסַה (ר) כֻּרַּאסַאת, כַּרַארִיס</b></td><td>חוברת (ר) חוברות</td></tr>
+                        <tr><td>54</td><td><b>שַנְטַה / שַנְתַה (ר) שַנַט, שַנַטַאת / שַנַתַאת</b></td><td>תיק, מזוודה</td></tr>
+                        <tr><td>55</td><td><b>וַרַקַה (ר) אַוְרַאק, וַרַק</b></td><td>דף (ר) דפים</td></tr>
+                        <tr><td>56</td><td><b>צַפְחַה (ר) צַפְחַאת</b></td><td>עמוד (ר) עמודים</td></tr>
+                        <tr><td>57</td><td><b>אִסְתִרַאחַה (ר) אִסְתִרַאחַאת</b></td><td>הפסקה (ר) הפסקות</td></tr>
+                        <tr><td>58</td><td><b>פֻרְצַה (ר) פֻרַץ</b></td><td>הזדמנות, סיכוי, חופשה, הפסקה</td></tr>
+                        <tr><td>59</td><td><b>קַהְוַה</b></td><td>קפה</td></tr>
+                        <tr><td>60</td><td><b>שַאי</b></td><td>תה</td></tr>
+                        <tr><td>61</td><td><b>סֻכַּר</b></td><td>סוכר</td></tr>
+                        <tr><td>62</td><td><b>כַּאַסַה (ר) כַּאַסַאת, כַּבַּאיַה (ר) כַּבַּאיַאת</b></td><td>כוס (ר) כוסות</td></tr>
+                        <tr><td>63</td><td><b>חַמַּאם (ר) חַמַּאמַאת</b></td><td>אמבטיה, בית שימוש</td></tr>
+                        <tr><td>64</td><td><b>מֻחַאמַאה</b></td><td>עריכת דין</td></tr>
                     </tbody>
                 </table>
             </div>
         </div>
-    </div>
 
-    <!-- TAB 3: Vocabulary & Wall -->
-    <div id="vocab" class="tab-content">
-        <div class="box">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; flex-wrap: wrap; gap: 12px;">
-                <h2>חומת אוצר המילים</h2>
-                <div class="data-actions" style="margin-bottom:0;">
-                    <button class="btn btn-outline" onclick="exportDataJSON()" title="הורד קובץ גיבוי של הנתונים">
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-                        יצוא גיבוי
-                    </button>
-                    <button class="btn btn-outline" onclick="document.getElementById('import-file-input').click()" title="טען נתונים מקובץ JSON">
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
-                        יבוא נתונים
-                    </button>
-                    <input type="file" id="import-file-input" accept=".json" style="display:none" onchange="importDataJSON(event)">
-                </div>
-            </div>
-
-            <p style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: 16px;">
-                לחץ על הריבוע הראשוני לחיבור מילה חדשה. מד ההתקדמות נצבע בירוק עם הגעה ל-6 הצלחות.
-            </p>
-            
-            <div class="vocab-grid" id="vocab-grid-container">
-                <!-- Populated via JS -->
-            </div>
-        </div>
-    </div>
-
-    <!-- TAB 4: Alphabet Page -->
-    <div id="alphabet" class="tab-content">
-        <div class="box">
-            <h2>אותיות האלף-בית והגייתן</h2>
-            <p style="color: var(--text-muted); font-size: 0.875rem;">סקור את האותיות והצלילים:</p>
-
-            <div class="alphabet-grid" id="alphabet-container">
-                <!-- Populated via JS -->
-            </div>
-        </div>
-    </div>
-
-    <!-- MODAL: Add Word Form -->
-    <div class="modal-overlay" id="add-modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3>הוספת מילה חדשה</h3>
-                <button class="close-modal" onclick="closeAddModal()">&times;</button>
-            </div>
-            <form id="add-word-form" onsubmit="handleAddWord(event)">
-                <div class="form-group">
-                    <label for="word-front">מילה / משפט בערבית (חזית):</label>
-                    <input type="text" id="word-front" class="form-control" placeholder="למשל: كِتَاب (כִּתָאבּ)" required>
-                </div>
-                <div class="form-group">
-                    <label for="word-back">תרגום (גב):</label>
-                    <input type="text" id="word-back" class="form-control" placeholder="למשל: ספר" required>
-                </div>
-                <div class="form-group">
-                    <label for="word-notes">הערות / משפט דוגמה (רשות):</label>
-                    <input type="text" id="word-notes" class="form-control" placeholder="למשל: أنا أَقْرَأ كِتَابًا">
-                </div>
-                <div style="display: flex; gap: 8px; justify-content: flex-end; margin-top: 16px;">
-                    <button type="button" class="btn btn-outline" onclick="closeAddModal()">ביטול</button>
-                    <button type="submit" class="btn">הוסף למאגר</button>
-                </div>
-            </form>
-        </div>
     </div>
 
     <script>
-        // === 1. DATA STORAGE ===
-        let vocabularyData = JSON.parse(localStorage.getItem('vocab_data')) || [
-            { id: 1, front: "كِتَاب (כִּתָאבּ)", back: "ספר", notes: "משפט: أنا أَقْرَأ كِتَابًا", correctCount: 0, wrongCount: 0 },
-            { id: 2, front: "لُغَة (לוּעַֿה)", back: "שפה", notes: "משפט: اللُّغَة العَرَبِيَّة جَمِيلَة", correctCount: 0, wrongCount: 0 },
-            { id: 3, front: "مَدْرَسَة (מַדְרַסַה)", back: "בית ספר", notes: "משפט: الأَطْفَال فِي المَدْرَسَة", correctCount: 0, wrongCount: 0 },
-            { id: 4, front: "قَهْوَة (אַהְוֶוה / קַהְוַה)", back: "קפה", notes: "משפט: أَشْرَب قَهْوَة فِي الصَّبَاح", correctCount: 0, wrongCount: 0 },
-            { id: 5, front: "شَمْس (שַמְס)", back: "שמש", notes: "משפט: الشَّمْس مُشْرِقَة", correctCount: 0, wrongCount: 0 },
-            { id: 6, front: "قَمَر (אַמַר / קַמַר)", back: "ירח", notes: "משפט: القَمَر فِي السَّمَاء", correctCount: 0, wrongCount: 0 }
-        ];
-
-        const alphabetData = [
-            { letter: "أ", name: "אָלִף", sound: "א / עִצּוּר גְּרוֹנִי" },
-            { letter: "ب", name: "בָּא", sound: "בּ" },
-            { letter: "ت", name: "תָּא", sound: "תּ" },
-            { letter: "ث", name: "תָ'א", sound: "ת' (כמו Th באנגלית)" },
-            { letter: "ج", name: "גִ'ים", sound: "ג' (ג׳ירפה)" },
-            { letter: "ح", name: "חָא", sound: "ח' (ח׳ גרונית עמוקה)" },
-            { letter: "خ", name: "חָ'א", sound: "ח' (כמו ח' בעברית)" },
-            { letter: "د", name: "דָאל", sound: "ד" },
-            { letter: "ذ", name: "דָ'אל", sound: "ד' (כמו Th במילה This)" },
-            { letter: "ر", name: "רָא", sound: "ר" },
-            { letter: "ز", name: "זָאי", sound: "ז" },
-            { letter: "س", name: "סִין", sound: "ס" },
-            { letter: "ش", name: "שִין", sound: "ש" },
-            { letter: "ص", name: "צָאד", sound: "צ' (ס' עמוקה/מוטעמת)" }
-        ];
-
-        // מאגר נתוני Shadowing מקובץ
-        const shadowingDataStore = {
-            introductions: {
-                audioFile: "image_9.png",
-                items: [
-                    { num: 1, hebrew: "בוקר טוב", arabic: "צבאח אל-חֵ'יר" },
-                    { num: 2, hebrew: "בוקר אור", arabic: "צבאח אנ-נור" },
-                    { num: 3, hebrew: "ערב טוב", arabic: "מסאא אל-חֵ'יר" },
-                    { num: 4, hebrew: "ערב אור", arabic: "מסאא אנ-נור" },
-                    { num: 5, hebrew: "שלום (ברוכים הבאים)", arabic: "מרחבא" },
-                    { num: 6, hebrew: "תשובה למרחבא", arabic: "מרחבתֵין" },
-                    { num: 7, hebrew: "שלום וברכה", arabic: "אהלן וסהלן" },
-                    { num: 8, hebrew: "שלום לך", arabic: "אהלן וסהלן ביכּ" },
-                    { num: 9, hebrew: "אני שמי אבו אמיר ואני מורה בקורס.", arabic: "אנא אסמי אבו אמיר ואנא מעלם בד-דורה." },
-                    { num: 10, hebrew: "אתה שמך אחמד ואתה סטודנט באוניברסיטה.", arabic: "אנת אסמכּ אחמד ואנת טאלב פי אל-ג'אמעה." },
-                    { num: 11, hebrew: "את שמך וידאד ואת מזכירה בבית הספר.", arabic: "אנתי אסמכּ וידאד ואנתי סכּרתֵירה בל-מדרסה." },
-                    { num: 12, hebrew: "הוא שמו מוניר והוא מנהל החברה.", arabic: "הוא אסמו מוניר והוא מודיר אש-שרכּה." },
-                    { num: 13, hebrew: "היא שמה נואל והיא עורכת דין במשרד המשפטים.", arabic: "הייה אסמהא נואל והייה מחאמייה פי ויזארת אל-עדל." },
-                    { num: 14, hebrew: "אנחנו שמותינו עאטף ולטיפה ואנחנו תלמידים פה.", arabic: "אחנא אסאמינא עאטף ולטיפה ואחנא תלאמיז הון." },
-                    { num: 15, hebrew: "אתם שמותיכם זוהיר והדייה ואתם בעלי הבית.", arabic: "אנתו אסאמיכּום זוהיר והדייה ואנתו אצחאב אל-דאר." },
-                    { num: 16, hebrew: "הם שמותיהם שאדי ועביר והם בני דודים.", arabic: "הום אסאמיהום שאדי ועביר והום ולאד עם." },
-                    { num: 17, hebrew: "עמכם השלום", arabic: "מע אס-סלאמה" },
-                    { num: 18, hebrew: "אלוהים יברך אותך לשלום", arabic: "אללה יסלמכּ" },
-                    { num: 19, hebrew: "השלום לפני הדיבורים", arabic: "אס-סלאם קבל אל-כּלאם" }
-                ]
-            },
-            vocabPart1: {
-                audioFile: "image_10.png",
-                items: [
-                    { num: 1, hebrew: "בוקר טוב", arabic: "צבאח אל-חֵ'יר" },
-                    { num: 2, hebrew: "בוקר אור", arabic: "צבאח אנ-נור" },
-                    { num: 3, hebrew: "ערב טוב", arabic: "מסאא אל-חֵ'יר" },
-                    { num: 4, hebrew: "ערב אור", arabic: "מסאא אנ-נור" },
-                    { num: 5, hebrew: "שלום רב", arabic: "מרחבא" },
-                    { num: 6, hebrew: "רב שלומות", arabic: "מרחבתֵין" },
-                    { num: 7, hebrew: "שלום וברכה", arabic: "אהלן וסהלן" },
-                    { num: 8, hebrew: "שלום וברכה לך", arabic: "אהלן וסהלן ביכּ" },
-                    { num: 9, hebrew: "שם (ר' שמות)", arabic: "אסם (ר' אסאמי)" },
-                    { num: 10, hebrew: "נסיך", arabic: "אמיר" },
-                    { num: 11, hebrew: "מורה (ר' מורים)", arabic: "מעלם (ר' מעלמין)" },
-                    { num: 12, hebrew: "מורה [נ'] (ר' מורות)", arabic: "מעלמה (ר' מעלמאת)" },
-                    { num: 13, hebrew: "בְּ... / בתוך", arabic: "בִּ / פִי" },
-                    { num: 14, hebrew: "עם", arabic: "מַעַ" },
-                    { num: 15, hebrew: "קורס (ר' קורסים)", arabic: "דורה (ר' דוראת)" },
-                    { num: 16, hebrew: "סטודנט (ר' סטודנטים)", arabic: "טאלב (ר' טולאב)" },
-                    { num: 17, hebrew: "סטודנטית (ר' סטודנטיות)", arabic: "טאלבה (ר' טאליבאתי)" },
-                    { num: 18, hebrew: "אוניברסיטה (ר' אוניברסיטאות)", arabic: "ג'אמעה (ר' ג'אמעאת / ג'אמיעאת)" },
-                    { num: 19, hebrew: "מזכירה (ר' מזכירות)", arabic: "סכּרתֵירה (ר' סכּרתֵיראת)" },
-                    { num: 20, hebrew: "מזכיר (ר' מזכירים)", arabic: "סכּרתֵיר (ר' סכּתרִיון)" },
-                    { num: 21, hebrew: "מזכיר גוף רשמי / אמין", arabic: "אמין" },
-                    { num: 22, hebrew: "מזכירה [נ']", arabic: "אמינה" }
-                ]
-            },
-            vocabPart2: {
-                audioFile: "image_9.png",
-                items: [
-                    { num: 37, hebrew: "בן (ר' בנים)", arabic: "אבן (ר' אבנאא / בנים: בנין)" },
-                    { num: 38, hebrew: "ילדה/בת (ר' ילדות/בנות)", arabic: "בנת (ר' בנאת)" },
-                    { num: 39, hebrew: "דוד מצד האב (ר' דודים)", arabic: "עם (ר' עמום)" },
-                    { num: "39a", hebrew: "דודה מצד האב (ר' דודות)", arabic: "עמה (ר' עמאת)" },
-                    { num: 40, hebrew: "דוד מצד האם (ר' דודים)", arabic: "ח'אל (ר' אח'ואל)" },
-                    { num: "40a", hebrew: "דודה מצד האם (ר' דודות)", arabic: "ח'אלה (ר' ח'אלאת)" },
-                    { num: 41, hebrew: "בריאות / שלמות", arabic: "סלאמה" },
-                    { num: 42, hebrew: "כיתה (ר' כיתות)", arabic: "צף (ר' לצפוף)" },
-                    { num: 43, hebrew: "דלת / שער (ר' דלתות/שערים)", arabic: "באב (ר' אבואב)" },
-                    { num: 44, hebrew: "חלון (ר' חלונות)", arabic: "שובאכּ (ר' שבאביכּ)" },
-                    { num: 45, hebrew: "קיר (ר' קירות)", arabic: "חיט (ר' חיטאן)" },
-                    { num: 46, hebrew: "כיסא (ר' כיסאות)", arabic: "כּורסי (ר' כּראסי)" },
-                    { num: 47, hebrew: "שולחן (ר' שולחנות)", arabic: "טאולה (ר' טאולאת)" },
-                    { num: 48, hebrew: "לוח (ר' לוחות)", arabic: "לוּח (ר' אלואח)" },
-                    { num: 49, hebrew: "עט (ר' עטים)", arabic: "קלם (ר' אקלאם)" },
-                    { num: 50, hebrew: "עיפרון (ר' עפרונות)", arabic: "קלם רצאץ (ר' אקלאם רצאץ)" },
-                    { num: 51, hebrew: "מחברת (ר' מחברות)", arabic: "דפתר (ר' דפאתר)" },
-                    { num: 52, hebrew: "ספר (ר' ספרים)", arabic: "כּתאב (ר' כּותוב)" },
-                    { num: 53, hebrew: "חוברת (ר' חוברות)", arabic: "כּראסה (ר' כּראסאת / כּראריס)" },
-                    { num: 54, hebrew: "תיק / מזוודה (ר' תיקים)", arabic: "שנטה / שנתה (ר' שונאט / שונאת)" },
-                    { num: 55, hebrew: "דף (ר' דפים)", arabic: "ורקה (ר' אוראק / וראק)" },
-                    { num: 57, hebrew: "הפסקה (ר' הפסקות)", arabic: "אסתיראחה (ר' אסתיראחאת)" },
-                    { num: 58, hebrew: "הזדמנות / סיכוי / הפסקה", arabic: "פורצה (ר' פורץ)" },
-                    { num: 59, hebrew: "קפה", arabic: "אהוה" },
-                    { num: 60, hebrew: "תה", arabic: "שאי" },
-                    { num: 61, hebrew: "סוכר", arabic: "סוכּר" },
-                    { num: 62, hebrew: "כוס (ר' כוסות)", arabic: "כּאסה (ר' כּאסאת) / כּובאיה (ר' כּובאיאת)" },
-                    { num: 63, hebrew: "אמבטיה / בית שימוש", arabic: "חמאם (ר' חמאמאת)" }
-                ]
+        function openTab(tabName) {
+            var i, tabcontent, tablinks;
+            tabcontent = document.getElementsByClassName("tab-content");
+            for (i = 0; i < tabcontent.length; i++) {
+                tabcontent[i].classList.remove("active");
             }
-        };
-
-        // מאגר נתוני קריאה (פתגמים)
-        const readingDataStore = [
-            { num: 1, arabic: "לַאזֶם תַתַעַדַּא פִי, קַבְּל מַא יַתַעַשַּׁא פִיכּ", literal: "תאכל אותו לארוחת צהריים, לפני שהוא יאכל אותך לארוחת ערב.", meaning: "תקדים תרופה למכה." },
-            { num: 2, arabic: "אלִי כַּתַבוֹ רַבַּנַא בִּידוֹ יְצִיר", literal: "מה שכתב הבורא, זה מה שיקרה.", meaning: "מה שיהיה - יהיה." },
-            { num: 3, arabic: "בִּיקוּלוֹ תוֹר, בִּיקוּל אַחְלְבוּ", literal: "אומרים לו שור, הוא אומר לחלוב אותו.", meaning: "אדם עקשן / אדם שלא מחובר לסיטואציה." },
-            { num: 4, arabic: "אלִי פַאת – מַאת", literal: "מה שעבר, מת.", meaning: "מה שהיה, היה." },
-            { num: 5, arabic: "זַמַאן אַוַּל תַחוֹל", literal: "הזמנים של פעם עברו.", meaning: "לא ניתן להחזיר את הגלגל לאחור." },
-            { num: 6, arabic: "שַׁיְטַאן רַאכֶּב עַקְלוֹ", literal: "השטן רוכב על ראשו.", meaning: "נכנס בו שד, השתגע." },
-            { num: 7, arabic: "טַלְעַת רִיחְתוֹ", literal: "יצא הריח שלו.", meaning: "הסריח, עבר את הגבול, האמת יצאה." },
-            { num: 8, arabic: "והו, פִי חַ'בַּר בִּיַתְחַבַּא?", literal: "והאם יש אמת/ידיעה שאפשר להסתיר?", meaning: "אי אפשר להסתיר כלום." },
-            { num: 9, arabic: "אלִי בַּדּוֹ מַצַארִי לַאזֶם יִשְׁתַעֶ'ל", literal: "מי שרוצה כסף צריך לעבוד.", meaning: "יגעת ומצאת-תאמין, אין כסף בלי עבודה." },
-            { num: 10, arabic: "רוּחְ בַּלֵּט (א)לְבַּחְר", literal: "לך תרצף את הים.", meaning: "תעשה עבודה שאין בה תועלת, לך מפה." },
-            { num: 11, arabic: "וול? גַאי תַתְפַלְסַף עַלַיַא אַנְת?", literal: "מה? אתה בא להתרפלוסף עלי?", meaning: "אל תתפוס עליי תחת." },
-            { num: 12, arabic: "עַיִשׁ חַיַאתַכּ", literal: "חיה את חייך.", meaning: "שחרר, תהנה מהרגע." },
-            { num: 13, arabic: "הוּ פִי וַאד וַאַנַא פִי וַאד", literal: "הוא בוואדי ואני בוואדי.", meaning: "אנחנו כל אחד במקום אחר, יש ריחוק." }
-        ];
-
-        // === 2. APP STATE & NAVIGATION ===
-        let currentCardIndex = 0;
-
-        function saveState() {
-            localStorage.setItem('vocab_data', JSON.stringify(vocabularyData));
-        }
-
-        function switchTab(tabId) {
-            document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
-            document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
-            
-            document.getElementById(tabId).classList.add('active');
-            
-            const navBtn = document.getElementById(`tab-nav-${tabId}`);
-            if (navBtn) {
-                navBtn.classList.add('active');
-            } else if (tabId === 'flashcards' || tabId === 'shadowing') {
-                document.getElementById('tab-nav-practice').classList.add('active');
+            tablinks = document.querySelectorAll("nav button");
+            for (i = 0; i < tablinks.length; i++) {
+                tablinks[i].classList.remove("active");
             }
-
-            if (tabId === 'vocab') renderVocabGrid();
-            if (tabId === 'shadowing') {
-                renderShadowingData('introductions');
-                renderReadingData();
-            }
+            document.getElementById(tabName).classList.add("active");
+            event.currentTarget.classList.add("active");
         }
 
-        function openPracticeMode(modeId) {
-            switchTab(modeId);
-            if (modeId === 'flashcards') {
-                renderCard();
-            }
-        }
+        function filterTable(inputId, tableId) {
+            var input, filter, table, tr, td, i, j, txtValue;
+            input = document.getElementById(inputId);
+            filter = input.value.toLowerCase();
+            table = document.getElementById(tableId);
+            tr = table.getElementsByTagName("tr");
 
-        // === SHADOWING & READING INNER NAVIGATION ===
-        function switchShadowTab(e, shadowTabId) {
-            document.querySelectorAll('.shadow-main-btn').forEach(btn => btn.classList.remove('active'));
-            document.querySelectorAll('.shadow-tab-content').forEach(content => content.classList.remove('active'));
-
-            e.target.classList.add('active');
-            document.getElementById(shadowTabId).classList.add('active');
-        }
-
-        function switchShadowSubTab(e, subTabKey) {
-            document.querySelectorAll('.sub-tab-btn').forEach(btn => btn.classList.remove('active'));
-            e.target.classList.add('active');
-
-            renderShadowingData(subTabKey);
-        }
-
-        function renderShadowingData(subTabKey) {
-            const categoryData = shadowingDataStore[subTabKey];
-            const tableBody = document.getElementById('shadowing-table-body');
-            const audioLabel = document.getElementById('current-audio-label');
-            const audioPlayer = document.getElementById('main-audio-player');
-            const audioSource = document.getElementById('audio-source');
-
-            audioLabel.textContent = `קובץ שמע: ${categoryData.audioFile}`;
-            audioSource.src = categoryData.audioFile;
-            audioPlayer.load();
-
-            tableBody.innerHTML = '';
-            categoryData.items.forEach(item => {
-                const row = document.createElement('tr');
-                row.innerHTML = `
-                    <td class="num-col">${item.num}</td>
-                    <td class="arabic-text">${item.arabic}</td>
-                    <td>${item.hebrew}</td>
-                `;
-                tableBody.appendChild(row);
-            });
-        }
-
-        function renderReadingData() {
-            const tableBody = document.getElementById('reading-table-body');
-            tableBody.innerHTML = '';
-            readingDataStore.forEach(item => {
-                const row = document.createElement('tr');
-                row.innerHTML = `
-                    <td class="num-col">${item.num}</td>
-                    <td class="arabic-text">${item.arabic}</td>
-                    <td>${item.literal}</td>
-                    <td>${item.meaning}</td>
-                `;
-                tableBody.appendChild(row);
-            });
-        }
-
-        // === 3. FLASHCARD LOGIC ===
-        function flipCard() {
-            document.getElementById('card').classList.toggle('flipped');
-        }
-
-        function renderCard() {
-            if (!vocabularyData || vocabularyData.length === 0) {
-                document.getElementById('card-front-text').innerText = "אין מילים במאגר";
-                document.getElementById('card-back-text').innerText = "הוסף מילים בחומת אוצר המילים";
-                document.getElementById('card-notes-text').innerText = "";
-                document.getElementById('card-counter').innerText = "0 / 0";
-                document.getElementById('card-stats').innerText = "הצלחות: 0 | כשלונות: 0";
-                return;
-            }
-
-            if (currentCardIndex >= vocabularyData.length) {
-                currentCardIndex = 0;
-            }
-
-            const card = vocabularyData[currentCardIndex];
-            document.getElementById('card-front-text').innerText = card.front;
-            document.getElementById('card-back-text').innerText = card.back;
-            document.getElementById('card-notes-text').innerText = card.notes || '';
-            document.getElementById('card-counter').innerText = `${currentCardIndex + 1} / ${vocabularyData.length}`;
-            document.getElementById('card-stats').innerText = `הצלחות: ${card.correctCount || 0} | כשלונות: ${card.wrongCount || 0}`;
-
-            const frontFace = document.getElementById('card-front');
-            const backFace = document.getElementById('card-back');
-
-            frontFace.className = 'card-face card-front';
-            backFace.className = 'card-face card-back';
-
-            if (card.correctCount >= 6) {
-                frontFace.classList.add('mastered');
-                backFace.classList.add('mastered');
-            } else if (card.wrongCount >= 2) {
-                frontFace.classList.add('struggling');
-                backFace.classList.add('struggling');
-            }
-
-            document.getElementById('card').classList.remove('flipped');
-        }
-
-        function markCard(isCorrect) {
-            if (!vocabularyData.length) return;
-
-            const card = vocabularyData[currentCardIndex];
-            if (isCorrect) {
-                card.correctCount = (card.correctCount || 0) + 1;
-            } else {
-                card.wrongCount = (card.wrongCount || 0) + 1;
-            }
-            saveState();
-            renderCard();
-            
-            setTimeout(() => {
-                nextCard();
-            }, 300);
-        }
-
-        function nextCard() {
-            if (currentCardIndex < vocabularyData.length - 1) {
-                currentCardIndex++;
-                renderCard();
-            }
-        }
-
-        function prevCard() {
-            if (currentCardIndex > 0) {
-                currentCardIndex--;
-                renderCard();
-            }
-        }
-
-        // === 4. MODAL & VOCAB FORM ===
-        function openAddModal() {
-            document.getElementById('add-modal').classList.add('active');
-            document.getElementById('word-front').focus();
-        }
-
-        function closeAddModal() {
-            document.getElementById('add-modal').classList.remove('active');
-            document.getElementById('add-word-form').reset();
-        }
-
-        function handleAddWord(e) {
-            e.preventDefault();
-            const frontInput = document.getElementById('word-front');
-            const backInput = document.getElementById('word-back');
-            const notesInput = document.getElementById('word-notes');
-
-            const newWord = {
-                id: Date.now(),
-                front: frontInput.value.trim(),
-                back: backInput.value.trim(),
-                notes: notesInput.value.trim(),
-                correctCount: 0,
-                wrongCount: 0
-            };
-
-            vocabularyData.push(newWord);
-            saveState();
-            closeAddModal();
-
-            renderVocabGrid();
-        }
-
-        function exportDataJSON() {
-            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(vocabularyData, null, 2));
-            const downloadAnchor = document.createElement('a');
-            downloadAnchor.setAttribute("href", dataStr);
-            downloadAnchor.setAttribute("download", `language_vocab_backup_${new Date().toISOString().slice(0,10)}.json`);
-            document.body.appendChild(downloadAnchor);
-            downloadAnchor.click();
-            downloadAnchor.remove();
-        }
-
-        function importDataJSON(event) {
-            const fileReader = new FileReader();
-            fileReader.onload = function(e) {
-                try {
-                    const importedData = JSON.parse(e.target.result);
-                    if (Array.isArray(importedData)) {
-                        vocabularyData = importedData;
-                        saveState();
-                        renderVocabGrid();
-                        renderCard();
-                        alert('הנתונים יובאו בהצלחה!');
-                    } else {
-                        alert('קובץ ה-JSON אינו במבנה התקין.');
+            for (i = 1; i < tr.length; i++) {
+                tr[i].style.display = "none";
+                td = tr[i].getElementsByTagName("td");
+                for (j = 0; j < td.length; j++) {
+                    if (td[j]) {
+                        txtValue = td[j].textContent || td[j].innerText;
+                        if (txtValue.toLowerCase().indexOf(filter) > -1) {
+                            tr[i].style.display = "";
+                            break;
+                        }
                     }
-                } catch (err) {
-                    alert('שגיאה בקריאת הקובץ. וודא שזהו קובץ JSON תקין.');
                 }
-            };
-            if(event.target.files[0]) {
-                fileReader.readAsText(event.target.files[0]);
             }
         }
-
-        // === 5. VOCABULARY & ALPHABET RENDERERS ===
-        function renderVocabGrid() {
-            const container = document.getElementById('vocab-grid-container');
-            container.innerHTML = '';
-
-            const addCard = document.createElement('div');
-            addCard.className = 'vocab-card add-card';
-            addCard.onclick = openAddModal;
-            addCard.innerHTML = `
-                <svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
-                <span>הוסף מילה</span>
-            `;
-            container.appendChild(addCard);
-
-            vocabularyData.forEach(item => {
-                const card = document.createElement('div');
-                card.className = 'vocab-card';
-
-                const progressPct = Math.min(Math.round(((item.correctCount || 0) / 6) * 100), 100);
-
-                if (item.correctCount >= 6) {
-                    card.classList.add('mastered');
-                } else if (item.wrongCount >= 2) {
-                    card.classList.add('struggling');
-                }
-
-                card.innerHTML = `
-                    <div>
-                        <div class="vocab-word">${item.front}</div>
-                        <div class="vocab-translation">${item.back}</div>
-                    </div>
-                    <div class="progress-container" title="התקדמות: ${item.correctCount || 0}/6 הצלחות">
-                        <div class="progress-bar" style="width: ${progressPct}%;"></div>
-                    </div>
-                `;
-                container.appendChild(card);
-            });
-        }
-
-        function renderAlphabet() {
-            const container = document.getElementById('alphabet-container');
-            container.innerHTML = '';
-            alphabetData.forEach(item => {
-                const card = document.createElement('div');
-                card.className = 'letter-card';
-                card.innerHTML = `
-                    <div class="letter-symbol">${item.letter}</div>
-                    <div class="letter-name">${item.name}</div>
-                    <div class="letter-sound">${item.sound}</div>
-                `;
-                container.appendChild(card);
-            });
-        }
-
-        window.onload = () => {
-            renderCard();
-            renderAlphabet();
-        };
     </script>
 </body>
 </html>
