@@ -364,6 +364,60 @@
         flex-wrap: wrap;
     }
 
+    /* Quiz Component Styles */
+    .quiz-question-box {
+        background: white;
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        padding: 30px 20px;
+        text-align: center;
+        margin: 16px 0;
+        box-shadow: var(--shadow-sm);
+    }
+
+    .quiz-question-text {
+        font-size: 2rem;
+        font-weight: 700;
+        color: var(--primary);
+    }
+
+    .quiz-options-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 12px;
+        margin-top: 16px;
+    }
+
+    .quiz-option-btn {
+        background: white;
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        padding: 14px 16px;
+        font-size: 1rem;
+        font-weight: 600;
+        color: var(--text-main);
+        cursor: pointer;
+        transition: all 0.2s ease;
+        text-align: center;
+    }
+
+    .quiz-option-btn:hover {
+        border-color: var(--primary-light);
+        background: #f8fafc;
+    }
+
+    .quiz-option-btn.correct {
+        background-color: var(--success-bg) !important;
+        border-color: var(--success) !important;
+        color: var(--success) !important;
+    }
+
+    .quiz-option-btn.wrong {
+        background-color: var(--warning-bg) !important;
+        border-color: var(--warning-border) !important;
+        color: var(--warning-border) !important;
+    }
+
     /* Vocab Grid */
     .vocab-grid {
         display: grid;
@@ -582,7 +636,7 @@
     }
 
     /* Shadowing Dynamic Component Styles */
-    .shadow-main-tabs {
+    .shadow-main-tabs, .mode-selection-tabs {
         display: flex;
         gap: 10px;
         margin-bottom: 16px;
@@ -590,7 +644,7 @@
         padding-bottom: 8px;
     }
 
-    .shadow-main-btn {
+    .shadow-main-btn, .mode-select-btn {
         background: none;
         border: none;
         font-size: 0.95rem;
@@ -602,7 +656,7 @@
         transition: all 0.2s ease;
     }
 
-    .shadow-main-btn.active {
+    .shadow-main-btn.active, .mode-select-btn.active {
         color: var(--primary-light);
         border-bottom-color: var(--primary-light);
     }
@@ -753,9 +807,19 @@
         <div class="practice-card">
             <div class="practice-info">
                 <h3>תרגול כרטיסיות (Active Recall)</h3>
-                <p>בחינת הזיכרון ללא רמזים ויזואליים וחיזוק שליפת מילים מהירה.</p>
+                <p>תרגול כרטיסיות זיכרון לאוצר המילים או אותיות האלף-בית.</p>
             </div>
             <button class="action-arrow" title="התחל תרגול כרטיסיות" onclick="openPracticeMode('flashcards')">
+                <svg viewBox="0 0 24 24"><path d="M15 19l-7-7 7-7"/></svg>
+            </button>
+        </div>
+
+        <div class="practice-card">
+            <div class="practice-info">
+                <h3>מבחן אמריקאי (Multiple Choice Quiz)</h3>
+                <p>תרגול בחירה מרובה עם 4 אפשרויות לאוצר המילים או האלף-בית.</p>
+            </div>
+            <button class="action-arrow" title="התחל מבחן אמריקאי" onclick="openPracticeMode('quiz')">
                 <svg viewBox="0 0 24 24"><path d="M15 19l-7-7 7-7"/></svg>
             </button>
         </div>
@@ -780,6 +844,11 @@
     </button>
 
     <div class="box">
+        <div class="mode-selection-tabs">
+            <button class="mode-select-btn active" id="fc-mode-vocab" onclick="setFlashcardMode('vocab')">אוצר מילים</button>
+            <button class="mode-select-btn" id="fc-mode-alphabet" onclick="setFlashcardMode('alphabet')">אלף-בית</button>
+        </div>
+
         <div style="display:flex; justify-content:space-between; align-items:center;">
             <h2>תרגול כרטיסיות</h2>
             <span id="card-counter" style="color: var(--text-muted); font-size: 0.875rem;">1 / 1</span>
@@ -810,6 +879,32 @@
         <p style="text-align: center; font-size: 0.8rem; color: var(--text-muted); margin-top: 12px;" id="card-stats">
             הצלחות: 0 | כשלונות: 0
         </p>
+    </div>
+</div>
+
+<!-- SUB-VIEW: Quiz Practice Screen (מבחן אמריקאי) -->
+<div id="quiz" class="tab-content">
+    <button class="back-link" onclick="switchTab('practice')">
+        <svg viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"/></svg>
+        חזרה לשיטות תרגול
+    </button>
+
+    <div class="box">
+        <div class="mode-selection-tabs">
+            <button class="mode-select-btn active" id="quiz-mode-vocab" onclick="setQuizMode('vocab')">אוצר מילים</button>
+            <button class="mode-select-btn" id="quiz-mode-alphabet" onclick="setQuizMode('alphabet')">אלף-בית</button>
+        </div>
+
+        <div style="display:flex; justify-content:space-between; align-items:center;">
+            <h2>מבחן אמריקאי</h2>
+            <span id="quiz-score" style="color: var(--text-muted); font-size: 0.875rem;">ניקוד: 0</span>
+        </div>
+
+        <div class="quiz-question-box">
+            <div class="quiz-question-text" id="quiz-question">טוען שאלה...</div>
+        </div>
+
+        <div class="quiz-options-grid" id="quiz-options"></div>
     </div>
 </div>
 
@@ -944,7 +1039,7 @@
         { id: 9, front: "אִסְם", back: "שם", notes: "ר' אַסְאַמִי", correctCount: 0, wrongCount: 0 },
         { id: 10, front: "אַמִיר", back: "נסיך", notes: "ר' אַמַרַאא", correctCount: 0, wrongCount: 0 },
         { id: 11, front: "מַעַלֵּם", back: "מוֹרֶה / אחראי", notes: "ר' מַעַלְמִין", correctCount: 0, wrongCount: 0 },
-        { id: 12, front: "מַעַלְמַה", back: "מורָה", notes: "ר' מַעַלְמַאת", correctCount: 0, wrongCount: 0 },
+        { id: 12, front: "מַעַלְמַה", back: "מורָה", notes: "ר' מַעַלְמִין", correctCount: 0, wrongCount: 0 },
         { id: 13, front: "בִּ = פִי", back: "ב...", notes: "המילה פִי משמשת גם במשמעות: יש", correctCount: 0, wrongCount: 0 },
         { id: 14, front: "מַע", back: "עם", notes: "", correctCount: 0, wrongCount: 0 },
         { id: 15, front: "דַוְרַה", back: "קורס", notes: "ר' דַוְרַאת", correctCount: 0, wrongCount: 0 },
@@ -1129,6 +1224,12 @@
 
     // === 2. APP STATE & NAVIGATION ===
     let currentCardIndex = 0;
+    let flashcardMode = 'vocab'; // 'vocab' | 'alphabet'
+    
+    let quizMode = 'vocab'; // 'vocab' | 'alphabet'
+    let quizScore = 0;
+    let currentQuizItem = null;
+    let quizAnswered = false;
 
     function saveState() {
         localStorage.setItem('vocab_data', JSON.stringify(vocabularyData));
@@ -1143,7 +1244,7 @@
         const navBtn = document.getElementById(`tab-nav-${tabId}`);
         if (navBtn) {
             navBtn.classList.add('active');
-        } else if (tabId === 'flashcards' || tabId === 'shadowing') {
+        } else if (tabId === 'flashcards' || tabId === 'quiz' || tabId === 'shadowing') {
             document.getElementById('tab-nav-practice').classList.add('active');
         }
 
@@ -1151,6 +1252,9 @@
         if (tabId === 'shadowing') {
             renderSentencesData('introductions');
             renderReadingData();
+        }
+        if (tabId === 'quiz') {
+            initQuiz();
         }
     }
 
@@ -1161,7 +1265,199 @@
         }
     }
 
-    // === SENTENCES & READING NAVIGATION ===
+    // === 3. FLASHCARD LOGIC ===
+    function setFlashcardMode(mode) {
+        flashcardMode = mode;
+        currentCardIndex = 0;
+        document.getElementById('fc-mode-vocab').classList.toggle('active', mode === 'vocab');
+        document.getElementById('fc-mode-alphabet').classList.toggle('active', mode === 'alphabet');
+        renderCard();
+    }
+
+    function getActiveFlashcardList() {
+        if (flashcardMode === 'alphabet') {
+            return alphabetData.map(a => ({
+                front: a.letter,
+                back: a.name,
+                notes: `הגייה: ${a.sound}`,
+                correctCount: 0,
+                wrongCount: 0
+            }));
+        }
+        return vocabularyData;
+    }
+
+    function flipCard() {
+        document.getElementById('card').classList.toggle('flipped');
+    }
+
+    function renderCard() {
+        const activeList = getActiveFlashcardList();
+
+        if (!activeList || activeList.length === 0) {
+            document.getElementById('card-front-text').innerText = "אין נתונים להצגה";
+            document.getElementById('card-back-text').innerText = "";
+            document.getElementById('card-notes-text').innerText = "";
+            document.getElementById('card-counter').innerText = "0 / 0";
+            document.getElementById('card-stats').innerText = "הצלחות: 0 | כשלונות: 0";
+            return;
+        }
+
+        if (currentCardIndex >= activeList.length) {
+            currentCardIndex = 0;
+        }
+
+        const card = activeList[currentCardIndex];
+        document.getElementById('card-front-text').innerText = card.front;
+        document.getElementById('card-back-text').innerText = card.back;
+        document.getElementById('card-notes-text').innerText = card.notes || '';
+        document.getElementById('card-counter').innerText = `${currentCardIndex + 1} / ${activeList.length}`;
+        document.getElementById('card-stats').innerText = `הצלחות: ${card.correctCount || 0} | כשלונות: ${card.wrongCount || 0}`;
+
+        const frontFace = document.getElementById('card-front');
+        const backFace = document.getElementById('card-back');
+
+        frontFace.className = 'card-face card-front';
+        backFace.className = 'card-face card-back';
+
+        if (card.correctCount >= 6) {
+            frontFace.classList.add('mastered');
+            backFace.classList.add('mastered');
+        } else if (card.wrongCount >= 2) {
+            frontFace.classList.add('struggling');
+            backFace.classList.add('struggling');
+        }
+
+        document.getElementById('card').classList.remove('flipped');
+    }
+
+    function markCard(isCorrect) {
+        if (flashcardMode === 'alphabet') {
+            nextCard();
+            return;
+        }
+
+        if (!vocabularyData.length) return;
+
+        const card = vocabularyData[currentCardIndex];
+        if (isCorrect) {
+            card.correctCount = (card.correctCount || 0) + 1;
+        } else {
+            card.wrongCount = (card.wrongCount || 0) + 1;
+        }
+        saveState();
+        renderCard();
+        
+        setTimeout(() => {
+            nextCard();
+        }, 300);
+    }
+
+    function nextCard() {
+        const activeList = getActiveFlashcardList();
+        if (currentCardIndex < activeList.length - 1) {
+            currentCardIndex++;
+            renderCard();
+        }
+    }
+
+    function prevCard() {
+        if (currentCardIndex > 0) {
+            currentCardIndex--;
+            renderCard();
+        }
+    }
+
+    // === 4. QUIZ (מבחן אמריקאי) LOGIC ===
+    function setQuizMode(mode) {
+        quizMode = mode;
+        document.getElementById('quiz-mode-vocab').classList.toggle('active', mode === 'vocab');
+        document.getElementById('quiz-mode-alphabet').classList.toggle('active', mode === 'alphabet');
+        initQuiz();
+    }
+
+    function getQuizDataList() {
+        if (quizMode === 'alphabet') {
+            return alphabetData.map(item => ({
+                question: item.letter,
+                answer: `${item.name} (${item.sound})`
+            }));
+        }
+        return vocabularyData.map(item => ({
+            question: item.front,
+            answer: item.back
+        }));
+    }
+
+    function initQuiz() {
+        quizAnswered = false;
+        const list = getQuizDataList();
+        if (!list || list.length < 4) {
+            document.getElementById('quiz-question').innerText = "אין מספיק נתונים למבחן";
+            document.getElementById('quiz-options').innerHTML = "";
+            return;
+        }
+
+        // Select random question
+        const randomIndex = Math.floor(Math.random() * list.length);
+        currentQuizItem = list[randomIndex];
+
+        // Generate 3 wrong options
+        let wrongOptions = [];
+        while (wrongOptions.length < 3) {
+            let rand = Math.floor(Math.random() * list.length);
+            let opt = list[rand].answer;
+            if (opt !== currentQuizItem.answer && !wrongOptions.includes(opt)) {
+                wrongOptions.push(opt);
+            }
+        }
+
+        // Mix correct answer with wrong answers
+        let allOptions = [...wrongOptions, currentQuizItem.answer];
+        allOptions.sort(() => Math.random() - 0.5);
+
+        // Render Question & Options
+        document.getElementById('quiz-question').innerText = currentQuizItem.question;
+        const optionsContainer = document.getElementById('quiz-options');
+        optionsContainer.innerHTML = '';
+
+        allOptions.forEach(optionText => {
+            const btn = document.createElement('button');
+            btn.className = 'quiz-option-btn';
+            btn.innerText = optionText;
+            btn.onclick = () => handleQuizAnswer(btn, optionText);
+            optionsContainer.appendChild(btn);
+        });
+    }
+
+    function handleQuizAnswer(btnElement, selectedAnswer) {
+        if (quizAnswered) return;
+        quizAnswered = true;
+
+        const isCorrect = selectedAnswer === currentQuizItem.answer;
+        if (isCorrect) {
+            btnElement.classList.add('correct');
+            quizScore += 10;
+        } else {
+            btnElement.classList.add('wrong');
+            // Highlight correct option
+            const buttons = document.querySelectorAll('.quiz-option-btn');
+            buttons.forEach(b => {
+                if (b.innerText === currentQuizItem.answer) {
+                    b.classList.add('correct');
+                }
+            });
+        }
+
+        document.getElementById('quiz-score').innerText = `ניקוד: ${quizScore}`;
+
+        // Move to next question automatically after 1.2 seconds
+        setTimeout(() => {
+            initQuiz();
+        }, 1200);
+    }
+
+    // === 5. SENTENCES & READING NAVIGATION ===
     function switchShadowTab(e, shadowTabId) {
         document.querySelectorAll('.shadow-main-btn').forEach(btn => btn.classList.remove('active'));
         document.querySelectorAll('.shadow-tab-content').forEach(content => content.classList.remove('active'));
@@ -1208,81 +1504,7 @@
         });
     }
 
-    // === 3. FLASHCARD LOGIC ===
-    function flipCard() {
-        document.getElementById('card').classList.toggle('flipped');
-    }
-
-    function renderCard() {
-        if (!vocabularyData || vocabularyData.length === 0) {
-            document.getElementById('card-front-text').innerText = "אין מילים במאגר";
-            document.getElementById('card-back-text').innerText = "הוסף מילים בחומת אוצר המילים";
-            document.getElementById('card-notes-text').innerText = "";
-            document.getElementById('card-counter').innerText = "0 / 0";
-            document.getElementById('card-stats').innerText = "הצלחות: 0 | כשלונות: 0";
-            return;
-        }
-
-        if (currentCardIndex >= vocabularyData.length) {
-            currentCardIndex = 0;
-        }
-
-        const card = vocabularyData[currentCardIndex];
-        document.getElementById('card-front-text').innerText = card.front;
-        document.getElementById('card-back-text').innerText = card.back;
-        document.getElementById('card-notes-text').innerText = card.notes || '';
-        document.getElementById('card-counter').innerText = `${currentCardIndex + 1} / ${vocabularyData.length}`;
-        document.getElementById('card-stats').innerText = `הצלחות: ${card.correctCount || 0} | כשלונות: ${card.wrongCount || 0}`;
-
-        const frontFace = document.getElementById('card-front');
-        const backFace = document.getElementById('card-back');
-
-        frontFace.className = 'card-face card-front';
-        backFace.className = 'card-face card-back';
-
-        if (card.correctCount >= 6) {
-            frontFace.classList.add('mastered');
-            backFace.classList.add('mastered');
-        } else if (card.wrongCount >= 2) {
-            frontFace.classList.add('struggling');
-            backFace.classList.add('struggling');
-        }
-
-        document.getElementById('card').classList.remove('flipped');
-    }
-
-    function markCard(isCorrect) {
-        if (!vocabularyData.length) return;
-
-        const card = vocabularyData[currentCardIndex];
-        if (isCorrect) {
-            card.correctCount = (card.correctCount || 0) + 1;
-        } else {
-            card.wrongCount = (card.wrongCount || 0) + 1;
-        }
-        saveState();
-        renderCard();
-        
-        setTimeout(() => {
-            nextCard();
-        }, 300);
-    }
-
-    function nextCard() {
-        if (currentCardIndex < vocabularyData.length - 1) {
-            currentCardIndex++;
-            renderCard();
-        }
-    }
-
-    function prevCard() {
-        if (currentCardIndex > 0) {
-            currentCardIndex--;
-            renderCard();
-        }
-    }
-
-    // === 4. MODAL & VOCAB FORM ===
+    // === 6. MODAL & VOCAB FORM ===
     function openAddModal() {
         document.getElementById('add-modal').classList.add('active');
         document.getElementById('word-front').focus();
@@ -1348,7 +1570,7 @@
         }
     }
 
-    // === 5. VOCABULARY & ALPHABET RENDERERS ===
+    // === 7. VOCABULARY & ALPHABET RENDERERS ===
     function renderVocabGrid() {
         const container = document.getElementById('vocab-grid-container');
         container.innerHTML = '';
