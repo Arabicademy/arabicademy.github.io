@@ -392,7 +392,6 @@
         transform: translateY(-1px);
     }
 
-    /* Special Add Word Block */
     .vocab-card.add-card {
         border: 2px dashed var(--primary-light);
         background: #f8fafc;
@@ -631,30 +630,6 @@
         border-color: var(--primary-light);
     }
 
-    .audio-player-container {
-        background: #f8fafc;
-        border: 1px solid var(--border);
-        padding: 12px 16px;
-        border-radius: var(--radius);
-        margin-bottom: 16px;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        flex-wrap: wrap;
-        gap: 10px;
-    }
-
-    .audio-player-container span {
-        font-weight: 600;
-        font-size: 0.9rem;
-        color: var(--primary);
-    }
-
-    audio {
-        max-width: 300px;
-        height: 36px;
-    }
-
     .data-table {
         width: 100%;
         border-collapse: collapse;
@@ -747,10 +722,10 @@
             <div class="routine-main">
                 <input type="checkbox" id="task2">
                 <label for="task2">
-                    <strong>צהריים (10-15 דק'):</strong> הקשבה לקלט מובן
+                    <strong>צהריים (10-15 דק'):</strong> הקשבה לקלט מובן ומשפטים
                 </label>
             </div>
-            <button class="action-arrow" title="עבור לקלט ו-Shadowing" onclick="openPracticeMode('shadowing')">
+            <button class="action-arrow" title="עבור לקלט ומשפטים" onclick="openPracticeMode('shadowing')">
                 <svg viewBox="0 0 24 24"><path d="M15 19l-7-7 7-7"/></svg>
             </button>
         </div>
@@ -759,10 +734,10 @@
             <div class="routine-main">
                 <input type="checkbox" id="task3">
                 <label for="task3">
-                    <strong>ערב (10 דק'):</strong> תרגול Shadowing והרכבת משפטים
+                    <strong>ערב (10 דק'):</strong> תרגול קריאה והרכבת משפטים
                 </label>
             </div>
-            <button class="action-arrow" title="עבור לקלט ו-Shadowing" onclick="openPracticeMode('shadowing')">
+            <button class="action-arrow" title="עבור לקלט ומשפטים" onclick="openPracticeMode('shadowing')">
                 <svg viewBox="0 0 24 24"><path d="M15 19l-7-7 7-7"/></svg>
             </button>
         </div>
@@ -787,10 +762,10 @@
 
         <div class="practice-card">
             <div class="practice-info">
-                <h3>קלט מובן ו-Shadowing</h3>
-                <p>הקשבה, קריאה במקביל לדובר והרכבת משפטים עצמאיים.</p>
+                <h3>תרגול משפטים וקריאה</h3>
+                <p>תרגול דיאלוגים, משפטים שימושיים וקריאת פתגמים וביטויים.</p>
             </div>
-            <button class="action-arrow" title="התחל תרגול Shadowing" onclick="openPracticeMode('shadowing')">
+            <button class="action-arrow" title="התחל תרגול משפטים" onclick="openPracticeMode('shadowing')">
                 <svg viewBox="0 0 24 24"><path d="M15 19l-7-7 7-7"/></svg>
             </button>
         </div>
@@ -838,7 +813,7 @@
     </div>
 </div>
 
-<!-- SUB-VIEW: Shadowing & Input Screen -->
+<!-- SUB-VIEW: Sentences & Reading Screen -->
 <div id="shadowing" class="tab-content">
     <button class="back-link" onclick="switchTab('practice')">
         <svg viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"/></svg>
@@ -846,13 +821,13 @@
     </button>
 
     <div class="box">
-        <h2>תרגול Shadowing וקריאה</h2>
+        <h2>תרגול משפטים וקריאה</h2>
         <p style="color: var(--text-muted); font-size: 0.875rem; margin-bottom: 16px;">
-            הקשב לשמע וחזור בקול רם, או תרגל קריאה והבנת פתגמים.
+            קרא את המשפטים והביטויים, תרגל חזרה בקול רם והרכבת משפטים עצמאיים.
         </p>
 
         <div class="shadow-main-tabs">
-            <button class="shadow-main-btn active" onclick="switchShadowTab(event, 'shadow-practice-tab')">תרגול שיטות (Shadowing)</button>
+            <button class="shadow-main-btn active" onclick="switchShadowTab(event, 'shadow-practice-tab')">תרגול משפטים ודיאלוגים</button>
             <button class="shadow-main-btn" onclick="switchShadowTab(event, 'shadow-reading-tab')">קריאה (פתגמים וביטויים)</button>
         </div>
 
@@ -861,14 +836,6 @@
                 <button class="sub-tab-btn active" onclick="switchShadowSubTab(event, 'introductions')">1. הצגה והיכרות</button>
                 <button class="sub-tab-btn" onclick="switchShadowSubTab(event, 'vocabPart1')">2. אוצר מילים (חלק 1)</button>
                 <button class="sub-tab-btn" onclick="switchShadowSubTab(event, 'vocabPart2')">3. אוצר מילים (חלק 2)</button>
-            </div>
-
-            <div class="audio-player-container">
-                <span id="current-audio-label">קובץ שמע: image_9.png</span>
-                <audio id="main-audio-player" controls>
-                    <source id="audio-source" src="image_9.png" type="audio/mp3">
-                    הדפדפן שלך אינו תומך בנגן שמע.
-                </audio>
             </div>
 
             <table class="data-table">
@@ -964,7 +931,7 @@
 </div>
 
 <script>
-    // === 1. DATA STORAGE (כל 64 המילים מהרשימה) ===
+    // === 1. DATA STORAGE ===
     const defaultVocabularyData = [
         { id: 1, front: "צַבַּאח (אל)חַ'יְר", back: "בוקר טוב", notes: "", correctCount: 0, wrongCount: 0 },
         { id: 2, front: "צַבַּאח (אל)נּוּר", back: "בוקר אור", notes: "", correctCount: 0, wrongCount: 0 },
@@ -1032,11 +999,9 @@
         { id: 64, front: "מֻחַאמַאה", back: "עריכת דין", notes: "", correctCount: 0, wrongCount: 0 }
     ];
 
-    // טעינת הנתונים מ-localStorage, ואם אין או אם הישנים קצרים מדי - טעינת המאגר החדש המלא
     let savedData = JSON.parse(localStorage.getItem('vocab_data'));
     let vocabularyData = (savedData && savedData.length >= 64) ? savedData : defaultVocabularyData;
 
-    // מאגר האלף-בית המלא
     const alphabetData = [
         { letter: "أ", name: "אָלִף", sound: "א / עִצּוּר גְּרוֹנִי" },
         { letter: "ب", name: "בָּא", sound: "בּ" },
@@ -1068,95 +1033,84 @@
         { letter: "ي", name: "יָא", sound: "י" }
     ];
 
-    // מאגר נתוני Shadowing מקובץ
-    const shadowingDataStore = {
-        introductions: {
-            audioFile: "image_9.png",
-            items: [
-                { num: 1, hebrew: "בוקר טוב", arabic: "צבאח אל-חֵ'יר" },
-                { num: 2, hebrew: "בוקר אור", arabic: "צבאח אנ-נור" },
-                { num: 3, hebrew: "ערב טוב", arabic: "מסאא אל-חֵ'יר" },
-                { num: 4, hebrew: "ערב אור", arabic: "מסאא אנ-נור" },
-                { num: 5, hebrew: "שלום (ברוכים הבאים)", arabic: "מרחבא" },
-                { num: 6, hebrew: "תשובה למרחבא", arabic: "מרחבתֵין" },
-                { num: 7, hebrew: "שלום וברכה", arabic: "אהלן וסהלן" },
-                { num: 8, hebrew: "שלום לך", arabic: "אהלן וסהלן ביכּ" },
-                { num: 9, hebrew: "אני שמי אבו אמיר ואני מורה בקורס.", arabic: "אנא אסמי אבו אמיר ואנא מעלם בד-דורה." },
-                { num: 10, hebrew: "אתה שמך אחמד ואתה סטודנט באוניברסיטה.", arabic: "אנת אסמכּ אחמד ואנת טאלב פי אל-ג'אמעה." },
-                { num: 11, hebrew: "את שמך וידאד ואת מזכירה בבית הספר.", arabic: "אנתי אסמכּ וידאד ואנתי סכּרתֵירה בל-מדרסה." },
-                { num: 12, hebrew: "הוא שמו מוניר והוא מנהל החברה.", arabic: "הוא אסמו מוניר והוא מודיר אש-שרכּה." },
-                { num: 13, hebrew: "היא שמה נואל והיא עורכת דין במשרד המשפטים.", arabic: "הייה אסמהא נואל והייה מחאמייה פי ויזארת אל-עדל." },
-                { num: 14, hebrew: "אנחנו שמותינו עאטף ולטיפה ואנחנו תלמידים פה.", arabic: "אחנא אסאמינא עאטף ולטיפה ואחנא תלאמיז הון." },
-                { num: 15, hebrew: "אתם שמותיכם זוהיר והדייה ואתם בעלי הבית.", arabic: "אנתו אסאמיכּום זוהיר והדייה ואנתו אצחאב אל-דאר." },
-                { num: 16, hebrew: "הם שמותיהם שאדי ועביר והם בני דודים.", arabic: "הום אסאמיהום שאדי ועביר והום ולאד עם." },
-                { num: 17, hebrew: "עמכם השלום", arabic: "מע אס-סלאמה" },
-                { num: 18, hebrew: "אלוהים יברך אותך לשלום", arabic: "אללה יסלמכּ" },
-                { num: 19, hebrew: "השלום לפני הדיבורים", arabic: "אס-סלאם קבל אל-כּלאם" }
-            ]
-        },
-        vocabPart1: {
-            audioFile: "image_10.png",
-            items: [
-                { num: 1, hebrew: "בוקר טוב", arabic: "צבאח אל-חֵ'יר" },
-                { num: 2, hebrew: "בוקר אור", arabic: "צבאח אנ-נור" },
-                { num: 3, hebrew: "ערב טוב", arabic: "מסאא אל-חֵ'יר" },
-                { num: 4, hebrew: "ערב אור", arabic: "מסאא אנ-נור" },
-                { num: 5, hebrew: "שלום רב", arabic: "מרחבא" },
-                { num: 6, hebrew: "רב שלומות", arabic: "מרחבתֵין" },
-                { num: 7, hebrew: "שלום וברכה", arabic: "אהלן וסהלן" },
-                { num: 8, hebrew: "שלום וברכה לך", arabic: "אהלן וסהלן ביכּ" },
-                { num: 9, hebrew: "שם (ר' שמות)", arabic: "אסם (ר' אסאמי)" },
-                { num: 10, hebrew: "נסיך", arabic: "אמיר" },
-                { num: 11, hebrew: "מורה (ר' מורים)", arabic: "מעלם (ר' מעלמין)" },
-                { num: 12, hebrew: "מורה [נ'] (ר' מורות)", arabic: "מעלמה (ר' מעלמאת)" },
-                { num: 13, hebrew: "בְּ... / בתוך", arabic: "בִּ / פִי" },
-                { num: 14, hebrew: "עם", arabic: "מַעַ" },
-                { num: 15, hebrew: "קורס (ר' קורסים)", arabic: "דורה (ר' דוראת)" },
-                { num: 16, hebrew: "סטודנט (ר' סטודנטים)", arabic: "טאלב (ר' טולאב)" },
-                { num: 17, hebrew: "סטודנטית (ר' סטודנטיות)", arabic: "טאלבה (ר' טאליבאתי)" },
-                { num: 18, hebrew: "אוניברסיטה (ר' אוניברסיטאות)", arabic: "ג'אמעה (ר' ג'אמעאת / ג'אמיעאת)" },
-                { num: 19, hebrew: "מזכירה (ר' מזכירות)", arabic: "סכּרתֵירה (ר' סכּרתֵיראת)" },
-                { num: 20, hebrew: "מזכיר (ר' מזכירים)", arabic: "סכּרתֵיר (ר' סכּתרִיון)" },
-                { num: 21, hebrew: "מזכיר גוף רשמי / אמין", arabic: "אמין" },
-                { num: 22, hebrew: "מזכירה [נ']", arabic: "אמינה" }
-            ]
-        },
-        vocabPart2: {
-            audioFile: "image_9.png",
-            items: [
-                { num: 37, hebrew: "בן (ר' בנים)", arabic: "אבן (ר' אבנאא / בנים: בנין)" },
-                { num: 38, hebrew: "ילדה/בת (ר' ילדות/בנות)", arabic: "בנת (ר' בנאת)" },
-                { num: 39, hebrew: "דוד מצד האב (ר' דודים)", arabic: "עם (ר' עמום)" },
-                { num: "39a", hebrew: "דודה מצד האב (ר' דודות)", arabic: "עמה (ר' עמאת)" },
-                { num: 40, hebrew: "דוד מצד האם (ר' דודים)", arabic: "ח'אל (ר' אח'ואל)" },
-                { num: "40a", hebrew: "דודה מצד האם (ר' דודות)", arabic: "ח'אלה (ר' ח'אלאת)" },
-                { num: 41, hebrew: "בריאות / שלמות", arabic: "סלאמה" },
-                { num: 42, hebrew: "כיתה (ר' כיתות)", arabic: "צף (ר' לצפוף)" },
-                { num: 43, hebrew: "דלת / שער (ר' דלתות/שערים)", arabic: "באב (ר' אבואב)" },
-                { num: 44, hebrew: "חלון (ר' חלונות)", arabic: "שובאכּ (ר' שבאביכּ)" },
-                { num: 45, hebrew: "קיר (ר' קירות)", arabic: "חיט (ר' חיטאן)" },
-                { num: 46, hebrew: "כיסא (ר' כיסאות)", arabic: "כּורסי (ר' כּראסי)" },
-                { num: 47, hebrew: "שולחן (ר' שולחנות)", arabic: "טאולה (ר' טאולאת)" },
-                { num: 48, hebrew: "לוח (ר' לוחות)", arabic: "לוּח (ר' אלואח)" },
-                { num: 49, hebrew: "עט (ר' עטים)", arabic: "קלם (ר' אקלאם)" },
-                { num: 50, hebrew: "עיפרון (ר' עפרונות)", arabic: "קלם רצאץ (ר' אקלאם רצאץ)" },
-                { num: 51, hebrew: "מחברת (ר' מחברות)", arabic: "דפתר (ר' דפאתר)" },
-                { num: 52, hebrew: "ספר (ר' ספרים)", arabic: "כּתאב (ר' כּותוב)" },
-                { num: 53, hebrew: "חוברת (ר' חוברות)", arabic: "כּראסה (ר' כּראסאת / כּראריס)" },
-                { num: 54, hebrew: "תיק / מזוודה (ר' תיקים)", arabic: "שנטה / שנתה (ר' שונאט / שונאת)" },
-                { num: 55, hebrew: "דף (ר' דפים)", arabic: "ורקה (ר' אוראק / וראק)" },
-                { num: 57, hebrew: "הפסקה (ר' הפסקות)", arabic: "אסתיראחה (ר' אסתיראחאת)" },
-                { num: 58, hebrew: "הזדמנות / סיכוי / הפסקה", arabic: "פורצה (ר' פורץ)" },
-                { num: 59, hebrew: "קפה", arabic: "אהוה" },
-                { num: 60, hebrew: "תה", arabic: "שאי" },
-                { num: 61, hebrew: "סוכר", arabic: "סוכּר" },
-                { num: 62, hebrew: "כוס (ר' כוסות)", arabic: "כּאסה (ר' כּאסאת) / כּובאיה (ר' כּובאיאת)" },
-                { num: 63, hebrew: "אמבטיה / בית שימוש", arabic: "חמאם (ר' חמאמאת)" }
-            ]
-        }
+    const sentencesDataStore = {
+        introductions: [
+            { num: 1, hebrew: "בוקר טוב", arabic: "צבאח אל-חֵ'יר" },
+            { num: 2, hebrew: "בוקר אור", arabic: "צבאח אנ-נור" },
+            { num: 3, hebrew: "ערב טוב", arabic: "מסאא אל-חֵ'יר" },
+            { num: 4, hebrew: "ערב אור", arabic: "מסאא אנ-נור" },
+            { num: 5, hebrew: "שלום (ברוכים הבאים)", arabic: "מרחבא" },
+            { num: 6, hebrew: "תשובה למרחבא", arabic: "מרחבתֵין" },
+            { num: 7, hebrew: "שלום וברכה", arabic: "אהלן וסהלן" },
+            { num: 8, hebrew: "שלום לך", arabic: "אהלן וסהלן ביכּ" },
+            { num: 9, hebrew: "אני שמי אבו אמיר ואני מורה בקורס.", arabic: "אנא אסמי אבו אמיר ואנא מעלם בד-דורה." },
+            { num: 10, hebrew: "אתה שמך אחמד ואתה סטודנט באוניברסיטה.", arabic: "אנת אסמכּ אחמד ואנת טאלב פי אל-ג'אמעה." },
+            { num: 11, hebrew: "את שמך וידאד ואת מזכירה בבית הספר.", arabic: "אנתי אסמכּ וידאד ואנתי סכּרתֵירה בל-מדרסה." },
+            { num: 12, hebrew: "הוא שמו מוניר והוא מנהל החברה.", arabic: "הוא אסמו מוניר והוא מודיר אש-שרכּה." },
+            { num: 13, hebrew: "היא שמה נואל והיא עורכת דין במשרד המשפטים.", arabic: "הייה אסמהא נואל והייה מחאמייה פי ויזארת אל-עדל." },
+            { num: 14, hebrew: "אנחנו שמותינו עאטף ולטיפה ואנחנו תלמידים פה.", arabic: "אחנא אסאמינא עאטף ולטיפה ואחנא תלאמיז הון." },
+            { num: 15, hebrew: "אתם שמותיכם זוהיר והדייה ואתם בעלי הבית.", arabic: "אנתו אסאמיכּום זוהיר והדייה ואנתו אצחאב אל-דאר." },
+            { num: 16, hebrew: "הם שמותיהם שאדי ועביר והם בני דודים.", arabic: "הום אסאמיהום שאדי ועביר והום ולאד עם." },
+            { num: 17, hebrew: "עמכם השלום", arabic: "מע אס-סלאמה" },
+            { num: 18, hebrew: "אלוהים יברך אותך לשלום", arabic: "אללה יסלמכּ" },
+            { num: 19, hebrew: "השלום לפני הדיבורים", arabic: "אס-סלאם קבל אל-כּלאם" }
+        ],
+        vocabPart1: [
+            { num: 1, hebrew: "בוקר טוב", arabic: "צבאח אל-חֵ'יר" },
+            { num: 2, hebrew: "בוקר אור", arabic: "צבאח אנ-נור" },
+            { num: 3, hebrew: "ערב טוב", arabic: "מסאא אל-חֵ'יר" },
+            { num: 4, hebrew: "ערב אור", arabic: "מסאא אנ-נור" },
+            { num: 5, hebrew: "שלום רב", arabic: "מרחבא" },
+            { num: 6, hebrew: "רב שלומות", arabic: "מרחבתֵין" },
+            { num: 7, hebrew: "שלום וברכה", arabic: "אהלן וסהלן" },
+            { num: 8, hebrew: "שלום וברכה לך", arabic: "אהלן וסהלן ביכּ" },
+            { num: 9, hebrew: "שם (ר' שמות)", arabic: "אסם (ר' אסאמי)" },
+            { num: 10, hebrew: "נסיך", arabic: "אמיר" },
+            { num: 11, hebrew: "מורה (ר' מורים)", arabic: "מעלם (ר' מעלמין)" },
+            { num: 12, hebrew: "מורה [נ'] (ר' מורות)", arabic: "מעלמה (ר' מעלמאת)" },
+            { num: 13, hebrew: "בְּ... / בתוך", arabic: "בִּ / פִי" },
+            { num: 14, hebrew: "עם", arabic: "מַעַ" },
+            { num: 15, hebrew: "קורס (ר' קורסים)", arabic: "דורה (ר' דוראת)" },
+            { num: 16, hebrew: "סטודנט (ר' סטודנטים)", arabic: "טאלב (ר' טולאב)" },
+            { num: 17, hebrew: "סטודנטית (ר' סטודנטיות)", arabic: "טאלבה (ר' טאליבאתי)" },
+            { num: 18, hebrew: "אוניברסיטה (ר' אוניברסיטאות)", arabic: "ג'אמעה (ר' ג'אמעאת / ג'אמיעאת)" },
+            { num: 19, hebrew: "מזכירה (ר' מזכירות)", arabic: "סכּרתֵירה (ר' סכּרתֵיראת)" },
+            { num: 20, hebrew: "מזכיר (ר' מזכירים)", arabic: "סכּרתֵיר (ר' סכּתרִיון)" },
+            { num: 21, hebrew: "מזכיר גוף רשמי / אמין", arabic: "אמין" },
+            { num: 22, hebrew: "מזכירה [נ']", arabic: "אמינה" }
+        ],
+        vocabPart2: [
+            { num: 37, hebrew: "בן (ר' בנים)", arabic: "אבן (ר' אבנאא / בנים: בנין)" },
+            { num: 38, hebrew: "ילדה/בת (ר' ילדות/בנות)", arabic: "בנת (ר' בנאת)" },
+            { num: 39, hebrew: "דוד מצד האב (ר' דודים)", arabic: "עם (ר' עמום)" },
+            { num: "39a", hebrew: "דודה מצד האב (ר' דודות)", arabic: "עמה (ר' עמאת)" },
+            { num: 40, hebrew: "דוד מצד האם (ר' דודים)", arabic: "ח'אל (ר' אח'ואל)" },
+            { num: "40a", hebrew: "דודה מצד האם (ר' דודות)", arabic: "ח'אלה (ר' ח'אלאת)" },
+            { num: 41, hebrew: "בריאות / שלמות", arabic: "סלאמה" },
+            { num: 42, hebrew: "כיתה (ר' כיתות)", arabic: "צף (ר' לצפוף)" },
+            { num: 43, hebrew: "דלת / שער (ר' דלתות/שערים)", arabic: "באב (ר' אבואב)" },
+            { num: 44, hebrew: "חלון (ר' חלונות)", arabic: "שובאכּ (ר' שבאביכּ)" },
+            { num: 45, hebrew: "קיר (ר' קירות)", arabic: "חיט (ר' חיטאן)" },
+            { num: 46, hebrew: "כיסא (ר' כיסאות)", arabic: "כּורסי (ר' כּראסי)" },
+            { num: 47, hebrew: "שולחן (ר' שולחנות)", arabic: "טאולה (ר' טאולאת)" },
+            { num: 48, hebrew: "לוח (ר' לוחות)", arabic: "לוּח (ר' אלואח)" },
+            { num: 49, hebrew: "עט (ר' עטים)", arabic: "קלם (ר' אקלאם)" },
+            { num: 50, hebrew: "עיפרון (ר' עפרונות)", arabic: "קלם רצאץ (ר' אקלאם רצאץ)" },
+            { num: 51, hebrew: "מחברת (ר' מחברות)", arabic: "דפתר (ר' דפאתר)" },
+            { num: 52, hebrew: "ספר (ר' ספרים)", arabic: "כּתאב (ר' כּותוב)" },
+            { num: 53, hebrew: "חוברת (ר' חוברות)", arabic: "כּראסה (ר' כּראסאת / כּראריס)" },
+            { num: 54, hebrew: "תיק / מזוודה (ר' תיקים)", arabic: "שנטה / שנתה (ר' שונאט / שונאת)" },
+            { num: 55, hebrew: "דף (ר' דפים)", arabic: "ורקה (ר' אוראק / וראק)" },
+            { num: 57, hebrew: "הפסקה (ר' הפסקות)", arabic: "אסתיראחה (ר' אסתיראחאת)" },
+            { num: 58, hebrew: "הזדמנות / סיכוי / הפסקה", arabic: "פורצה (ר' פורץ)" },
+            { num: 59, hebrew: "קפה", arabic: "אהוה" },
+            { num: 60, hebrew: "תה", arabic: "שאי" },
+            { num: 61, hebrew: "סוכר", arabic: "סוכּר" },
+            { num: 62, hebrew: "כוס (ר' כוסות)", arabic: "כּאסה (ר' כּאסאת) / כּובאיה (ר' כּובאיאת)" },
+            { num: 63, hebrew: "אמבטיה / בית שימוש", arabic: "חמאם (ר' חמאמאת)" }
+        ]
     };
 
-    // מאגר נתוני קריאה (פתגמים)
     const readingDataStore = [
         { num: 1, arabic: "לַאזֶם תַתַעַדַּא פִי, קַבְּל מַא יַתַעַשַּׁא פִיכּ", literal: "תאכל אותו לארוחת צהריים, לפני שהוא יאכל אותך לארוחת ערב.", meaning: "תקדים תרופה למכה." },
         { num: 2, arabic: "אלִי כַּתַבוֹ רַבַּנַא בִּידוֹ יְצִיר", literal: "מה שכתב הבורא, זה מה שיקרה.", meaning: "מה שיהיה - יהיה." },
@@ -1195,7 +1149,7 @@
 
         if (tabId === 'vocab') renderVocabGrid();
         if (tabId === 'shadowing') {
-            renderShadowingData('introductions');
+            renderSentencesData('introductions');
             renderReadingData();
         }
     }
@@ -1207,7 +1161,7 @@
         }
     }
 
-    // === SHADOWING & READING INNER NAVIGATION ===
+    // === SENTENCES & READING NAVIGATION ===
     function switchShadowTab(e, shadowTabId) {
         document.querySelectorAll('.shadow-main-btn').forEach(btn => btn.classList.remove('active'));
         document.querySelectorAll('.shadow-tab-content').forEach(content => content.classList.remove('active'));
@@ -1220,22 +1174,15 @@
         document.querySelectorAll('.sub-tab-btn').forEach(btn => btn.classList.remove('active'));
         e.target.classList.add('active');
 
-        renderShadowingData(subTabKey);
+        renderSentencesData(subTabKey);
     }
 
-    function renderShadowingData(subTabKey) {
-        const categoryData = shadowingDataStore[subTabKey];
+    function renderSentencesData(subTabKey) {
+        const items = sentencesDataStore[subTabKey];
         const tableBody = document.getElementById('shadowing-table-body');
-        const audioLabel = document.getElementById('current-audio-label');
-        const audioPlayer = document.getElementById('main-audio-player');
-        const audioSource = document.getElementById('audio-source');
-
-        audioLabel.textContent = `קובץ שמע: ${categoryData.audioFile}`;
-        audioSource.src = categoryData.audioFile;
-        audioPlayer.load();
 
         tableBody.innerHTML = '';
-        categoryData.items.forEach(item => {
+        items.forEach(item => {
             const row = document.createElement('tr');
             row.innerHTML = `
                 <td class="num-col">${item.num}</td>
