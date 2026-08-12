@@ -1,1634 +1,1208 @@
 <!DOCTYPE html>
 <html lang="he" dir="rtl">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>מערכת למידת שפה - Meta-Learning System</title>
-    <style>
-        :root {
-            --bg-color: #f1f5f9;
-            --card-bg: #ffffff;
-            --primary: #1e3a8a;
-            --primary-light: #3b82f6;
-            --primary-hover: #1e40af;
-            --text-main: #0f172a;
-            --text-muted: #64748b;
-            --border: #cbd5e1;
-            --success: #059669;
-            --success-bg: #ecfdf5;
-            --warning-border: #dc2626;
-            --warning-bg: #fef2f2;
-            --radius: 8px;
-            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.07);
-        }
-
-    * {
-        box-sizing: border-box;
-        margin: 0;
-        padding: 0;
-        font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-    }
-
-    body {
-        background-color: var(--bg-color);
-        color: var(--text-main);
-        padding: 24px 16px;
-        max-width: 960px;
-        margin: 0 auto;
-        line-height: 1.5;
-    }
-
-    header {
-        text-align: right;
-        margin-bottom: 24px;
-        border-bottom: 1px solid var(--border);
-        padding-bottom: 16px;
-    }
-
-    header h1 {
-        font-size: 1.5rem;
-        font-weight: 700;
-        color: var(--primary);
-        letter-spacing: -0.02em;
-    }
-
-    header p {
-        color: var(--text-muted);
-        font-size: 0.9rem;
-        margin-top: 2px;
-    }
-
-    /* Navigation Tabs */
-    .nav-tabs {
-        display: flex;
-        gap: 4px;
-        margin-bottom: 20px;
-        border-bottom: 1px solid var(--border);
-        overflow-x: auto;
-        padding-bottom: 1px;
-    }
-
-    .tab-btn {
-        background: none;
-        border: none;
-        padding: 10px 14px;
-        font-size: 0.875rem;
-        font-weight: 500;
-        color: var(--text-muted);
-        cursor: pointer;
-        border-bottom: 2px solid transparent;
-        transition: all 0.2s;
-        white-space: nowrap;
-        display: flex;
-        align-items: center;
-        gap: 8px;
-    }
-
-    .tab-btn svg {
-        width: 16px;
-        height: 16px;
-        stroke: currentColor;
-        fill: none;
-        stroke-width: 2;
-    }
-
-    .tab-btn:hover {
-        color: var(--primary);
-    }
-
-    .tab-btn.active {
-        color: var(--primary);
-        border-bottom-color: var(--primary);
-        font-weight: 600;
-    }
-
-    /* Tab Content */
-    .tab-content {
-        display: none;
-    }
-
-    .tab-content.active {
-        display: block;
-    }
-
-    /* Card Styles */
-    .box {
-        background: var(--card-bg);
-        border: 1px solid var(--border);
-        border-radius: var(--radius);
-        padding: 24px;
-        margin-bottom: 16px;
-        box-shadow: var(--shadow-sm);
-    }
-
-    .box h2 {
-        font-size: 1.15rem;
-        font-weight: 600;
-        margin-bottom: 8px;
-        color: var(--text-main);
-    }
-
-    /* Practice Hub Cards */
-    .practice-card {
-        border: 1px solid var(--border);
-        border-radius: var(--radius);
-        padding: 16px 20px;
-        margin-bottom: 12px;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        background: white;
-        transition: border-color 0.2s, box-shadow 0.2s;
-    }
-
-    .practice-card:hover {
-        border-color: var(--primary-light);
-        box-shadow: var(--shadow-sm);
-    }
-
-    .practice-info h3 {
-        font-size: 1rem;
-        font-weight: 600;
-        margin-bottom: 4px;
-    }
-
-    .practice-info p {
-        font-size: 0.875rem;
-        color: var(--text-muted);
-    }
-
-    .action-arrow {
-        background: #f1f5f9;
-        color: var(--primary);
-        border: 1px solid var(--border);
-        border-radius: 4px;
-        width: 36px;
-        height: 36px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        cursor: pointer;
-        transition: all 0.2s ease;
-        flex-shrink: 0;
-        margin-right: 12px;
-    }
-
-    .action-arrow:hover {
-        background: var(--primary);
-        color: white;
-        border-color: var(--primary);
-    }
-
-    .action-arrow svg {
-        width: 16px;
-        height: 16px;
-        stroke: currentColor;
-        fill: none;
-        stroke-width: 2;
-    }
-
-    .routine-item {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        gap: 12px;
-        padding: 14px 0;
-        border-bottom: 1px solid var(--bg-color);
-    }
-
-    .routine-item:last-child {
-        border-bottom: none;
-    }
-
-    .routine-main {
-        display: flex;
-        align-items: center;
-        gap: 12px;
-    }
-
-    .routine-item input[type="checkbox"] {
-        width: 18px;
-        height: 18px;
-        accent-color: var(--primary);
-        cursor: pointer;
-    }
-
-    /* Back Link */
-    .back-link {
-        display: inline-flex;
-        align-items: center;
-        gap: 6px;
-        font-size: 0.85rem;
-        color: var(--text-muted);
-        cursor: pointer;
-        margin-bottom: 16px;
-        background: none;
-        border: none;
-        padding: 0;
-    }
-
-    .back-link:hover {
-        color: var(--primary);
-    }
-
-    .back-link svg {
-        width: 14px;
-        height: 14px;
-        stroke: currentColor;
-        fill: none;
-        stroke-width: 2;
-    }
-
-    /* Flashcard Component */
-    .flashcard-container {
-        perspective: 1000px;
-        width: 100%;
-        height: 220px;
-        margin: 20px 0;
-        cursor: pointer;
-    }
-
-    .flashcard {
-        width: 100%;
-        height: 100%;
-        position: relative;
-        transform-style: preserve-3d;
-        transition: transform 0.5s ease;
-        border-radius: var(--radius);
-    }
-
-    .flashcard.flipped {
-        transform: rotateY(180deg);
-    }
-
-    .card-face {
-        position: absolute;
-        width: 100%;
-        height: 100%;
-        backface-visibility: hidden;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        border-radius: var(--radius);
-        border: 1px solid var(--border);
-        background: white;
-        padding: 24px;
-        text-align: center;
-        box-shadow: var(--shadow-md);
-    }
-
-    .card-face.mastered {
-        background: var(--success-bg) !important;
-        border-color: var(--success) !important;
-    }
-
-    .card-face.struggling {
-        background: var(--warning-bg) !important;
-        border-color: var(--warning-border) !important;
-    }
-
-    .card-back {
-        transform: rotateY(180deg);
-    }
-
-    .card-text {
-        font-size: 1.75rem;
-        font-weight: 700;
-        margin-bottom: 6px;
-        letter-spacing: 0.01em;
-    }
-
-    .card-subtext {
-        font-size: 0.875rem;
-        color: var(--text-muted);
-    }
-
-    .controls {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        gap: 12px;
-        margin-bottom: 16px;
-    }
-
-    .feedback-btns {
-        display: flex;
-        justify-content: center;
-        gap: 12px;
-    }
-
-    .btn {
-        background-color: var(--primary);
-        color: white;
-        border: none;
-        padding: 8px 16px;
-        border-radius: var(--radius);
-        font-size: 0.875rem;
-        font-weight: 500;
-        cursor: pointer;
-        transition: background 0.2s;
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        gap: 6px;
-    }
-
-    .btn:hover {
-        background-color: var(--primary-hover);
-    }
-
-    .btn-outline {
-        background: transparent;
-        color: var(--text-main);
-        border: 1px solid var(--border);
-    }
-
-    .btn-outline:hover {
-        background: #f8fafc;
-    }
-
-    .btn-success {
-        background-color: var(--success);
-    }
-
-    .btn-danger {
-        background-color: var(--warning-border);
-    }
-
-    .data-actions {
-        display: flex;
-        gap: 8px;
-        margin-bottom: 16px;
-        flex-wrap: wrap;
-    }
-
-    /* Quiz Component Styles */
-    .quiz-question-box {
-        background: white;
-        border: 1px solid var(--border);
-        border-radius: var(--radius);
-        padding: 30px 20px;
-        text-align: center;
-        margin: 16px 0;
-        box-shadow: var(--shadow-sm);
-    }
-
-    .quiz-question-text {
-        font-size: 2rem;
-        font-weight: 700;
-        color: var(--primary);
-    }
-
-    .quiz-options-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-        gap: 12px;
-        margin-top: 16px;
-    }
-
-    .quiz-option-btn {
-        background: white;
-        border: 1px solid var(--border);
-        border-radius: var(--radius);
-        padding: 14px 16px;
-        font-size: 1rem;
-        font-weight: 600;
-        color: var(--text-main);
-        cursor: pointer;
-        transition: all 0.2s ease;
-        text-align: center;
-    }
-
-    .quiz-option-btn:hover {
-        border-color: var(--primary-light);
-        background: #f8fafc;
-    }
-
-    .quiz-option-btn.correct {
-        background-color: var(--success-bg) !important;
-        border-color: var(--success) !important;
-        color: var(--success) !important;
-    }
-
-    .quiz-option-btn.wrong {
-        background-color: var(--warning-bg) !important;
-        border-color: var(--warning-border) !important;
-        color: var(--warning-border) !important;
-    }
-
-    /* Vocab Grid */
-    .vocab-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
-        gap: 10px;
-        margin-top: 16px;
-    }
-
-    .vocab-card {
-        background: white;
-        border: 1px solid var(--border);
-        border-radius: 6px;
-        padding: 10px;
-        text-align: center;
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between;
-        position: relative;
-        min-height: 95px;
-        overflow: hidden;
-        transition: border-color 0.2s ease, transform 0.15s ease;
-    }
-
-    .vocab-card:hover {
-        border-color: var(--primary-light);
-        transform: translateY(-1px);
-    }
-
-    .vocab-card.add-card {
-        border: 2px dashed var(--primary-light);
-        background: #f8fafc;
-        cursor: pointer;
-        align-items: center;
-        justify-content: center;
-        color: var(--primary);
-        transition: all 0.2s ease;
-    }
-
-    .vocab-card.add-card:hover {
-        background: #eff6ff;
-        border-color: var(--primary);
-        transform: translateY(-2px);
-    }
-
-    .add-card svg {
-        width: 24px;
-        height: 24px;
-        stroke: currentColor;
-        fill: none;
-        stroke-width: 2.5;
-        margin-bottom: 4px;
-    }
-
-    .add-card span {
-        font-size: 0.8rem;
-        font-weight: 600;
-    }
-
-    .vocab-word {
-        font-size: 1.05rem;
-        font-weight: 600;
-        color: var(--text-main);
-        margin-bottom: 2px;
-        word-break: break-word;
-    }
-
-    .vocab-translation {
-        font-size: 0.8rem;
-        color: var(--text-muted);
-        margin-bottom: 8px;
-    }
-
-    .progress-container {
-        width: 100%;
-        height: 4px;
-        background-color: #e2e8f0;
-        border-radius: 2px;
-        overflow: hidden;
-    }
-
-    .progress-bar {
-        height: 100%;
-        background-color: var(--primary-light);
-        width: 0%;
-        transition: width 0.3s ease;
-    }
-
-    .vocab-card.mastered {
-        background-color: var(--success-bg);
-        border-color: var(--success);
-    }
-
-    .vocab-card.mastered .vocab-word {
-        color: #065f46;
-    }
-
-    .vocab-card.mastered .progress-bar {
-        background-color: var(--success);
-    }
-
-    .vocab-card.struggling {
-        background-color: var(--warning-bg);
-        border-color: var(--warning-border);
-    }
-
-    /* Modal Styles */
-    .modal-overlay {
-        display: none;
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: rgba(15, 23, 42, 0.4);
-        backdrop-filter: blur(2px);
-        z-index: 1000;
-        align-items: center;
-        justify-content: center;
-        padding: 16px;
-    }
-
-    .modal-overlay.active {
-        display: flex;
-    }
-
-    .modal-content {
-        background: white;
-        border-radius: var(--radius);
-        padding: 24px;
-        width: 100%;
-        max-width: 440px;
-        box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
-        position: relative;
-    }
-
-    .modal-header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-bottom: 16px;
-    }
-
-    .modal-header h3 {
-        font-size: 1.1rem;
-        color: var(--primary);
-    }
-
-    .close-modal {
-        background: none;
-        border: none;
-        font-size: 1.25rem;
-        color: var(--text-muted);
-        cursor: pointer;
-        padding: 4px;
-    }
-
-    .form-group {
-        display: flex;
-        flex-direction: column;
-        gap: 4px;
-        margin-bottom: 12px;
-    }
-
-    .form-group label {
-        font-size: 0.8rem;
-        font-weight: 600;
-        color: var(--text-main);
-    }
-
-    .form-control {
-        padding: 8px 12px;
-        border: 1px solid var(--border);
-        border-radius: var(--radius);
-        font-size: 0.9rem;
-        outline: none;
-        transition: border-color 0.2s;
-    }
-
-    .form-control:focus {
-        border-color: var(--primary-light);
-    }
-
-    /* Alphabet Grid */
-    .alphabet-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
-        gap: 10px;
-        margin-top: 16px;
-    }
-
-    .letter-card {
-        background: white;
-        border: 1px solid var(--border);
-        border-radius: var(--radius);
-        padding: 14px;
-        text-align: center;
-    }
-
-    .letter-symbol {
-        font-size: 1.75rem;
-        font-weight: 700;
-        color: var(--primary);
-        margin-bottom: 2px;
-    }
-
-    .letter-name {
-        font-size: 0.85rem;
-        font-weight: 500;
-        color: var(--text-main);
-    }
-
-    .letter-sound {
-        font-size: 0.75rem;
-        color: var(--text-muted);
-        margin-top: 2px;
-    }
-
-    /* Shadowing Dynamic Component Styles */
-    .shadow-main-tabs, .mode-selection-tabs {
-        display: flex;
-        gap: 10px;
-        margin-bottom: 16px;
-        border-bottom: 2px solid var(--border);
-        padding-bottom: 8px;
-    }
-
-    .shadow-main-btn, .mode-select-btn {
-        background: none;
-        border: none;
-        font-size: 0.95rem;
-        font-weight: 600;
-        color: var(--text-muted);
-        cursor: pointer;
-        padding: 6px 12px;
-        border-bottom: 2px solid transparent;
-        transition: all 0.2s ease;
-    }
-
-    .shadow-main-btn.active, .mode-select-btn.active {
-        color: var(--primary-light);
-        border-bottom-color: var(--primary-light);
-    }
-
-    .sub-tabs {
-        display: flex;
-        gap: 8px;
-        margin-bottom: 16px;
-        flex-wrap: wrap;
-    }
-
-    .sub-tab-btn {
-        padding: 6px 14px;
-        cursor: pointer;
-        border: 1px solid var(--border);
-        background: #fff;
-        border-radius: 20px;
-        font-size: 0.85rem;
-        transition: all 0.2s ease;
-    }
-
-    .sub-tab-btn.active {
-        background: var(--primary-light);
-        color: white;
-        border-color: var(--primary-light);
-    }
-
-    .data-table {
-        width: 100%;
-        border-collapse: collapse;
-        margin-top: 10px;
-    }
-
-    .data-table th, .data-table td {
-        padding: 10px 12px;
-        text-align: right;
-        border-bottom: 1px solid var(--border);
-        font-size: 0.9rem;
-    }
-
-    .data-table th {
-        background-color: #f1f5f9;
-        color: var(--primary);
-        font-weight: 600;
-    }
-
-    .data-table tr:hover {
-        background-color: #f8fafc;
-    }
-
-    .arabic-text {
-        font-size: 1.05em;
-        font-weight: 600;
-        color: var(--text-main);
-    }
-
-    .num-col {
-        width: 40px;
-        color: var(--text-muted);
-    }
-
-    .shadow-tab-content {
-        display: none;
-    }
-
-    .shadow-tab-content.active {
-        display: block;
-    }
-</style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>לומדים ערבית</title>
 </head>
 <body>
+<div id="root"></div>
 
-<header>
-    <h1>מערכת למידת שפה</h1>
-    <p>שליפה פעילה, קלט מובן ומעקב מתקדם</p>
-</header>
+<script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+<script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+<script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
 
-<!-- Navigation Tabs -->
-<div class="nav-tabs">
-    <button class="tab-btn active" id="tab-nav-routine" onclick="switchTab('routine')">
-        <svg viewBox="0 0 24 24"><path d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
-        רוטינה יומית
+<script type="text/babel" data-presets="react">
+const { useState, useEffect, useCallback, useMemo, useRef } = React;
+
+/* Inline icon set (stand-ins for lucide-react, so this file has zero build
+   dependencies and can be pasted straight into a static HTML page). */
+const iconBase = (props) => ({
+  width: props.size || 18,
+  height: props.size || 18,
+  viewBox: "0 0 24 24",
+  fill: "none",
+  stroke: "currentColor",
+  strokeWidth: 2,
+  strokeLinecap: "round",
+  strokeLinejoin: "round",
+});
+const ChevronLeft = (p) => <svg {...iconBase(p)}><path d="M15 18l-6-6 6-6" /></svg>;
+const ChevronRight = (p) => <svg {...iconBase(p)}><path d="M9 18l6-6-6-6" /></svg>;
+const Plus = (p) => <svg {...iconBase(p)}><path d="M12 5v14M5 12h14" /></svg>;
+const X = (p) => <svg {...iconBase(p)}><path d="M18 6L6 18M6 6l12 12" /></svg>;
+const Check = (p) => <svg {...iconBase(p)}><path d="M20 6L9 17l-5-5" /></svg>;
+const RotateCcw = (p) => <svg {...iconBase(p)}><path d="M3 12a9 9 0 1 0 3-6.7M3 4v5h5" /></svg>;
+const Calendar = (p) => <svg {...iconBase(p)}><rect x="3" y="4" width="18" height="18" rx="2" /><path d="M16 2v4M8 2v4M3 10h18" /></svg>;
+const CheckCircle2 = (p) => <svg {...iconBase(p)}><circle cx="12" cy="12" r="10" /><path d="M9 12l2 2 4-4" /></svg>;
+const BookOpen = (p) => <svg {...iconBase(p)}><path d="M2 5.5A2.5 2.5 0 0 1 4.5 3H12v18H4.5A2.5 2.5 0 0 1 2 18.5v-13zM22 5.5A2.5 2.5 0 0 0 19.5 3H12v18h7.5a2.5 2.5 0 0 0 2.5-2.5v-13z" /></svg>;
+const TypeIcon = (p) => <svg {...iconBase(p)}><path d="M4 7V4h16v3M9 20h6M12 4v16" /></svg>;
+
+/* =========================================================================
+   FONTS / GLOBAL STYLE INJECTION
+   Heebo               -> UI text (clean, professional Hebrew sans)
+   Noto Naskh Arabic    -> Arabic glyphs (alphabet tab only)
+
+   Palette kept faithful to the original prototype: navy primary, white
+   cards on a soft blue-gray page background, restrained accent color.
+   ========================================================================= */
+const GlobalStyle = () => (
+  <style>{`
+    @import url('https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;600;700;800&family=Noto+Naskh+Arabic:wght@500;700&display=swap');
+
+    .zl-root {
+      --teal-950:#1E3A8A;
+      --teal-800:#1E40AF;
+      --teal-700:#059669;
+      --teal-600:#3B82F6;
+      --sand:#F1F5F9;
+      --sand-100:#FFFFFF;
+      --sand-200:#CBD5E1;
+      --gold:#3B82F6;
+      --gold-dim:#93C5FD;
+      --clay:#DC2626;
+      --clay-bg:#FEF2F2;
+      --ink:#0F172A;
+      --ink-muted:#64748B;
+      font-family:'Heebo',sans-serif;
+      background:var(--sand);
+      color:var(--ink);
+      min-height:100vh;
+      direction:rtl;
+    }
+    .zl-root * { box-sizing:border-box; }
+    .zl-display { font-family:'Heebo',sans-serif; }
+    .zl-arabic { font-family:'Noto Naskh Arabic',serif; }
+
+    .zl-scrollbar::-webkit-scrollbar { height:6px; width:6px; }
+    .zl-scrollbar::-webkit-scrollbar-thumb { background:var(--gold-dim); border-radius:3px; }
+
+    @keyframes zl-fade { from { opacity:0; transform:translateY(4px);} to { opacity:1; transform:translateY(0);} }
+    .zl-anim { animation: zl-fade 0.2s ease; }
+  `}</style>
+);
+
+/* =========================================================================
+   DATA
+   ========================================================================= */
+const DEFAULT_VOCAB = [
+  { id: 1, front: "צַבַּאח (אל)חַ'יְר", back: "בוקר טוב", notes: "" },
+  { id: 2, front: "צַבַּאח (אל)נּוּר", back: "בוקר אור", notes: "" },
+  { id: 3, front: "מַסַא (אל)חַ'יְר", back: "ערב טוב", notes: "" },
+  { id: 4, front: "מַסַא (אל)נּוּר", back: "ערב אור", notes: "" },
+  { id: 5, front: "מַרְחַבַּא", back: "שלום רב", notes: "" },
+  { id: 6, front: "מַרְחַבְּתֵיְן", back: "רב שלומות", notes: "" },
+  { id: 7, front: "אַהְלַן וַסַהְלַן", back: "שלום וברכה", notes: "" },
+  { id: 8, front: "אַהְלַן וַסַהְלַן בִיכּ", back: "שלום וברכה לך", notes: "" },
+  { id: 9, front: "אִסְם", back: "שם", notes: "ר' אַסְאַמִי" },
+  { id: 10, front: "אַמִיר", back: "נסיך", notes: "ר' אַמַרַאא" },
+  { id: 11, front: "מַעַלֵּם", back: "מוֹרֶה / אחראי", notes: "ר' מַעַלְמִין" },
+  { id: 12, front: "מַעַלְמַה", back: "מורָה", notes: "ר' מַעַלְמַאת" },
+  { id: 13, front: "בִּ = פִי", back: "ב...", notes: "המילה פִי משמשת גם במשמעות: יש" },
+  { id: 14, front: "מַע", back: "עם", notes: "" },
+  { id: 15, front: "דַוְרַה", back: "קורס", notes: "ר' דַוְרַאת" },
+  { id: 16, front: "טַאלִבּ", back: "סטודנט", notes: "ר' טֻלַּאבּ" },
+  { id: 17, front: "טַאלִבַּה", back: "סטודנטית", notes: "ר' טַאלִבַּאת" },
+  { id: 18, front: "גַ'אמִעַה", back: "אוניברסיטה", notes: "ר' גַ'אמִעַאת" },
+  { id: 19, front: "סִכְרִתֵירַא", back: "מזכירה", notes: "ר' סִכְרִתֵירַאת" },
+  { id: 20, front: "סִכְרִתֵיר", back: "מזכיר", notes: "ר' סִכְרִתֵירִיּוֹן" },
+  { id: 21, front: "אַמִין", back: "מזכיר של גוף רשמי", notes: "ישר/אמין, שם של גבר" },
+  { id: 22, front: "אַמִינַה", back: "מזכירה של גוף רשמי", notes: "ישרה/אמינה, שם של בחורה" },
+  { id: 23, front: "מַדְרַסַה", back: "בית ספר", notes: "ר' מַדַארִס" },
+  { id: 24, front: "מֻדִיר", back: "מנהל", notes: "ר' מֻדַרַאא" },
+  { id: 25, front: "מֻדִירַה", back: "מנהלת", notes: "ר' מֻדִירַאת" },
+  { id: 26, front: "שַרִכַּה", back: "חברה (ארגון/עסק)", notes: "ר' שַרִכַּאת" },
+  { id: 27, front: "מֻחַאמִי", back: "עורך דין", notes: "ר' מֻחַאמִיִּן" },
+  { id: 28, front: "מֻחַאמִיַּה", back: "עורכת דין", notes: "ר' מֻחַאמִיַּאת" },
+  { id: 29, front: "וִזַארַה", back: "משרד ממשלתי", notes: "ר' וִזַארַאת" },
+  { id: 30, front: "עַדְל", back: "צדק", notes: "" },
+  { id: 31, front: "תִלְמִיד'", back: "תלמיד", notes: "ר' תַלַאמִיד'" },
+  { id: 32, front: "תִלְמִידַ'ה", back: "תלמידה", notes: "ר' תַלַאמִידַ'את" },
+  { id: 33, front: "צַאַחִבּ", back: "חבר / בעל מקום", notes: "ר' אַצְחַאבּ" },
+  { id: 34, front: "צַאַחִבַּה", back: "חברה / בעלת מקום", notes: "ר' צַאַחִבַּאת" },
+  { id: 35, front: "דַאר", back: "בית", notes: "ר' דוּר" },
+  { id: 36, front: "וַלַד", back: "ילד", notes: "ר' וַלַאד" },
+  { id: 37, front: "אִבְּן", back: "בן", notes: "ר' אַבְּנַאא" },
+  { id: 38, front: "בִּנְת", back: "ילדה / בת", notes: "ר' בַּנַאת" },
+  { id: 39, front: "עַם / עַמַּה", back: "דוד / דודה (מצד האב)", notes: "ר' עֻמוּם / עַמַּאת" },
+  { id: 40, front: "חַ'אל / חַ'אלַה", back: "דוד / דודה (מצד האם)", notes: "ר' אַחְ'וַאל / חַ'אלַאת" },
+  { id: 41, front: "סַלַאמַה", back: "בריאות / שלמות", notes: "" },
+  { id: 42, front: "צַף", back: "כיתה", notes: "ר' צֻפוּף" },
+  { id: 43, front: "בַּאבּ", back: "דלת / שער", notes: "ר' אַבְּוַאבּ" },
+  { id: 44, front: "שֻבַּאכּ", back: "חלון", notes: "ר' שַבַּאבִּיכּ" },
+  { id: 45, front: "חֵיט", back: "קיר", notes: "ר' חִיטַאן" },
+  { id: 46, front: "כֻּרְסִי", back: "כסא", notes: "ר' כַּרַאסִי" },
+  { id: 47, front: "טַאווּלַה", back: "שולחן", notes: "ר' טַאווּלַאת" },
+  { id: 48, front: "לוֹח", back: "לוח", notes: "ר' אַלְוַאח" },
+  { id: 49, front: "קַלַם", back: "עט", notes: "ר' קַלַאם" },
+  { id: 50, front: "קַלַם רַצַאץ", back: "עיפרון", notes: "ר' קַלַאם רַצַאץ" },
+  { id: 51, front: "דַפְתַר", back: "מחברת", notes: "ר' דַפַאתִר" },
+  { id: 52, front: "כִּתַאבּ", back: "ספר", notes: "ר' כֻּתֻבּ" },
+  { id: 53, front: "כֻּרַּאסַה", back: "חוברת", notes: "ר' כֻּרַּאסַאת / כַּרַארִיס" },
+  { id: 54, front: "שַנְטַה / שַנְתַה", back: "תיק / מזוודה", notes: "ר' שַנַט / שַנַטַאת" },
+  { id: 55, front: "וַרַקַה", back: "דף", notes: "ר' אַוְרַאק / וַרַק" },
+  { id: 56, front: "צַפְחַה", back: "עמוד", notes: "ר' צַפְחַאת" },
+  { id: 57, front: "אִסְתִרַאחַה", back: "הפסקה", notes: "ר' אִסְתִרַאחַאת" },
+  { id: 58, front: "פֻרְצַה", back: "הזדמנות / סיכוי / הפסקה", notes: "ר' פֻרַץ" },
+  { id: 59, front: "קַהְוַה", back: "קפה", notes: "" },
+  { id: 60, front: "שַאי", back: "תה", notes: "" },
+  { id: 61, front: "סֻכַּר", back: "סוכר", notes: "" },
+  { id: 62, front: "כַּאַסַה / כַּבַּאיַה", back: "כוס", notes: "ר' כַּאַסַאת / כַּבַּאיַאת" },
+  { id: 63, front: "חַמַּאם", back: "אמבטיה / בית שימוש", notes: "ר' חַמַּאמַאת" },
+  { id: 64, front: "מֻחַאמַאה", back: "עריכת דין", notes: "" },
+];
+
+const ALPHABET = [
+  { id: 1, letter: "أ", name: "אָלִף", sound: "א / עיצור גרוני" },
+  { id: 2, letter: "ب", name: "בָּא", sound: "בּ" },
+  { id: 3, letter: "ت", name: "תָּא", sound: "תּ" },
+  { id: 4, letter: "ث", name: "תָ'א", sound: "ת' (Th)" },
+  { id: 5, letter: "ج", name: "גִ'ים", sound: "ג' (ג'ירפה)" },
+  { id: 6, letter: "ح", name: "חָא", sound: "ח' גרונית עמוקה" },
+  { id: 7, letter: "خ", name: "חָ'א", sound: "ח' (כמו בעברית)" },
+  { id: 8, letter: "د", name: "דָאל", sound: "ד" },
+  { id: 9, letter: "ذ", name: "דָ'אל", sound: "ד' (Th ב-This)" },
+  { id: 10, letter: "ر", name: "רָא", sound: "ר" },
+  { id: 11, letter: "ز", name: "זָאי", sound: "ז" },
+  { id: 12, letter: "س", name: "סִין", sound: "ס" },
+  { id: 13, letter: "ش", name: "שִין", sound: "ש" },
+  { id: 14, letter: "ص", name: "צָאד", sound: "צ' מוטעמת" },
+  { id: 15, letter: "ض", name: "דָאד", sound: "ד' עמוקה" },
+  { id: 16, letter: "ط", name: "טָא", sound: "ט עמוקה" },
+  { id: 17, letter: "ظ", name: "זָא", sound: "ז'/ד' מוטעמת" },
+  { id: 18, letter: "ع", name: "עַיְן", sound: "ע גרונית" },
+  { id: 19, letter: "غ", name: "עַֿיְן", sound: "ר' גרונית" },
+  { id: 20, letter: "ف", name: "פָא", sound: "פ' רפה" },
+  { id: 21, letter: "ق", name: "קָאף", sound: "ק' גרונית עמוקה" },
+  { id: 22, letter: "ك", name: "כָּאף", sound: "כּ" },
+  { id: 23, letter: "ل", name: "לָאם", sound: "ל" },
+  { id: 24, letter: "م", name: "מִים", sound: "מ" },
+  { id: 25, letter: "ن", name: "נוּן", sound: "נ" },
+  { id: 26, letter: "هـ", name: "הָא", sound: "ה" },
+  { id: 27, letter: "و", name: "וָאוּ", sound: "ו / W" },
+  { id: 28, letter: "ي", name: "יָא", sound: "י" },
+];
+
+// sentences used for reading practice + sentence-building game (hebrew meaning <-> arabic transliteration)
+const SENTENCES = [
+  { id: 1, hebrew: "בוקר טוב", arabic: "צבאח אל חיר" },
+  { id: 2, hebrew: "בוקר אור", arabic: "צבאח אנ נור" },
+  { id: 3, hebrew: "ערב טוב", arabic: "מסאא אל חיר" },
+  { id: 4, hebrew: "ערב אור", arabic: "מסאא אנ נור" },
+  { id: 5, hebrew: "שלום רב", arabic: "מרחבא" },
+  { id: 6, hebrew: "שלום וברכה", arabic: "אהלן וסהלן" },
+  { id: 7, hebrew: "שלום לך", arabic: "אהלן וסהלן ביכ" },
+  { id: 8, hebrew: "אני שמי אבו אמיר ואני מורה בקורס", arabic: "אנא אסמי אבו אמיר ואנא מעלם בד דורה" },
+  { id: 9, hebrew: "אתה שמך אחמד ואתה סטודנט באוניברסיטה", arabic: "אנת אסמכ אחמד ואנת טאלב פי אל ג'אמעה" },
+  { id: 10, hebrew: "את שמך וידאד ואת מזכירה בבית הספר", arabic: "אנתי אסמכ וידאד ואנתי סכרתירה בל מדרסה" },
+  { id: 11, hebrew: "הוא שמו מוניר והוא מנהל החברה", arabic: "הוא אסמו מוניר והוא מודיר אש שרכה" },
+  { id: 12, hebrew: "היא שמה נואל והיא עורכת דין במשרד המשפטים", arabic: "הייה אסמהא נואל והייה מחאמייה פי ויזארת אל עדל" },
+  { id: 13, hebrew: "עמכם השלום", arabic: "מע אס סלאמה" },
+  { id: 14, hebrew: "אלוהים יברך אותך לשלום", arabic: "אללה יסלמכ" },
+  { id: 15, hebrew: "השלום לפני הדיבורים", arabic: "אס סלאם קבל אל כלאם" },
+];
+
+const IDIOMS = [
+  { id: 1, arabic: "לַאזֶם תַתַעַדַּא פִי, קַבְּל מַא יַתַעַשַּׁא פִיכּ", literal: "תאכל אותו לארוחת צהריים, לפני שהוא יאכל אותך לארוחת ערב", meaning: "תקדים תרופה למכה" },
+  { id: 2, arabic: "אלִי כַּתַבוֹ רַבַּנַא בִּידוֹ יְצִיר", literal: "מה שכתב הבורא, זה מה שיקרה", meaning: "מה שיהיה - יהיה" },
+  { id: 3, arabic: "בִּיקוּלוֹ תוֹר, בִּיקוּל אַחְלְבוּ", literal: "אומרים לו שור, הוא אומר לחלוב אותו", meaning: "אדם עקשן / לא מחובר למציאות" },
+  { id: 4, arabic: "אלִי פַאת – מַאת", literal: "מה שעבר, מת", meaning: "מה שהיה, היה" },
+  { id: 5, arabic: "זַמַאן אַוַּל תַחוֹל", literal: "הזמנים של פעם עברו", meaning: "אי אפשר להחזיר את הגלגל לאחור" },
+  { id: 6, arabic: "שַׁיְטַאן רַאכֶּב עַקְלוֹ", literal: "השטן רוכב על ראשו", meaning: "נכנס בו שד, השתגע" },
+  { id: 7, arabic: "טַלְעַת רִיחְתוֹ", literal: "יצא הריח שלו", meaning: "הסריח, האמת יצאה" },
+  { id: 8, arabic: "והו, פִי חַ'בַּר בִּיַתְחַבַּא?", literal: "והאם יש ידיעה שאפשר להסתיר?", meaning: "אי אפשר להסתיר כלום" },
+  { id: 9, arabic: "אלִי בַּדּוֹ מַצַארִי לַאזֶם יִשְׁתַעֶ'ל", literal: "מי שרוצה כסף צריך לעבוד", meaning: "אין כסף בלי עבודה" },
+  { id: 10, arabic: "רוּחְ בַּלֵּט (א)לְבַּחְר", literal: "לך תרצף את הים", meaning: "לך תעשה משהו חסר תועלת" },
+  { id: 11, arabic: "עַיִשׁ חַיַאתַכּ", literal: "חיה את חייך", meaning: "שחרר, תהנה מהרגע" },
+  { id: 12, arabic: "הוּ פִי וַאד וַאַנַא פִי וַאד", literal: "הוא בוואדי ואני בוואדי", meaning: "כל אחד במקום אחר, יש ריחוק" },
+];
+
+/* =========================================================================
+   PROGRESS HELPERS
+   Progress balances correct against wrong answers, capped at a "mastery"
+   threshold of 6 net-correct points, floored at 0.
+   ========================================================================= */
+const MASTERY_TARGET = 6;
+const netScore = (item) => Math.max(0, (item.correctCount || 0) - 0.5 * (item.wrongCount || 0));
+const progressPct = (item) => Math.min(100, Math.round((netScore(item) / MASTERY_TARGET) * 100));
+const isMastered = (item) => progressPct(item) >= 100;
+const isStruggling = (item) => !isMastered(item) && (item.wrongCount || 0) >= 2 && progressPct(item) < 50;
+
+function withProgressFields(list) {
+  return list.map((i) => ({ correctCount: 0, wrongCount: 0, ...i }));
+}
+
+function shuffle(arr) {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+/* =========================================================================
+   PERSISTENCE (window.storage — personal, per-user)
+   ========================================================================= */
+function usePersistedState(key, initial) {
+  const [state, setState] = useState(() => {
+    try {
+      const raw = window.localStorage.getItem(key);
+      return raw ? JSON.parse(raw) : initial;
+    } catch (e) {
+      return initial;
+    }
+  });
+
+  useEffect(() => {
+    try {
+      window.localStorage.setItem(key, JSON.stringify(state));
+    } catch (e) {
+      /* storage unavailable — ignore */
+    }
+  }, [key, state]);
+
+  return [state, setState];
+}
+
+/* =========================================================================
+   SHARED UI ATOMS
+   ========================================================================= */
+const SectionHeader = ({ title, subtitle }) => (
+  <div style={{ marginBottom: 12 }}>
+    <h2 className="zl-display" style={{ fontSize: "1.15rem", fontWeight: 700, color: "var(--ink)" }}>
+      {title}
+    </h2>
+    {subtitle && (
+      <p style={{ color: "var(--ink-muted)", fontSize: "0.85rem", marginTop: 4 }}>{subtitle}</p>
+    )}
+  </div>
+);
+
+const ArrowButton = ({ onClick, title }) => (
+  <button
+    onClick={onClick}
+    title={title}
+    style={{
+      background: "var(--sand)",
+      color: "var(--teal-950)",
+      border: "1px solid var(--sand-200)",
+      borderRadius: 6,
+      width: 36,
+      height: 36,
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center",
+      cursor: "pointer",
+      flexShrink: 0,
+      transition: "background .15s, color .15s, border-color .15s",
+    }}
+    onMouseEnter={(e) => {
+      e.currentTarget.style.background = "var(--teal-950)";
+      e.currentTarget.style.color = "#fff";
+      e.currentTarget.style.borderColor = "var(--teal-950)";
+    }}
+    onMouseLeave={(e) => {
+      e.currentTarget.style.background = "var(--sand)";
+      e.currentTarget.style.color = "var(--teal-950)";
+      e.currentTarget.style.borderColor = "var(--sand-200)";
+    }}
+  >
+    <ChevronLeft size={16} />
+  </button>
+);
+
+const BackLink = ({ onClick, children }) => (
+  <button
+    onClick={onClick}
+    style={{
+      display: "inline-flex",
+      alignItems: "center",
+      gap: 6,
+      fontSize: "0.85rem",
+      color: "var(--ink-muted)",
+      background: "none",
+      border: "none",
+      cursor: "pointer",
+      marginBottom: 16,
+      padding: 0,
+    }}
+  >
+    <ChevronRight size={15} />
+    {children}
+  </button>
+);
+
+const Card = ({ children, style }) => (
+  <div
+    style={{
+      background: "var(--sand-100)",
+      border: "1px solid var(--sand-200)",
+      borderRadius: 8,
+      padding: 20,
+      boxShadow: "0 1px 2px rgba(15,23,42,0.05)",
+      ...style,
+    }}
+  >
+    {children}
+  </div>
+);
+
+const PrimaryButton = ({ children, onClick, style, variant = "solid", disabled = false }) => {
+  const base = {
+    border: "none",
+    borderRadius: 9,
+    padding: "10px 18px",
+    fontSize: "0.9rem",
+    fontWeight: 600,
+    cursor: disabled ? "not-allowed" : "pointer",
+    display: "inline-flex",
+    alignItems: "center",
+    gap: 6,
+    transition: "opacity .15s",
+    opacity: disabled ? 0.45 : 1,
+  };
+  const variants = {
+    solid: { background: "var(--teal-950)", color: "var(--sand-100)" },
+    outline: { background: "transparent", color: "var(--teal-950)", border: "1px solid var(--sand-200)" },
+    gold: { background: "var(--gold)", color: "var(--teal-950)" },
+    danger: { background: "var(--clay)", color: "white" },
+    success: { background: "var(--teal-700)", color: "white" },
+  };
+  return (
+    <button
+      onClick={disabled ? undefined : onClick}
+      disabled={disabled}
+      style={{ ...base, ...variants[variant], ...style }}
+      onMouseEnter={(e) => { if (!disabled) e.currentTarget.style.opacity = 0.85; }}
+      onMouseLeave={(e) => { if (!disabled) e.currentTarget.style.opacity = 1; }}
+    >
+      {children}
     </button>
-    <button class="tab-btn" id="tab-nav-practice" onclick="switchTab('practice')">
-        <svg viewBox="0 0 24 24"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-        שיטות תרגול
-    </button>
-    <button class="tab-btn" id="tab-nav-vocab" onclick="switchTab('vocab')">
-        <svg viewBox="0 0 24 24"><path d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
-        אוצר מילים
-    </button>
-    <button class="tab-btn" id="tab-nav-alphabet" onclick="switchTab('alphabet')">
-        <svg viewBox="0 0 24 24"><path d="M3 5h12M9 3v2m1 14l5-10 5 10m-8-3h6"/></svg>
-        אלף-בית
-    </button>
-</div>
+  );
+};
 
-<!-- TAB 1: Routine Tracker -->
-<div id="routine" class="tab-content active">
-    <div class="box">
-        <h2>משימות היום</h2>
-        <p style="color: var(--text-muted); font-size: 0.875rem; margin-bottom: 16px;">סמן כל חלק עם סיומו, או לחץ על החץ לתרגול ישיר:</p>
+const ProgressBar = ({ pct, mastered, struggling }) => (
+  <div style={{ width: "100%", height: 5, background: "var(--sand-200)", borderRadius: 3, overflow: "hidden" }}>
+    <div
+      style={{
+        height: "100%",
+        width: `${pct}%`,
+        background: mastered ? "var(--teal-700)" : struggling ? "var(--clay)" : "var(--gold)",
+        transition: "width .3s ease",
+      }}
+    />
+  </div>
+);
 
-        <div class="routine-item">
-            <div class="routine-main">
-                <input type="checkbox" id="task1">
-                <label for="task1">
-                    <strong>בוקר (10 דק'):</strong> חזרה על כרטיסיות (שליפה פעילה)
-                </label>
-            </div>
-            <button class="action-arrow" title="עבור לתרגול כרטיסיות" onclick="openPracticeMode('flashcards')">
-                <svg viewBox="0 0 24 24"><path d="M15 19l-7-7 7-7"/></svg>
-            </button>
-        </div>
+/* =========================================================================
+   TOP-LEVEL NAV
+   ========================================================================= */
+const MAIN_TABS = [
+  { id: "routine", label: "רוטינה יומית", Icon: Calendar },
+  { id: "practice", label: "שיטות תרגול", Icon: CheckCircle2 },
+  { id: "vocab", label: "אוצר מילים", Icon: BookOpen },
+  { id: "alphabet", label: "אלף-בית", Icon: TypeIcon },
+];
 
-        <div class="routine-item">
-            <div class="routine-main">
-                <input type="checkbox" id="task2">
-                <label for="task2">
-                    <strong>צהריים (10-15 דק'):</strong> הקשבה לקלט מובן ומשפטים
-                </label>
-            </div>
-            <button class="action-arrow" title="עבור לקלט ומשפטים" onclick="openPracticeMode('shadowing')">
-                <svg viewBox="0 0 24 24"><path d="M15 19l-7-7 7-7"/></svg>
-            </button>
-        </div>
-
-        <div class="routine-item">
-            <div class="routine-main">
-                <input type="checkbox" id="task3">
-                <label for="task3">
-                    <strong>ערב (10 דק'):</strong> תרגול קריאה והרכבת משפטים
-                </label>
-            </div>
-            <button class="action-arrow" title="עבור לקלט ומשפטים" onclick="openPracticeMode('shadowing')">
-                <svg viewBox="0 0 24 24"><path d="M15 19l-7-7 7-7"/></svg>
-            </button>
-        </div>
+function TopNav({ active, onChange }) {
+  return (
+    <div
+      className="zl-scrollbar"
+      style={{
+        display: "flex",
+        gap: 4,
+        overflowX: "auto",
+        borderBottom: "1px solid var(--sand-200)",
+        marginBottom: 20,
+      }}
+    >
+      {MAIN_TABS.map((t) => (
+        <button
+          key={t.id}
+          onClick={() => onChange(t.id)}
+          style={{
+            display: "flex",
+            alignItems: "center",
+            gap: 8,
+            background: "none",
+            border: "none",
+            padding: "10px 14px",
+            fontSize: "0.9rem",
+            fontWeight: active === t.id ? 600 : 500,
+            color: active === t.id ? "var(--teal-950)" : "var(--ink-muted)",
+            borderBottom: active === t.id ? "2px solid var(--teal-950)" : "2px solid transparent",
+            cursor: "pointer",
+            whiteSpace: "nowrap",
+          }}
+        >
+          <t.Icon size={16} />
+          {t.label}
+        </button>
+      ))}
     </div>
-</div>
+  );
+}
 
-<!-- TAB 2: Practice Zone Hub -->
-<div id="practice" class="tab-content">
-    <div class="box">
-        <h2>שיטות תרגול</h2>
-        <p style="color: var(--text-muted); font-size: 0.875rem; margin-bottom: 20px;">בחר את שיטת האימון הרצויה כדי להתחיל:</p>
+/* =========================================================================
+   ROUTINE TAB
+   ========================================================================= */
+const ROUTINE_ITEMS = [
+  { key: "morning", label: "בוקר", desc: "חזרה על כרטיסיות אוצר מילים", target: { screen: "flashcards", mode: "vocab" } },
+  { key: "noon", label: "צהריים", desc: "תרגול הבנה: קריאה והגייה", target: { screen: "reading" } },
+  { key: "evening", label: "ערב", desc: "קריאה והרכבת משפטים", target: { screen: "sentence-builder" } },
+];
 
-        <div class="practice-card">
-            <div class="practice-info">
-                <h3>תרגול כרטיסיות (Active Recall)</h3>
-                <p>תרגול כרטיסיות זיכרון לאוצר המילים או אותיות האלף-בית.</p>
+function RoutineTab({ checklist, setChecklist, navigateTo }) {
+  const today = new Date().toISOString().slice(0, 10);
+  const todayState = checklist[today] || {};
+
+  const toggle = (key) => {
+    setChecklist((prev) => ({
+      ...prev,
+      [today]: { ...(prev[today] || {}), [key]: !((prev[today] || {})[key]) },
+    }));
+  };
+
+  return (
+    <div className="zl-anim">
+      <SectionHeader title="משימות היום" subtitle="סמן כל חלק עם סיומו, או לחץ על החץ למעבר ישיר לתרגול" />
+      <Card>
+        {ROUTINE_ITEMS.map((item, idx) => (
+          <div
+            key={item.key}
+            style={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-between",
+              gap: 12,
+              padding: "16px 0",
+              borderBottom: idx < ROUTINE_ITEMS.length - 1 ? "1px solid var(--sand-200)" : "none",
+            }}
+          >
+            <div style={{ display: "flex", alignItems: "center", gap: 14 }}>
+              <input
+                type="checkbox"
+                checked={!!todayState[item.key]}
+                onChange={() => toggle(item.key)}
+                style={{ width: 20, height: 20, accentColor: "var(--teal-700)", cursor: "pointer" }}
+              />
+              <div>
+                <div style={{ fontWeight: 700 }}>{item.label}</div>
+                <div style={{ fontSize: "0.85rem", color: "var(--ink-muted)" }}>{item.desc}</div>
+              </div>
             </div>
-            <button class="action-arrow" title="התחל תרגול כרטיסיות" onclick="openPracticeMode('flashcards')">
-                <svg viewBox="0 0 24 24"><path d="M15 19l-7-7 7-7"/></svg>
-            </button>
-        </div>
-
-        <div class="practice-card">
-            <div class="practice-info">
-                <h3>מבחן אמריקאי (Multiple Choice Quiz)</h3>
-                <p>תרגול בחירה מרובה עם 4 אפשרויות לאוצר המילים או האלף-בית.</p>
-            </div>
-            <button class="action-arrow" title="התחל מבחן אמריקאי" onclick="openPracticeMode('quiz')">
-                <svg viewBox="0 0 24 24"><path d="M15 19l-7-7 7-7"/></svg>
-            </button>
-        </div>
-
-        <div class="practice-card">
-            <div class="practice-info">
-                <h3>תרגול משפטים וקריאה</h3>
-                <p>תרגול דיאלוגים, משפטים שימושיים וקריאת פתגמים וביטויים.</p>
-            </div>
-            <button class="action-arrow" title="התחל תרגול משפטים" onclick="openPracticeMode('shadowing')">
-                <svg viewBox="0 0 24 24"><path d="M15 19l-7-7 7-7"/></svg>
-            </button>
-        </div>
+            <ArrowButton title="עבור לתרגול" onClick={() => navigateTo(item.target)} />
+          </div>
+        ))}
+      </Card>
     </div>
-</div>
+  );
+}
 
-<!-- SUB-VIEW: Flashcards Practice Screen -->
-<div id="flashcards" class="tab-content">
-    <button class="back-link" onclick="switchTab('practice')">
-        <svg viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"/></svg>
-        חזרה לשיטות תרגול
-    </button>
+/* =========================================================================
+   FLASHCARD PRACTICE (shared for vocab + letters)
+   ========================================================================= */
+function FlashcardPractice({ mode, vocab, setVocab, letters, setLetters, onBack }) {
+  const data = mode === "vocab" ? vocab : letters;
+  const setData = mode === "vocab" ? setVocab : setLetters;
+  const [index, setIndex] = useState(0);
+  const [flipped, setFlipped] = useState(false);
 
-    <div class="box">
-        <div class="mode-selection-tabs">
-            <button class="mode-select-btn active" id="fc-mode-vocab" onclick="setFlashcardMode('vocab')">אוצר מילים</button>
-            <button class="mode-select-btn" id="fc-mode-alphabet" onclick="setFlashcardMode('alphabet')">אלף-בית</button>
+  useEffect(() => {
+    if (index >= data.length) setIndex(0);
+  }, [data.length, index]);
+
+  if (data.length === 0) {
+    return (
+      <div className="zl-anim">
+        <BackLink onClick={onBack}>חזרה לשיטות תרגול</BackLink>
+        <Card>אין פריטים במאגר עדיין.</Card>
+      </div>
+    );
+  }
+
+  const item = data[index];
+  const frontText = mode === "vocab" ? item.front : item.letter;
+  const backText = mode === "vocab" ? item.back : item.name;
+  const noteText = mode === "vocab" ? item.notes : item.sound;
+
+  const mark = (correct) => {
+    setData((prev) =>
+      prev.map((d, i) =>
+        i === index
+          ? { ...d, correctCount: (d.correctCount || 0) + (correct ? 1 : 0), wrongCount: (d.wrongCount || 0) + (correct ? 0 : 1) }
+          : d
+      )
+    );
+    setFlipped(false);
+    setTimeout(() => setIndex((i) => (i + 1) % data.length), 250);
+  };
+
+  const mastered = isMastered(item);
+  const struggling = isStruggling(item);
+  const faceBg = mastered ? "var(--teal-700)" : struggling ? "var(--clay-bg)" : "var(--sand-100)";
+  const faceColor = mastered ? "white" : "var(--ink)";
+
+  return (
+    <div className="zl-anim">
+      <BackLink onClick={onBack}>חזרה לשיטות תרגול</BackLink>
+      <Card>
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 6 }}>
+          <h2 className="zl-display" style={{ fontSize: "1.15rem", fontWeight: 700 }}>
+            תרגול כרטיסיות · {mode === "vocab" ? "אוצר מילים" : "אותיות"}
+          </h2>
+          <span style={{ fontSize: "0.85rem", color: "var(--ink-muted)" }}>{index + 1} / {data.length}</span>
         </div>
 
-        <div style="display:flex; justify-content:space-between; align-items:center;">
-            <h2>תרגול כרטיסיות</h2>
-            <span id="card-counter" style="color: var(--text-muted); font-size: 0.875rem;">1 / 1</span>
-        </div>
-
-        <div class="flashcard-container" onclick="flipCard()">
-            <div class="flashcard" id="card">
-                <div class="card-face card-front" id="card-front">
-                    <div class="card-text" id="card-front-text">טוען...</div>
-                    <div class="card-subtext">(לחץ להפיכה)</div>
+        <div
+          onClick={() => setFlipped((f) => !f)}
+          style={{
+            height: 220,
+            margin: "18px 0",
+            cursor: "pointer",
+            perspective: 1000,
+          }}
+        >
+          <div
+            key={item.id + String(flipped)}
+            className="zl-anim"
+            style={{
+              height: "100%",
+              borderRadius: 12,
+              border: `1px solid ${mastered ? "var(--teal-700)" : struggling ? "var(--clay)" : "var(--sand-200)"}`,
+              background: faceBg,
+              color: faceColor,
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              justifyContent: "center",
+              textAlign: "center",
+              padding: 24,
+              boxShadow: "0 4px 14px rgba(15,23,42,0.08)",
+            }}
+          >
+            {!flipped ? (
+              <>
+                <div className={mode === "letters" ? "zl-arabic" : "zl-display"} style={{ fontSize: mode === "letters" ? "4rem" : "1.9rem", fontWeight: 700, marginBottom: 8 }}>
+                  {frontText}
                 </div>
-                <div class="card-face card-back" id="card-back">
-                    <div class="card-text" id="card-back-text">תרגום...</div>
-                    <div class="card-subtext" id="card-notes-text">הערות / משפט דוגמה</div>
-                </div>
-            </div>
+                <div style={{ fontSize: "0.8rem", opacity: 0.7 }}>(לחץ להפיכה)</div>
+              </>
+            ) : (
+              <>
+                <div className="zl-display" style={{ fontSize: "1.7rem", fontWeight: 700, marginBottom: 6 }}>{backText}</div>
+                {noteText ? <div style={{ fontSize: "0.85rem", opacity: 0.8 }}>{noteText}</div> : null}
+              </>
+            )}
+          </div>
         </div>
 
-        <div class="controls">
-            <button class="btn btn-outline" onclick="prevCard()">קודם</button>
-            <button class="btn btn-outline" onclick="nextCard()">הבא</button>
+        <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 14 }}>
+          <PrimaryButton variant="outline" onClick={() => { setFlipped(false); setIndex((i) => (i - 1 + data.length) % data.length); }}>קודם</PrimaryButton>
+          <PrimaryButton variant="outline" onClick={() => { setFlipped(false); setIndex((i) => (i + 1) % data.length); }}>הבא</PrimaryButton>
         </div>
 
-        <div class="feedback-btns">
-            <button class="btn btn-danger" onclick="markCard(false)">לא ידעתי</button>
-            <button class="btn btn-success" onclick="markCard(true)">ידעתי</button>
+        <div style={{ display: "flex", justifyContent: "center", gap: 12 }}>
+          <PrimaryButton variant="danger" onClick={() => mark(false)}><X size={16}/>לא ידעתי</PrimaryButton>
+          <PrimaryButton variant="success" onClick={() => mark(true)}><Check size={16}/>ידעתי</PrimaryButton>
         </div>
-        <p style="text-align: center; font-size: 0.8rem; color: var(--text-muted); margin-top: 12px;" id="card-stats">
-            הצלחות: 0 | כשלונות: 0
+        <p style={{ textAlign: "center", fontSize: "0.8rem", color: "var(--ink-muted)", marginTop: 12 }}>
+          הצלחות: {item.correctCount || 0} | כשלונות: {item.wrongCount || 0}
         </p>
+      </Card>
     </div>
-</div>
+  );
+}
 
-<!-- SUB-VIEW: Quiz Practice Screen (מבחן אמריקאי) -->
-<div id="quiz" class="tab-content">
-    <button class="back-link" onclick="switchTab('practice')">
-        <svg viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"/></svg>
-        חזרה לשיטות תרגול
-    </button>
+/* =========================================================================
+   AMERICAN QUIZ (multiple choice, shared for vocab + letters)
+   ========================================================================= */
+function buildQuestion(data, item, mode) {
+  const correctAnswer = mode === "vocab" ? item.back : item.name;
+  const pool = data.filter((d) => d.id !== item.id);
+  const distractors = shuffle(pool).slice(0, 3).map((d) => (mode === "vocab" ? d.back : d.name));
+  const options = shuffle([correctAnswer, ...distractors]);
+  return { prompt: mode === "vocab" ? item.front : item.letter, options, correctAnswer };
+}
 
-    <div class="box">
-        <div class="mode-selection-tabs">
-            <button class="mode-select-btn active" id="quiz-mode-vocab" onclick="setQuizMode('vocab')">אוצר מילים</button>
-            <button class="mode-select-btn" id="quiz-mode-alphabet" onclick="setQuizMode('alphabet')">אלף-בית</button>
+function AmericanQuiz({ mode, vocab, setVocab, letters, setLetters, onBack }) {
+  const data = mode === "vocab" ? vocab : letters;
+  const setData = mode === "vocab" ? setVocab : setLetters;
+  const [order, setOrder] = useState(() => shuffle(data.map((_, i) => i)));
+  const [pos, setPos] = useState(0);
+  const [question, setQuestion] = useState(null);
+  const [selected, setSelected] = useState(null);
+  const [score, setScore] = useState({ correct: 0, total: 0 });
+
+  useEffect(() => {
+    if (data.length === 0) return;
+    const item = data[order[pos % order.length]];
+    setQuestion(buildQuestion(data, item, mode));
+    setSelected(null);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [pos, data.length]);
+
+  if (data.length < 4) {
+    return (
+      <div className="zl-anim">
+        <BackLink onClick={onBack}>חזרה לשיטות תרגול</BackLink>
+        <Card>צריך לפחות 4 פריטים במאגר כדי להריץ מבחן אמריקאי.</Card>
+      </div>
+    );
+  }
+  if (!question) return null;
+
+  const currentItem = data[order[pos % order.length]];
+
+  const choose = (opt) => {
+    if (selected) return;
+    setSelected(opt);
+    const correct = opt === question.correctAnswer;
+    setScore((s) => ({ correct: s.correct + (correct ? 1 : 0), total: s.total + 1 }));
+    setData((prev) =>
+      prev.map((d) =>
+        d.id === currentItem.id
+          ? { ...d, correctCount: (d.correctCount || 0) + (correct ? 1 : 0), wrongCount: (d.wrongCount || 0) + (correct ? 0 : 1) }
+          : d
+      )
+    );
+    setTimeout(() => setPos((p) => p + 1), 700);
+  };
+
+  return (
+    <div className="zl-anim">
+      <BackLink onClick={onBack}>חזרה לשיטות תרגול</BackLink>
+      <Card>
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 16 }}>
+          <h2 className="zl-display" style={{ fontSize: "1.15rem", fontWeight: 700 }}>
+            מבחן אמריקאי · {mode === "vocab" ? "אוצר מילים" : "אותיות"}
+          </h2>
+          <span style={{ fontSize: "0.85rem", color: "var(--ink-muted)" }}>{score.correct} / {score.total}</span>
         </div>
 
-        <div style="display:flex; justify-content:space-between; align-items:center;">
-            <h2>מבחן אמריקאי</h2>
-            <span id="quiz-score" style="color: var(--text-muted); font-size: 0.875rem;">ניקוד: 0</span>
+        <div
+          className={mode === "letters" ? "zl-arabic" : "zl-display"}
+          style={{
+            textAlign: "center",
+            fontSize: mode === "letters" ? "3.5rem" : "1.8rem",
+            fontWeight: 700,
+            padding: "28px 12px",
+            background: "var(--sand)",
+            borderRadius: 12,
+            marginBottom: 18,
+            border: "1px solid var(--sand-200)",
+          }}
+        >
+          {question.prompt}
         </div>
 
-        <div class="quiz-question-box">
-            <div class="quiz-question-text" id="quiz-question">טוען שאלה...</div>
-        </div>
-
-        <div class="quiz-options-grid" id="quiz-options"></div>
-    </div>
-</div>
-
-<!-- SUB-VIEW: Sentences & Reading Screen -->
-<div id="shadowing" class="tab-content">
-    <button class="back-link" onclick="switchTab('practice')">
-        <svg viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"/></svg>
-        חזרה לשיטות תרגול
-    </button>
-
-    <div class="box">
-        <h2>תרגול משפטים וקריאה</h2>
-        <p style="color: var(--text-muted); font-size: 0.875rem; margin-bottom: 16px;">
-            קרא את המשפטים והביטויים, תרגל חזרה בקול רם והרכבת משפטים עצמאיים.
-        </p>
-
-        <div class="shadow-main-tabs">
-            <button class="shadow-main-btn active" onclick="switchShadowTab(event, 'shadow-practice-tab')">תרגול משפטים ודיאלוגים</button>
-            <button class="shadow-main-btn" onclick="switchShadowTab(event, 'shadow-reading-tab')">קריאה (פתגמים וביטויים)</button>
-        </div>
-
-        <div id="shadow-practice-tab" class="shadow-tab-content active">
-            <div class="sub-tabs">
-                <button class="sub-tab-btn active" onclick="switchShadowSubTab(event, 'introductions')">1. הצגה והיכרות</button>
-                <button class="sub-tab-btn" onclick="switchShadowSubTab(event, 'vocabPart1')">2. אוצר מילים (חלק 1)</button>
-                <button class="sub-tab-btn" onclick="switchShadowSubTab(event, 'vocabPart2')">3. אוצר מילים (חלק 2)</button>
-            </div>
-
-            <table class="data-table">
-                <thead>
-                    <tr>
-                        <th class="num-col">#</th>
-                        <th>תעתיק / ערבית</th>
-                        <th>תרגום לעברית</th>
-                    </tr>
-                </thead>
-                <tbody id="shadowing-table-body"></tbody>
-            </table>
-        </div>
-
-        <div id="shadow-reading-tab" class="shadow-tab-content">
-            <table class="data-table">
-                <thead>
-                    <tr>
-                        <th class="num-col">#</th>
-                        <th>ביטוי בערבית</th>
-                        <th>פירוש מילולי</th>
-                        <th>תרגום / משמעות</th>
-                    </tr>
-                </thead>
-                <tbody id="reading-table-body"></tbody>
-            </table>
-        </div>
-    </div>
-</div>
-
-<!-- TAB 3: Vocabulary & Wall -->
-<div id="vocab" class="tab-content">
-    <div class="box">
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; flex-wrap: wrap; gap: 12px;">
-            <h2>חומת אוצר המילים</h2>
-            <div class="data-actions" style="margin-bottom:0;">
-                <button class="btn btn-outline" onclick="exportDataJSON()" title="הורד קובץ גיבוי של הנתונים">
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-                    יצוא גיבוי
-                </button>
-                <button class="btn btn-outline" onclick="document.getElementById('import-file-input').click()" title="טען נתונים מקובץ JSON">
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
-                    יבוא נתונים
-                </button>
-                <input type="file" id="import-file-input" accept=".json" style="display:none" onchange="importDataJSON(event)">
-            </div>
-        </div>
-
-        <p style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: 16px;">
-            לחץ על הריבוע הראשוני לחיבור מילה חדשה. מד ההתקדמות נצבע בירוק עם הגעה ל-6 הצלחות.
-        </p>
-        
-        <div class="vocab-grid" id="vocab-grid-container"></div>
-    </div>
-</div>
-
-<!-- TAB 4: Alphabet Page -->
-<div id="alphabet" class="tab-content">
-    <div class="box">
-        <h2>אותיות האלף-בית והגייתן</h2>
-        <p style="color: var(--text-muted); font-size: 0.875rem;">סקור את האותיות והצלילים:</p>
-
-        <div class="alphabet-grid" id="alphabet-container"></div>
-    </div>
-</div>
-
-<!-- MODAL: Add Word Form -->
-<div class="modal-overlay" id="add-modal">
-    <div class="modal-content">
-        <div class="modal-header">
-            <h3>הוספת מילה חדשה</h3>
-            <button class="close-modal" onclick="closeAddModal()">&times;</button>
-        </div>
-        <form id="add-word-form" onsubmit="handleAddWord(event)">
-            <div class="form-group">
-                <label for="word-front">מילה / משפט בערבית (חזית):</label>
-                <input type="text" id="word-front" class="form-control" placeholder="למשל: כִּתָאבּ / كِتَاب" required>
-            </div>
-            <div class="form-group">
-                <label for="word-back">תרגום (גב):</label>
-                <input type="text" id="word-back" class="form-control" placeholder="למשל: ספר" required>
-            </div>
-            <div class="form-group">
-                <label for="word-notes">הערות / משפט דוגמה (רשות):</label>
-                <input type="text" id="word-notes" class="form-control" placeholder="למשל: ר' ספרים: כֻּתֻבּ">
-            </div>
-            <div style="display: flex; gap: 8px; justify-content: flex-end; margin-top: 16px;">
-                <button type="button" class="btn btn-outline" onclick="closeAddModal()">ביטול</button>
-                <button type="submit" class="btn">הוסף למאגר</button>
-            </div>
-        </form>
-    </div>
-</div>
-
-<script>
-    // === 1. DATA STORAGE ===
-    const defaultVocabularyData = [
-        { id: 1, front: "צַבַּאח (אל)חַ'יְר", back: "בוקר טוב", notes: "", correctCount: 0, wrongCount: 0 },
-        { id: 2, front: "צַבַּאח (אל)נּוּר", back: "בוקר אור", notes: "", correctCount: 0, wrongCount: 0 },
-        { id: 3, front: "מַסַא (אל)חַ'יְר", back: "ערב טוב", notes: "", correctCount: 0, wrongCount: 0 },
-        { id: 4, front: "מַסַא (אל)נּוּר", back: "ערב אור", notes: "", correctCount: 0, wrongCount: 0 },
-        { id: 5, front: "מַרְחַבַּא", back: "שלום רב", notes: "", correctCount: 0, wrongCount: 0 },
-        { id: 6, front: "מַרְחַבְּתֵיְן", back: "רב שלומות", notes: "", correctCount: 0, wrongCount: 0 },
-        { id: 7, front: "אַהְלַן וַסַהְלַן", back: "שלום וברכה", notes: "", correctCount: 0, wrongCount: 0 },
-        { id: 8, front: "אַהְלַן וַסַהְלַן בִיכּ", back: "שלום וברכה לך", notes: "", correctCount: 0, wrongCount: 0 },
-        { id: 9, front: "אִסְם", back: "שם", notes: "ר' אַסְאַמִי", correctCount: 0, wrongCount: 0 },
-        { id: 10, front: "אַמִיר", back: "נסיך", notes: "ר' אַמַרַאא", correctCount: 0, wrongCount: 0 },
-        { id: 11, front: "מַעַלֵּם", back: "מוֹרֶה / אחראי", notes: "ר' מַעַלְמִין", correctCount: 0, wrongCount: 0 },
-        { id: 12, front: "מַעַלְמַה", back: "מורָה", notes: "ר' מַעַלְמִין", correctCount: 0, wrongCount: 0 },
-        { id: 13, front: "בִּ = פִי", back: "ב...", notes: "המילה פִי משמשת גם במשמעות: יש", correctCount: 0, wrongCount: 0 },
-        { id: 14, front: "מַע", back: "עם", notes: "", correctCount: 0, wrongCount: 0 },
-        { id: 15, front: "דַוְרַה", back: "קורס", notes: "ר' דַוְרַאת", correctCount: 0, wrongCount: 0 },
-        { id: 16, front: "טַאלִבּ", back: "סטודנט", notes: "ר' טֻלַּאבּ", correctCount: 0, wrongCount: 0 },
-        { id: 17, front: "טַאלִבַּה", back: "סטודנטית", notes: "ר' טַאלִבַּאת", correctCount: 0, wrongCount: 0 },
-        { id: 18, front: "גַ'אמִעַה", back: "אוניברסיטה", notes: "ר' גַ'אמִעַאת", correctCount: 0, wrongCount: 0 },
-        { id: 19, front: "סִכְרִתֵירַא", back: "מזכירה", notes: "ר' סִכְרִתֵירַאת", correctCount: 0, wrongCount: 0 },
-        { id: 20, front: "סִכְרִתֵיר", back: "מזכיר", notes: "ר' סִכְרִתֵירִיּוֹן", correctCount: 0, wrongCount: 0 },
-        { id: 21, front: "אַמִין", back: "מזכיר של גוף רשמי", notes: "ישר/אמין, שם של גבר", correctCount: 0, wrongCount: 0 },
-        { id: 22, front: "אַמִינַה", back: "מזכירה של גוף רשמי", notes: "ישרה/אמינה, שם של בחורה", correctCount: 0, wrongCount: 0 },
-        { id: 23, front: "מַדְרַסַה", back: "בית ספר", notes: "ר' מַדַארִס", correctCount: 0, wrongCount: 0 },
-        { id: 24, front: "מֻדִיר", back: "מנהל", notes: "ר' מֻדַרַאא", correctCount: 0, wrongCount: 0 },
-        { id: 25, front: "מֻדִירַה", back: "מנהלת", notes: "ר' מֻדִירַאת", correctCount: 0, wrongCount: 0 },
-        { id: 26, front: "שַרִכַּה", back: "חברה (ארגון/עסק)", notes: "ר' שַרִכַּאת", correctCount: 0, wrongCount: 0 },
-        { id: 27, front: "מֻחַאמִי", back: "עורך דין", notes: "ר' מֻחַאמִיִּן", correctCount: 0, wrongCount: 0 },
-        { id: 28, front: "מֻחַאמִיַּה", back: "עורכת דין", notes: "ר' מֻחַאמִיַּאת", correctCount: 0, wrongCount: 0 },
-        { id: 29, front: "וִזַארַה", back: "משרד ממשלתי", notes: "ר' וִזַארַאת", correctCount: 0, wrongCount: 0 },
-        { id: 30, front: "עַדְל", back: "צדק", notes: "", correctCount: 0, wrongCount: 0 },
-        { id: 31, front: "תִלְמִיד'", back: "תלמיד", notes: "ר' תַלַאמִיד'", correctCount: 0, wrongCount: 0 },
-        { id: 32, front: "תִלְמִידַ'ה", back: "תלמידה", notes: "ר' תַלַאמִידַ'את", correctCount: 0, wrongCount: 0 },
-        { id: 33, front: "צַאַחִבּ", back: "חבר / בעל מקום", notes: "ר' אַצְחַאבּ", correctCount: 0, wrongCount: 0 },
-        { id: 34, front: "צַאַחִבַּה", back: "חברה / בעלת מקום", notes: "ר' צַאַחִבַּאת", correctCount: 0, wrongCount: 0 },
-        { id: 35, front: "דַאר", back: "בית", notes: "ר' דוּר", correctCount: 0, wrongCount: 0 },
-        { id: 36, front: "וַלַד", back: "ילד", notes: "ר' וַלַאד", correctCount: 0, wrongCount: 0 },
-        { id: 37, front: "אִבְּן", back: "בן", notes: "ר' אַבְּנַאא", correctCount: 0, wrongCount: 0 },
-        { id: 38, front: "בִּנְת", back: "ילדה / בת", notes: "ר' בַּנַאת", correctCount: 0, wrongCount: 0 },
-        { id: 39, front: "עַם / עַמַּה", back: "דוד / דודה (מצד האב)", notes: "ר' עֻמוּם / עַמַּאת", correctCount: 0, wrongCount: 0 },
-        { id: 40, front: "חַ'אל / חַ'אלַה", back: "דוד / דודה (מצד האם)", notes: "ר' אַחְ'וַאל / חַ'אלַאת", correctCount: 0, wrongCount: 0 },
-        { id: 41, front: "סַלַאמַה", back: "בריאות / שלמות", notes: "", correctCount: 0, wrongCount: 0 },
-        { id: 42, front: "צַף", back: "כיתה", notes: "ר' צֻפוּף", correctCount: 0, wrongCount: 0 },
-        { id: 43, front: "בַּאבּ", back: "דלת / שער", notes: "ר' אַבְּוַאבּ", correctCount: 0, wrongCount: 0 },
-        { id: 44, front: "שֻבַּאכּ", back: "חלון", notes: "ר' שַבַּאבִּיכּ", correctCount: 0, wrongCount: 0 },
-        { id: 45, front: "חֵיט", back: "קיר", notes: "ר' חִיטַאן", correctCount: 0, wrongCount: 0 },
-        { id: 46, front: "כֻּרְסִי", back: "כסא", notes: "ר' כַּרַאסִי", correctCount: 0, wrongCount: 0 },
-        { id: 47, front: "טַאווּלַה", back: "שולחן", notes: "ר' טַאווּלַאת", correctCount: 0, wrongCount: 0 },
-        { id: 48, front: "לוֹח", back: "לוח", notes: "ר' אַלְוַאח", correctCount: 0, wrongCount: 0 },
-        { id: 49, front: "קַלַם", back: "עט", notes: "ר' קַלַאם", correctCount: 0, wrongCount: 0 },
-        { id: 50, front: "קַלַם רַצַאץ", back: "עיפרון", notes: "ר' קַלַאם רַצַאץ", correctCount: 0, wrongCount: 0 },
-        { id: 51, front: "דַפְתַר", back: "מחברת", notes: "ר' דַפַאתִר", correctCount: 0, wrongCount: 0 },
-        { id: 52, front: "כִּתַאבּ", back: "ספר", notes: "ר' כֻּתֻבּ", correctCount: 0, wrongCount: 0 },
-        { id: 53, front: "כֻּרַּאסַה", back: "חוברת", notes: "ר' כֻּרַּאסַאת / כַּרַארִיס", correctCount: 0, wrongCount: 0 },
-        { id: 54, front: "שַנְטַה / שַנְתַה", back: "תיק / מזוודה", notes: "ר' שַנַט / שַנַטַאת", correctCount: 0, wrongCount: 0 },
-        { id: 55, front: "וַרַקַה", back: "דף", notes: "ר' אַוְרַאק / וַרַק", correctCount: 0, wrongCount: 0 },
-        { id: 56, front: "צַפְחַה", back: "עמוד", notes: "ר' צַפְחַאת", correctCount: 0, wrongCount: 0 },
-        { id: 57, front: "אִסְתִרַאחַה", back: "הפסקה", notes: "ר' אִסְתִרַאחַאת", correctCount: 0, wrongCount: 0 },
-        { id: 58, front: "פֻרְצַה", back: "הזדמנות / סיכוי / הפסקה", notes: "ר' פֻרַץ", correctCount: 0, wrongCount: 0 },
-        { id: 59, front: "קַהְוַה", back: "קפה", notes: "", correctCount: 0, wrongCount: 0 },
-        { id: 60, front: "שַאי", back: "תה", notes: "", correctCount: 0, wrongCount: 0 },
-        { id: 61, front: "סֻכַּר", back: "סוכר", notes: "", correctCount: 0, wrongCount: 0 },
-        { id: 62, front: "כַּאַסַה / כַּבַּאיַה", back: "כוס", notes: "ר' כַּאַסַאת / כַּבַּאיַאת", correctCount: 0, wrongCount: 0 },
-        { id: 63, front: "חַמַּאם", back: "אמבטיה / בית שימוש", notes: "ר' חַמַּאמַאת", correctCount: 0, wrongCount: 0 },
-        { id: 64, front: "מֻחַאמַאה", back: "עריכת דין", notes: "", correctCount: 0, wrongCount: 0 }
-    ];
-
-    let savedData = JSON.parse(localStorage.getItem('vocab_data'));
-    let vocabularyData = (savedData && savedData.length >= 64) ? savedData : defaultVocabularyData;
-
-    const alphabetData = [
-        { letter: "أ", name: "אָלִף", sound: "א / עִצּוּר גְּרוֹנִי" },
-        { letter: "ب", name: "בָּא", sound: "בּ" },
-        { letter: "ت", name: "תָּא", sound: "תּ" },
-        { letter: "ث", name: "תָ'א", sound: "ת' (כמו Th באנגלית)" },
-        { letter: "ج", name: "גִ'ים", sound: "ג' (ג׳ירפה)" },
-        { letter: "ح", name: "חָא", sound: "ח' (ח׳ גרונית עמוקה)" },
-        { letter: "خ", name: "חָ'א", sound: "ח' (כמו ח' בעברית)" },
-        { letter: "د", name: "דָאל", sound: "ד" },
-        { letter: "ذ", name: "דָ'אל", sound: "ד' (כמו Th במילה This)" },
-        { letter: "ر", name: "רָא", sound: "ר" },
-        { letter: "ز", name: "זָאי", sound: "ז" },
-        { letter: "س", name: "סִין", sound: "ס" },
-        { letter: "ش", name: "שִין", sound: "ש" },
-        { letter: "ص", name: "צָאד", sound: "צ' (ס' עמוקה/מוטעמת)" },
-        { letter: "ض", name: "דָאד", sound: "ד' עמוקה" },
-        { letter: "ط", name: "טָא", sound: "ט עמוקה" },
-        { letter: "ظ", name: "זָא", sound: "ז' / ד' מוטעמת" },
-        { letter: "ع", name: "עַיְן", sound: "ע גרונית" },
-        { letter: "غ", name: "עַֿיְן (גַֿיְן)", sound: "ר' גרונית (כמו בעברית)" },
-        { letter: "ف", name: "פָא", sound: "פ' רפה (F)" },
-        { letter: "ق", name: "קָאף", sound: "ק' גרונית עמוקה / א'" },
-        { letter: "ك", name: "כָּאף", sound: "כּ" },
-        { letter: "ل", name: "לָאם", sound: "ל" },
-        { letter: "م", name: "מִים", sound: "מ" },
-        { letter: "ن", name: "נוּן", sound: "נ" },
-        { letter: "هـ", name: "הָא", sound: "ה" },
-        { letter: "و", name: "וָאוּ", sound: "ו / W" },
-        { letter: "ي", name: "יָא", sound: "י" }
-    ];
-
-    const sentencesDataStore = {
-        introductions: [
-            { num: 1, hebrew: "בוקר טוב", arabic: "צבאח אל-חֵ'יר" },
-            { num: 2, hebrew: "בוקר אור", arabic: "צבאח אנ-נור" },
-            { num: 3, hebrew: "ערב טוב", arabic: "מסאא אל-חֵ'יר" },
-            { num: 4, hebrew: "ערב אור", arabic: "מסאא אנ-נור" },
-            { num: 5, hebrew: "שלום (ברוכים הבאים)", arabic: "מרחבא" },
-            { num: 6, hebrew: "תשובה למרחבא", arabic: "מרחבתֵין" },
-            { num: 7, hebrew: "שלום וברכה", arabic: "אהלן וסהלן" },
-            { num: 8, hebrew: "שלום לך", arabic: "אהלן וסהלן ביכּ" },
-            { num: 9, hebrew: "אני שמי אבו אמיר ואני מורה בקורס.", arabic: "אנא אסמי אבו אמיר ואנא מעלם בד-דורה." },
-            { num: 10, hebrew: "אתה שמך אחמד ואתה סטודנט באוניברסיטה.", arabic: "אנת אסמכּ אחמד ואנת טאלב פי אל-ג'אמעה." },
-            { num: 11, hebrew: "את שמך וידאד ואת מזכירה בבית הספר.", arabic: "אנתי אסמכּ וידאד ואנתי סכּרתֵירה בל-מדרסה." },
-            { num: 12, hebrew: "הוא שמו מוניר והוא מנהל החברה.", arabic: "הוא אסמו מוניר והוא מודיר אש-שרכּה." },
-            { num: 13, hebrew: "היא שמה נואל והיא עורכת דין במשרד המשפטים.", arabic: "הייה אסמהא נואל והייה מחאמייה פי ויזארת אל-עדל." },
-            { num: 14, hebrew: "אנחנו שמותינו עאטף ולטיפה ואנחנו תלמידים פה.", arabic: "אחנא אסאמינא עאטף ולטיפה ואחנא תלאמיז הון." },
-            { num: 15, hebrew: "אתם שמותיכם זוהיר והדייה ואתם בעלי הבית.", arabic: "אנתו אסאמיכּום זוהיר והדייה ואנתו אצחאב אל-דאר." },
-            { num: 16, hebrew: "הם שמותיהם שאדי ועביר והם בני דודים.", arabic: "הום אסאמיהום שאדי ועביר והום ולאד עם." },
-            { num: 17, hebrew: "עמכם השלום", arabic: "מע אס-סלאמה" },
-            { num: 18, hebrew: "אלוהים יברך אותך לשלום", arabic: "אללה יסלמכּ" },
-            { num: 19, hebrew: "השלום לפני הדיבורים", arabic: "אס-סלאם קבל אל-כּלאם" }
-        ],
-        vocabPart1: [
-            { num: 1, hebrew: "בוקר טוב", arabic: "צבאח אל-חֵ'יר" },
-            { num: 2, hebrew: "בוקר אור", arabic: "צבאח אנ-נור" },
-            { num: 3, hebrew: "ערב טוב", arabic: "מסאא אל-חֵ'יר" },
-            { num: 4, hebrew: "ערב אור", arabic: "מסאא אנ-נור" },
-            { num: 5, hebrew: "שלום רב", arabic: "מרחבא" },
-            { num: 6, hebrew: "רב שלומות", arabic: "מרחבתֵין" },
-            { num: 7, hebrew: "שלום וברכה", arabic: "אהלן וסהלן" },
-            { num: 8, hebrew: "שלום וברכה לך", arabic: "אהלן וסהלן ביכּ" },
-            { num: 9, hebrew: "שם (ר' שמות)", arabic: "אסם (ר' אסאמי)" },
-            { num: 10, hebrew: "נסיך", arabic: "אמיר" },
-            { num: 11, hebrew: "מורה (ר' מורים)", arabic: "מעלם (ר' מעלמין)" },
-            { num: 12, hebrew: "מורה [נ'] (ר' מורות)", arabic: "מעלמה (ר' מעלמאת)" },
-            { num: 13, hebrew: "בְּ... / בתוך", arabic: "בִּ / פִי" },
-            { num: 14, hebrew: "עם", arabic: "מַעַ" },
-            { num: 15, hebrew: "קורס (ר' קורסים)", arabic: "דורה (ר' דוראת)" },
-            { num: 16, hebrew: "סטודנט (ר' סטודנטים)", arabic: "טאלב (ר' טולאב)" },
-            { num: 17, hebrew: "סטודנטית (ר' סטודנטיות)", arabic: "טאלבה (ר' טאליבאתי)" },
-            { num: 18, hebrew: "אוניברסיטה (ר' אוניברסיטאות)", arabic: "ג'אמעה (ר' ג'אמעאת / ג'אמיעאת)" },
-            { num: 19, hebrew: "מזכירה (ר' מזכירות)", arabic: "סכּרתֵירה (ר' סכּרתֵיראת)" },
-            { num: 20, hebrew: "מזכיר (ר' מזכירים)", arabic: "סכּרתֵיר (ר' סכּתרִיון)" },
-            { num: 21, hebrew: "מזכיר גוף רשמי / אמין", arabic: "אמין" },
-            { num: 22, hebrew: "מזכירה [נ']", arabic: "אמינה" }
-        ],
-        vocabPart2: [
-            { num: 37, hebrew: "בן (ר' בנים)", arabic: "אבן (ר' אבנאא / בנים: בנין)" },
-            { num: 38, hebrew: "ילדה/בת (ר' ילדות/בנות)", arabic: "בנת (ר' בנאת)" },
-            { num: 39, hebrew: "דוד מצד האב (ר' דודים)", arabic: "עם (ר' עמום)" },
-            { num: "39a", hebrew: "דודה מצד האב (ר' דודות)", arabic: "עמה (ר' עמאת)" },
-            { num: 40, hebrew: "דוד מצד האם (ר' דודים)", arabic: "ח'אל (ר' אח'ואל)" },
-            { num: "40a", hebrew: "דודה מצד האם (ר' דודות)", arabic: "ח'אלה (ר' ח'אלאת)" },
-            { num: 41, hebrew: "בריאות / שלמות", arabic: "סלאמה" },
-            { num: 42, hebrew: "כיתה (ר' כיתות)", arabic: "צף (ר' לצפוף)" },
-            { num: 43, hebrew: "דלת / שער (ר' דלתות/שערים)", arabic: "באב (ר' אבואב)" },
-            { num: 44, hebrew: "חלון (ר' חלונות)", arabic: "שובאכּ (ר' שבאביכּ)" },
-            { num: 45, hebrew: "קיר (ר' קירות)", arabic: "חיט (ר' חיטאן)" },
-            { num: 46, hebrew: "כיסא (ר' כיסאות)", arabic: "כּורסי (ר' כּראסי)" },
-            { num: 47, hebrew: "שולחן (ר' שולחנות)", arabic: "טאולה (ר' טאולאת)" },
-            { num: 48, hebrew: "לוח (ר' לוחות)", arabic: "לוּח (ר' אלואח)" },
-            { num: 49, hebrew: "עט (ר' עטים)", arabic: "קלם (ר' אקלאם)" },
-            { num: 50, hebrew: "עיפרון (ר' עפרונות)", arabic: "קלם רצאץ (ר' אקלאם רצאץ)" },
-            { num: 51, hebrew: "מחברת (ר' מחברות)", arabic: "דפתר (ר' דפאתר)" },
-            { num: 52, hebrew: "ספר (ר' ספרים)", arabic: "כּתאב (ר' כּותוב)" },
-            { num: 53, hebrew: "חוברת (ר' חוברות)", arabic: "כּראסה (ר' כּראסאת / כּראריס)" },
-            { num: 54, hebrew: "תיק / מזוודה (ר' תיקים)", arabic: "שנטה / שנתה (ר' שונאט / שונאת)" },
-            { num: 55, hebrew: "דף (ר' דפים)", arabic: "ורקה (ר' אוראק / וראק)" },
-            { num: 57, hebrew: "הפסקה (ר' הפסקות)", arabic: "אסתיראחה (ר' אסתיראחאת)" },
-            { num: 58, hebrew: "הזדמנות / סיכוי / הפסקה", arabic: "פורצה (ר' פורץ)" },
-            { num: 59, hebrew: "קפה", arabic: "אהוה" },
-            { num: 60, hebrew: "תה", arabic: "שאי" },
-            { num: 61, hebrew: "סוכר", arabic: "סוכּר" },
-            { num: 62, hebrew: "כוס (ר' כוסות)", arabic: "כּאסה (ר' כּאסאת) / כּובאיה (ר' כּובאיאת)" },
-            { num: 63, hebrew: "אמבטיה / בית שימוש", arabic: "חמאם (ר' חמאמאת)" }
-        ]
-    };
-
-    const readingDataStore = [
-        { num: 1, arabic: "לַאזֶם תַתַעַדַּא פִי, קַבְּל מַא יַתַעַשַּׁא פִיכּ", literal: "תאכל אותו לארוחת צהריים, לפני שהוא יאכל אותך לארוחת ערב.", meaning: "תקדים תרופה למכה." },
-        { num: 2, arabic: "אלִי כַּתַבוֹ רַבַּנַא בִּידוֹ יְצִיר", literal: "מה שכתב הבורא, זה מה שיקרה.", meaning: "מה שיהיה - יהיה." },
-        { num: 3, arabic: "בִּיקוּלוֹ תוֹר, בִּיקוּל אַחְלְבוּ", literal: "אומרים לו שור, הוא אומר לחלוב אותו.", meaning: "אדם עקשן / אדם שלא מחובר לסיטואציה." },
-        { num: 4, arabic: "אלִי פַאת – מַאת", literal: "מה שעבר, מת.", meaning: "מה שהיה, היה." },
-        { num: 5, arabic: "זַמַאן אַוַּל תַחוֹל", literal: "הזמנים של פעם עברו.", meaning: "לא ניתן להחזיר את הגלגל לאחור." },
-        { num: 6, arabic: "שַׁיְטַאן רַאכֶּב עַקְלוֹ", literal: "השטן רוכב על ראשו.", meaning: "נכנס בו שד, השתגע." },
-        { num: 7, arabic: "טַלְעַת רִיחְתוֹ", literal: "יצא הריח שלו.", meaning: "הסריח, עבר את הגבול, האמת יצאה." },
-        { num: 8, arabic: "והו, פִי חַ'בַּר בִּיַתְחַבַּא?", literal: "והאם יש אמת/ידיעה שאפשר להסתיר?", meaning: "אי אפשר להסתיר כלום." },
-        { num: 9, arabic: "אלִי בַּדּוֹ מַצַארִי לַאזֶם יִשְׁתַעֶ'ל", literal: "מי שרוצה כסף צריך לעבוד.", meaning: "יגעת ומצאת-תאמין, אין כסף בלי עבודה." },
-        { num: 10, arabic: "רוּחְ בַּלֵּט (א)לְבַּחְר", literal: "לך תרצף את הים.", meaning: "תעשה עבודה שאין בה תועלת, לך מפה." },
-        { num: 11, arabic: "וול? גַאי תַתְפַלְסַף עַלַיַא אַנְת?", literal: "מה? אתה בא להתרפלוסף עלי?", meaning: "אל תתפוס עליי תחת." },
-        { num: 12, arabic: "עַיִשׁ חַיַאתַכּ", literal: "חיה את חייך.", meaning: "שחרר, תהנה מהרגע." },
-        { num: 13, arabic: "הוּ פִי וַאד וַאַנַא פִי וַאד", literal: "הוא בוואדי ואני בוואדי.", meaning: "אנחנו כל אחד במקום אחר, יש ריחוק." }
-    ];
-
-    // === 2. APP STATE & NAVIGATION ===
-    let currentCardIndex = 0;
-    let flashcardMode = 'vocab'; // 'vocab' | 'alphabet'
-    
-    let quizMode = 'vocab'; // 'vocab' | 'alphabet'
-    let quizScore = 0;
-    let currentQuizItem = null;
-    let quizAnswered = false;
-
-    function saveState() {
-        localStorage.setItem('vocab_data', JSON.stringify(vocabularyData));
-    }
-
-    function switchTab(tabId) {
-        document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
-        document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
-        
-        document.getElementById(tabId).classList.add('active');
-        
-        const navBtn = document.getElementById(`tab-nav-${tabId}`);
-        if (navBtn) {
-            navBtn.classList.add('active');
-        } else if (tabId === 'flashcards' || tabId === 'quiz' || tabId === 'shadowing') {
-            document.getElementById('tab-nav-practice').classList.add('active');
-        }
-
-        if (tabId === 'vocab') renderVocabGrid();
-        if (tabId === 'shadowing') {
-            renderSentencesData('introductions');
-            renderReadingData();
-        }
-        if (tabId === 'quiz') {
-            initQuiz();
-        }
-    }
-
-    function openPracticeMode(modeId) {
-        switchTab(modeId);
-        if (modeId === 'flashcards') {
-            renderCard();
-        }
-    }
-
-    // === 3. FLASHCARD LOGIC ===
-    function setFlashcardMode(mode) {
-        flashcardMode = mode;
-        currentCardIndex = 0;
-        document.getElementById('fc-mode-vocab').classList.toggle('active', mode === 'vocab');
-        document.getElementById('fc-mode-alphabet').classList.toggle('active', mode === 'alphabet');
-        renderCard();
-    }
-
-    function getActiveFlashcardList() {
-        if (flashcardMode === 'alphabet') {
-            return alphabetData.map(a => ({
-                front: a.letter,
-                back: a.name,
-                notes: `הגייה: ${a.sound}`,
-                correctCount: 0,
-                wrongCount: 0
-            }));
-        }
-        return vocabularyData;
-    }
-
-    function flipCard() {
-        document.getElementById('card').classList.toggle('flipped');
-    }
-
-    function renderCard() {
-        const activeList = getActiveFlashcardList();
-
-        if (!activeList || activeList.length === 0) {
-            document.getElementById('card-front-text').innerText = "אין נתונים להצגה";
-            document.getElementById('card-back-text').innerText = "";
-            document.getElementById('card-notes-text').innerText = "";
-            document.getElementById('card-counter').innerText = "0 / 0";
-            document.getElementById('card-stats').innerText = "הצלחות: 0 | כשלונות: 0";
-            return;
-        }
-
-        if (currentCardIndex >= activeList.length) {
-            currentCardIndex = 0;
-        }
-
-        const card = activeList[currentCardIndex];
-        document.getElementById('card-front-text').innerText = card.front;
-        document.getElementById('card-back-text').innerText = card.back;
-        document.getElementById('card-notes-text').innerText = card.notes || '';
-        document.getElementById('card-counter').innerText = `${currentCardIndex + 1} / ${activeList.length}`;
-        document.getElementById('card-stats').innerText = `הצלחות: ${card.correctCount || 0} | כשלונות: ${card.wrongCount || 0}`;
-
-        const frontFace = document.getElementById('card-front');
-        const backFace = document.getElementById('card-back');
-
-        frontFace.className = 'card-face card-front';
-        backFace.className = 'card-face card-back';
-
-        if (card.correctCount >= 6) {
-            frontFace.classList.add('mastered');
-            backFace.classList.add('mastered');
-        } else if (card.wrongCount >= 2) {
-            frontFace.classList.add('struggling');
-            backFace.classList.add('struggling');
-        }
-
-        document.getElementById('card').classList.remove('flipped');
-    }
-
-    function markCard(isCorrect) {
-        if (flashcardMode === 'alphabet') {
-            nextCard();
-            return;
-        }
-
-        if (!vocabularyData.length) return;
-
-        const card = vocabularyData[currentCardIndex];
-        if (isCorrect) {
-            card.correctCount = (card.correctCount || 0) + 1;
-        } else {
-            card.wrongCount = (card.wrongCount || 0) + 1;
-        }
-        saveState();
-        renderCard();
-        
-        setTimeout(() => {
-            nextCard();
-        }, 300);
-    }
-
-    function nextCard() {
-        const activeList = getActiveFlashcardList();
-        if (currentCardIndex < activeList.length - 1) {
-            currentCardIndex++;
-            renderCard();
-        }
-    }
-
-    function prevCard() {
-        if (currentCardIndex > 0) {
-            currentCardIndex--;
-            renderCard();
-        }
-    }
-
-    // === 4. QUIZ (מבחן אמריקאי) LOGIC ===
-    function setQuizMode(mode) {
-        quizMode = mode;
-        document.getElementById('quiz-mode-vocab').classList.toggle('active', mode === 'vocab');
-        document.getElementById('quiz-mode-alphabet').classList.toggle('active', mode === 'alphabet');
-        initQuiz();
-    }
-
-    function getQuizDataList() {
-        if (quizMode === 'alphabet') {
-            return alphabetData.map(item => ({
-                question: item.letter,
-                answer: `${item.name} (${item.sound})`
-            }));
-        }
-        return vocabularyData.map(item => ({
-            question: item.front,
-            answer: item.back
-        }));
-    }
-
-    function initQuiz() {
-        quizAnswered = false;
-        const list = getQuizDataList();
-        if (!list || list.length < 4) {
-            document.getElementById('quiz-question').innerText = "אין מספיק נתונים למבחן";
-            document.getElementById('quiz-options').innerHTML = "";
-            return;
-        }
-
-        // Select random question
-        const randomIndex = Math.floor(Math.random() * list.length);
-        currentQuizItem = list[randomIndex];
-
-        // Generate 3 wrong options
-        let wrongOptions = [];
-        while (wrongOptions.length < 3) {
-            let rand = Math.floor(Math.random() * list.length);
-            let opt = list[rand].answer;
-            if (opt !== currentQuizItem.answer && !wrongOptions.includes(opt)) {
-                wrongOptions.push(opt);
+        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10 }}>
+          {question.options.map((opt) => {
+            const isCorrect = opt === question.correctAnswer;
+            const isChosen = opt === selected;
+            let bg = "var(--sand-100)", border = "var(--sand-200)", color = "var(--ink)";
+            if (selected) {
+              if (isCorrect) { bg = "var(--teal-700)"; border = "var(--teal-700)"; color = "white"; }
+              else if (isChosen) { bg = "var(--clay)"; border = "var(--clay)"; color = "white"; }
             }
-        }
+            return (
+              <button
+                key={opt}
+                onClick={() => choose(opt)}
+                disabled={!!selected}
+                style={{
+                  padding: "14px 10px",
+                  borderRadius: 10,
+                  border: `1px solid ${border}`,
+                  background: bg,
+                  color,
+                  fontWeight: 600,
+                  fontSize: "0.95rem",
+                  cursor: selected ? "default" : "pointer",
+                }}
+              >
+                {opt}
+              </button>
+            );
+          })}
+        </div>
+      </Card>
+    </div>
+  );
+}
 
-        // Mix correct answer with wrong answers
-        let allOptions = [...wrongOptions, currentQuizItem.answer];
-        allOptions.sort(() => Math.random() - 0.5);
+/* =========================================================================
+   SENTENCE BUILDER GAME
+   ========================================================================= */
+function SentenceBuilder() {
+  const [idx, setIdx] = useState(0);
+  const [bank, setBank] = useState([]);
+  const [built, setBuilt] = useState([]);
+  const [result, setResult] = useState(null);
 
-        // Render Question & Options
-        document.getElementById('quiz-question').innerText = currentQuizItem.question;
-        const optionsContainer = document.getElementById('quiz-options');
-        optionsContainer.innerHTML = '';
+  const sentence = SENTENCES[idx % SENTENCES.length];
+  const answerWords = useMemo(() => sentence.arabic.split(" "), [sentence]);
 
-        allOptions.forEach(optionText => {
-            const btn = document.createElement('button');
-            btn.className = 'quiz-option-btn';
-            btn.innerText = optionText;
-            btn.onclick = () => handleQuizAnswer(btn, optionText);
-            optionsContainer.appendChild(btn);
-        });
-    }
+  useEffect(() => {
+    setBank(shuffle(answerWords.map((w, i) => ({ w, key: i }))));
+    setBuilt([]);
+    setResult(null);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [idx]);
 
-    function handleQuizAnswer(btnElement, selectedAnswer) {
-        if (quizAnswered) return;
-        quizAnswered = true;
+  const pick = (tile) => {
+    setBank((b) => b.filter((t) => t.key !== tile.key));
+    setBuilt((b) => [...b, tile]);
+  };
+  const unpick = (tile) => {
+    setBuilt((b) => b.filter((t) => t.key !== tile.key));
+    setBank((b) => [...b, tile]);
+  };
+  const check = () => {
+    const guess = built.map((t) => t.w).join(" ");
+    setResult(guess === sentence.arabic ? "correct" : "wrong");
+  };
+  const next = () => setIdx((i) => i + 1);
 
-        const isCorrect = selectedAnswer === currentQuizItem.answer;
-        if (isCorrect) {
-            btnElement.classList.add('correct');
-            quizScore += 10;
-        } else {
-            btnElement.classList.add('wrong');
-            // Highlight correct option
-            const buttons = document.querySelectorAll('.quiz-option-btn');
-            buttons.forEach(b => {
-                if (b.innerText === currentQuizItem.answer) {
-                    b.classList.add('correct');
-                }
-            });
-        }
+  return (
+    <Card>
+      <h3 className="zl-display" style={{ fontWeight: 700, marginBottom: 6 }}>הרכבת משפטים</h3>
+      <p style={{ color: "var(--ink-muted)", fontSize: "0.85rem", marginBottom: 14 }}>
+        סדר את המילים כך שיתקבל המשפט הבא בערבית (בתעתיק):
+      </p>
+      <div style={{ background: "var(--sand)", borderRadius: 10, padding: "14px 16px", marginBottom: 16, fontWeight: 700 }}>
+        {sentence.hebrew}
+      </div>
 
-        document.getElementById('quiz-score').innerText = `ניקוד: ${quizScore}`;
+      <div style={{ minHeight: 54, border: "1px dashed var(--sand-200)", borderRadius: 10, padding: 10, display: "flex", flexWrap: "wrap", gap: 8, marginBottom: 14 }}>
+        {built.length === 0 && <span style={{ color: "var(--ink-muted)", fontSize: "0.85rem" }}>לחץ על המילים למטה כדי לבנות את המשפט</span>}
+        {built.map((t) => (
+          <button key={t.key} onClick={() => unpick(t)} style={{ background: "var(--teal-950)", color: "white", border: "none", borderRadius: 8, padding: "6px 12px", cursor: "pointer" }}>
+            {t.w}
+          </button>
+        ))}
+      </div>
 
-        // Move to next question automatically after 1.2 seconds
-        setTimeout(() => {
-            initQuiz();
-        }, 1200);
-    }
+      <div style={{ display: "flex", flexWrap: "wrap", gap: 8, marginBottom: 16 }}>
+        {bank.map((t) => (
+          <button key={t.key} onClick={() => pick(t)} style={{ background: "var(--sand-100)", border: "1px solid var(--sand-200)", borderRadius: 8, padding: "6px 12px", cursor: "pointer" }}>
+            {t.w}
+          </button>
+        ))}
+      </div>
 
-    // === 5. SENTENCES & READING NAVIGATION ===
-    function switchShadowTab(e, shadowTabId) {
-        document.querySelectorAll('.shadow-main-btn').forEach(btn => btn.classList.remove('active'));
-        document.querySelectorAll('.shadow-tab-content').forEach(content => content.classList.remove('active'));
+      {result === "correct" && <p style={{ color: "var(--teal-700)", fontWeight: 700, marginBottom: 10 }}>נכון מאוד! 🎉</p>}
+      {result === "wrong" && <p style={{ color: "var(--clay)", fontWeight: 700, marginBottom: 10 }}>לא בדיוק — התשובה הנכונה: {sentence.arabic}</p>}
 
-        e.target.classList.add('active');
-        document.getElementById(shadowTabId).classList.add('active');
-    }
+      <div style={{ display: "flex", gap: 10 }}>
+        <PrimaryButton variant="outline" onClick={() => { setBank(shuffle(answerWords.map((w, i) => ({ w, key: i })))); setBuilt([]); setResult(null); }}>
+          <RotateCcw size={15} />איפוס
+        </PrimaryButton>
+        {result ? (
+          <PrimaryButton variant="gold" onClick={next}>המשפט הבא</PrimaryButton>
+        ) : (
+          <PrimaryButton onClick={check} disabled={bank.length > 0}>בדוק</PrimaryButton>
+        )}
+      </div>
+    </Card>
+  );
+}
 
-    function switchShadowSubTab(e, subTabKey) {
-        document.querySelectorAll('.sub-tab-btn').forEach(btn => btn.classList.remove('active'));
-        e.target.classList.add('active');
+/* =========================================================================
+   READING & PRONUNCIATION + IDIOMS (browse & reveal)
+   ========================================================================= */
+function RevealList({ items, renderTop, renderBottom, emptyLabel }) {
+  const [revealed, setRevealed] = useState({});
+  return (
+    <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+      {items.map((it) => (
+        <div
+          key={it.id}
+          onClick={() => setRevealed((r) => ({ ...r, [it.id]: !r[it.id] }))}
+          style={{
+            background: "var(--sand-100)",
+            border: "1px solid var(--sand-200)",
+            borderRadius: 10,
+            padding: "14px 16px",
+            cursor: "pointer",
+          }}
+        >
+          <div style={{ fontWeight: 700, fontSize: "1.05rem" }}>{renderTop(it)}</div>
+          {revealed[it.id] ? (
+            <div className="zl-anim" style={{ marginTop: 8, color: "var(--ink-muted)", fontSize: "0.88rem" }}>
+              {renderBottom(it)}
+            </div>
+          ) : (
+            <div style={{ marginTop: 6, fontSize: "0.78rem", color: "var(--gold)" }}>הקש לחשיפת התרגום</div>
+          )}
+        </div>
+      ))}
+      {items.length === 0 && <p style={{ color: "var(--ink-muted)" }}>{emptyLabel}</p>}
+    </div>
+  );
+}
 
-        renderSentencesData(subTabKey);
-    }
+function SentencesReadingHub() {
+  const [sub, setSub] = useState("builder");
+  const subTabs = [
+    { id: "builder", label: "הרכבת משפטים" },
+    { id: "reading", label: "קריאה והגייה" },
+    { id: "idioms", label: "ניבי לשון" },
+  ];
+  return (
+    <div>
+      <div style={{ display: "flex", gap: 8, marginBottom: 16, flexWrap: "wrap" }}>
+        {subTabs.map((t) => (
+          <button
+            key={t.id}
+            onClick={() => setSub(t.id)}
+            style={{
+              padding: "7px 16px",
+              borderRadius: 20,
+              border: `1px solid ${sub === t.id ? "var(--teal-950)" : "var(--sand-200)"}`,
+              background: sub === t.id ? "var(--teal-950)" : "white",
+              color: sub === t.id ? "white" : "var(--ink)",
+              cursor: "pointer",
+              fontSize: "0.85rem",
+              fontWeight: 600,
+            }}
+          >
+            {t.label}
+          </button>
+        ))}
+      </div>
 
-    function renderSentencesData(subTabKey) {
-        const items = sentencesDataStore[subTabKey];
-        const tableBody = document.getElementById('shadowing-table-body');
+      {sub === "builder" && <SentenceBuilder />}
+      {sub === "reading" && (
+        <Card>
+          <RevealList
+            items={SENTENCES}
+            renderTop={(it) => it.arabic}
+            renderBottom={(it) => it.hebrew}
+            emptyLabel="אין משפטים להצגה"
+          />
+        </Card>
+      )}
+      {sub === "idioms" && (
+        <Card>
+          <RevealList
+            items={IDIOMS}
+            renderTop={(it) => it.arabic}
+            renderBottom={(it) => (
+              <>
+                <div>פירוש מילולי: {it.literal}</div>
+                <div style={{ marginTop: 2, fontWeight: 600, color: "var(--ink)" }}>משמעות: {it.meaning}</div>
+              </>
+            )}
+            emptyLabel="אין ניבים להצגה"
+          />
+        </Card>
+      )}
+    </div>
+  );
+}
 
-        tableBody.innerHTML = '';
-        items.forEach(item => {
-            const row = document.createElement('tr');
-            row.innerHTML = `
-                <td class="num-col">${item.num}</td>
-                <td class="arabic-text">${item.arabic}</td>
-                <td>${item.hebrew}</td>
-            `;
-            tableBody.appendChild(row);
-        });
-    }
+/* =========================================================================
+   PRACTICE HUB TAB
+   ========================================================================= */
+function PracticeTab({ screen, setScreen, vocab, setVocab, letters, setLetters }) {
+  const [sub, setSub] = useState("flashcards");
 
-    function renderReadingData() {
-        const tableBody = document.getElementById('reading-table-body');
-        tableBody.innerHTML = '';
-        readingDataStore.forEach(item => {
-            const row = document.createElement('tr');
-            row.innerHTML = `
-                <td class="num-col">${item.num}</td>
-                <td class="arabic-text">${item.arabic}</td>
-                <td>${item.literal}</td>
-                <td>${item.meaning}</td>
-            `;
-            tableBody.appendChild(row);
-        });
-    }
+  if (screen?.screen === "flashcards") {
+    return (
+      <FlashcardPractice
+        mode={screen.mode}
+        vocab={vocab} setVocab={setVocab}
+        letters={letters} setLetters={setLetters}
+        onBack={() => setScreen(null)}
+      />
+    );
+  }
+  if (screen?.screen === "quiz") {
+    return (
+      <AmericanQuiz
+        mode={screen.mode}
+        vocab={vocab} setVocab={setVocab}
+        letters={letters} setLetters={setLetters}
+        onBack={() => setScreen(null)}
+      />
+    );
+  }
+  if (screen?.screen === "sentence-builder" || screen?.screen === "reading") {
+    return (
+      <div className="zl-anim">
+        <BackLink onClick={() => setScreen(null)}>חזרה לשיטות תרגול</BackLink>
+        <SectionHeader title="תרגול משפטים וקריאה" />
+        <SentencesReadingHub />
+      </div>
+    );
+  }
 
-    // === 6. MODAL & VOCAB FORM ===
-    function openAddModal() {
-        document.getElementById('add-modal').classList.add('active');
-        document.getElementById('word-front').focus();
-    }
+  const subTabs = [
+    { id: "flashcards", label: "כרטיסיות" },
+    { id: "quiz", label: "מבחן אמריקאי" },
+    { id: "sentences", label: "משפטים וקריאה" },
+  ];
 
-    function closeAddModal() {
-        document.getElementById('add-modal').classList.remove('active');
-        document.getElementById('add-word-form').reset();
-    }
+  return (
+    <div className="zl-anim">
+      <SectionHeader title="שיטות תרגול" subtitle="בחר את שיטת האימון הרצויה כדי להתחיל" />
 
-    function handleAddWord(e) {
-        e.preventDefault();
-        const frontInput = document.getElementById('word-front');
-        const backInput = document.getElementById('word-back');
-        const notesInput = document.getElementById('word-notes');
+      <div style={{ display: "flex", gap: 8, marginBottom: 18, flexWrap: "wrap" }}>
+        {subTabs.map((t) => (
+          <button
+            key={t.id}
+            onClick={() => setSub(t.id)}
+            style={{
+              padding: "8px 18px",
+              borderRadius: 20,
+              border: `1px solid ${sub === t.id ? "var(--teal-950)" : "var(--sand-200)"}`,
+              background: sub === t.id ? "var(--teal-950)" : "white",
+              color: sub === t.id ? "white" : "var(--ink)",
+              cursor: "pointer",
+              fontSize: "0.88rem",
+              fontWeight: 600,
+            }}
+          >
+            {t.label}
+          </button>
+        ))}
+      </div>
 
-        const newWord = {
-            id: Date.now(),
-            front: frontInput.value.trim(),
-            back: backInput.value.trim(),
-            notes: notesInput.value.trim(),
-            correctCount: 0,
-            wrongCount: 0
-        };
+      {sub === "flashcards" && (
+        <>
+          <PracticeCard title="תרגול אוצר מילים" desc="שליפה פעילה של מילים בכרטיסיות." onClick={() => setScreen({ screen: "flashcards", mode: "vocab" })} />
+          <PracticeCard title="תרגול אותיות" desc="היכרות וזיהוי מהיר של אותיות האלף-בית." onClick={() => setScreen({ screen: "flashcards", mode: "letters" })} />
+        </>
+      )}
+      {sub === "quiz" && (
+        <>
+          <PracticeCard title="מבחן אמריקאי · אוצר מילים" desc="בחירה מתוך 4 אפשרויות תרגום." onClick={() => setScreen({ screen: "quiz", mode: "vocab" })} />
+          <PracticeCard title="מבחן אמריקאי · אותיות" desc="בחירה מתוך 4 אפשרויות שם/הגייה." onClick={() => setScreen({ screen: "quiz", mode: "letters" })} />
+        </>
+      )}
+      {sub === "sentences" && <SentencesReadingHub />}
+    </div>
+  );
+}
 
-        vocabularyData.push(newWord);
-        saveState();
-        closeAddModal();
+function PracticeCard({ title, desc, onClick }) {
+  return (
+    <Card style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 12 }}>
+      <div>
+        <h3 style={{ fontSize: "1rem", fontWeight: 700, marginBottom: 4 }}>{title}</h3>
+        <p style={{ fontSize: "0.85rem", color: "var(--ink-muted)" }}>{desc}</p>
+      </div>
+      <ArrowButton onClick={onClick} title={title} />
+    </Card>
+  );
+}
 
-        renderVocabGrid();
-    }
+/* =========================================================================
+   VOCAB TAB
+   ========================================================================= */
+function VocabTab({ vocab, setVocab }) {
+  const [modalOpen, setModalOpen] = useState(false);
+  const [form, setForm] = useState({ front: "", back: "", notes: "" });
 
-    function exportDataJSON() {
-        const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(vocabularyData, null, 2));
-        const downloadAnchor = document.createElement('a');
-        downloadAnchor.setAttribute("href", dataStr);
-        downloadAnchor.setAttribute("download", `language_vocab_backup_${new Date().toISOString().slice(0,10)}.json`);
-        document.body.appendChild(downloadAnchor);
-        downloadAnchor.click();
-        downloadAnchor.remove();
-    }
+  const addWord = (e) => {
+    e.preventDefault();
+    if (!form.front.trim() || !form.back.trim()) return;
+    setVocab((prev) => [
+      ...prev,
+      { id: Date.now(), front: form.front.trim(), back: form.back.trim(), notes: form.notes.trim(), correctCount: 0, wrongCount: 0 },
+    ]);
+    setForm({ front: "", back: "", notes: "" });
+    setModalOpen(false);
+  };
 
-    function importDataJSON(event) {
-        const fileReader = new FileReader();
-        fileReader.onload = function(e) {
-            try {
-                const importedData = JSON.parse(e.target.result);
-                if (Array.isArray(importedData)) {
-                    vocabularyData = importedData;
-                    saveState();
-                    renderVocabGrid();
-                    renderCard();
-                    alert('הנתונים יובאו בהצלחה!');
-                } else {
-                    alert('קובץ ה-JSON אינו במבנה התקין.');
-                }
-            } catch (err) {
-                alert('שגיאה בקריאת הקובץ. וודא שזהו קובץ JSON תקין.');
-            }
-        };
-        if(event.target.files[0]) {
-            fileReader.readAsText(event.target.files[0]);
-        }
-    }
+  return (
+    <div className="zl-anim">
+      <SectionHeader title="חומת אוצר המילים" subtitle="לחץ על ריבוע ההוספה כדי לחבר מילה חדשה למאגר" />
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(135px, 1fr))", gap: 10 }}>
+        <button
+          onClick={() => setModalOpen(true)}
+          style={{
+            border: "2px dashed var(--gold)",
+            borderRadius: 10,
+            background: "var(--sand-100)",
+            color: "var(--teal-950)",
+            minHeight: 100,
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            justifyContent: "center",
+            gap: 6,
+            cursor: "pointer",
+          }}
+        >
+          <Plus size={22} />
+          <span style={{ fontSize: "0.8rem", fontWeight: 700 }}>הוסף מילה</span>
+        </button>
 
-    // === 7. VOCABULARY & ALPHABET RENDERERS ===
-    function renderVocabGrid() {
-        const container = document.getElementById('vocab-grid-container');
-        container.innerHTML = '';
+        {vocab.map((item) => {
+          const pct = progressPct(item);
+          const mastered = isMastered(item);
+          const struggling = isStruggling(item);
+          return (
+            <div
+              key={item.id}
+              style={{
+                background: mastered ? "var(--teal-700)" : struggling ? "var(--clay-bg)" : "var(--sand-100)",
+                color: mastered ? "white" : "var(--ink)",
+                border: `1px solid ${mastered ? "var(--teal-700)" : struggling ? "var(--clay)" : "var(--sand-200)"}`,
+                borderRadius: 10,
+                padding: 12,
+                minHeight: 100,
+                display: "flex",
+                flexDirection: "column",
+                justifyContent: "space-between",
+              }}
+            >
+              <div>
+                <div style={{ fontWeight: 700, fontSize: "1rem" }}>{item.front}</div>
+                <div style={{ fontSize: "0.78rem", opacity: 0.8, marginTop: 2 }}>{item.back}</div>
+              </div>
+              <div style={{ marginTop: 8 }} title={`התקדמות: ${pct}%`}>
+                <ProgressBar pct={pct} mastered={mastered} struggling={struggling} />
+              </div>
+            </div>
+          );
+        })}
+      </div>
 
-        const addCard = document.createElement('div');
-        addCard.className = 'vocab-card add-card';
-        addCard.onclick = openAddModal;
-        addCard.innerHTML = `
-            <svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
-            <span>הוסף מילה</span>
-        `;
-        container.appendChild(addCard);
+      {modalOpen && (
+        <div
+          onClick={() => setModalOpen(false)}
+          style={{ position: "fixed", inset: 0, background: "rgba(15,23,42,0.45)", display: "flex", alignItems: "center", justifyContent: "center", padding: 16, zIndex: 1000 }}
+        >
+          <div onClick={(e) => e.stopPropagation()} style={{ background: "white", borderRadius: 14, padding: 22, width: "100%", maxWidth: 420 }}>
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 16 }}>
+              <h3 className="zl-display" style={{ fontWeight: 700, color: "var(--teal-950)" }}>הוספת מילה חדשה</h3>
+              <button onClick={() => setModalOpen(false)} style={{ background: "none", border: "none", cursor: "pointer" }}><X size={18} /></button>
+            </div>
+            <form onSubmit={addWord}>
+              <FormField label="תעתיק עברי-ערבי" value={form.front} onChange={(v) => setForm((f) => ({ ...f, front: v }))} placeholder="למשל: כִּתַאבּ" required />
+              <FormField label="תרגום" value={form.back} onChange={(v) => setForm((f) => ({ ...f, back: v }))} placeholder="למשל: ספר" required />
+              <FormField label="הערות (רשות)" value={form.notes} onChange={(v) => setForm((f) => ({ ...f, notes: v }))} placeholder="למשל: ר' כֻּתֻבּ" />
+              <div style={{ display: "flex", gap: 8, justifyContent: "flex-end", marginTop: 16 }}>
+                <PrimaryButton variant="outline" onClick={() => setModalOpen(false)}>ביטול</PrimaryButton>
+                <PrimaryButton onClick={addWord}>הוסף למאגר</PrimaryButton>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
 
-        vocabularyData.forEach(item => {
-            const card = document.createElement('div');
-            card.className = 'vocab-card';
+const FormField = ({ label, value, onChange, placeholder, required }) => (
+  <div style={{ marginBottom: 12 }}>
+    <label style={{ display: "block", fontSize: "0.8rem", fontWeight: 700, marginBottom: 4 }}>{label}</label>
+    <input
+      value={value}
+      required={required}
+      onChange={(e) => onChange(e.target.value)}
+      placeholder={placeholder}
+      style={{ width: "100%", padding: "9px 12px", border: "1px solid var(--sand-200)", borderRadius: 8, fontSize: "0.9rem", outline: "none" }}
+    />
+  </div>
+);
 
-            const progressPct = Math.min(Math.round(((item.correctCount || 0) / 6) * 100), 100);
+/* =========================================================================
+   ALPHABET TAB
+   ========================================================================= */
+function AlphabetTab({ letters }) {
+  return (
+    <div className="zl-anim">
+      <SectionHeader title="אותיות האלף-בית והגייתן" subtitle="סקור את האותיות; ההתקדמות מוזנת מכרטיסיות ומהמבחן האמריקאי" />
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(115px, 1fr))", gap: 10 }}>
+        {letters.map((item) => {
+          const pct = progressPct(item);
+          const mastered = isMastered(item);
+          const struggling = isStruggling(item);
+          return (
+            <div
+              key={item.id}
+              style={{
+                background: mastered ? "var(--teal-700)" : struggling ? "var(--clay-bg)" : "var(--sand-100)",
+                color: mastered ? "white" : "var(--ink)",
+                border: `1px solid ${mastered ? "var(--teal-700)" : struggling ? "var(--clay)" : "var(--sand-200)"}`,
+                borderRadius: 10,
+                padding: 14,
+                textAlign: "center",
+              }}
+            >
+              <div className="zl-arabic" style={{ fontSize: "1.9rem", fontWeight: 700, marginBottom: 4 }}>{item.letter}</div>
+              <div style={{ fontSize: "0.85rem", fontWeight: 600 }}>{item.name}</div>
+              <div style={{ fontSize: "0.72rem", opacity: 0.75, marginTop: 2, marginBottom: 8 }}>{item.sound}</div>
+              <ProgressBar pct={pct} mastered={mastered} struggling={struggling} />
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
 
-            if (item.correctCount >= 6) {
-                card.classList.add('mastered');
-            } else if (item.wrongCount >= 2) {
-                card.classList.add('struggling');
-            }
+/* =========================================================================
+   ROOT APP
+   ========================================================================= */
+function ArabicLearningApp() {
+  const [tab, setTab] = useState("routine");
+  const [practiceScreen, setPracticeScreen] = useState(null);
 
-            card.innerHTML = `
-                <div>
-                    <div class="vocab-word">${item.front}</div>
-                    <div class="vocab-translation">${item.back}</div>
-                </div>
-                <div class="progress-container" title="התקדמות: ${item.correctCount || 0}/6 הצלחות">
-                    <div class="progress-bar" style="width: ${progressPct}%;"></div>
-                </div>
-            `;
-            container.appendChild(card);
-        });
-    }
+  const [vocab, setVocab] = usePersistedState("vocab-data", withProgressFields(DEFAULT_VOCAB));
+  const [letters, setLetters] = usePersistedState("letters-data", withProgressFields(ALPHABET));
+  const [checklist, setChecklist] = usePersistedState("routine-checklist", {});
 
-    function renderAlphabet() {
-        const container = document.getElementById('alphabet-container');
-        container.innerHTML = '';
-        alphabetData.forEach(item => {
-            const card = document.createElement('div');
-            card.className = 'letter-card';
-            card.innerHTML = `
-                <div class="letter-symbol">${item.letter}</div>
-                <div class="letter-name">${item.name}</div>
-                <div class="letter-sound">${item.sound}</div>
-            `;
-            container.appendChild(card);
-        });
-    }
+  const navigateFromRoutine = (target) => {
+    setTab("practice");
+    setPracticeScreen(target);
+  };
 
-    window.onload = () => {
-        saveState();
-        renderCard();
-        renderAlphabet();
-    };
+  return (
+    <div className="zl-root" style={{ padding: "20px 14px 60px" }}>
+      <GlobalStyle />
+      <div style={{ maxWidth: 880, margin: "0 auto" }}>
+        <header style={{ marginBottom: 24, borderBottom: "1px solid var(--sand-200)", paddingBottom: 16 }}>
+          <h1 className="zl-display" style={{ fontSize: "1.5rem", fontWeight: 700, color: "var(--teal-950)", letterSpacing: "-0.02em" }}>
+            לומדים ערבית
+          </h1>
+          <p style={{ color: "var(--ink-muted)", fontSize: "0.9rem", marginTop: 2 }}>
+            שליפה פעילה, קלט מובן ומעקב התקדמות
+          </p>
+        </header>
+
+        <TopNav
+          active={tab}
+          onChange={(t) => {
+            setTab(t);
+            if (t !== "practice") setPracticeScreen(null);
+          }}
+        />
+
+        {tab === "routine" && (
+          <RoutineTab checklist={checklist} setChecklist={setChecklist} navigateTo={navigateFromRoutine} />
+        )}
+        {tab === "practice" && (
+          <PracticeTab
+            screen={practiceScreen}
+            setScreen={setPracticeScreen}
+            vocab={vocab} setVocab={setVocab}
+            letters={letters} setLetters={setLetters}
+          />
+        )}
+        {tab === "vocab" && <VocabTab vocab={vocab} setVocab={setVocab} />}
+        {tab === "alphabet" && <AlphabetTab letters={letters} />}
+      </div>
+    </div>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById("root")).render(<ArabicLearningApp />);
 </script>
 </body>
 </html>
