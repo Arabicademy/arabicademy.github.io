@@ -11,6 +11,8 @@
     text-align: left;
     font-family: monospace;
     white-space: pre-wrap;
+    word-break: break-all;
+    overflow-wrap: anywhere;
     background: #fee2e2;
     color: #7f1d1d;
     border: 2px solid #dc2626;
@@ -38,7 +40,13 @@
   function showBootError(title, err) {
     var box = document.getElementById('boot-error');
     box.style.display = 'block';
-    box.textContent = title + '\n\n' + (err && err.stack ? err.stack : String(err));
+    var name = (err && err.name) ? err.name : 'Error';
+    var message = (err && err.message) ? err.message : String(err);
+    var stack = (err && err.stack) ? err.stack : '';
+    box.textContent =
+      title + '\n\n' +
+      name + ': ' + message + '\n\n' +
+      '--- stack ---\n' + stack;
   }
   window.addEventListener('error', function (e) {
     showBootError('שגיאת JavaScript:', e.error || e.message);
