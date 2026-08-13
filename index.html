@@ -153,12 +153,17 @@ const GLOBAL_CSS = `
     .zl-fatiha-rule { flex:1; height:1px; background:var(--sand-200); }
     .zl-fatiha-sub { font-size:0.66rem; font-weight:600; letter-spacing:0.06em; color:var(--ink-muted); }
     .zl-fatiha-body {
-      font-size:0.88rem;
+      font-size:14px;
       font-weight:600;
       line-height:2.15;
       color:var(--ink);
       margin:0;
-      text-align:right;
+      text-align:justify;
+      text-align-last:justify;
+      text-justify:inter-word;
+      hyphens:none;
+      overflow-wrap:normal;
+      word-break:normal;
     }
     .zl-fatiha-verse { white-space:normal; }
     .zl-fatiha-num {
@@ -223,7 +228,7 @@ const GLOBAL_CSS = `
 
     @media (max-width:520px) {
       .zl-fatiha { padding:11px 12px 12px; }
-      .zl-fatiha-body { font-size:0.84rem; line-height:2.1; }
+      .zl-fatiha-body { line-height:2.1; }
       .zl-method-head { padding:15px 14px; gap:12px; }
     }
 
@@ -459,15 +464,91 @@ const SectionHeader = ({ title, subtitle }) => (React.createElement("div", { sty
     React.createElement("h2", { className: "zl-display", style: { fontSize: "1.15rem", fontWeight: 700, color: "var(--ink)" } }, title),
     subtitle && (React.createElement("p", { style: { color: "var(--ink-muted)", fontSize: "0.85rem", marginTop: 4 } }, subtitle))));
 
-const AlFatihaCard = () => (React.createElement("section", { className: "zl-fatiha", "aria-label": "\u05E1\u05D5\u05E8\u05EA \u05D0\u05DC-\u05E4\u05D0\u05EA\u05D9\u05D7\u05D4" },
-    React.createElement("div", { className: "zl-fatiha-head" },
-        React.createElement("span", { className: "zl-arabic zl-fatiha-title" }, "\u0633\u0648\u0631\u0629 \u0627\u0644\u0641\u0627\u062A\u062D\u0629"),
-        React.createElement("span", { className: "zl-fatiha-rule" }),
-        React.createElement("span", { className: "zl-fatiha-sub" }, "\u05E1\u05D5\u05E8\u05EA \u05D0\u05DC-\u05E4\u05D0\u05EA\u05D9\u05D7\u05D4")),
-    React.createElement("p", { className: "zl-display zl-fatiha-body" }, AL_FATIHA.map((v) => (React.createElement("span", { key: v.num, className: "zl-fatiha-verse" },
-        v.text,
-        React.createElement("span", { className: "zl-fatiha-num", "aria-label": "\u05E4\u05E1\u05D5\u05E7 " + v.num }, v.num),
-        " "))))));
+/* The surah is rendered as one justified block. Both edges are flush on every
+   line, and the type size is auto-fitted so the final line lands full-width
+   instead of leaving a short "tail" — the fit re-runs on resize, orientation
+   change and after the webfont loads, so it holds on any screen. */
+const FATIHA_MIN_PX = 11.5;
+const FATIHA_MAX_PX = 15.5;
+const FATIHA_STEP_PX = 0.25;
+
+function lastLineFill(el) {
+    const range = document.createRange();
+    range.selectNodeContents(el);
+    const rects = Array.from(range.getClientRects()).filter((r) => r.width > 1 && r.height > 1);
+    if (rects.length === 0) return { ratio: 1, lines: 1 };
+    const lines = [];
+    rects.forEach((r) => {
+        const line = lines.find((l) => Math.abs(l.top - r.top) < 6);
+        if (line) {
+            line.left = Math.min(line.left, r.left);
+            line.right = Math.max(line.right, r.right);
+        } else {
+            lines.push({ top: r.top, left: r.left, right: r.right });
+        }
+    });
+    lines.sort((a, b) => a.top - b.top);
+    const last = lines[lines.length - 1];
+    const width = el.clientWidth || 1;
+    return { ratio: Math.min(1, (last.right - last.left) / width), lines: lines.length };
+}
+
+function fitFatiha(el) {
+    if (!el || !el.clientWidth) return;
+    const prevAlignLast = el.style.textAlignLast;
+    el.style.textAlignLast = "auto";
+    let best = null;
+    for (let px = FATIHA_MAX_PX; px >= FATIHA_MIN_PX - 0.001; px -= FATIHA_STEP_PX) {
+        el.style.fontSize = px + "px";
+        const measured = lastLineFill(el);
+        if (measured.lines === 1) { best = { px: px, ratio: 1 }; break; }
+        if (!best || measured.ratio > best.ratio + 0.005) best = { px: px, ratio: measured.ratio };
+        if (measured.ratio >= 0.97) break;
+    }
+    el.style.fontSize = (best ? best.px : 14) + "px";
+    el.style.textAlignLast = prevAlignLast || "justify";
+}
+
+const AlFatihaCard = () => {
+    const bodyRef = useRef(null);
+    useEffect(() => {
+        const el = bodyRef.current;
+        if (!el) return;
+        let frame = null;
+        const run = () => {
+            if (frame) cancelAnimationFrame(frame);
+            frame = requestAnimationFrame(() => fitFatiha(el));
+        };
+        run();
+        if (document.fonts && document.fonts.ready && document.fonts.ready.then) {
+            document.fonts.ready.then(run).catch(() => {});
+        }
+        let observer = null;
+        if (typeof ResizeObserver !== "undefined") {
+            observer = new ResizeObserver(run);
+            observer.observe(el);
+        } else {
+            window.addEventListener("resize", run);
+        }
+        window.addEventListener("orientationchange", run);
+        return () => {
+            if (frame) cancelAnimationFrame(frame);
+            if (observer) observer.disconnect();
+            else window.removeEventListener("resize", run);
+            window.removeEventListener("orientationchange", run);
+        };
+    }, []);
+
+    return (React.createElement("section", { className: "zl-fatiha", "aria-label": "\u05E1\u05D5\u05E8\u05EA \u05D0\u05DC-\u05E4\u05D0\u05EA\u05D9\u05D7\u05D4" },
+        React.createElement("div", { className: "zl-fatiha-head" },
+            React.createElement("span", { className: "zl-arabic zl-fatiha-title" }, "\u0633\u0648\u0631\u0629 \u0627\u0644\u0641\u0627\u062A\u062D\u0629"),
+            React.createElement("span", { className: "zl-fatiha-rule" }),
+            React.createElement("span", { className: "zl-fatiha-sub" }, "\u05E1\u05D5\u05E8\u05EA \u05D0\u05DC-\u05E4\u05D0\u05EA\u05D9\u05D7\u05D4")),
+        React.createElement("p", { ref: bodyRef, className: "zl-display zl-fatiha-body" }, AL_FATIHA.map((v, i) => (React.createElement("span", { key: v.num, className: "zl-fatiha-verse" },
+            v.text,
+            React.createElement("span", { className: "zl-fatiha-num", "aria-label": "\u05E4\u05E1\u05D5\u05E7 " + v.num }, v.num),
+            i < AL_FATIHA.length - 1 ? " " : "")))))); 
+};
 
 const ArrowButton = ({ onClick, title }) => (React.createElement("button", { type: "button", onClick: onClick, title: title, "aria-label": title, style: {
         background: "var(--sand)",
