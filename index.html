@@ -60,6 +60,7 @@ try {
   }
 "use strict";
 const { useState, useEffect, useCallback, useMemo, useRef } = React;
+
 /* Inline icon set (stand-ins for lucide-react, so this file has zero build
    dependencies and can be pasted straight into a static HTML page). */
 const iconBase = (props) => ({
@@ -94,50 +95,56 @@ const BookOpen = (p) => React.createElement("svg", { ...iconBase(p) },
     React.createElement("path", { d: "M2 5.5A2.5 2.5 0 0 1 4.5 3H12v18H4.5A2.5 2.5 0 0 1 2 18.5v-13zM22 5.5A2.5 2.5 0 0 0 19.5 3H12v18h7.5a2.5 2.5 0 0 0 2.5-2.5v-13z" }));
 const TypeIcon = (p) => React.createElement("svg", { ...iconBase(p) },
     React.createElement("path", { d: "M4 7V4h16v3M9 20h6M12 4v16" }));
+
 /* =========================================================================
    FONTS / GLOBAL STYLE INJECTION
-   Heebo               -> UI text (clean, professional Hebrew sans)
-   Noto Naskh Arabic    -> Arabic glyphs (alphabet tab only)
-
-   Palette kept faithful to the original prototype: navy primary, white
-   cards on a soft blue-gray page background, restrained accent color.
+   FIX #1: the stylesheet used to be built with .join("\\n"), which put a
+   literal backslash-n between every CSS line. In CSS a backslash escapes the
+   next character, so "}\nzl-root" collapsed to "}n.zl-root" and every rule
+   after the first was silently dropped. It is now a plain template string.
    ========================================================================= */
-const GLOBAL_CSS = [
-    "",
-    "    @import url('https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;600;700;800&family=Noto+Naskh+Arabic:wght@500;700&display=swap');",
-    "",
-    "    .zl-root {",
-    "      --teal-950:#1E3A8A;",
-    "      --teal-800:#1E40AF;",
-    "      --teal-700:#059669;",
-    "      --teal-600:#3B82F6;",
-    "      --sand:#F1F5F9;",
-    "      --sand-100:#FFFFFF;",
-    "      --sand-200:#CBD5E1;",
-    "      --gold:#3B82F6;",
-    "      --gold-dim:#93C5FD;",
-    "      --clay:#DC2626;",
-    "      --clay-bg:#FEF2F2;",
-    "      --ink:#0F172A;",
-    "      --ink-muted:#64748B;",
-    "      font-family:'Heebo',sans-serif;",
-    "      background:var(--sand);",
-    "      color:var(--ink);",
-    "      min-height:100vh;",
-    "      direction:rtl;",
-    "    }",
-    "    .zl-root * { box-sizing:border-box; }",
-    "    .zl-display { font-family:'Heebo',sans-serif; }",
-    "    .zl-arabic { font-family:'Noto Naskh Arabic',serif; }",
-    "",
-    "    .zl-scrollbar::-webkit-scrollbar { height:6px; width:6px; }",
-    "    .zl-scrollbar::-webkit-scrollbar-thumb { background:var(--gold-dim); border-radius:3px; }",
-    "",
-    "    @keyframes zl-fade { from { opacity:0; transform:translateY(4px);} to { opacity:1; transform:translateY(0);} }",
-    "    .zl-anim { animation: zl-fade 0.2s ease; }",
-    "  "
-].join("\\n");
+const GLOBAL_CSS = `
+    @import url('https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;600;700;800&family=Noto+Naskh+Arabic:wght@500;700&display=swap');
+
+    .zl-root {
+      --teal-950:#1E3A8A;
+      --teal-800:#1E40AF;
+      --teal-700:#059669;
+      --teal-600:#3B82F6;
+      --sand:#F1F5F9;
+      --sand-100:#FFFFFF;
+      --sand-200:#CBD5E1;
+      --gold:#3B82F6;
+      --gold-dim:#93C5FD;
+      --clay:#DC2626;
+      --clay-bg:#FEF2F2;
+      --ink:#0F172A;
+      --ink-muted:#64748B;
+      font-family:'Heebo',sans-serif;
+      background:var(--sand);
+      color:var(--ink);
+      min-height:100vh;
+      direction:rtl;
+    }
+    .zl-root * { box-sizing:border-box; }
+    .zl-display { font-family:'Heebo',sans-serif; }
+    .zl-arabic { font-family:'Noto Naskh Arabic',serif; }
+
+    .zl-scrollbar::-webkit-scrollbar { height:6px; width:6px; }
+    .zl-scrollbar::-webkit-scrollbar-thumb { background:var(--gold-dim); border-radius:3px; }
+
+    .zl-root button:focus-visible,
+    .zl-root input:focus-visible { outline:2px solid var(--teal-600); outline-offset:2px; }
+
+    @keyframes zl-fade { from { opacity:0; transform:translateY(4px);} to { opacity:1; transform:translateY(0);} }
+    .zl-anim { animation: zl-fade 0.2s ease; }
+
+    @media (prefers-reduced-motion: reduce) {
+      .zl-anim { animation: none; }
+    }
+`;
 const GlobalStyle = () => (React.createElement("style", null, GLOBAL_CSS));
+
 /* =========================================================================
    DATA
    ========================================================================= */
@@ -207,6 +214,7 @@ const DEFAULT_VOCAB = [
     { id: 63, front: "חַמַּאם", back: "אמבטיה / בית שימוש", notes: "ר' חַמַּאמַאת" },
     { id: 64, front: "מֻחַאמַאה", back: "עריכת דין", notes: "" },
 ];
+
 const ALPHABET = [
     { id: 1, letter: "أ", name: "אָלִף", sound: "א / עיצור גרוני" },
     { id: 2, letter: "ب", name: "בָּא", sound: "בּ" },
@@ -237,6 +245,7 @@ const ALPHABET = [
     { id: 27, letter: "و", name: "וָאוּ", sound: "ו / W" },
     { id: 28, letter: "ي", name: "יָא", sound: "י" },
 ];
+
 // sentences used for reading practice + sentence-building game (hebrew meaning <-> arabic transliteration)
 const SENTENCES = [
     { id: 1, hebrew: "בוקר טוב", arabic: "צבאח אל חיר" },
@@ -255,6 +264,7 @@ const SENTENCES = [
     { id: 14, hebrew: "אלוהים יברך אותך לשלום", arabic: "אללה יסלמכ" },
     { id: 15, hebrew: "השלום לפני הדיבורים", arabic: "אס סלאם קבל אל כלאם" },
 ];
+
 const IDIOMS = [
     { id: 1, arabic: "לַאזֶם תַתַעַדַּא פִי, קַבְּל מַא יַתַעַשַּׁא פִיכּ", literal: "תאכל אותו לארוחת צהריים, לפני שהוא יאכל אותך לארוחת ערב", meaning: "תקדים תרופה למכה" },
     { id: 2, arabic: "אלִי כַּתַבוֹ רַבַּנַא בִּידוֹ יְצִיר", literal: "מה שכתב הבורא, זה מה שיקרה", meaning: "מה שיהיה - יהיה" },
@@ -269,7 +279,10 @@ const IDIOMS = [
     { id: 11, arabic: "עַיִשׁ חַיַאתַכּ", literal: "חיה את חייך", meaning: "שחרר, תהנה מהרגע" },
     { id: 12, arabic: "הוּ פִי וַאד וַאַנַא פִי וַאד", literal: "הוא בוואדי ואני בוואדי", meaning: "כל אחד במקום אחר, יש ריחוק" },
 ];
-// Surat al-Fatiha, shown in the page header (verse number = ayah number)
+
+/* FIX #2: verse 7 contained stray Arabic diacritics (fatha / damma / shadda)
+   inside the Hebrew transliteration, which flipped the text direction
+   mid-line and rendered as broken glyphs. Now Hebrew characters only. */
 const AL_FATIHA = [
     { num: 1, text: "בִּסְמִ אַלְלָּה אָלְרַּחְמָּן אָלְרַּחִים" },
     { num: 2, text: "אַלְחַמְדֻ לִילָּה רַבִּ אָלְעָאלַמִין" },
@@ -277,21 +290,22 @@ const AL_FATIHA = [
     { num: 4, text: "מָאלִכִ יָאוום אָלְדִּין" },
     { num: 5, text: "אִיָּאכַּ נַעְבֻדֻ וָאִיָּאכַּ נַסְתָּעִין" },
     { num: 6, text: "אִהְדִנָּא אָלְצִירָאטָ אָלְמֻסְתָקִים" },
-    { num: 7, text: "צִירָאטָ אָלְדִּ'ינָּ אֲנְעָמְתَ עֲלַיְהִים, גַ'יְרִ אָלְמַגְצُובִ עֲלַיְהִים וָלָא אָלְצָאלִין" },
+    { num: 7, text: "צִירָאטָ אָלְדִּ'ינָ אֲנְעָמְתָ עֲלַיְהִים, גַ'יְרִ אָלְמַגְצוּבִ עֲלַיְהִים וָלָא אָלְצָאלִין" },
 ];
+
 /* =========================================================================
    PROGRESS HELPERS
-   Progress balances correct against wrong answers, capped at a "mastery"
-   threshold of 6 net-correct points, floored at 0.
    ========================================================================= */
 const MASTERY_TARGET = 6;
 const netScore = (item) => Math.max(0, (item.correctCount || 0) - 0.5 * (item.wrongCount || 0));
 const progressPct = (item) => Math.min(100, Math.round((netScore(item) / MASTERY_TARGET) * 100));
 const isMastered = (item) => progressPct(item) >= 100;
 const isStruggling = (item) => !isMastered(item) && (item.wrongCount || 0) >= 2 && progressPct(item) < 50;
+
 function withProgressFields(list) {
     return list.map((i) => ({ correctCount: 0, wrongCount: 0, ...i }));
 }
+
 function shuffle(arr) {
     const a = [...arr];
     for (let i = a.length - 1; i > 0; i--) {
@@ -300,14 +314,39 @@ function shuffle(arr) {
     }
     return a;
 }
+
+/* FIX #3: items added to DEFAULT_VOCAB / ALPHABET after a user's first visit
+   never appeared, because the saved copy in localStorage replaced the
+   defaults wholesale. New default items are now merged in by id, while
+   saved progress and user-created words are preserved. */
+function mergeDefaults(stored, defaults) {
+    if (!Array.isArray(stored)) return withProgressFields(defaults);
+    const byId = new Map(stored.map((item) => [item.id, item]));
+    const merged = stored.map((item) => ({ correctCount: 0, wrongCount: 0, ...item }));
+    defaults.forEach((def) => {
+        const existing = byId.get(def.id);
+        if (!existing) {
+            merged.push({ correctCount: 0, wrongCount: 0, ...def });
+        } else {
+            Object.assign(existing, def, {
+                correctCount: existing.correctCount || 0,
+                wrongCount: existing.wrongCount || 0,
+            });
+        }
+    });
+    return merged;
+}
+
 /* =========================================================================
-   PERSISTENCE (window.storage — personal, per-user)
+   PERSISTENCE (localStorage)
    ========================================================================= */
-function usePersistedState(key, initial) {
+function usePersistedState(key, initial, reviver) {
     const [state, setState] = useState(() => {
         try {
             const raw = window.localStorage.getItem(key);
-            return raw ? JSON.parse(raw) : initial;
+            if (!raw) return initial;
+            const parsed = JSON.parse(raw);
+            return reviver ? reviver(parsed) : parsed;
         }
         catch (e) {
             return initial;
@@ -323,12 +362,14 @@ function usePersistedState(key, initial) {
     }, [key, state]);
     return [state, setState];
 }
+
 /* =========================================================================
    SHARED UI ATOMS
    ========================================================================= */
 const SectionHeader = ({ title, subtitle }) => (React.createElement("div", { style: { marginBottom: 12 } },
     React.createElement("h2", { className: "zl-display", style: { fontSize: "1.15rem", fontWeight: 700, color: "var(--ink)" } }, title),
     subtitle && (React.createElement("p", { style: { color: "var(--ink-muted)", fontSize: "0.85rem", marginTop: 4 } }, subtitle))));
+
 const AlFatihaBlock = () => (React.createElement("div", { style: {
         marginTop: 12,
         background: "var(--sand)",
@@ -336,8 +377,8 @@ const AlFatihaBlock = () => (React.createElement("div", { style: {
         borderRadius: 10,
         padding: "14px 16px",
     } },
-    React.createElement("div", { style: {
-            fontSize: "0.72rem",
+    React.createElement("div", { className: "zl-arabic", style: {
+            fontSize: "0.85rem",
             fontWeight: 700,
             color: "var(--gold)",
             letterSpacing: "0.03em",
@@ -359,7 +400,8 @@ const AlFatihaBlock = () => (React.createElement("div", { style: {
                 marginTop: 2,
             } }, v.num),
         React.createElement("span", { className: "zl-display", style: { fontSize: "0.98rem", fontWeight: 600, color: "var(--ink)", lineHeight: 1.7 } }, v.text)))))));
-const ArrowButton = ({ onClick, title }) => (React.createElement("button", { onClick: onClick, title: title, style: {
+
+const ArrowButton = ({ onClick, title }) => (React.createElement("button", { type: "button", onClick: onClick, title: title, "aria-label": title, style: {
         background: "var(--sand)",
         color: "var(--teal-950)",
         border: "1px solid var(--sand-200)",
@@ -382,7 +424,8 @@ const ArrowButton = ({ onClick, title }) => (React.createElement("button", { onC
         e.currentTarget.style.borderColor = "var(--sand-200)";
     } },
     React.createElement(ChevronLeft, { size: 16 })));
-const BackLink = ({ onClick, children }) => (React.createElement("button", { onClick: onClick, style: {
+
+const BackLink = ({ onClick, children }) => (React.createElement("button", { type: "button", onClick: onClick, style: {
         display: "inline-flex",
         alignItems: "center",
         gap: 6,
@@ -396,6 +439,7 @@ const BackLink = ({ onClick, children }) => (React.createElement("button", { onC
     } },
     React.createElement(ChevronRight, { size: 15 }),
     children));
+
 const Card = ({ children, style }) => (React.createElement("div", { style: {
         background: "var(--sand-100)",
         border: "1px solid var(--sand-200)",
@@ -404,7 +448,12 @@ const Card = ({ children, style }) => (React.createElement("div", { style: {
         boxShadow: "0 1px 2px rgba(15,23,42,0.05)",
         ...style,
     } }, children));
-const PrimaryButton = ({ children, onClick, style, variant = "solid", disabled = false }) => {
+
+/* FIX #4: buttons rendered without an explicit type default to
+   type="submit" inside a <form>. The "ביטול" button in the add-word modal
+   therefore submitted the form and saved the word it was meant to discard.
+   Buttons are now type="button" unless a type is passed in. */
+const PrimaryButton = ({ children, onClick, style, variant = "solid", disabled = false, type = "button" }) => {
     const base = {
         border: "none",
         borderRadius: 9,
@@ -425,10 +474,11 @@ const PrimaryButton = ({ children, onClick, style, variant = "solid", disabled =
         danger: { background: "var(--clay)", color: "white" },
         success: { background: "var(--teal-700)", color: "white" },
     };
-    return (React.createElement("button", { onClick: disabled ? undefined : onClick, disabled: disabled, style: { ...base, ...variants[variant], ...style }, onMouseEnter: (e) => { if (!disabled)
+    return (React.createElement("button", { type: type, onClick: disabled ? undefined : onClick, disabled: disabled, style: { ...base, ...variants[variant], ...style }, onMouseEnter: (e) => { if (!disabled)
             e.currentTarget.style.opacity = 0.85; }, onMouseLeave: (e) => { if (!disabled)
             e.currentTarget.style.opacity = 1; } }, children));
 };
+
 const ProgressBar = ({ pct, mastered, struggling }) => (React.createElement("div", { style: { width: "100%", height: 5, background: "var(--sand-200)", borderRadius: 3, overflow: "hidden" } },
     React.createElement("div", { style: {
             height: "100%",
@@ -436,6 +486,7 @@ const ProgressBar = ({ pct, mastered, struggling }) => (React.createElement("div
             background: mastered ? "var(--teal-700)" : struggling ? "var(--clay)" : "var(--gold)",
             transition: "width .3s ease",
         } })));
+
 /* =========================================================================
    TOP-LEVEL NAV
    ========================================================================= */
@@ -445,6 +496,7 @@ const MAIN_TABS = [
     { id: "vocab", label: "אוצר מילים", Icon: BookOpen },
     { id: "alphabet", label: "אלף-בית", Icon: TypeIcon },
 ];
+
 function TopNav({ active, onChange }) {
     return (React.createElement("div", { className: "zl-scrollbar", style: {
             display: "flex",
@@ -452,7 +504,7 @@ function TopNav({ active, onChange }) {
             overflowX: "auto",
             borderBottom: "1px solid var(--sand-200)",
             marginBottom: 20,
-        } }, MAIN_TABS.map((t) => (React.createElement("button", { key: t.id, onClick: () => onChange(t.id), style: {
+        } }, MAIN_TABS.map((t) => (React.createElement("button", { key: t.id, type: "button", onClick: () => onChange(t.id), style: {
             display: "flex",
             alignItems: "center",
             gap: 8,
@@ -469,6 +521,7 @@ function TopNav({ active, onChange }) {
         React.createElement(t.Icon, { size: 16 }),
         t.label)))));
 }
+
 /* =========================================================================
    ROUTINE TAB
    ========================================================================= */
@@ -477,8 +530,18 @@ const ROUTINE_ITEMS = [
     { key: "noon", label: "צהריים", desc: "תרגול הבנה: קריאה והגייה", target: { screen: "reading" } },
     { key: "evening", label: "ערב", desc: "קריאה והרכבת משפטים", target: { screen: "sentence-builder" } },
 ];
+
+/* FIX #5: the date key used toISOString(), which is UTC. Between 00:00 and
+   03:00 Israel time the checklist jumped back to the previous day's boxes.
+   The key is now built from the local date. */
+function localDateKey(d) {
+    const dt = d || new Date();
+    const pad = (n) => String(n).padStart(2, "0");
+    return dt.getFullYear() + "-" + pad(dt.getMonth() + 1) + "-" + pad(dt.getDate());
+}
+
 function RoutineTab({ checklist, setChecklist, navigateTo }) {
-    const today = new Date().toISOString().slice(0, 10);
+    const today = localDateKey();
     const todayState = checklist[today] || {};
     const toggle = (key) => {
         setChecklist((prev) => ({
@@ -496,13 +559,14 @@ function RoutineTab({ checklist, setChecklist, navigateTo }) {
                 padding: "16px 0",
                 borderBottom: idx < ROUTINE_ITEMS.length - 1 ? "1px solid var(--sand-200)" : "none",
             } },
-            React.createElement("div", { style: { display: "flex", alignItems: "center", gap: 14 } },
+            React.createElement("label", { style: { display: "flex", alignItems: "center", gap: 14, cursor: "pointer" } },
                 React.createElement("input", { type: "checkbox", checked: !!todayState[item.key], onChange: () => toggle(item.key), style: { width: 20, height: 20, accentColor: "var(--teal-700)", cursor: "pointer" } }),
                 React.createElement("div", null,
                     React.createElement("div", { style: { fontWeight: 700 } }, item.label),
                     React.createElement("div", { style: { fontSize: "0.85rem", color: "var(--ink-muted)" } }, item.desc))),
             React.createElement(ArrowButton, { title: "\u05E2\u05D1\u05D5\u05E8 \u05DC\u05EA\u05E8\u05D2\u05D5\u05DC", onClick: () => navigateTo(item.target) })))))));
 }
+
 /* =========================================================================
    FLASHCARD PRACTICE (shared for vocab + letters)
    ========================================================================= */
@@ -511,30 +575,43 @@ function FlashcardPractice({ mode, vocab, setVocab, letters, setLetters, onBack 
     const setData = mode === "vocab" ? setVocab : setLetters;
     const [index, setIndex] = useState(0);
     const [flipped, setFlipped] = useState(false);
+    const timerRef = useRef(null);
+
     useEffect(() => {
         if (index >= data.length)
             setIndex(0);
     }, [data.length, index]);
+
+    /* FIX #6: the "next card" setTimeout kept running after the component
+       unmounted (for example when the back link was pressed right after
+       answering), causing a state update on an unmounted component. */
+    useEffect(() => () => { if (timerRef.current) clearTimeout(timerRef.current); }, []);
+
     if (data.length === 0) {
         return (React.createElement("div", { className: "zl-anim" },
             React.createElement(BackLink, { onClick: onBack }, "\u05D7\u05D6\u05E8\u05D4 \u05DC\u05E9\u05D9\u05D8\u05D5\u05EA \u05EA\u05E8\u05D2\u05D5\u05DC"),
             React.createElement(Card, null, "\u05D0\u05D9\u05DF \u05E4\u05E8\u05D9\u05D8\u05D9\u05DD \u05D1\u05DE\u05D0\u05D2\u05E8 \u05E2\u05D3\u05D9\u05D9\u05DF.")));
     }
-    const item = data[index];
+
+    const item = data[Math.min(index, data.length - 1)];
     const frontText = mode === "vocab" ? item.front : item.letter;
     const backText = mode === "vocab" ? item.back : item.name;
     const noteText = mode === "vocab" ? item.notes : item.sound;
+
     const mark = (correct) => {
-        setData((prev) => prev.map((d, i) => i === index
+        setData((prev) => prev.map((d) => d.id === item.id
             ? { ...d, correctCount: (d.correctCount || 0) + (correct ? 1 : 0), wrongCount: (d.wrongCount || 0) + (correct ? 0 : 1) }
             : d));
         setFlipped(false);
-        setTimeout(() => setIndex((i) => (i + 1) % data.length), 250);
+        if (timerRef.current) clearTimeout(timerRef.current);
+        timerRef.current = setTimeout(() => setIndex((i) => (i + 1) % data.length), 250);
     };
+
     const mastered = isMastered(item);
     const struggling = isStruggling(item);
     const faceBg = mastered ? "var(--teal-700)" : struggling ? "var(--clay-bg)" : "var(--sand-100)";
     const faceColor = mastered ? "white" : "var(--ink)";
+
     return (React.createElement("div", { className: "zl-anim" },
         React.createElement(BackLink, { onClick: onBack }, "\u05D7\u05D6\u05E8\u05D4 \u05DC\u05E9\u05D9\u05D8\u05D5\u05EA \u05EA\u05E8\u05D2\u05D5\u05DC"),
         React.createElement(Card, null,
@@ -543,7 +620,7 @@ function FlashcardPractice({ mode, vocab, setVocab, letters, setLetters, onBack 
                     "\u05EA\u05E8\u05D2\u05D5\u05DC \u05DB\u05E8\u05D8\u05D9\u05E1\u05D9\u05D5\u05EA \u00B7 ",
                     mode === "vocab" ? "אוצר מילים" : "אותיות"),
                 React.createElement("span", { style: { fontSize: "0.85rem", color: "var(--ink-muted)" } },
-                    index + 1,
+                    Math.min(index, data.length - 1) + 1,
                     " / ",
                     data.length)),
             React.createElement("div", { onClick: () => setFlipped((f) => !f), style: {
@@ -586,16 +663,29 @@ function FlashcardPractice({ mode, vocab, setVocab, letters, setLetters, onBack 
                 " | \u05DB\u05E9\u05DC\u05D5\u05E0\u05D5\u05EA: ",
                 item.wrongCount || 0))));
 }
+
 /* =========================================================================
    AMERICAN QUIZ (multiple choice, shared for vocab + letters)
    ========================================================================= */
 function buildQuestion(data, item, mode) {
     const correctAnswer = mode === "vocab" ? item.back : item.name;
-    const pool = data.filter((d) => d.id !== item.id);
-    const distractors = shuffle(pool).slice(0, 3).map((d) => (mode === "vocab" ? d.back : d.name));
+    /* FIX #7: distractors were only filtered by id, so a word whose
+       translation matched the correct answer could appear twice — one of the
+       two identical buttons scored as wrong. Filtered by answer text now. */
+    const pool = data.filter((d) => d.id !== item.id && (mode === "vocab" ? d.back : d.name) !== correctAnswer);
+    const seen = new Set();
+    const distractors = [];
+    shuffle(pool).forEach((d) => {
+        const text = mode === "vocab" ? d.back : d.name;
+        if (distractors.length < 3 && !seen.has(text)) {
+            seen.add(text);
+            distractors.push(text);
+        }
+    });
     const options = shuffle([correctAnswer, ...distractors]);
     return { prompt: mode === "vocab" ? item.front : item.letter, options, correctAnswer };
 }
+
 function AmericanQuiz({ mode, vocab, setVocab, letters, setLetters, onBack }) {
     const data = mode === "vocab" ? vocab : letters;
     const setData = mode === "vocab" ? setVocab : setLetters;
@@ -604,22 +694,44 @@ function AmericanQuiz({ mode, vocab, setVocab, letters, setLetters, onBack }) {
     const [question, setQuestion] = useState(null);
     const [selected, setSelected] = useState(null);
     const [score, setScore] = useState({ correct: 0, total: 0 });
+    const timerRef = useRef(null);
+
+    /* FIX #8: the question order was shuffled once, when the quiz first
+       mounted. Words added afterwards were never asked, and every pass
+       through the deck repeated the same sequence. The order is now rebuilt
+       whenever the deck changes, and reshuffled at the end of each pass. */
     useEffect(() => {
-        if (data.length === 0)
+        setOrder(shuffle(data.map((_, i) => i)));
+        setPos(0);
+    }, [data.length, mode]);
+
+    useEffect(() => {
+        if (data.length === 0 || order.length === 0)
             return;
+        if (pos > 0 && pos % order.length === 0) {
+            setOrder(shuffle(data.map((_, i) => i)));
+        }
         const item = data[order[pos % order.length]];
+        if (!item) return;
         setQuestion(buildQuestion(data, item, mode));
         setSelected(null);
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [pos, data.length]);
+    }, [pos, order, data.length]);
+
+    useEffect(() => () => { if (timerRef.current) clearTimeout(timerRef.current); }, []);
+
     if (data.length < 4) {
         return (React.createElement("div", { className: "zl-anim" },
             React.createElement(BackLink, { onClick: onBack }, "\u05D7\u05D6\u05E8\u05D4 \u05DC\u05E9\u05D9\u05D8\u05D5\u05EA \u05EA\u05E8\u05D2\u05D5\u05DC"),
             React.createElement(Card, null, "\u05E6\u05E8\u05D9\u05DA \u05DC\u05E4\u05D7\u05D5\u05EA 4 \u05E4\u05E8\u05D9\u05D8\u05D9\u05DD \u05D1\u05DE\u05D0\u05D2\u05E8 \u05DB\u05D3\u05D9 \u05DC\u05D4\u05E8\u05D9\u05E5 \u05DE\u05D1\u05D7\u05DF \u05D0\u05DE\u05E8\u05D9\u05E7\u05D0\u05D9.")));
     }
-    if (!question)
+    if (!question || order.length === 0)
         return null;
+
     const currentItem = data[order[pos % order.length]];
+    if (!currentItem)
+        return null;
+
     const choose = (opt) => {
         if (selected)
             return;
@@ -629,8 +741,10 @@ function AmericanQuiz({ mode, vocab, setVocab, letters, setLetters, onBack }) {
         setData((prev) => prev.map((d) => d.id === currentItem.id
             ? { ...d, correctCount: (d.correctCount || 0) + (correct ? 1 : 0), wrongCount: (d.wrongCount || 0) + (correct ? 0 : 1) }
             : d));
-        setTimeout(() => setPos((p) => p + 1), 700);
+        if (timerRef.current) clearTimeout(timerRef.current);
+        timerRef.current = setTimeout(() => setPos((p) => p + 1), 700);
     };
+
     return (React.createElement("div", { className: "zl-anim" },
         React.createElement(BackLink, { onClick: onBack }, "\u05D7\u05D6\u05E8\u05D4 \u05DC\u05E9\u05D9\u05D8\u05D5\u05EA \u05EA\u05E8\u05D2\u05D5\u05DC"),
         React.createElement(Card, null,
@@ -652,7 +766,7 @@ function AmericanQuiz({ mode, vocab, setVocab, letters, setLetters, onBack }) {
                     marginBottom: 18,
                     border: "1px solid var(--sand-200)",
                 } }, question.prompt),
-            React.createElement("div", { style: { display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10 } }, question.options.map((opt) => {
+            React.createElement("div", { style: { display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10 } }, question.options.map((opt, i) => {
                 const isCorrect = opt === question.correctAnswer;
                 const isChosen = opt === selected;
                 let bg = "var(--sand-100)", border = "var(--sand-200)", color = "var(--ink)";
@@ -668,7 +782,7 @@ function AmericanQuiz({ mode, vocab, setVocab, letters, setLetters, onBack }) {
                         color = "white";
                     }
                 }
-                return (React.createElement("button", { key: opt, onClick: () => choose(opt), disabled: !!selected, style: {
+                return (React.createElement("button", { key: i, type: "button", onClick: () => choose(opt), disabled: !!selected, style: {
                         padding: "14px 10px",
                         borderRadius: 10,
                         border: "1px solid " + border,
@@ -680,6 +794,7 @@ function AmericanQuiz({ mode, vocab, setVocab, letters, setLetters, onBack }) {
                     } }, opt));
             })))));
 }
+
 /* =========================================================================
    SENTENCE BUILDER GAME
    ========================================================================= */
@@ -690,33 +805,38 @@ function SentenceBuilder() {
     const [result, setResult] = useState(null);
     const sentence = SENTENCES[idx % SENTENCES.length];
     const answerWords = useMemo(() => sentence.arabic.split(" "), [sentence]);
+
     useEffect(() => {
         setBank(shuffle(answerWords.map((w, i) => ({ w, key: i }))));
         setBuilt([]);
         setResult(null);
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [idx]);
+
     const pick = (tile) => {
         setBank((b) => b.filter((t) => t.key !== tile.key));
         setBuilt((b) => [...b, tile]);
+        setResult(null);
     };
     const unpick = (tile) => {
         setBuilt((b) => b.filter((t) => t.key !== tile.key));
         setBank((b) => [...b, tile]);
+        setResult(null);
     };
     const check = () => {
         const guess = built.map((t) => t.w).join(" ");
         setResult(guess === sentence.arabic ? "correct" : "wrong");
     };
     const next = () => setIdx((i) => i + 1);
+
     return (React.createElement(Card, null,
         React.createElement("h3", { className: "zl-display", style: { fontWeight: 700, marginBottom: 6 } }, "\u05D4\u05E8\u05DB\u05D1\u05EA \u05DE\u05E9\u05E4\u05D8\u05D9\u05DD"),
         React.createElement("p", { style: { color: "var(--ink-muted)", fontSize: "0.85rem", marginBottom: 14 } }, "\u05E1\u05D3\u05E8 \u05D0\u05EA \u05D4\u05DE\u05D9\u05DC\u05D9\u05DD \u05DB\u05DA \u05E9\u05D9\u05EA\u05E7\u05D1\u05DC \u05D4\u05DE\u05E9\u05E4\u05D8 \u05D4\u05D1\u05D0 \u05D1\u05E2\u05E8\u05D1\u05D9\u05EA (\u05D1\u05EA\u05E2\u05EA\u05D9\u05E7):"),
         React.createElement("div", { style: { background: "var(--sand)", borderRadius: 10, padding: "14px 16px", marginBottom: 16, fontWeight: 700 } }, sentence.hebrew),
         React.createElement("div", { style: { minHeight: 54, border: "1px dashed var(--sand-200)", borderRadius: 10, padding: 10, display: "flex", flexWrap: "wrap", gap: 8, marginBottom: 14 } },
             built.length === 0 && React.createElement("span", { style: { color: "var(--ink-muted)", fontSize: "0.85rem" } }, "\u05DC\u05D7\u05E5 \u05E2\u05DC \u05D4\u05DE\u05D9\u05DC\u05D9\u05DD \u05DC\u05DE\u05D8\u05D4 \u05DB\u05D3\u05D9 \u05DC\u05D1\u05E0\u05D5\u05EA \u05D0\u05EA \u05D4\u05DE\u05E9\u05E4\u05D8"),
-            built.map((t) => (React.createElement("button", { key: t.key, onClick: () => unpick(t), style: { background: "var(--teal-950)", color: "white", border: "none", borderRadius: 8, padding: "6px 12px", cursor: "pointer" } }, t.w)))),
-        React.createElement("div", { style: { display: "flex", flexWrap: "wrap", gap: 8, marginBottom: 16 } }, bank.map((t) => (React.createElement("button", { key: t.key, onClick: () => pick(t), style: { background: "var(--sand-100)", border: "1px solid var(--sand-200)", borderRadius: 8, padding: "6px 12px", cursor: "pointer" } }, t.w)))),
+            built.map((t) => (React.createElement("button", { key: t.key, type: "button", onClick: () => unpick(t), style: { background: "var(--teal-950)", color: "white", border: "none", borderRadius: 8, padding: "6px 12px", cursor: "pointer" } }, t.w)))),
+        React.createElement("div", { style: { display: "flex", flexWrap: "wrap", gap: 8, marginBottom: 16 } }, bank.map((t) => (React.createElement("button", { key: t.key, type: "button", onClick: () => pick(t), style: { background: "var(--sand-100)", border: "1px solid var(--sand-200)", borderRadius: 8, padding: "6px 12px", cursor: "pointer" } }, t.w)))),
         result === "correct" && React.createElement("p", { style: { color: "var(--teal-700)", fontWeight: 700, marginBottom: 10 } }, "\u05E0\u05DB\u05D5\u05DF \u05DE\u05D0\u05D5\u05D3! \uD83C\uDF89"),
         result === "wrong" && React.createElement("p", { style: { color: "var(--clay)", fontWeight: 700, marginBottom: 10 } },
             "\u05DC\u05D0 \u05D1\u05D3\u05D9\u05D5\u05E7 \u2014 \u05D4\u05EA\u05E9\u05D5\u05D1\u05D4 \u05D4\u05E0\u05DB\u05D5\u05E0\u05D4: ",
@@ -727,6 +847,7 @@ function SentenceBuilder() {
                 "\u05D0\u05D9\u05E4\u05D5\u05E1"),
             result ? (React.createElement(PrimaryButton, { variant: "gold", onClick: next }, "\u05D4\u05DE\u05E9\u05E4\u05D8 \u05D4\u05D1\u05D0")) : (React.createElement(PrimaryButton, { onClick: check, disabled: bank.length > 0 }, "\u05D1\u05D3\u05D5\u05E7")))));
 }
+
 /* =========================================================================
    READING & PRONUNCIATION + IDIOMS (browse & reveal)
    ========================================================================= */
@@ -744,15 +865,16 @@ function RevealList({ items, renderTop, renderBottom, emptyLabel }) {
             revealed[it.id] ? (React.createElement("div", { className: "zl-anim", style: { marginTop: 8, color: "var(--ink-muted)", fontSize: "0.88rem" } }, renderBottom(it))) : (React.createElement("div", { style: { marginTop: 6, fontSize: "0.78rem", color: "var(--gold)" } }, "\u05D4\u05E7\u05E9 \u05DC\u05D7\u05E9\u05D9\u05E4\u05EA \u05D4\u05EA\u05E8\u05D2\u05D5\u05DD"))))),
         items.length === 0 && React.createElement("p", { style: { color: "var(--ink-muted)" } }, emptyLabel)));
 }
-function SentencesReadingHub() {
-    const [sub, setSub] = useState("builder");
+
+function SentencesReadingHub({ initialSub }) {
+    const [sub, setSub] = useState(initialSub || "builder");
     const subTabs = [
         { id: "builder", label: "הרכבת משפטים" },
         { id: "reading", label: "קריאה והגייה" },
         { id: "idioms", label: "ניבי לשון" },
     ];
     return (React.createElement("div", null,
-        React.createElement("div", { style: { display: "flex", gap: 8, marginBottom: 16, flexWrap: "wrap" } }, subTabs.map((t) => (React.createElement("button", { key: t.id, onClick: () => setSub(t.id), style: {
+        React.createElement("div", { style: { display: "flex", gap: 8, marginBottom: 16, flexWrap: "wrap" } }, subTabs.map((t) => (React.createElement("button", { key: t.id, type: "button", onClick: () => setSub(t.id), style: {
                 padding: "7px 16px",
                 borderRadius: 20,
                 border: "1px solid " + (sub === t.id ? "var(--teal-950)" : "var(--sand-200)"),
@@ -774,24 +896,28 @@ function SentencesReadingHub() {
                         "\u05DE\u05E9\u05DE\u05E2\u05D5\u05EA: ",
                         it.meaning))), emptyLabel: "\u05D0\u05D9\u05DF \u05E0\u05D9\u05D1\u05D9\u05DD \u05DC\u05D4\u05E6\u05D2\u05D4" })))));
 }
+
 /* =========================================================================
    PRACTICE HUB TAB
    ========================================================================= */
 function PracticeTab({ screen, setScreen, vocab, setVocab, letters, setLetters }) {
-    if ((screen === null || screen === void 0 ? void 0 : screen.screen) === "flashcards") {
-        return (React.createElement(FlashcardPractice, { mode: screen.mode, vocab: vocab, setVocab: setVocab, letters: letters, setLetters: setLetters, onBack: () => setScreen({ screen: "method-picker", method: "flashcards" }) }));
+    if (screen && screen.screen === "flashcards") {
+        return (React.createElement(FlashcardPractice, { mode: screen.mode || "vocab", vocab: vocab, setVocab: setVocab, letters: letters, setLetters: setLetters, onBack: () => setScreen({ screen: "method-picker", method: "flashcards" }) }));
     }
-    if ((screen === null || screen === void 0 ? void 0 : screen.screen) === "quiz") {
-        return (React.createElement(AmericanQuiz, { mode: screen.mode, vocab: vocab, setVocab: setVocab, letters: letters, setLetters: setLetters, onBack: () => setScreen({ screen: "method-picker", method: "quiz" }) }));
+    if (screen && screen.screen === "quiz") {
+        return (React.createElement(AmericanQuiz, { mode: screen.mode || "vocab", vocab: vocab, setVocab: setVocab, letters: letters, setLetters: setLetters, onBack: () => setScreen({ screen: "method-picker", method: "quiz" }) }));
     }
-    if ((screen === null || screen === void 0 ? void 0 : screen.screen) === "sentence-builder" || (screen === null || screen === void 0 ? void 0 : screen.screen) === "reading") {
+    if (screen && (screen.screen === "sentence-builder" || screen.screen === "reading")) {
+        /* FIX #9: the "צהריים" shortcut in the routine tab pointed at
+           screen "reading", but the hub always opened on the sentence
+           builder. The requested sub-tab is now respected. */
         return (React.createElement("div", { className: "zl-anim" },
             React.createElement(BackLink, { onClick: () => setScreen(null) }, "\u05D7\u05D6\u05E8\u05D4 \u05DC\u05E9\u05D9\u05D8\u05D5\u05EA \u05EA\u05E8\u05D2\u05D5\u05DC"),
             React.createElement(SectionHeader, { title: "\u05EA\u05E8\u05D2\u05D5\u05DC \u05DE\u05E9\u05E4\u05D8\u05D9\u05DD \u05D5\u05E7\u05E8\u05D9\u05D0\u05D4" }),
-            React.createElement(SentencesReadingHub, null)));
+            React.createElement(SentencesReadingHub, { initialSub: screen.screen === "reading" ? "reading" : "builder" })));
     }
     // Second level: choose vocab vs. letters for a chosen method (flashcards / quiz)
-    if ((screen === null || screen === void 0 ? void 0 : screen.screen) === "method-picker") {
+    if (screen && screen.screen === "method-picker") {
         const method = screen.method;
         const isFlashcards = method === "flashcards";
         return (React.createElement("div", { className: "zl-anim" },
@@ -807,6 +933,7 @@ function PracticeTab({ screen, setScreen, vocab, setVocab, letters, setLetters }
         React.createElement(PracticeCard, { title: "\u05DE\u05D1\u05D7\u05DF \u05D0\u05DE\u05E8\u05D9\u05E7\u05D0\u05D9", desc: "\u05D1\u05D7\u05D9\u05E8\u05D4 \u05DE\u05EA\u05D5\u05DA 4 \u05D0\u05E4\u05E9\u05E8\u05D5\u05D9\u05D5\u05EA: \u05D0\u05D5\u05E6\u05E8 \u05DE\u05D9\u05DC\u05D9\u05DD \u05D0\u05D5 \u05D0\u05D5\u05EA\u05D9\u05D5\u05EA.", onClick: () => setScreen({ screen: "method-picker", method: "quiz" }) }),
         React.createElement(PracticeCard, { title: "\u05DE\u05E9\u05E4\u05D8\u05D9\u05DD \u05D5\u05E7\u05E8\u05D9\u05D0\u05D4", desc: "\u05D4\u05E8\u05DB\u05D1\u05EA \u05DE\u05E9\u05E4\u05D8\u05D9\u05DD, \u05E7\u05E8\u05D9\u05D0\u05D4 \u05D5\u05D4\u05D2\u05D9\u05D9\u05D4, \u05D5\u05E0\u05D9\u05D1\u05D9 \u05DC\u05E9\u05D5\u05DF.", onClick: () => setScreen({ screen: "sentence-builder" }) })));
 }
+
 function PracticeCard({ title, desc, onClick }) {
     return (React.createElement(Card, { style: { display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 12 } },
         React.createElement("div", null,
@@ -814,27 +941,39 @@ function PracticeCard({ title, desc, onClick }) {
             React.createElement("p", { style: { fontSize: "0.85rem", color: "var(--ink-muted)" } }, desc)),
         React.createElement(ArrowButton, { onClick: onClick, title: title })));
 }
+
 /* =========================================================================
    VOCAB TAB
    ========================================================================= */
 function VocabTab({ vocab, setVocab }) {
     const [modalOpen, setModalOpen] = useState(false);
     const [form, setForm] = useState({ front: "", back: "", notes: "" });
-    const addWord = (e) => {
-        e.preventDefault();
-        if (!form.front.trim() || !form.back.trim())
-            return;
-        setVocab((prev) => [
-            ...prev,
-            { id: Date.now(), front: form.front.trim(), back: form.back.trim(), notes: form.notes.trim(), correctCount: 0, wrongCount: 0 },
-        ]);
+
+    const closeModal = () => {
         setForm({ front: "", back: "", notes: "" });
         setModalOpen(false);
     };
+
+    const addWord = (e) => {
+        if (e && e.preventDefault) e.preventDefault();
+        if (!form.front.trim() || !form.back.trim())
+            return;
+        /* FIX #10: new ids came from Date.now(), which collides with nothing
+           in practice but can equal an existing id when two words are added
+           in the same millisecond. The id is now guaranteed to be above every
+           existing id. */
+        const nextId = vocab.reduce((max, item) => Math.max(max, item.id || 0), 0) + 1;
+        setVocab((prev) => [
+            ...prev,
+            { id: nextId, front: form.front.trim(), back: form.back.trim(), notes: form.notes.trim(), correctCount: 0, wrongCount: 0 },
+        ]);
+        closeModal();
+    };
+
     return (React.createElement("div", { className: "zl-anim" },
         React.createElement(SectionHeader, { title: "\u05D7\u05D5\u05DE\u05EA \u05D0\u05D5\u05E6\u05E8 \u05D4\u05DE\u05D9\u05DC\u05D9\u05DD", subtitle: "\u05DC\u05D7\u05E5 \u05E2\u05DC \u05E8\u05D9\u05D1\u05D5\u05E2 \u05D4\u05D4\u05D5\u05E1\u05E4\u05D4 \u05DB\u05D3\u05D9 \u05DC\u05D7\u05D1\u05E8 \u05DE\u05D9\u05DC\u05D4 \u05D7\u05D3\u05E9\u05D4 \u05DC\u05DE\u05D0\u05D2\u05E8" }),
         React.createElement("div", { style: { display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(135px, 1fr))", gap: 10 } },
-            React.createElement("button", { onClick: () => setModalOpen(true), style: {
+            React.createElement("button", { type: "button", onClick: () => setModalOpen(true), style: {
                     border: "2px dashed var(--gold)",
                     borderRadius: 10,
                     background: "var(--sand-100)",
@@ -870,23 +1009,26 @@ function VocabTab({ vocab, setVocab }) {
                     React.createElement("div", { style: { marginTop: 8 }, title: "התקדמות: " + pct + "%" },
                         React.createElement(ProgressBar, { pct: pct, mastered: mastered, struggling: struggling }))));
             })),
-        modalOpen && (React.createElement("div", { onClick: () => setModalOpen(false), style: { position: "fixed", inset: 0, background: "rgba(15,23,42,0.45)", display: "flex", alignItems: "center", justifyContent: "center", padding: 16, zIndex: 1000 } },
+        modalOpen && (React.createElement("div", { onClick: closeModal, style: { position: "fixed", inset: 0, background: "rgba(15,23,42,0.45)", display: "flex", alignItems: "center", justifyContent: "center", padding: 16, zIndex: 1000 } },
             React.createElement("div", { onClick: (e) => e.stopPropagation(), style: { background: "white", borderRadius: 14, padding: 22, width: "100%", maxWidth: 420 } },
                 React.createElement("div", { style: { display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 16 } },
                     React.createElement("h3", { className: "zl-display", style: { fontWeight: 700, color: "var(--teal-950)" } }, "\u05D4\u05D5\u05E1\u05E4\u05EA \u05DE\u05D9\u05DC\u05D4 \u05D7\u05D3\u05E9\u05D4"),
-                    React.createElement("button", { onClick: () => setModalOpen(false), style: { background: "none", border: "none", cursor: "pointer" } },
+                    React.createElement("button", { type: "button", onClick: closeModal, "aria-label": "\u05E1\u05D2\u05D5\u05E8", style: { background: "none", border: "none", cursor: "pointer" } },
                         React.createElement(X, { size: 18 }))),
                 React.createElement("form", { onSubmit: addWord },
                     React.createElement(FormField, { label: "\u05EA\u05E2\u05EA\u05D9\u05E7 \u05E2\u05D1\u05E8\u05D9-\u05E2\u05E8\u05D1\u05D9", value: form.front, onChange: (v) => setForm((f) => ({ ...f, front: v })), placeholder: "\u05DC\u05DE\u05E9\u05DC: \u05DB\u05B4\u05BC\u05EA\u05B7\u05D0\u05D1\u05BC", required: true }),
                     React.createElement(FormField, { label: "\u05EA\u05E8\u05D2\u05D5\u05DD", value: form.back, onChange: (v) => setForm((f) => ({ ...f, back: v })), placeholder: "\u05DC\u05DE\u05E9\u05DC: \u05E1\u05E4\u05E8", required: true }),
                     React.createElement(FormField, { label: "\u05D4\u05E2\u05E8\u05D5\u05EA (\u05E8\u05E9\u05D5\u05EA)", value: form.notes, onChange: (v) => setForm((f) => ({ ...f, notes: v })), placeholder: "\u05DC\u05DE\u05E9\u05DC: \u05E8' \u05DB\u05BB\u05BC\u05EA\u05BB\u05D1\u05BC" }),
                     React.createElement("div", { style: { display: "flex", gap: 8, justifyContent: "flex-end", marginTop: 16 } },
-                        React.createElement(PrimaryButton, { variant: "outline", onClick: () => setModalOpen(false) }, "\u05D1\u05D9\u05D8\u05D5\u05DC"),
-                        React.createElement(PrimaryButton, { onClick: addWord }, "\u05D4\u05D5\u05E1\u05E3 \u05DC\u05DE\u05D0\u05D2\u05E8"))))))));
+                        React.createElement(PrimaryButton, { variant: "outline", type: "button", onClick: closeModal }, "\u05D1\u05D9\u05D8\u05D5\u05DC"),
+                        React.createElement(PrimaryButton, { type: "submit" }, "\u05D4\u05D5\u05E1\u05E3 \u05DC\u05DE\u05D0\u05D2\u05E8"))))))));
 }
+
 const FormField = ({ label, value, onChange, placeholder, required }) => (React.createElement("div", { style: { marginBottom: 12 } },
-    React.createElement("label", { style: { display: "block", fontSize: "0.8rem", fontWeight: 700, marginBottom: 4 } }, label),
-    React.createElement("input", { value: value, required: required, onChange: (e) => onChange(e.target.value), placeholder: placeholder, style: { width: "100%", padding: "9px 12px", border: "1px solid var(--sand-200)", borderRadius: 8, fontSize: "0.9rem", outline: "none" } })));
+    React.createElement("label", { style: { display: "block", fontSize: "0.8rem", fontWeight: 700, marginBottom: 4 } },
+        label,
+        React.createElement("input", { value: value, required: required, onChange: (e) => onChange(e.target.value), placeholder: placeholder, style: { width: "100%", marginTop: 4, padding: "9px 12px", border: "1px solid var(--sand-200)", borderRadius: 8, fontSize: "0.9rem", outline: "none" } }))));
+
 /* =========================================================================
    ALPHABET TAB
    ========================================================================= */
@@ -911,19 +1053,22 @@ function AlphabetTab({ letters }) {
                 React.createElement(ProgressBar, { pct: pct, mastered: mastered, struggling: struggling })));
         }))));
 }
+
 /* =========================================================================
    ROOT APP
    ========================================================================= */
 function ArabicLearningApp() {
     const [tab, setTab] = useState("routine");
     const [practiceScreen, setPracticeScreen] = useState(null);
-    const [vocab, setVocab] = usePersistedState("vocab-data", withProgressFields(DEFAULT_VOCAB));
-    const [letters, setLetters] = usePersistedState("letters-data", withProgressFields(ALPHABET));
+    const [vocab, setVocab] = usePersistedState("vocab-data", withProgressFields(DEFAULT_VOCAB), (raw) => mergeDefaults(raw, DEFAULT_VOCAB));
+    const [letters, setLetters] = usePersistedState("letters-data", withProgressFields(ALPHABET), (raw) => mergeDefaults(raw, ALPHABET));
     const [checklist, setChecklist] = usePersistedState("routine-checklist", {});
+
     const navigateFromRoutine = (target) => {
         setTab("practice");
         setPracticeScreen(target);
     };
+
     return (React.createElement("div", { className: "zl-root", style: { padding: "20px 14px 60px" } },
         React.createElement(GlobalStyle, null),
         React.createElement("div", { style: { maxWidth: 880, margin: "0 auto" } },
@@ -940,6 +1085,7 @@ function ArabicLearningApp() {
             tab === "vocab" && React.createElement(VocabTab, { vocab: vocab, setVocab: setVocab }),
             tab === "alphabet" && React.createElement(AlphabetTab, { letters: letters }))));
 }
+
 ReactDOM.createRoot(document.getElementById("root")).render(React.createElement(ArabicLearningApp, null));
 } catch (err) {
   showBootError("שגיאה בטעינת האפליקציה:", err);
