@@ -120,14 +120,14 @@ const GLOBAL_CSS = `
       --clay-bg:#FEF2F2;
       --ink:#0F172A;
       --ink-muted:#64748B;
-      font-family:'Heebo',sans-serif;
+      font-family:'Heebo','Noto Naskh Arabic',sans-serif;
       background:var(--sand);
       color:var(--ink);
       min-height:100vh;
       direction:rtl;
     }
     .zl-root * { box-sizing:border-box; }
-    .zl-display { font-family:'Heebo',sans-serif; }
+    .zl-display { font-family:'Heebo','Noto Naskh Arabic',sans-serif; }
     .zl-arabic { font-family:'Noto Naskh Arabic',serif; }
 
     .zl-scrollbar::-webkit-scrollbar { height:6px; width:6px; }
@@ -243,70 +243,75 @@ const GlobalStyle = () => (React.createElement("style", null, GLOBAL_CSS));
    DATA
    ========================================================================= */
 const DEFAULT_VOCAB = [
-    { id: 1, front: "צַבַּאח (אל)חַ'יְר", back: "בוקר טוב", notes: "" },
-    { id: 2, front: "צַבַּאח (אל)נּוּר", back: "בוקר אור", notes: "" },
-    { id: 3, front: "מַסַא (אל)חַ'יְר", back: "ערב טוב", notes: "" },
-    { id: 4, front: "מַסַא (אל)נּוּר", back: "ערב אור", notes: "" },
+    { id: 1, front: "צַבַּאח (א)לְחֵ'יר", back: "בוקר טוב", notes: "" },
+    { id: 2, front: "צַבַּאח (אל)נّוּר", back: "בוקר אור", notes: "" },
+    { id: 3, front: "מַסַא (א)לְחֵ'יר", back: "ערב טוב", notes: "" },
+    { id: 4, front: "מַסַא (אל)נّוּר", back: "ערב אור", notes: "" },
     { id: 5, front: "מַרְחַבַּא", back: "שלום רב", notes: "" },
-    { id: 6, front: "מַרְחַבְּתֵיְן", back: "רב שלומות", notes: "" },
-    { id: 7, front: "אַהְלַן וַסַהְלַן", back: "שלום וברכה", notes: "" },
-    { id: 8, front: "אַהְלַן וַסַהְלַן בִיכּ", back: "שלום וברכה לך", notes: "" },
-    { id: 9, front: "אִסְם", back: "שם", notes: "ר' אַסְאַמִי" },
-    { id: 10, front: "אַמִיר", back: "נסיך", notes: "ר' אַמַרַאא" },
-    { id: 11, front: "מַעַלֵּם", back: "מוֹרֶה / אחראי", notes: "ר' מַעַלְמִין" },
-    { id: 12, front: "מַעַלְמַה", back: "מורָה", notes: "ר' מַעַלְמַאת" },
-    { id: 13, front: "בִּ = פִי", back: "ב...", notes: "המילה פִי משמשת גם במשמעות: יש" },
-    { id: 14, front: "מַע", back: "עם", notes: "" },
-    { id: 15, front: "דַוְרַה", back: "קורס", notes: "ר' דַוְרַאת" },
-    { id: 16, front: "טַאלִבּ", back: "סטודנט", notes: "ר' טֻלַּאבּ" },
-    { id: 17, front: "טַאלִבַּה", back: "סטודנטית", notes: "ר' טַאלִבַּאת" },
-    { id: 18, front: "גַ'אמִעַה", back: "אוניברסיטה", notes: "ר' גַ'אמִעַאת" },
-    { id: 19, front: "סִכְרִתֵירַא", back: "מזכירה", notes: "ר' סִכְרִתֵירַאת" },
-    { id: 20, front: "סִכְרִתֵיר", back: "מזכיר", notes: "ר' סִכְרִתֵירִיּוֹן" },
-    { id: 21, front: "אַמִין", back: "מזכיר של גוף רשמי", notes: "ישר/אמין, שם של גבר" },
-    { id: 22, front: "אַמִינַה", back: "מזכירה של גוף רשמי", notes: "ישרה/אמינה, שם של בחורה" },
-    { id: 23, front: "מַדְרַסַה", back: "בית ספר", notes: "ר' מַדַארִס" },
-    { id: 24, front: "מֻדִיר", back: "מנהל", notes: "ר' מֻדַרַאא" },
-    { id: 25, front: "מֻדִירַה", back: "מנהלת", notes: "ר' מֻדִירַאת" },
-    { id: 26, front: "שַרִכַּה", back: "חברה (ארגון/עסק)", notes: "ר' שַרִכַּאת" },
-    { id: 27, front: "מֻחַאמִי", back: "עורך דין", notes: "ר' מֻחַאמִיִּן" },
-    { id: 28, front: "מֻחַאמִיַּה", back: "עורכת דין", notes: "ר' מֻחַאמִיַּאת" },
-    { id: 29, front: "וִזַארַה", back: "משרד ממשלתי", notes: "ר' וִזַארַאת" },
-    { id: 30, front: "עַדְל", back: "צדק", notes: "" },
-    { id: 31, front: "תִלְמִיד'", back: "תלמיד", notes: "ר' תַלַאמִיד'" },
-    { id: 32, front: "תִלְמִידַ'ה", back: "תלמידה", notes: "ר' תַלַאמִידַ'את" },
-    { id: 33, front: "צַאַחִבּ", back: "חבר / בעל מקום", notes: "ר' אַצְחַאבּ" },
-    { id: 34, front: "צַאַחִבַּה", back: "חברה / בעלת מקום", notes: "ר' צַאַחִבַּאת" },
-    { id: 35, front: "דַאר", back: "בית", notes: "ר' דוּר" },
-    { id: 36, front: "וַלַד", back: "ילד", notes: "ר' וַלַאד" },
-    { id: 37, front: "אִבְּן", back: "בן", notes: "ר' אַבְּנַאא" },
-    { id: 38, front: "בִּנְת", back: "ילדה / בת", notes: "ר' בַּנַאת" },
-    { id: 39, front: "עַם / עַמַּה", back: "דוד / דודה (מצד האב)", notes: "ר' עֻמוּם / עַמַּאת" },
-    { id: 40, front: "חַ'אל / חַ'אלַה", back: "דוד / דודה (מצד האם)", notes: "ר' אַחְ'וַאל / חַ'אלַאת" },
-    { id: 41, front: "סַלַאמַה", back: "בריאות / שלמות", notes: "" },
-    { id: 42, front: "צַף", back: "כיתה", notes: "ר' צֻפוּף" },
-    { id: 43, front: "בַּאבּ", back: "דלת / שער", notes: "ר' אַבְּוַאבּ" },
-    { id: 44, front: "שֻבַּאכּ", back: "חלון", notes: "ר' שַבַּאבִּיכּ" },
-    { id: 45, front: "חֵיט", back: "קיר", notes: "ר' חִיטַאן" },
-    { id: 46, front: "כֻּרְסִי", back: "כסא", notes: "ר' כַּרַאסִי" },
-    { id: 47, front: "טַאווּלַה", back: "שולחן", notes: "ר' טַאווּלַאת" },
-    { id: 48, front: "לוֹח", back: "לוח", notes: "ר' אַלְוַאח" },
-    { id: 49, front: "קַלַם", back: "עט", notes: "ר' קַלַאם" },
-    { id: 50, front: "קַלַם רַצַאץ", back: "עיפרון", notes: "ר' קַלַאם רַצַאץ" },
-    { id: 51, front: "דַפְתַר", back: "מחברת", notes: "ר' דַפַאתִר" },
-    { id: 52, front: "כִּתַאבּ", back: "ספר", notes: "ר' כֻּתֻבּ" },
-    { id: 53, front: "כֻּרַּאסַה", back: "חוברת", notes: "ר' כֻּרַּאסַאת / כַּרַארִיס" },
-    { id: 54, front: "שַנְטַה / שַנְתַה", back: "תיק / מזוודה", notes: "ר' שַנַט / שַנַטַאת" },
-    { id: 55, front: "וַרַקַה", back: "דף", notes: "ר' אַוְרַאק / וַרַק" },
-    { id: 56, front: "צַפְחַה", back: "עמוד", notes: "ר' צַפְחַאת" },
-    { id: 57, front: "אִסְתִרַאחַה", back: "הפסקה", notes: "ר' אִסְתִרַאחַאת" },
-    { id: 58, front: "פֻרְצַה", back: "הזדמנות / סיכוי / הפסקה", notes: "ר' פֻרַץ" },
-    { id: 59, front: "קַהְוַה", back: "קפה", notes: "" },
-    { id: 60, front: "שַאי", back: "תה", notes: "" },
-    { id: 61, front: "סֻכַּר", back: "סוכר", notes: "" },
-    { id: 62, front: "כַּאַסַה / כַּבַּאיַה", back: "כוס", notes: "ר' כַּאַסַאת / כַּבַּאיַאת" },
-    { id: 63, front: "חַמַּאם", back: "אמבטיה / בית שימוש", notes: "ר' חַמַּאמַאת" },
-    { id: 64, front: "מֻחַאמַאה", back: "עריכת דין", notes: "" },
+    { id: 6, front: "מַרְחַבְּתֵין", back: "רב שלומות", notes: "" },
+    { id: 7, front: "אַהְלַן וְסַהְלַן", back: "שלום וברכה", notes: "" },
+    { id: 8, front: "אַהְלַן וְסַהְלַן בִּיכּ", back: "שלום וברכה לך", notes: "" },
+    { id: 9, front: "אִסֶם", back: "שם", notes: "ר' אַסַאמִי" },
+    { id: 10, front: "אַמִיר", back: "נסיך", notes: "ר' אֻמַרַאא" },
+    { id: 11, front: "מְעַלֵّם", back: "מורה / אחראי", notes: "ר' מְעַלְמִין" },
+    { id: 12, front: "מְעַלְמֶה", back: "מורָה", notes: "ר' מְעַלְמַאת" },
+    { id: 13, front: "בְּ", back: "ב...", notes: "" },
+    { id: 14, front: "פִי", back: "ב...", notes: "משמשת גם במשמעות: יש" },
+    { id: 15, front: "מַע", back: "עם", notes: "" },
+    { id: 16, front: "דַוְרַה", back: "קורס", notes: "ר' דַוְרַאת" },
+    { id: 17, front: "טַאלֶבּ", back: "סטודנט", notes: "ר' טֻלַّאבּ" },
+    { id: 18, front: "טַאלְבֶּה", back: "סטודנטית", notes: "ר' טַאלְבַּאת" },
+    { id: 19, front: "גַ'אמְעַה", back: "אוניברסיטה", notes: "ר' גַ'אמְעַאת" },
+    { id: 20, front: "סִכְּרֵתִירַא", back: "מזכירה", notes: "ר' סִכְּרֵתִירַאת" },
+    { id: 21, front: "סִכְּרֵתֵיר", back: "מזכיר", notes: "ר' סִכְּרֵתִירִיّוֹן" },
+    { id: 22, front: "אַמִין", back: "מזכיר של גוף רשמי / ישר / אמין", notes: "שם של גבר" },
+    { id: 23, front: "אַמִינֶה", back: "מזכירה של גוף רשמי / ישרה / אמינה", notes: "שם של בחורה" },
+    { id: 24, front: "מַדְרַסֶה", back: "בית ספר", notes: "ר' מַדַארֶס" },
+    { id: 25, front: "מֻדִיר", back: "מנהל", notes: "ר' מֻדַרַאא" },
+    { id: 26, front: "מֻדִירֶה", back: "מנהלת", notes: "ר' מֻדִירַאת" },
+    { id: 27, front: "שִרְכֶּה", back: "חברה (ארגון / עסק)", notes: "ר' שַרִכַּאת" },
+    { id: 28, front: "מֻחַאמִי", back: "עורך דין", notes: "ר' מֻחַאמִיִّין" },
+    { id: 29, front: "מֻחַאמִיֶّה", back: "עורכת דין", notes: "ר' מֻחַאמִיַّאת" },
+    { id: 30, front: "וִזַארַה", back: "משרד ממשלתי", notes: "ר' וִזַארַאת" },
+    { id: 31, front: "עַדֶל", back: "צדק", notes: "" },
+    { id: 32, front: "תִלְמִיז", back: "תלמיד", notes: "ר' תַלַאמִיז" },
+    { id: 33, front: "תִלְמִיזֶה", back: "תלמידה", notes: "ר' תִלְמִיזַאת" },
+    { id: 34, front: "צַאחֶבּ", back: "חבר / בעל מקום או עסק", notes: "ר' אַצְחַאבּ" },
+    { id: 35, front: "צַאחְבֶּה", back: "חברה / בעלת מקום או עסק", notes: "ר' צַאחְבַּאת" },
+    { id: 36, front: "דַאר", back: "בית", notes: "ר' דוּר" },
+    { id: 37, front: "וַלַד", back: "ילד", notes: "ר' וְלַאד" },
+    { id: 38, front: "אִבֶּן", back: "בן", notes: "ר' אַבְּנַאא" },
+    { id: 39, front: "בִּנְת", back: "ילדה / בת", notes: "ר' בַּנַאת" },
+    { id: 40, front: "עַםّ", back: "דוד מצד האב", notes: "ר' עְמוּם" },
+    { id: 41, front: "עַמֶّה", back: "דודה מצד האב", notes: "ר' עַמַّאת" },
+    { id: 42, front: "חַ'אל", back: "דוד מצד האם", notes: "ר' אַחְ'וַאל" },
+    { id: 43, front: "חַ'אלֶה", back: "דודה מצד האם", notes: "ר' חַ'אלַאת" },
+    { id: 44, front: "סַלַאמֶה", back: "בריאות / שלמות", notes: "" },
+    { id: 45, front: "צַףّ", back: "כיתה", notes: "ר' צְפוּף" },
+    { id: 46, front: "בַּאבּ", back: "דלת / שער", notes: "ר' אַבְּוַאבּ" },
+    { id: 47, front: "שֻבַּّאכּ", back: "חלון", notes: "ר' שַבַּאבִּיכּ" },
+    { id: 48, front: "חֵיט", back: "קיר", notes: "ר' חֵיטַאן" },
+    { id: 49, front: "כֻּרְסִי", back: "כסא", notes: "ר' כַּרַאסִי" },
+    { id: 50, front: "טַאוְלֶה", back: "שולחן", notes: "ר' טַאוְלַאת" },
+    { id: 51, front: "לוֹח", back: "לוח", notes: "ר' אַלְוַאח" },
+    { id: 52, front: "קַלַם", back: "עט", notes: "ר' קְלַאם" },
+    { id: 53, front: "קַלַם רְצַאץ", back: "עיפרון", notes: "ר' קְלַאם רְצַאץ" },
+    { id: 54, front: "דַפְתַר", back: "מחברת", notes: "ר' דַפַאתֶר" },
+    { id: 55, front: "כְּתַאבּ", back: "ספר", notes: "ר' כֻּתֻבּ" },
+    { id: 56, front: "כֻּרַّאסֶה", back: "חוברת", notes: "ר' כֻּרַّאסַאת / כַּרַארִיס" },
+    { id: 57, front: "שַנְטַה", back: "תיק / מזוודה", notes: "ר' שְנַט / שַנְטַאת" },
+    { id: 58, front: "שַנְתַה", back: "תיק / מזוודה", notes: "ר' שְנַת / שַנְתַאת" },
+    { id: 59, front: "וַרְקַה", back: "דף", notes: "ר' אַוְרַאק / וְרַאק" },
+    { id: 60, front: "צַפְחַה", back: "עמוד", notes: "ר' צַפְחַאת" },
+    { id: 61, front: "אִסְתִרַאחַה", back: "הפסקה", notes: "ר' אִסְתִרַאחַאת" },
+    { id: 62, front: "פֻרְצַה", back: "הזדמנות / סיכוי / חופשה / הפסקה", notes: "ר' פֻרַץ" },
+    { id: 63, front: "קַהְוֶה", back: "קפה", notes: "" },
+    { id: 64, front: "שַאי", back: "תה", notes: "" },
+    { id: 65, front: "סֻכַּّר", back: "סוכר", notes: "" },
+    { id: 66, front: "כַּאְסֶה", back: "כוס", notes: "ר' כַּאסַאת" },
+    { id: 67, front: "כְּבַּאיֶה", back: "כוס", notes: "ר' כְּבַּאיַאת" },
+    { id: 68, front: "חַמַّאם", back: "אמבטיה / בית שימוש", notes: "ר' חַמַّאמַאת" },
+    { id: 69, front: "מְחַאמַאה", back: "עריכת דין", notes: "" },
 ];
 
 const ALPHABET = [
@@ -455,6 +460,31 @@ function usePersistedState(key, initial, reviver) {
         }
     }, [key, state]);
     return [state, setState];
+}
+
+
+/* The word list was rebuilt from the course booklet (new vocalisation, split
+   variants), so it is stored under a new key. On first load the user's own
+   added words are carried over from the previous key; the built-in words are
+   taken fresh from the booklet. */
+function initialVocab() {
+    const base = withProgressFields(DEFAULT_VOCAB);
+    try {
+        const raw = window.localStorage.getItem("vocab-data");
+        if (!raw) return base;
+        const old = JSON.parse(raw);
+        if (!Array.isArray(old)) return base;
+        const known = new Set(DEFAULT_VOCAB.map((w) => w.front));
+        let nextId = DEFAULT_VOCAB.reduce((m, w) => Math.max(m, w.id || 0), 0);
+        old.forEach((w) => {
+            if (w && w.front && !known.has(w.front)) {
+                nextId += 1;
+                base.push({ correctCount: 0, wrongCount: 0, ...w, id: nextId });
+            }
+        });
+    }
+    catch (e) { /* ignore unreadable legacy data */ }
+    return base;
 }
 
 /* =========================================================================
@@ -1254,7 +1284,7 @@ function AlphabetTab({ letters }) {
 function ArabicLearningApp() {
     const [tab, setTab] = useState("routine");
     const [practiceScreen, setPracticeScreen] = useState(null);
-    const [vocab, setVocab] = usePersistedState("vocab-data", withProgressFields(DEFAULT_VOCAB), (raw) => mergeDefaults(raw, DEFAULT_VOCAB));
+    const [vocab, setVocab] = usePersistedState("vocab-data-v2", useMemo(initialVocab, []), (raw) => mergeDefaults(raw, DEFAULT_VOCAB));
     const [letters, setLetters] = usePersistedState("letters-data", withProgressFields(ALPHABET), (raw) => mergeDefaults(raw, ALPHABET));
     const [checklist, setChecklist] = usePersistedState("routine-checklist", {});
 
