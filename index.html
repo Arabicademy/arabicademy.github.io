@@ -379,17 +379,17 @@ const IDIOMS = [
     { id: 12, arabic: "הוּ פִי וַאד וַאַנַא פִי וַאד", literal: "הוא בוואדי ואני בוואדי", meaning: "כל אחד במקום אחר, יש ריחוק" },
 ];
 
-/* FIX #2: verse 7 contained stray Arabic diacritics (fatha / damma / shadda)
-   inside the Hebrew transliteration, which flipped the text direction
-   mid-line and rendered as broken glyphs. Now Hebrew characters only. */
+/* The surah keeps the booklet's own marks: the shadda over doubled letters,
+   and the fatha / damma in verse 7. 'Noto Naskh Arabic' is in the font stack
+   so those marks always render from a known face. */
 const AL_FATIHA = [
-    { num: 1, text: "בִּסְמִ אַלְלָּה אָלְרַּחְמָּן אָלְרַּחִים" },
-    { num: 2, text: "אַלְחַמְדֻ לִילָּה רַבִּ אָלְעָאלַמִין" },
-    { num: 3, text: "אָלְרַּחְמָּן אָלְרַּחִים" },
-    { num: 4, text: "מָאלִכִ יָאוום אָלְדִּין" },
-    { num: 5, text: "אִיָּאכַּ נַעְבֻדֻ וָאִיָּאכַּ נַסְתָּעִין" },
-    { num: 6, text: "אִהְדִנָּא אָלְצִירָאטָ אָלְמֻסְתָקִים" },
-    { num: 7, text: "צִירָאטָ אָלְדִּ'ינָ אֲנְעָמְתָ עֲלַיְהִים, גַ'יְרִ אָלְמַגְצוּבִ עֲלַיְהִים וָלָא אָלְצָאלִין" },
+    { num: 1, text: "בִּסְמִ אַלְלָّה אָלְרַחְמָّן אָלְרַّחִים" },
+    { num: 2, text: "אַלְחַמְדֻ לִילָّה רַבִּّ אָלְעָאלַמִין" },
+    { num: 3, text: "אָלְרַחְמָّן אָלְרַّחִים" },
+    { num: 4, text: "מָאלִכִ יָאוום אָלְדִּّין" },
+    { num: 5, text: "אִיָّאכַּ נַעְבֻדֻ וָאִיָّאכַּ נַסְתָּעִין" },
+    { num: 6, text: "אִהְדִנָّא אָלְצִירָאטָ אָלְמֻסְתָקִים" },
+    { num: 7, text: "צִירָאטָ אָלְדִּ'ינָّ אֲנְעָמְתَ עֲלַיְהִים, גַ'יְרִ אָלְמַגְצُובִ עֲלַיְהִים וָלָא אָלְצָאלִין" },
 ];
 
 /* =========================================================================
