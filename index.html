@@ -168,7 +168,7 @@ const GLOBAL_CSS = `
     .zl-fatiha-verse { white-space:normal; }
     .zl-fatiha-num {
       display:inline-flex; align-items:center; justify-content:center;
-      width:17px; height:17px; margin:0 5px;
+      width:17px; height:17px; margin-inline-start:5px; margin-inline-end:0;
       border-radius:50%;
       border:1px solid var(--gold-dim);
       background:var(--sand-100);
@@ -545,8 +545,8 @@ const AlFatihaCard = () => {
             React.createElement("span", { className: "zl-fatiha-rule" }),
             React.createElement("span", { className: "zl-fatiha-sub" }, "\u05E1\u05D5\u05E8\u05EA \u05D0\u05DC-\u05E4\u05D0\u05EA\u05D9\u05D7\u05D4")),
         React.createElement("p", { ref: bodyRef, className: "zl-display zl-fatiha-body" }, AL_FATIHA.map((v, i) => (React.createElement("span", { key: v.num, className: "zl-fatiha-verse" },
-            v.text,
             React.createElement("span", { className: "zl-fatiha-num", "aria-label": "\u05E4\u05E1\u05D5\u05E7 " + v.num }, v.num),
+            v.text,
             i < AL_FATIHA.length - 1 ? " " : "")))))); 
 };
 
