@@ -34,8 +34,6 @@
 <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
 
 <script>
-  // Catches ANY failure (missing CDN script, runtime error) and prints it
-  // directly on the page, so it's visible without dev tools.
   function showBootError(title, err) {
     var box = document.getElementById('boot-error');
     box.style.display = 'block';
@@ -105,36 +103,40 @@ const TypeIcon = (p) => React.createElement("svg", { ...iconBase(p) },
    cards on a soft blue-gray page background, restrained accent color.
    ========================================================================= */
 const GLOBAL_CSS = [
-    "@import url('https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;600;700;800&family=Noto+Naskh+Arabic:wght@500;700&display=swap');",
     "",
-    ".zl-root {",
-    "  --teal-950:#1E3A8A;",
-    "  --teal-800:#1E40AF;",
-    "  --teal-700:#059669;",
-    "  --teal-600:#3B82F6;",
-    "  --sand:#F1F5F9;",
-    "  --sand-100:#FFFFFF;",
-    "  --sand-200:#CBD5E1;",
-    "  --gold:#3B82F6;",
-    "  --gold-dim:#93C5FD;",
-    "  --clay:#DC2626;",
-    "  --clay-bg:#FEF2F2;",
-    "  --ink:#0F172A;",
-    "  --ink-muted:#64748B;",
-    "  font-family:'Heebo',sans-serif;",
-    "  background:var(--sand);",
-    "  color:var(--ink);",
-    "  min-height:100vh;",
-    "  direction:rtl;",
-    "}",
-    ".zl-root * { box-sizing:border-box; }",
-    ".zl-display { font-family:'Heebo',sans-serif; }",
-    ".zl-arabic { font-family:'Noto Naskh Arabic',serif; }",
-    ".zl-scrollbar::-webkit-scrollbar { height:6px; width:6px; }",
-    ".zl-scrollbar::-webkit-scrollbar-thumb { background:var(--gold-dim); border-radius:3px; }",
-    "@keyframes zl-fade { from { opacity:0; transform:translateY(4px);} to { opacity:1; transform:translateY(0);} }",
-    ".zl-anim { animation: zl-fade 0.2s ease; }"
-].join("\n");
+    "    @import url('https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;600;700;800&family=Noto+Naskh+Arabic:wght@500;700&display=swap');",
+    "",
+    "    .zl-root {",
+    "      --teal-950:#1E3A8A;",
+    "      --teal-800:#1E40AF;",
+    "      --teal-700:#059669;",
+    "      --teal-600:#3B82F6;",
+    "      --sand:#F1F5F9;",
+    "      --sand-100:#FFFFFF;",
+    "      --sand-200:#CBD5E1;",
+    "      --gold:#3B82F6;",
+    "      --gold-dim:#93C5FD;",
+    "      --clay:#DC2626;",
+    "      --clay-bg:#FEF2F2;",
+    "      --ink:#0F172A;",
+    "      --ink-muted:#64748B;",
+    "      font-family:'Heebo',sans-serif;",
+    "      background:var(--sand);",
+    "      color:var(--ink);",
+    "      min-height:100vh;",
+    "      direction:rtl;",
+    "    }",
+    "    .zl-root * { box-sizing:border-box; }",
+    "    .zl-display { font-family:'Heebo',sans-serif; }",
+    "    .zl-arabic { font-family:'Noto Naskh Arabic',serif; }",
+    "",
+    "    .zl-scrollbar::-webkit-scrollbar { height:6px; width:6px; }",
+    "    .zl-scrollbar::-webkit-scrollbar-thumb { background:var(--gold-dim); border-radius:3px; }",
+    "",
+    "    @keyframes zl-fade { from { opacity:0; transform:translateY(4px);} to { opacity:1; transform:translateY(0);} }",
+    "    .zl-anim { animation: zl-fade 0.2s ease; }",
+    "  "
+].join("\\n");
 const GlobalStyle = () => (React.createElement("style", null, GLOBAL_CSS));
 /* =========================================================================
    DATA
@@ -267,6 +269,16 @@ const IDIOMS = [
     { id: 11, arabic: "עַיִשׁ חַיַאתַכּ", literal: "חיה את חייך", meaning: "שחרר, תהנה מהרגע" },
     { id: 12, arabic: "הוּ פִי וַאד וַאַנַא פִי וַאד", literal: "הוא בוואדי ואני בוואדי", meaning: "כל אחד במקום אחר, יש ריחוק" },
 ];
+// Surat al-Fatiha, shown in the page header (verse number = ayah number)
+const AL_FATIHA = [
+    { num: 1, text: "בִּסְמִ אַלְלָּה אָלְרַּחְמָּן אָלְרַּחִים" },
+    { num: 2, text: "אַלְחַמְדֻ לִילָּה רַבִּ אָלְעָאלַמִין" },
+    { num: 3, text: "אָלְרַּחְמָּן אָלְרַּחִים" },
+    { num: 4, text: "מָאלִכִ יָאוום אָלְדִּין" },
+    { num: 5, text: "אִיָּאכַּ נַעְבֻדֻ וָאִיָּאכַּ נַסְתָּעִין" },
+    { num: 6, text: "אִהְדִנָּא אָלְצִירָאטָ אָלְמֻסְתָקִים" },
+    { num: 7, text: "צִירָאטָ אָלְדִּ'ינָּ אֲנְעָמְתَ עֲלַיְהִים, גַ'יְרִ אָלְמַגְצُובִ עֲלַיְהִים וָלָא אָלְצָאלִין" },
+];
 /* =========================================================================
    PROGRESS HELPERS
    Progress balances correct against wrong answers, capped at a "mastery"
@@ -317,6 +329,36 @@ function usePersistedState(key, initial) {
 const SectionHeader = ({ title, subtitle }) => (React.createElement("div", { style: { marginBottom: 12 } },
     React.createElement("h2", { className: "zl-display", style: { fontSize: "1.15rem", fontWeight: 700, color: "var(--ink)" } }, title),
     subtitle && (React.createElement("p", { style: { color: "var(--ink-muted)", fontSize: "0.85rem", marginTop: 4 } }, subtitle))));
+const AlFatihaBlock = () => (React.createElement("div", { style: {
+        marginTop: 12,
+        background: "var(--sand)",
+        border: "1px solid var(--sand-200)",
+        borderRadius: 10,
+        padding: "14px 16px",
+    } },
+    React.createElement("div", { style: {
+            fontSize: "0.72rem",
+            fontWeight: 700,
+            color: "var(--gold)",
+            letterSpacing: "0.03em",
+            marginBottom: 10,
+        } }, "\u0633\u0648\u0631\u0629 \u0627\u0644\u0641\u0627\u062A\u062D\u0629"),
+    React.createElement("div", { style: { display: "flex", flexDirection: "column", gap: 8 } }, AL_FATIHA.map((v) => (React.createElement("div", { key: v.num, style: { display: "flex", alignItems: "flex-start", gap: 10 } },
+        React.createElement("span", { style: {
+                flexShrink: 0,
+                width: 20,
+                height: 20,
+                borderRadius: "50%",
+                background: "var(--teal-950)",
+                color: "white",
+                fontSize: "0.68rem",
+                fontWeight: 700,
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                marginTop: 2,
+            } }, v.num),
+        React.createElement("span", { className: "zl-display", style: { fontSize: "0.98rem", fontWeight: 600, color: "var(--ink)", lineHeight: 1.7 } }, v.text)))))));
 const ArrowButton = ({ onClick, title }) => (React.createElement("button", { onClick: onClick, title: title, style: {
         background: "var(--sand)",
         color: "var(--teal-950)",
@@ -736,12 +778,11 @@ function SentencesReadingHub() {
    PRACTICE HUB TAB
    ========================================================================= */
 function PracticeTab({ screen, setScreen, vocab, setVocab, letters, setLetters }) {
-    const [sub, setSub] = useState("flashcards");
     if ((screen === null || screen === void 0 ? void 0 : screen.screen) === "flashcards") {
-        return (React.createElement(FlashcardPractice, { mode: screen.mode, vocab: vocab, setVocab: setVocab, letters: letters, setLetters: setLetters, onBack: () => setScreen(null) }));
+        return (React.createElement(FlashcardPractice, { mode: screen.mode, vocab: vocab, setVocab: setVocab, letters: letters, setLetters: setLetters, onBack: () => setScreen({ screen: "method-picker", method: "flashcards" }) }));
     }
     if ((screen === null || screen === void 0 ? void 0 : screen.screen) === "quiz") {
-        return (React.createElement(AmericanQuiz, { mode: screen.mode, vocab: vocab, setVocab: setVocab, letters: letters, setLetters: setLetters, onBack: () => setScreen(null) }));
+        return (React.createElement(AmericanQuiz, { mode: screen.mode, vocab: vocab, setVocab: setVocab, letters: letters, setLetters: setLetters, onBack: () => setScreen({ screen: "method-picker", method: "quiz" }) }));
     }
     if ((screen === null || screen === void 0 ? void 0 : screen.screen) === "sentence-builder" || (screen === null || screen === void 0 ? void 0 : screen.screen) === "reading") {
         return (React.createElement("div", { className: "zl-anim" },
@@ -749,30 +790,22 @@ function PracticeTab({ screen, setScreen, vocab, setVocab, letters, setLetters }
             React.createElement(SectionHeader, { title: "\u05EA\u05E8\u05D2\u05D5\u05DC \u05DE\u05E9\u05E4\u05D8\u05D9\u05DD \u05D5\u05E7\u05E8\u05D9\u05D0\u05D4" }),
             React.createElement(SentencesReadingHub, null)));
     }
-    const subTabs = [
-        { id: "flashcards", label: "כרטיסיות" },
-        { id: "quiz", label: "מבחן אמריקאי" },
-        { id: "sentences", label: "משפטים וקריאה" },
-    ];
+    // Second level: choose vocab vs. letters for a chosen method (flashcards / quiz)
+    if ((screen === null || screen === void 0 ? void 0 : screen.screen) === "method-picker") {
+        const method = screen.method;
+        const isFlashcards = method === "flashcards";
+        return (React.createElement("div", { className: "zl-anim" },
+            React.createElement(BackLink, { onClick: () => setScreen(null) }, "\u05D7\u05D6\u05E8\u05D4 \u05DC\u05E9\u05D9\u05D8\u05D5\u05EA \u05EA\u05E8\u05D2\u05D5\u05DC"),
+            React.createElement(SectionHeader, { title: isFlashcards ? "כרטיסיות" : "מבחן אמריקאי", subtitle: "\u05D1\u05D7\u05E8 \u05DE\u05D4 \u05DC\u05EA\u05E8\u05D2\u05DC" }),
+            React.createElement(PracticeCard, { title: "\u05EA\u05E8\u05D2\u05D5\u05DC \u05D0\u05D5\u05E6\u05E8 \u05DE\u05D9\u05DC\u05D9\u05DD", desc: isFlashcards ? "שליפה פעילה של מילים בכרטיסיות." : "בחירה מתוך 4 אפשרויות תרגום.", onClick: () => setScreen({ screen: method, mode: "vocab" }) }),
+            React.createElement(PracticeCard, { title: "\u05EA\u05E8\u05D2\u05D5\u05DC \u05D0\u05D5\u05EA\u05D9\u05D5\u05EA", desc: isFlashcards ? "היכרות וזיהוי מהיר של אותיות האלף-בית." : "בחירה מתוך 4 אפשרויות שם/הגייה.", onClick: () => setScreen({ screen: method, mode: "letters" }) })));
+    }
+    // Top level: pick a practice method
     return (React.createElement("div", { className: "zl-anim" },
         React.createElement(SectionHeader, { title: "\u05E9\u05D9\u05D8\u05D5\u05EA \u05EA\u05E8\u05D2\u05D5\u05DC", subtitle: "\u05D1\u05D7\u05E8 \u05D0\u05EA \u05E9\u05D9\u05D8\u05EA \u05D4\u05D0\u05D9\u05DE\u05D5\u05DF \u05D4\u05E8\u05E6\u05D5\u05D9\u05D4 \u05DB\u05D3\u05D9 \u05DC\u05D4\u05EA\u05D7\u05D9\u05DC" }),
-        React.createElement("div", { style: { display: "flex", gap: 8, marginBottom: 18, flexWrap: "wrap" } }, subTabs.map((t) => (React.createElement("button", { key: t.id, onClick: () => setSub(t.id), style: {
-                padding: "8px 18px",
-                borderRadius: 20,
-                border: "1px solid " + (sub === t.id ? "var(--teal-950)" : "var(--sand-200)"),
-                background: sub === t.id ? "var(--teal-950)" : "white",
-                color: sub === t.id ? "white" : "var(--ink)",
-                cursor: "pointer",
-                fontSize: "0.88rem",
-                fontWeight: 600,
-            } }, t.label)))),
-        sub === "flashcards" && (React.createElement(React.Fragment, null,
-            React.createElement(PracticeCard, { title: "\u05EA\u05E8\u05D2\u05D5\u05DC \u05D0\u05D5\u05E6\u05E8 \u05DE\u05D9\u05DC\u05D9\u05DD", desc: "\u05E9\u05DC\u05D9\u05E4\u05D4 \u05E4\u05E2\u05D9\u05DC\u05D4 \u05E9\u05DC \u05DE\u05D9\u05DC\u05D9\u05DD \u05D1\u05DB\u05E8\u05D8\u05D9\u05E1\u05D9\u05D5\u05EA.", onClick: () => setScreen({ screen: "flashcards", mode: "vocab" }) }),
-            React.createElement(PracticeCard, { title: "\u05EA\u05E8\u05D2\u05D5\u05DC \u05D0\u05D5\u05EA\u05D9\u05D5\u05EA", desc: "\u05D4\u05D9\u05DB\u05E8\u05D5\u05EA \u05D5\u05D6\u05D9\u05D4\u05D5\u05D9 \u05DE\u05D4\u05D9\u05E8 \u05E9\u05DC \u05D0\u05D5\u05EA\u05D9\u05D5\u05EA \u05D4\u05D0\u05DC\u05E3-\u05D1\u05D9\u05EA.", onClick: () => setScreen({ screen: "flashcards", mode: "letters" }) }))),
-        sub === "quiz" && (React.createElement(React.Fragment, null,
-            React.createElement(PracticeCard, { title: "\u05DE\u05D1\u05D7\u05DF \u05D0\u05DE\u05E8\u05D9\u05E7\u05D0\u05D9 \u00B7 \u05D0\u05D5\u05E6\u05E8 \u05DE\u05D9\u05DC\u05D9\u05DD", desc: "\u05D1\u05D7\u05D9\u05E8\u05D4 \u05DE\u05EA\u05D5\u05DA 4 \u05D0\u05E4\u05E9\u05E8\u05D5\u05D9\u05D5\u05EA \u05EA\u05E8\u05D2\u05D5\u05DD.", onClick: () => setScreen({ screen: "quiz", mode: "vocab" }) }),
-            React.createElement(PracticeCard, { title: "\u05DE\u05D1\u05D7\u05DF \u05D0\u05DE\u05E8\u05D9\u05E7\u05D0\u05D9 \u00B7 \u05D0\u05D5\u05EA\u05D9\u05D5\u05EA", desc: "\u05D1\u05D7\u05D9\u05E8\u05D4 \u05DE\u05EA\u05D5\u05DA 4 \u05D0\u05E4\u05E9\u05E8\u05D5\u05D9\u05D5\u05EA \u05E9\u05DD/\u05D4\u05D2\u05D9\u05D9\u05D4.", onClick: () => setScreen({ screen: "quiz", mode: "letters" }) }))),
-        sub === "sentences" && React.createElement(SentencesReadingHub, null)));
+        React.createElement(PracticeCard, { title: "\u05DB\u05E8\u05D8\u05D9\u05E1\u05D9\u05D5\u05EA", desc: "\u05E9\u05DC\u05D9\u05E4\u05D4 \u05E4\u05E2\u05D9\u05DC\u05D4: \u05D0\u05D5\u05E6\u05E8 \u05DE\u05D9\u05DC\u05D9\u05DD \u05D0\u05D5 \u05D0\u05D5\u05EA\u05D9\u05D5\u05EA.", onClick: () => setScreen({ screen: "method-picker", method: "flashcards" }) }),
+        React.createElement(PracticeCard, { title: "\u05DE\u05D1\u05D7\u05DF \u05D0\u05DE\u05E8\u05D9\u05E7\u05D0\u05D9", desc: "\u05D1\u05D7\u05D9\u05E8\u05D4 \u05DE\u05EA\u05D5\u05DA 4 \u05D0\u05E4\u05E9\u05E8\u05D5\u05D9\u05D5\u05EA: \u05D0\u05D5\u05E6\u05E8 \u05DE\u05D9\u05DC\u05D9\u05DD \u05D0\u05D5 \u05D0\u05D5\u05EA\u05D9\u05D5\u05EA.", onClick: () => setScreen({ screen: "method-picker", method: "quiz" }) }),
+        React.createElement(PracticeCard, { title: "\u05DE\u05E9\u05E4\u05D8\u05D9\u05DD \u05D5\u05E7\u05E8\u05D9\u05D0\u05D4", desc: "\u05D4\u05E8\u05DB\u05D1\u05EA \u05DE\u05E9\u05E4\u05D8\u05D9\u05DD, \u05E7\u05E8\u05D9\u05D0\u05D4 \u05D5\u05D4\u05D2\u05D9\u05D9\u05D4, \u05D5\u05E0\u05D9\u05D1\u05D9 \u05DC\u05E9\u05D5\u05DF.", onClick: () => setScreen({ screen: "sentence-builder" }) })));
 }
 function PracticeCard({ title, desc, onClick }) {
     return (React.createElement(Card, { style: { display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 12 } },
@@ -894,9 +927,9 @@ function ArabicLearningApp() {
     return (React.createElement("div", { className: "zl-root", style: { padding: "20px 14px 60px" } },
         React.createElement(GlobalStyle, null),
         React.createElement("div", { style: { maxWidth: 880, margin: "0 auto" } },
-            React.createElement("header", { style: { marginBottom: 24, borderBottom: "1px solid var(--sand-200)", paddingBottom: 16 } },
+            React.createElement("header", { style: { marginBottom: 24, borderBottom: "1px solid var(--sand-200)", paddingBottom: 18 } },
                 React.createElement("h1", { className: "zl-display", style: { fontSize: "1.5rem", fontWeight: 700, color: "var(--teal-950)", letterSpacing: "-0.02em" } }, "\u05DC\u05D5\u05DE\u05D3\u05D9\u05DD \u05E2\u05E8\u05D1\u05D9\u05EA"),
-                React.createElement("p", { style: { color: "var(--ink-muted)", fontSize: "0.9rem", marginTop: 2 } }, "\u05E9\u05DC\u05D9\u05E4\u05D4 \u05E4\u05E2\u05D9\u05DC\u05D4, \u05E7\u05DC\u05D8 \u05DE\u05D5\u05D1\u05DF \u05D5\u05DE\u05E2\u05E7\u05D1 \u05D4\u05EA\u05E7\u05D3\u05DE\u05D5\u05EA")),
+                React.createElement(AlFatihaBlock, null)),
             React.createElement(TopNav, { active: tab, onChange: (t) => {
                     setTab(t);
                     if (t !== "practice")
