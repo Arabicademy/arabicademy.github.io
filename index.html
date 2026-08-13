@@ -4,15 +4,52 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>לומדים ערבית</title>
+<style>
+  #boot-error {
+    display: none;
+    direction: ltr;
+    text-align: left;
+    font-family: monospace;
+    white-space: pre-wrap;
+    background: #fee2e2;
+    color: #7f1d1d;
+    border: 2px solid #dc2626;
+    padding: 16px;
+    margin: 16px;
+    border-radius: 8px;
+    font-size: 13px;
+    line-height: 1.5;
+  }
+</style>
 </head>
 <body>
-<div id="root"></div>
+<div id="root">
+  <p style="font-family:sans-serif;padding:20px;color:#64748b;">טוען…</p>
+</div>
+<div id="boot-error"></div>
 
 <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
 <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
 <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
 
-<script type="text/babel" data-presets="react">
+<script>
+  // Catches ANY failure (missing CDN script, JSX parse error, runtime error)
+  // and prints it directly on the page, so it's visible without dev tools.
+  function showBootError(title, err) {
+    var box = document.getElementById('boot-error');
+    box.style.display = 'block';
+    box.textContent = title + '\n\n' + (err && err.stack ? err.stack : String(err));
+  }
+  window.addEventListener('error', function (e) {
+    showBootError('שגיאת JavaScript:', e.error || e.message);
+  });
+  window.addEventListener('unhandledrejection', function (e) {
+    showBootError('שגיאה לא מטופלת:', e.reason);
+  });
+</script>
+
+<script id="app-source" type="text/plain">
+
 const { useState, useEffect, useCallback, useMemo, useRef } = React;
 
 /* Inline icon set (stand-ins for lucide-react, so this file has zero build
@@ -1203,6 +1240,38 @@ function ArabicLearningApp() {
 }
 
 ReactDOM.createRoot(document.getElementById("root")).render(<ArabicLearningApp />);
+</script>
+
+<script>
+  // Manually run Babel (instead of Babel's own auto-scanner) so that ANY
+  // failure — CDN not loaded, JSX parse error, runtime error — is caught
+  // and printed on the page instead of failing silently to a blank screen.
+  (function () {
+    function boot() {
+      try {
+        if (!window.React || !window.ReactDOM) {
+          throw new Error("React / ReactDOM לא נטענו מה-CDN (בדוק חיבור לאינטרנט או חסימת סקריפטים).");
+        }
+        if (!window.Babel) {
+          throw new Error("Babel Standalone לא נטען מה-CDN.");
+        }
+        var source = document.getElementById("app-source").textContent;
+        var compiled = Babel.transform(source, { presets: ["react"] }).code;
+        var runApp = new Function(
+          "React", "ReactDOM",
+          "'use strict';\n" + compiled
+        );
+        runApp(window.React, window.ReactDOM);
+      } catch (err) {
+        showBootError("שגיאה בטעינת האפליקציה:", err);
+      }
+    }
+    if (document.readyState === "complete" || document.readyState === "interactive") {
+      boot();
+    } else {
+      document.addEventListener("DOMContentLoaded", boot);
+    }
+  })();
 </script>
 </body>
 </html>
