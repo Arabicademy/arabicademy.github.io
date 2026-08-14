@@ -62,7 +62,7 @@ try {
     throw new Error("React / ReactDOM לא נטענו מה-CDN (בדוק חיבור לאינטרנט או חסימת סקריפטים).");
   }
 "use strict";
-const APP_BUILD = "14.08 · 9";   // bump this every time the file is replaced
+const APP_BUILD = "14.08 · 10";   // bump this every time the file is replaced
 
 
 const { useState, useEffect, useCallback, useMemo, useRef } = React;
@@ -192,14 +192,18 @@ const GLOBAL_CSS = `
     .zl-chip { border:1px solid var(--sand-200); background:var(--sand-100); color:var(--ink); border-radius:20px; padding:6px 13px; font:inherit; font-size:0.8rem; font-weight:600; cursor:pointer; }
     .zl-chip[data-active="true"] { background:var(--teal-950); border-color:var(--teal-950); color:#fff; }
     .zl-search { width:100%; padding:10px 13px; border:1px solid var(--sand-200); border-radius:9px; font:inherit; font-size:0.9rem; margin-bottom:10px; outline:none; background:var(--sand-100); }
+    .zl-weeknav { flex:0 0 26px; display:flex; align-items:center; justify-content:center; background:var(--sand); border:1px solid var(--sand-200); border-radius:8px; color:var(--teal-950); cursor:pointer; padding:0; }
+    .zl-weeknav:disabled { opacity:0.35; cursor:default; }
+    .zl-daydetail { border-top:1px solid var(--sand-200); margin-top:10px; padding-top:9px; }
     .zl-week-card { background:var(--sand-100); border:1px solid var(--sand-200); border-radius:12px; padding:14px 16px 10px; margin-bottom:16px; }
     .zl-week { display:flex; gap:6px; }
-    .zl-day { flex:1; display:flex; flex-direction:column; align-items:center; gap:3px; padding:9px 2px; border-radius:9px; background:var(--sand); border:1px solid var(--sand-200); }
+    .zl-day { flex:1; display:flex; flex-direction:column; align-items:center; gap:3px; padding:9px 2px; border-radius:9px; background:var(--sand); border:1px solid var(--sand-200); font:inherit; color:inherit; cursor:pointer; }
+    .zl-day[data-open="true"] { border-color:var(--teal-950); }
     .zl-day[data-on="true"] { background:var(--teal-700); border-color:var(--teal-700); color:#fff; }
     .zl-day[data-today="true"] { box-shadow:0 0 0 2px var(--teal-950); }
     .zl-day-name { font-size:0.78rem; font-weight:700; }
     .zl-day-num { font-size:0.68rem; opacity:0.75; }
-    .zl-due-line { display:flex; align-items:center; justify-content:space-between; gap:8px; width:100%; margin-top:10px; padding:8px 2px 2px; background:none; border:none; font:inherit; font-size:0.82rem; color:var(--ink-muted); cursor:pointer; text-align:right; }
+    .zl-due-line { display:flex; align-items:center; justify-content:space-between; gap:8px; width:100%; margin-top:10px; padding:8px 2px 2px; font-size:0.82rem; color:var(--ink-muted); }
 
     .zl-due { display:flex; align-items:center; justify-content:space-between; gap:12px; background:var(--sand-100); border:1px solid var(--sand-200); border-right:3px solid var(--gold); border-radius:10px; padding:13px 15px; margin-bottom:16px; }
     .zl-due-num { font-size:1.35rem; font-weight:800; color:var(--teal-950); }
@@ -974,21 +978,32 @@ function localDateKey(d) {
 
 /* The seven days ending today, with how many of the three daily tasks were
    ticked on each. Read straight out of the checklist that is already stored. */
-function lastSevenDays(checklist) {
+function lastSevenDays(checklist, weeksBack) {
     const names = ["א", "ב", "ג", "ד", "ה", "ו", "ש"];
+    const shift = (weeksBack || 0) * 7;
     const days = [];
     for (let back = 6; back >= 0; back--) {
         const date = new Date();
-        date.setDate(date.getDate() - back);
+        date.setDate(date.getDate() - back - shift);
         const key = localDateKey(date);
         const entry = checklist[key] || {};
-        const done = Object.keys(entry).filter((k) => entry[k]).length;
-        days.push({ key: key, name: names[date.getDay()], done: done, today: back === 0 });
+        const doneKeys = Object.keys(entry).filter((k) => entry[k]);
+        days.push({
+            key: key,
+            name: names[date.getDay()],
+            date: date.getDate() + "." + (date.getMonth() + 1),
+            done: doneKeys.length,
+            doneKeys: doneKeys,
+            today: back === 0 && !shift,
+        });
     }
     return days;
 }
 
+
 function RoutineTab({ checklist, setChecklist, navigateTo, vocab, letters, setVocab, setLetters }) {
+    const [weeksBack, setWeeksBack] = useState(0);
+    const [openDay, setOpenDay] = useState(null);
     const today = localDateKey();
     const todayState = checklist[today] || {};
     const toggle = (key) => {
@@ -1001,19 +1016,44 @@ function RoutineTab({ checklist, setChecklist, navigateTo, vocab, letters, setVo
     const streak = routineStreak(checklist);
 
     return (React.createElement("div", { className: "zl-anim" },
-        React.createElement("div", { className: "zl-week-card" },
-            React.createElement("div", { style: { display: "flex", justifyContent: "space-between", alignItems: "baseline", marginBottom: 10 } },
-                React.createElement("span", { style: { fontSize: "0.85rem", fontWeight: 700 } }, "השבוע האחרון"),
-                React.createElement("span", { style: { fontSize: "0.8rem", color: "var(--ink-muted)" } },
-                    streak > 0 ? (streak === 1 ? "יום ברצף" : streak + " ימים ברצף") : "אין רצף פעיל")),
-            React.createElement("div", { className: "zl-week" }, lastSevenDays(checklist).map((d) => (
-                React.createElement("div", { key: d.key, className: "zl-day", "data-on": d.done > 0 ? "true" : "false", "data-today": d.today ? "true" : "false" },
-                    React.createElement("span", { className: "zl-day-name" }, d.name),
-                    React.createElement("span", { className: "zl-day-num" }, d.done > 0 ? d.done + "/3" : "—"))))),
-            React.createElement("button", { type: "button", className: "zl-due-line", onClick: () => navigateTo({ screen: "flashcards", mode: "vocab" }) },
-                React.createElement("span", null,
-                    due === 0 ? "אין מילים לחזרה היום" : due + " מילים ממתינות לחזרה היום"),
-                React.createElement(ChevronLeft, { size: 15 }))),
+        (function () {
+            const days = lastSevenDays(checklist, weeksBack);
+            const picked = days.find((d) => d.key === openDay);
+            return React.createElement("div", { className: "zl-week-card" },
+                React.createElement("div", { style: { display: "flex", justifyContent: "space-between", alignItems: "baseline", marginBottom: 10 } },
+                    React.createElement("span", { style: { fontSize: "0.85rem", fontWeight: 700 } },
+                        weeksBack === 0 ? "השבוע האחרון" : days[0].date + " – " + days[6].date),
+                    React.createElement("span", { style: { fontSize: "0.8rem", color: "var(--ink-muted)" } },
+                        streak > 0 ? (streak === 1 ? "יום ברצף" : streak + " ימים ברצף") : "אין רצף פעיל")),
+                React.createElement("div", { style: { display: "flex", alignItems: "stretch", gap: 6 } },
+                    React.createElement("button", { type: "button", className: "zl-weeknav", title: "שבוע קודם",
+                        onClick: () => { setOpenDay(null); setWeeksBack((w) => w + 1); } },
+                        React.createElement(ChevronRight, { size: 16 })),
+                    React.createElement("div", { className: "zl-week" }, days.map((d) => (
+                        React.createElement("button", { key: d.key, type: "button", className: "zl-day",
+                            "data-on": d.done > 0 ? "true" : "false",
+                            "data-today": d.today ? "true" : "false",
+                            "data-open": openDay === d.key ? "true" : "false",
+                            onClick: () => setOpenDay(openDay === d.key ? null : d.key) },
+                            React.createElement("span", { className: "zl-day-name" }, d.name),
+                            React.createElement("span", { className: "zl-day-num" }, d.done > 0 ? d.done + "/3" : "—"))))),
+                    React.createElement("button", { type: "button", className: "zl-weeknav", title: "שבוע הבא",
+                        disabled: weeksBack === 0,
+                        onClick: () => { setOpenDay(null); setWeeksBack((w) => Math.max(0, w - 1)); } },
+                        React.createElement(ChevronLeft, { size: 16 }))),
+                picked ? React.createElement("div", { className: "zl-daydetail zl-anim" },
+                    React.createElement("div", { style: { fontWeight: 700, fontSize: "0.82rem", marginBottom: 6 } },
+                        "יום " + picked.name + " · " + picked.date + " — " + picked.done + " מתוך 3"),
+                    ROUTINE_ITEMS.map((r) => (React.createElement("div", { key: r.key, style: { display: "flex", alignItems: "center", gap: 8, fontSize: "0.8rem", padding: "3px 0" } },
+                        React.createElement("span", { style: { color: picked.doneKeys.indexOf(r.key) !== -1 ? "var(--teal-700)" : "var(--sand-200)" } },
+                            React.createElement(picked.doneKeys.indexOf(r.key) !== -1 ? Check : X, { size: 14 })),
+                        React.createElement("span", { style: { fontWeight: 600 } }, r.label),
+                        React.createElement("span", { style: { color: "var(--ink-muted)" } }, r.desc))))) : null,
+                React.createElement("div", { className: "zl-due-line" },
+                    React.createElement("span", null,
+                        due === 0 ? "אין מילים לחזרה היום" : due + " מילים ממתינות לחזרה היום"),
+                    React.createElement(ArrowButton, { title: "התחל חזרה", onClick: () => navigateTo({ screen: "flashcards", mode: "vocab" }) })));
+        })(),
         React.createElement(SectionHeader, { title: "\u05DE\u05E9\u05D9\u05DE\u05D5\u05EA \u05D4\u05D9\u05D5\u05DD", subtitle: "\u05E1\u05DE\u05DF \u05DB\u05DC \u05D7\u05DC\u05E7 \u05E2\u05DD \u05E1\u05D9\u05D5\u05DE\u05D5, \u05D0\u05D5 \u05DC\u05D7\u05E5 \u05E2\u05DC \u05D4\u05D7\u05E5 \u05DC\u05DE\u05E2\u05D1\u05E8 \u05D9\u05E9\u05D9\u05E8 \u05DC\u05EA\u05E8\u05D2\u05D5\u05DC" }),
         React.createElement(Card, null, ROUTINE_ITEMS.map((item, idx) => (React.createElement("div", { key: item.key, style: {
                 display: "flex",
