@@ -65,7 +65,7 @@ try {
     throw new Error("React / ReactDOM לא נטענו מה-CDN (בדוק חיבור לאינטרנט או חסימת סקריפטים).");
   }
 "use strict";
-const APP_BUILD = "14.08 · 14";   // bump this every time the file is replaced
+const APP_BUILD = "14.08 · 15";   // bump this every time the file is replaced
 
 
 const { useState, useEffect, useCallback, useMemo, useRef } = React;
@@ -2279,7 +2279,7 @@ function ArabicLearningApp() {
         setPracticeScreen(target);
     };
 
-    return (React.createElement("div", { className: "zl-root", "data-theme": theme, style: { padding: "20px 14px 60px" } },
+    return (React.createElement("div", { className: "zl-root", "data-theme": theme, style: { padding: "20px 20px 60px" } },
         React.createElement(GlobalStyle, null),
         React.createElement("button", {
             type: "button",
@@ -2288,7 +2288,7 @@ function ArabicLearningApp() {
             "aria-label": theme === "dark" ? "מצב יום" : "מצב לילה",
             onClick: () => setTheme(theme === "dark" ? "light" : "dark"),
         }, React.createElement(theme === "dark" ? Sun : Moon, { size: 19 })),
-        React.createElement("div", { style: { maxWidth: 720, margin: "0 auto" } },
+        React.createElement("div", { style: { maxWidth: 1100, margin: "0 auto" } },
             React.createElement("header", { style: { marginBottom: 24, borderBottom: "1px solid var(--sand-200)", paddingBottom: 18 } },
                 React.createElement("h1", { className: "zl-display", style: { fontSize: "1.5rem", fontWeight: 700, color: "var(--teal-950)", letterSpacing: "-0.02em" } }, "\u05DC\u05D5\u05DE\u05D3\u05D9\u05DD \u05E2\u05E8\u05D1\u05D9\u05EA"),
                 React.createElement(AlFatihaCard, null)),
