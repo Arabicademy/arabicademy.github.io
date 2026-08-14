@@ -62,7 +62,7 @@ try {
     throw new Error("React / ReactDOM לא נטענו מה-CDN (בדוק חיבור לאינטרנט או חסימת סקריפטים).");
   }
 "use strict";
-const APP_BUILD = "14.08 · 10";   // bump this every time the file is replaced
+const APP_BUILD = "14.08 · 11";   // bump this every time the file is replaced
 
 
 const { useState, useEffect, useCallback, useMemo, useRef } = React;
@@ -192,18 +192,35 @@ const GLOBAL_CSS = `
     .zl-chip { border:1px solid var(--sand-200); background:var(--sand-100); color:var(--ink); border-radius:20px; padding:6px 13px; font:inherit; font-size:0.8rem; font-weight:600; cursor:pointer; }
     .zl-chip[data-active="true"] { background:var(--teal-950); border-color:var(--teal-950); color:#fff; }
     .zl-search { width:100%; padding:10px 13px; border:1px solid var(--sand-200); border-radius:9px; font:inherit; font-size:0.9rem; margin-bottom:10px; outline:none; background:var(--sand-100); }
-    .zl-weeknav { flex:0 0 26px; display:flex; align-items:center; justify-content:center; background:var(--sand); border:1px solid var(--sand-200); border-radius:8px; color:var(--teal-950); cursor:pointer; padding:0; }
-    .zl-weeknav:disabled { opacity:0.35; cursor:default; }
-    .zl-daydetail { border-top:1px solid var(--sand-200); margin-top:10px; padding-top:9px; }
-    .zl-week-card { background:var(--sand-100); border:1px solid var(--sand-200); border-radius:12px; padding:14px 16px 10px; margin-bottom:16px; }
-    .zl-week { display:flex; gap:6px; }
-    .zl-day { flex:1; display:flex; flex-direction:column; align-items:center; gap:3px; padding:9px 2px; border-radius:9px; background:var(--sand); border:1px solid var(--sand-200); font:inherit; color:inherit; cursor:pointer; }
-    .zl-day[data-open="true"] { border-color:var(--teal-950); }
-    .zl-day[data-on="true"] { background:var(--teal-700); border-color:var(--teal-700); color:#fff; }
+    .zl-weeknav {
+      flex:0 0 30px; align-self:stretch;
+      display:flex; align-items:center; justify-content:center;
+      background:var(--sand); border:1px solid var(--sand-200); border-radius:9px;
+      color:var(--teal-950); cursor:pointer; padding:0;
+    }
+    .zl-weeknav:disabled { opacity:0.3; cursor:default; }
+    .zl-daydetail { border-top:1px solid var(--sand-200); margin-top:12px; padding-top:10px; }
+    .zl-week-card { background:var(--sand-100); border:1px solid var(--sand-200); border-radius:12px; padding:14px 16px 12px; margin-bottom:16px; }
+    .zl-week { flex:1 1 auto; min-width:0; display:flex; gap:6px; }
+    .zl-day {
+      flex:1 1 0; min-width:0;
+      display:flex; flex-direction:column; align-items:center; gap:4px;
+      padding:10px 2px 8px; border-radius:10px;
+      background:var(--sand); border:1px solid var(--sand-200);
+      font:inherit; color:var(--ink); cursor:pointer;
+      transition:background .15s, border-color .15s;
+    }
+    .zl-day[data-on="true"] { background:rgba(5,150,105,0.10); border-color:rgba(5,150,105,0.35); }
+    .zl-day[data-full="true"] { background:var(--teal-700); border-color:var(--teal-700); color:#fff; }
     .zl-day[data-today="true"] { box-shadow:0 0 0 2px var(--teal-950); }
-    .zl-day-name { font-size:0.78rem; font-weight:700; }
-    .zl-day-num { font-size:0.68rem; opacity:0.75; }
-    .zl-due-line { display:flex; align-items:center; justify-content:space-between; gap:8px; width:100%; margin-top:10px; padding:8px 2px 2px; font-size:0.82rem; color:var(--ink-muted); }
+    .zl-day[data-open="true"] { border-color:var(--teal-950); }
+    .zl-day-name { font-size:0.8rem; font-weight:700; line-height:1; }
+    .zl-day-num { font-size:0.68rem; opacity:0.6; line-height:1; }
+    .zl-day-pips { display:flex; gap:2px; margin-top:2px; }
+    .zl-pip { width:5px; height:5px; border-radius:50%; background:currentColor; opacity:0.18; }
+    .zl-pip[data-on="true"] { opacity:1; color:var(--teal-700); }
+    .zl-day[data-full="true"] .zl-pip[data-on="true"] { color:#fff; }
+    .zl-due-line { display:flex; align-items:center; justify-content:space-between; gap:8px; width:100%; margin-top:12px; padding-top:10px; border-top:1px solid var(--sand-200); font-size:0.82rem; color:var(--ink-muted); }
 
     .zl-due { display:flex; align-items:center; justify-content:space-between; gap:12px; background:var(--sand-100); border:1px solid var(--sand-200); border-right:3px solid var(--gold); border-radius:10px; padding:13px 15px; margin-bottom:16px; }
     .zl-due-num { font-size:1.35rem; font-weight:800; color:var(--teal-950); }
@@ -1032,11 +1049,14 @@ function RoutineTab({ checklist, setChecklist, navigateTo, vocab, letters, setVo
                     React.createElement("div", { className: "zl-week" }, days.map((d) => (
                         React.createElement("button", { key: d.key, type: "button", className: "zl-day",
                             "data-on": d.done > 0 ? "true" : "false",
+                            "data-full": d.done >= 3 ? "true" : "false",
                             "data-today": d.today ? "true" : "false",
                             "data-open": openDay === d.key ? "true" : "false",
                             onClick: () => setOpenDay(openDay === d.key ? null : d.key) },
                             React.createElement("span", { className: "zl-day-name" }, d.name),
-                            React.createElement("span", { className: "zl-day-num" }, d.done > 0 ? d.done + "/3" : "—"))))),
+                            React.createElement("span", { className: "zl-day-num" }, d.date.split(".")[0]),
+                            React.createElement("span", { className: "zl-day-pips" },
+                                [0, 1, 2].map((i) => React.createElement("span", { key: i, className: "zl-pip", "data-on": i < d.done ? "true" : "false" }))))))),
                     React.createElement("button", { type: "button", className: "zl-weeknav", title: "שבוע הבא",
                         disabled: weeksBack === 0,
                         onClick: () => { setOpenDay(null); setWeeksBack((w) => Math.max(0, w - 1)); } },
