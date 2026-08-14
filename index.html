@@ -65,7 +65,7 @@ try {
     throw new Error("React / ReactDOM לא נטענו מה-CDN (בדוק חיבור לאינטרנט או חסימת סקריפטים).");
   }
 "use strict";
-const APP_BUILD = "14.08 · 25";   // bump this every time the file is replaced
+const APP_BUILD = "14.08 · 26";   // bump this every time the file is replaced
 
 
 const { useState, useEffect, useCallback, useMemo, useRef } = React;
@@ -1641,7 +1641,7 @@ function acceptableAnswers(text) {
     return out;
 }
 
-function FullExam({ vocab, setVocab, letters, setLetters, onBack, dir, setDir }) {
+function FullExam({ vocab, setVocab, letters, setLetters, onBack }) {
     const data = vocab;
     const [order, setOrder] = useState(() => weightedOrder(vocab));
     const [pos, setPos] = useState(0);
@@ -1670,7 +1670,7 @@ function FullExam({ vocab, setVocab, letters, setLetters, onBack, dir, setDir })
             ? deck[weightedOrder(deck)[0]]
             : vocab[order[pos % order.length]];
         if (!item) return;
-        const useDir = resolveDir(dir);
+        const useDir = resolveDir("mix");   // a full exam is mixed by definition
         const open = !askLetter && useDir === "ar2he" && Math.random() < 0.5;
         setTask({
             item: item,
@@ -1681,7 +1681,7 @@ function FullExam({ vocab, setVocab, letters, setLetters, onBack, dir, setDir })
         setTyped("");
         setResult(null);
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [pos, order, vocab.length, letters.length, dir]);
+    }, [pos, order, vocab.length, letters.length]);
 
     if (data.length < 4) {
         return (React.createElement("div", { className: "zl-anim" },
@@ -1726,7 +1726,7 @@ function FullExam({ vocab, setVocab, letters, setLetters, onBack, dir, setDir })
             React.createElement("div", { style: { display: "flex", justifyContent: "space-between", alignItems: "center", gap: 10, flexWrap: "wrap", marginBottom: 14 } },
                 React.createElement("h2", { className: "zl-display", style: { fontSize: "1.15rem", fontWeight: 700 } },
                     "מבחן מלא · ", task.mode === "vocab" ? "אוצר מילים" : "אלף-בית"),
-                React.createElement(DirectionToggle, { value: dir, onChange: setDir }),
+                React.createElement("span", { style: { fontSize: "0.78rem", fontWeight: 600, color: "var(--ink-muted)" } }, "שני הכיוונים מעורבבים"),
                 React.createElement("span", { style: { fontSize: "0.85rem", color: "var(--ink-muted)" } }, score.correct + " / " + score.total)),
 
             React.createElement("div", { style: { fontSize: "0.75rem", fontWeight: 700, color: "var(--gold)", marginBottom: 6 } },
@@ -2009,7 +2009,7 @@ function PracticeTab({ screen, setScreen, vocab, setVocab, letters, setLetters }
         return (React.createElement(FlashcardPractice, { mode: screen.mode || "vocab", vocab: vocab, setVocab: setVocab, letters: letters, setLetters: setLetters, onBack: backToList("flashcards"), dir: dir, setDir: setDir }));
     }
     if (screen && screen.screen === "exam") {
-        return (React.createElement(FullExam, { vocab: vocab, setVocab: setVocab, letters: letters, setLetters: setLetters, onBack: backToList("exam"), dir: dir, setDir: setDir }));
+        return (React.createElement(FullExam, { vocab: vocab, setVocab: setVocab, letters: letters, setLetters: setLetters, onBack: backToList("exam") }));
     }
     if (screen && screen.screen === "quiz") {
         return (React.createElement(AmericanQuiz, { mode: screen.mode || "vocab", vocab: vocab, setVocab: setVocab, letters: letters, setLetters: setLetters, onBack: backToList("quiz"), dir: dir, setDir: setDir }));
