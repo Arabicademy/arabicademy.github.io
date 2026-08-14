@@ -65,7 +65,7 @@ try {
     throw new Error("React / ReactDOM לא נטענו מה-CDN (בדוק חיבור לאינטרנט או חסימת סקריפטים).");
   }
 "use strict";
-const APP_BUILD = "14.08 · 23";   // bump this every time the file is replaced
+const APP_BUILD = "14.08 · 24";   // bump this every time the file is replaced
 
 
 const { useState, useEffect, useCallback, useMemo, useRef } = React;
@@ -1641,10 +1641,9 @@ function acceptableAnswers(text) {
     return out;
 }
 
-function FullExam({ mode, vocab, setVocab, letters, setLetters, onBack, dir, setDir }) {
-    const data = mode === "vocab" ? vocab : letters;
-    const setData = mode === "vocab" ? setVocab : setLetters;
-    const [order, setOrder] = useState(() => weightedOrder(data));
+function FullExam({ vocab, setVocab, letters, setLetters, onBack, dir, setDir }) {
+    const data = vocab;
+    const [order, setOrder] = useState(() => weightedOrder(vocab));
     const [pos, setPos] = useState(0);
     const [task, setTask] = useState(null);
     const [typed, setTyped] = useState("");
@@ -1653,27 +1652,36 @@ function FullExam({ mode, vocab, setVocab, letters, setLetters, onBack, dir, set
     const inputRef = useRef(null);
 
     useEffect(() => {
-        setOrder(weightedOrder(data));
+        setOrder(weightedOrder(vocab));
         setPos(0);
-    }, [data.length, mode]);
+    }, [vocab.length]);
 
     useEffect(() => {
-        if (data.length === 0 || order.length === 0) return;
-        if (pos > 0 && pos % order.length === 0) setOrder(weightedOrder(data));
-        const item = data[order[pos % order.length]];
+        if (vocab.length === 0 || order.length === 0) return;
+        if (pos > 0 && pos % order.length === 0) setOrder(weightedOrder(vocab));
+        /* Roughly one question in four is about a letter, drawn from the letter
+           deck by the same weighting. Letters are always multiple choice — an
+           open question there would be spelling out a letter's name, which is
+           recall of a label rather than of the language. */
+        const askLetter = letters.length >= 4 && Math.random() < 0.25;
+        const mode = askLetter ? "letters" : "vocab";
+        const deck = askLetter ? letters : vocab;
+        const item = askLetter
+            ? deck[weightedOrder(deck)[0]]
+            : vocab[order[pos % order.length]];
         if (!item) return;
         const useDir = resolveDir(dir);
-        // an open question needs the prompt to be the Arabic side
-        const open = useDir === "ar2he" && Math.random() < 0.5;
+        const open = !askLetter && useDir === "ar2he" && Math.random() < 0.5;
         setTask({
             item: item,
+            mode: mode,
             open: open,
-            question: buildQuestion(data, item, mode, useDir),
+            question: buildQuestion(deck, item, mode, useDir),
         });
         setTyped("");
         setResult(null);
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [pos, order, data.length, dir]);
+    }, [pos, order, vocab.length, letters.length, dir]);
 
     if (data.length < 4) {
         return (React.createElement("div", { className: "zl-anim" },
@@ -1684,7 +1692,8 @@ function FullExam({ mode, vocab, setVocab, letters, setLetters, onBack, dir, set
 
     const record = (correct) => {
         setScore((sc) => ({ correct: sc.correct + (correct ? 1 : 0), total: sc.total + 1 }));
-        setData((prev) => prev.map((d) => d.id === task.item.id
+        const setDeck = task.mode === "letters" ? setLetters : setVocab;
+        setDeck((prev) => prev.map((d) => d.id === task.item.id
             ? {
                 ...d,
                 correctCount: (d.correctCount || 0) + (correct ? 1 : 0),
@@ -1698,7 +1707,7 @@ function FullExam({ mode, vocab, setVocab, letters, setLetters, onBack, dir, set
     const submitTyped = () => {
         if (result || !typed.trim()) return;
         const accepted = new Set();
-        const senses = mode === "vocab" ? allMeanings(task.item) : [task.question.correctAnswer];
+        const senses = task.mode === "vocab" ? allMeanings(task.item) : [task.question.correctAnswer];
         senses.forEach((sense) => acceptableAnswers(sense).forEach((k) => accepted.add(k)));
         record(accepted.has(normAnswer(typed)));
     };
@@ -1716,7 +1725,7 @@ function FullExam({ mode, vocab, setVocab, letters, setLetters, onBack, dir, set
         React.createElement(Card, null,
             React.createElement("div", { style: { display: "flex", justifyContent: "space-between", alignItems: "center", gap: 10, flexWrap: "wrap", marginBottom: 14 } },
                 React.createElement("h2", { className: "zl-display", style: { fontSize: "1.15rem", fontWeight: 700 } },
-                    "מבחן מלא · ", mode === "vocab" ? "אוצר מילים" : "אותיות"),
+                    "מבחן מלא · ", task.mode === "vocab" ? "אוצר מילים" : "אלף-בית"),
                 React.createElement(DirectionToggle, { value: dir, onChange: setDir }),
                 React.createElement("span", { style: { fontSize: "0.85rem", color: "var(--ink-muted)" } }, score.correct + " / " + score.total)),
 
@@ -1945,12 +1954,9 @@ const PRACTICE_METHODS = [
     {
         id: "exam",
         title: "מבחן מלא",
-        desc: "ערבוב של כל השיטות, כולל שאלות פתוחות בהקלדה.",
+        desc: "מילים ואותיות יחד, בחירה מ-4 ושאלות פתוחות בהקלדה.",
         Icon: Check,
-        options: [
-            { key: "vocab", title: "אוצר מילים", desc: "בחירה מ-4 והקלדת תרגום, לסירוגין.", target: { screen: "exam", mode: "vocab" } },
-            { key: "letters", title: "אלף-בית", desc: "בחירה מ-4 והקלדת שם האות, לסירוגין.", target: { screen: "exam", mode: "letters" } },
-        ],
+        target: { screen: "exam" },   // no sub-choice — it covers everything
     },
     {
         id: "sentences",
@@ -1966,8 +1972,10 @@ const PRACTICE_METHODS = [
 ];
 
 function MethodRow({ method, open, onToggle, onPick }) {
+    const direct = !!method.target;
     return (React.createElement("div", { className: "zl-method", "data-open": open ? "true" : "false" },
-        React.createElement("button", { type: "button", className: "zl-method-head", "aria-expanded": open, onClick: onToggle },
+        React.createElement("button", { type: "button", className: "zl-method-head", "aria-expanded": direct ? undefined : open,
+            onClick: () => (direct ? onPick(method.target) : onToggle()) },
             React.createElement("span", { className: "zl-method-icon" },
                 React.createElement(method.Icon, { size: 20 })),
             React.createElement("span", { className: "zl-method-label" },
@@ -1975,7 +1983,7 @@ function MethodRow({ method, open, onToggle, onPick }) {
                 React.createElement("span", { className: "zl-method-desc", style: { display: "block" } }, method.desc)),
             React.createElement("span", { className: "zl-method-chev" },
                 React.createElement(ChevronLeft, { size: 20 }))),
-        open && (React.createElement("div", { className: "zl-method-body zl-anim" }, method.options.map((opt) => (React.createElement("button", { key: opt.key, type: "button", className: "zl-option", onClick: () => onPick(opt.target) },
+        !direct && open && (React.createElement("div", { className: "zl-method-body zl-anim" }, method.options.map((opt) => (React.createElement("button", { key: opt.key, type: "button", className: "zl-option", onClick: () => onPick(opt.target) },
             React.createElement("span", { className: "zl-option-label" },
                 React.createElement("span", { className: "zl-option-title", style: { display: "block" } }, opt.title),
                 React.createElement("span", { className: "zl-option-desc", style: { display: "block" } }, opt.desc)),
@@ -1996,7 +2004,7 @@ function PracticeTab({ screen, setScreen, vocab, setVocab, letters, setLetters }
         return (React.createElement(FlashcardPractice, { mode: screen.mode || "vocab", vocab: vocab, setVocab: setVocab, letters: letters, setLetters: setLetters, onBack: backToList("flashcards"), dir: dir, setDir: setDir }));
     }
     if (screen && screen.screen === "exam") {
-        return (React.createElement(FullExam, { mode: screen.mode || "vocab", vocab: vocab, setVocab: setVocab, letters: letters, setLetters: setLetters, onBack: backToList("exam"), dir: dir, setDir: setDir }));
+        return (React.createElement(FullExam, { vocab: vocab, setVocab: setVocab, letters: letters, setLetters: setLetters, onBack: backToList("exam"), dir: dir, setDir: setDir }));
     }
     if (screen && screen.screen === "quiz") {
         return (React.createElement(AmericanQuiz, { mode: screen.mode || "vocab", vocab: vocab, setVocab: setVocab, letters: letters, setLetters: setLetters, onBack: backToList("quiz"), dir: dir, setDir: setDir }));
