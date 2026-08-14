@@ -65,7 +65,7 @@ try {
     throw new Error("React / ReactDOM לא נטענו מה-CDN (בדוק חיבור לאינטרנט או חסימת סקריפטים).");
   }
 "use strict";
-const APP_BUILD = "14.08 · 24";   // bump this every time the file is replaced
+const APP_BUILD = "14.08 · 25";   // bump this every time the file is replaced
 
 
 const { useState, useEffect, useCallback, useMemo, useRef } = React;
@@ -1755,7 +1755,12 @@ function FullExam({ vocab, setVocab, letters, setLetters, onBack, dir, setDir })
                         onKeyDown: (e) => { if (e.key === "Enter") { e.preventDefault(); result ? next() : submitTyped(); } },
                         placeholder: "הקלד את התשובה בעברית",
                     }),
-                    !result ? React.createElement(PrimaryButton, { onClick: submitTyped, disabled: !typed.trim() }, "בדוק") : null)
+                    !result ? React.createElement("div", { style: { display: "flex", gap: 8 } },
+                        React.createElement(PrimaryButton, { onClick: submitTyped, disabled: !typed.trim() }, "בדוק"),
+                        /* An open question needs a way out — without it the only
+                           options are guessing or leaving, and neither records
+                           that the word was not known. */
+                        React.createElement(PrimaryButton, { variant: "danger", onClick: () => record(false) }, "לא יודע")) : null)
                 : React.createElement("div", { style: { display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10 } },
                     task.question.options.map((opt, i) => {
                         const isCorrect = opt === task.question.correctAnswer;
