@@ -65,7 +65,7 @@ try {
     throw new Error("React / ReactDOM לא נטענו מה-CDN (בדוק חיבור לאינטרנט או חסימת סקריפטים).");
   }
 "use strict";
-const APP_BUILD = "14.08 · 21";   // bump this every time the file is replaced
+const APP_BUILD = "14.08 · 23";   // bump this every time the file is replaced
 
 
 const { useState, useEffect, useCallback, useMemo, useRef } = React;
@@ -304,8 +304,10 @@ const GLOBAL_CSS = `
     .zl-bar-val { font-size:0.7rem; font-weight:700; color:var(--teal-950); }
     .zl-trow { display:flex; align-items:center; gap:10px; padding:7px 0; }
     .zl-trow-name { flex:0 0 34%; font-size:0.82rem; font-weight:600; }
-    .zl-trow-track { flex:1; height:8px; background:var(--sand-200); border-radius:4px; overflow:hidden; }
-    .zl-trow-fill { height:100%; background:var(--teal-700); border-radius:4px; }
+    .zl-trow-track { flex:1; height:9px; background:var(--sand-200); border-radius:5px; overflow:hidden; display:flex; flex-direction:row-reverse; }
+    .zl-legend { display:flex; flex-wrap:wrap; gap:12px; margin-top:12px; padding-top:10px; border-top:1px solid var(--sand-200); font-size:0.74rem; color:var(--ink-muted); }
+    .zl-legend-item { display:inline-flex; align-items:center; gap:5px; }
+    .zl-legend-dot { width:9px; height:9px; border-radius:50%; display:inline-block; }
     .zl-trow-val { font-size:0.75rem; color:var(--ink-muted); flex:0 0 52px; text-align:left; }
 
     /* ---- Expandable practice-method rows ---- */
@@ -1328,6 +1330,7 @@ function FlashcardPractice({ mode, vocab, setVocab, letters, setLetters, onBack,
     const [cardDir, setCardDir] = useState("ar2he");
     const [feedback, setFeedback] = useState("");
     const [meaning, setMeaning] = useState("");
+    const [pending, setPending] = useState(false);   // guards the 250ms gap before the next card
     const [order, setOrder] = useState(() => weightedOrder(data));
     const [pos, setPos] = useState(0);
     const [flipped, setFlipped] = useState(false);
@@ -1341,6 +1344,7 @@ function FlashcardPractice({ mode, vocab, setVocab, letters, setLetters, onBack,
     useEffect(() => {
         setCardDir(resolveDir(dir));
         setFeedback("");
+        setPending(false);
         const current = data[order.length ? order[Math.min(pos, order.length - 1)] : 0];
         if (current) setMeaning(mode === "vocab" ? pickMeaning(current) : "");
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -1379,6 +1383,11 @@ function FlashcardPractice({ mode, vocab, setVocab, letters, setLetters, onBack,
     const noteText = mode === "vocab" ? "" : (item.hebrew ? item.hebrew + " \u00B7 " + item.sound : item.sound);
 
     const mark = (correct) => {
+        /* The card stays on screen for a moment after you answer. Without this
+           guard a second tap in that window lands on the same word again — three
+           quick taps used to record three misses on one card. */
+        if (pending) return;
+        setPending(true);
         setFeedback(correct ? " zl-pop" : " zl-shake");
         setData((prev) => prev.map((d) => d.id === item.id
             ? {
@@ -1438,10 +1447,10 @@ function FlashcardPractice({ mode, vocab, setVocab, letters, setLetters, onBack,
                 React.createElement(PrimaryButton, { variant: "outline", onClick: () => { setFlipped(false); setPos((prevPos) => (prevPos - 1 + order.length) % order.length); } }, "\u05E7\u05D5\u05D3\u05DD"),
                 React.createElement(PrimaryButton, { variant: "outline", onClick: () => { setFlipped(false); setPos((prevPos) => prevPos + 1); } }, "\u05D4\u05D1\u05D0")),
             React.createElement("div", { style: { display: "flex", justifyContent: "center", gap: 12 } },
-                React.createElement(PrimaryButton, { variant: "danger", onClick: () => mark(false) },
+                React.createElement(PrimaryButton, { variant: "danger", disabled: pending, onClick: () => mark(false) },
                     React.createElement(X, { size: 16 }),
                     "\u05DC\u05D0 \u05D9\u05D3\u05E2\u05EA\u05D9"),
-                React.createElement(PrimaryButton, { variant: "success", onClick: () => mark(true) },
+                React.createElement(PrimaryButton, { variant: "success", disabled: pending, onClick: () => mark(true) },
                     React.createElement(Check, { size: 16 }),
                     "\u05D9\u05D3\u05E2\u05EA\u05D9")),
             React.createElement("p", { style: { textAlign: "center", fontSize: "0.8rem", color: "var(--ink-muted)", marginTop: 12 } },
@@ -2281,13 +2290,26 @@ function StatCell({ value, label }) {
         React.createElement("div", { className: "zl-stat-label" }, label)));
 }
 
-function TopicRow({ name, done, total }) {
-    const pct = total ? Math.round((done / total) * 100) : 0;
+/* The bar is split by how many words sit in each state, not by an average:
+   grey for words not practised yet, red for the ones that keep going wrong,
+   amber for work in progress, green for full mastery. */
+function TopicRow({ name, counts, total }) {
+    const pct = (n) => (total ? (n / total) * 100 : 0);
+    const segs = [
+        { key: "mastered", value: counts.mastered, color: "var(--teal-700)" },
+        { key: "progress", value: counts.progress, color: "#C99A2E" },
+        { key: "struggling", value: counts.struggling, color: "var(--clay)" },
+        { key: "fresh", value: counts.fresh, color: "var(--sand-200)" },
+    ];
     return (React.createElement("div", { className: "zl-trow" },
         React.createElement("span", { className: "zl-trow-name" }, name),
-        React.createElement("span", { className: "zl-trow-track" },
-            React.createElement("span", { className: "zl-trow-fill", style: { width: pct + "%" } })),
-        React.createElement("span", { className: "zl-trow-val" }, done + "/" + total)));
+        React.createElement("span", { className: "zl-trow-track", title:
+            counts.mastered + " בשליטה · " + counts.progress + " בדרך · " + counts.struggling + " מתקשה · " + counts.fresh + " טרם תורגלו" },
+            segs.filter((sg) => sg.value > 0).map((sg) => React.createElement("span", {
+                key: sg.key,
+                style: { width: pct(sg.value) + "%", background: sg.color, height: "100%", display: "block", float: "right" },
+            }))),
+        React.createElement("span", { className: "zl-trow-val" }, counts.mastered + "/" + total)));
 }
 
 function StatsTab({ vocab, letters, checklist }) {
@@ -2320,11 +2342,15 @@ function StatsTab({ vocab, letters, checklist }) {
     vocab.forEach((w) => {
         const name = w.topic || "ללא נושא";
         let row = topics.find((t) => t.name === name);
-        if (!row) { row = { name: name, total: 0, done: 0 }; topics.push(row); }
+        if (!row) { row = { name: name, total: 0, counts: { mastered: 0, progress: 0, struggling: 0, fresh: 0 } }; topics.push(row); }
         row.total++;
-        if (isMastered(w)) row.done++;
+        const answered = (w.correctCount || 0) + (w.wrongCount || 0);
+        if (isMastered(w)) row.counts.mastered++;
+        else if (!answered) row.counts.fresh++;
+        else if (isStruggling(w)) row.counts.struggling++;
+        else row.counts.progress++;
     });
-    topics.sort((a, b) => (a.done / a.total) - (b.done / b.total));
+    topics.sort((a, b) => (a.counts.mastered / a.total) - (b.counts.mastered / b.total));
 
     const weakest = vocab
         .filter((w) => (w.wrongCount || 0) > 0 && !isMastered(w))
@@ -2353,7 +2379,12 @@ function StatsTab({ vocab, letters, checklist }) {
         React.createElement(Card, { style: { marginBottom: 14 } },
             React.createElement("h3", { className: "zl-display", style: { fontWeight: 700, fontSize: "1rem", marginBottom: 4 } }, "שליטה לפי נושא"),
             React.createElement("p", { style: { fontSize: "0.8rem", color: "var(--ink-muted)", marginBottom: 6 } }, "מהחלש לחזק — כאן כדאי להשקיע"),
-            topics.map((t) => React.createElement(TopicRow, { key: t.name, name: t.name, done: t.done, total: t.total }))),
+            topics.map((t) => React.createElement(TopicRow, { key: t.name, name: t.name, counts: t.counts, total: t.total })),
+            React.createElement("div", { className: "zl-legend" },
+                [["var(--teal-700)", "שליטה מלאה"], ["#C99A2E", "בדרך"], ["var(--clay)", "מתקשה"], ["var(--sand-200)", "טרם תורגלה"]]
+                    .map(([color, label]) => React.createElement("span", { key: label, className: "zl-legend-item" },
+                        React.createElement("span", { className: "zl-legend-dot", style: { background: color } }),
+                        label)))),
 
         React.createElement(Card, null,
             React.createElement("h3", { className: "zl-display", style: { fontWeight: 700, fontSize: "1rem", marginBottom: 4 } }, "המילים שהכי מפילות אותך"),
