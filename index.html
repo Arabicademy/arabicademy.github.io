@@ -62,7 +62,7 @@ try {
     throw new Error("React / ReactDOM לא נטענו מה-CDN (בדוק חיבור לאינטרנט או חסימת סקריפטים).");
   }
 "use strict";
-const APP_BUILD = "14.08 · 5";   // bump this every time the file is replaced
+const APP_BUILD = "14.08 · 6";   // bump this every time the file is replaced
 
 
 const { useState, useEffect, useCallback, useMemo, useRef } = React;
@@ -997,7 +997,7 @@ function RoutineTab({ checklist, setChecklist, navigateTo, vocab, letters, setVo
             React.createElement(ArrowButton, { title: "\u05E2\u05D1\u05D5\u05E8 \u05DC\u05EA\u05E8\u05D2\u05D5\u05DC", onClick: () => navigateTo(item.target) }))))),
         React.createElement(BackupCard, { vocab: vocab, letters: letters, checklist: checklist, setVocab: setVocab, setLetters: setLetters, setChecklist: setChecklist }),
         React.createElement("p", { style: { textAlign: "center", fontSize: "0.72rem", color: "var(--ink-muted)", marginTop: 14 } },
-            "\u05D2\u05E8\u05E1\u05D4 " + APP_BUILD)));
+            "\u05D2\u05E8\u05E1\u05D4 " + APP_BUILD + " \u00B7 Emanuel Nassimiha 2026")));
 }
 
 /* =========================================================================
