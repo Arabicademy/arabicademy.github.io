@@ -65,7 +65,7 @@ try {
     throw new Error("React / ReactDOM לא נטענו מה-CDN (בדוק חיבור לאינטרנט או חסימת סקריפטים).");
   }
 "use strict";
-const APP_BUILD = "14.08 · 20";   // bump this every time the file is replaced
+const APP_BUILD = "14.08 · 21";   // bump this every time the file is replaced
 
 
 const { useState, useEffect, useCallback, useMemo, useRef } = React;
@@ -1463,7 +1463,11 @@ function buildQuestion(data, item, mode, dir) {
     /* FIX #7: distractors were only filtered by id, so a word whose
        translation matched the correct answer could appear twice — one of the
        two identical buttons scored as wrong. Filtered by answer text now. */
-    const pool = data.filter((d) => d.id !== item.id && answerSide(d) !== correctAnswer);
+    /* Several words share a translation — כַּאְסֶה and כְּבַּאיֶה are both "כוס".
+       Asking "כוסות" and offering both as options would mark a correct answer
+       wrong, so any word that asks the same thing is kept out of the options. */
+    const asked = askSide(item);
+    const pool = data.filter((d) => d.id !== item.id && answerSide(d) !== correctAnswer && askSide(d) !== asked);
     const seen = new Set();
     const distractors = [];
     shuffle(pool).forEach((d) => {
