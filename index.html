@@ -65,7 +65,7 @@ try {
     throw new Error("React / ReactDOM לא נטענו מה-CDN (בדוק חיבור לאינטרנט או חסימת סקריפטים).");
   }
 "use strict";
-const APP_BUILD = "14.08 · 16";   // bump this every time the file is replaced
+const APP_BUILD = "14.08 · 17";   // bump this every time the file is replaced
 
 
 const { useState, useEffect, useCallback, useMemo, useRef } = React;
@@ -792,7 +792,7 @@ const SectionHeader = ({ title, subtitle }) => (React.createElement("div", { sty
    change and after the webfont loads, so it holds on any screen. */
 const FATIHA_MIN_PX = 10;
 const FATIHA_MAX_PX = 17;
-const FATIHA_STEP_PX = 0.25;
+const FATIHA_STEP_PX = 0.15;
 
 function lastLineFill(el) {
     const range = document.createRange();
@@ -819,20 +819,25 @@ function fitFatiha(el) {
     if (!el || !el.clientWidth) return;
     el.style.textAlignLast = "auto";
     let best = null;
+    /* Search the whole size range rather than stopping at the first decent
+       result: on a wide screen only a few sizes make the final line land near
+       the edge, and those are what keep the block rectangular. */
     for (let px = FATIHA_MAX_PX; px >= FATIHA_MIN_PX - 0.001; px -= FATIHA_STEP_PX) {
-        el.style.fontSize = px + "px";
+        el.style.fontSize = px.toFixed(2) + "px";
         const measured = lastLineFill(el);
-        if (measured.lines === 1) { best = { px: px, ratio: 1, lines: 1 }; break; }
-        if (!best || measured.ratio > best.ratio + 0.005) best = { px: px, ratio: measured.ratio, lines: measured.lines };
-        if (measured.ratio >= 0.97) break;
+        if (measured.lines === 1) {
+            if (!best) best = { px: px, ratio: 1, lines: 1 };
+            continue;
+        }
+        if (!best || best.lines === 1 || measured.ratio > best.ratio + 0.003) {
+            best = { px: px, ratio: measured.ratio, lines: measured.lines };
+        }
+        if (measured.ratio >= 0.985) break;
     }
-    el.style.fontSize = (best ? best.px : 14) + "px";
-    /* Stretching the final line is only worth it when it is nearly full anyway.
-       On a wide screen the text can end on a couple of words, and forcing those
-       to span the whole width tears gaping holes between them — in that case
-       the line is left to end naturally. */
-    const fill = best ? best.ratio : 0;
-    el.style.textAlignLast = (best && best.lines === 1) ? "right" : (fill >= 0.85 ? "justify" : "right");
+    el.style.fontSize = (best ? best.px.toFixed(2) : "14") + "px";
+    // stretch the last line only when it is already close to the edge
+    const worthJustifying = best && best.lines > 1 && best.ratio >= 0.7;
+    el.style.textAlignLast = worthJustifying ? "justify" : "right";
 }
 
 const AlFatihaCard = () => {
