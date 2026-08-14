@@ -62,7 +62,7 @@ try {
     throw new Error("React / ReactDOM לא נטענו מה-CDN (בדוק חיבור לאינטרנט או חסימת סקריפטים).");
   }
 "use strict";
-const APP_BUILD = "14.08 · 7";   // bump this every time the file is replaced
+const APP_BUILD = "14.08 · 8";   // bump this every time the file is replaced
 
 
 const { useState, useEffect, useCallback, useMemo, useRef } = React;
@@ -207,6 +207,12 @@ const GLOBAL_CSS = `
     .zl-sortactions { display:flex; gap:8px; border-top:1px solid var(--sand-200); margin-top:8px; padding-top:10px; }
     .zl-word { text-align:right; font:inherit; color:inherit; cursor:pointer; }
     .zl-word-detail { border-top:1px solid rgba(203,213,225,0.6); margin-top:8px; padding-top:8px; font-size:0.72rem; line-height:1.7; opacity:0.85; }
+
+    .zl-overlay { position:fixed; inset:0; background:rgba(15,23,42,0.45); display:flex; align-items:center; justify-content:center; padding:16px; z-index:1000; }
+    .zl-sheet { background:#fff; border-radius:14px; padding:20px; width:100%; max-width:380px; box-shadow:0 18px 45px rgba(15,23,42,0.25); }
+    .zl-sheet-row { display:flex; gap:10px; font-size:0.85rem; padding:7px 0; border-bottom:1px solid var(--sand-200); }
+    .zl-sheet-row:last-of-type { border-bottom:none; }
+    .zl-sheet-key { flex:0 0 84px; color:var(--ink-muted); font-weight:600; }
 
     .zl-mini { border:1px solid var(--sand-200); background:var(--sand-100); color:var(--teal-950); border-radius:7px; padding:5px 12px; font:inherit; font-size:0.75rem; font-weight:700; cursor:pointer; }
     .zl-mini-danger { color:var(--clay); border-color:var(--clay); }
@@ -1643,6 +1649,7 @@ function VocabTab({ vocab, setVocab }) {
     };
 
     const startEdit = (item) => {
+        setOpenWord(null);
         setForm({ front: item.front, back: item.back, notes: item.notes || "", topic: item.topic || "" });
         setEditingId(item.id);
         setModalOpen(true);
@@ -1720,10 +1727,9 @@ function VocabTab({ vocab, setVocab }) {
                 const pct = progressPct(item);
                 const mastered = isMastered(item);
                 const struggling = isStruggling(item);
-                const open = openWord === item.id;
                 return (React.createElement("div", { key: item.id, className: "zl-word", role: "button", tabIndex: 0,
-                    onClick: () => setOpenWord(open ? null : item.id),
-                    onKeyDown: (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); setOpenWord(open ? null : item.id); } },
+                    onClick: () => { setConfirmDelete(null); setOpenWord(item.id); },
+                    onKeyDown: (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); setConfirmDelete(null); setOpenWord(item.id); } },
                     style: {
                         background: mastered ? "var(--teal-700)" : struggling ? "var(--clay-bg)" : "var(--sand-100)",
                         color: mastered ? "white" : "var(--ink)",
@@ -1734,27 +1740,51 @@ function VocabTab({ vocab, setVocab }) {
                         display: "flex",
                         flexDirection: "column",
                         justifyContent: "space-between",
-                        gridColumn: open ? "1 / -1" : "auto",
                     } },
                     React.createElement("div", null,
                         React.createElement("div", { style: { fontWeight: 700, fontSize: "1rem" } }, item.front),
                         React.createElement("div", { style: { fontSize: "0.78rem", opacity: 0.8, marginTop: 2 } }, item.back),
-                        item.topic ? React.createElement("div", { style: { fontSize: "0.67rem", opacity: 0.6, marginTop: 4 } }, item.topic) : null,
-                        open ? React.createElement("div", { className: "zl-word-detail zl-anim", onClick: (e) => e.stopPropagation() },
-                            item.notes ? React.createElement("div", null, item.notes) : null,
-                            React.createElement("div", null, "חזרה הבאה: " + dueLabel(item)),
-                            React.createElement("div", null, "ידעתי " + (item.correctCount || 0) + " · לא ידעתי " + (item.wrongCount || 0)),
-                            confirmDelete === item.id
-                                ? React.createElement("div", { style: { display: "flex", gap: 6, marginTop: 8, alignItems: "center", flexWrap: "wrap" } },
-                                    React.createElement("span", { style: { fontWeight: 700 } }, "למחוק לצמיתות?"),
-                                    React.createElement("button", { type: "button", className: "zl-mini zl-mini-danger", onClick: () => removeWord(item.id) }, "כן, מחק"),
-                                    React.createElement("button", { type: "button", className: "zl-mini", onClick: () => setConfirmDelete(null) }, "ביטול"))
-                                : React.createElement("div", { style: { display: "flex", gap: 6, marginTop: 8 } },
-                                    React.createElement("button", { type: "button", className: "zl-mini", onClick: () => startEdit(item) }, "ערוך"),
-                                    React.createElement("button", { type: "button", className: "zl-mini zl-mini-danger", onClick: () => setConfirmDelete(item.id) }, "מחק"))) : null),
+                        item.topic ? React.createElement("div", { style: { fontSize: "0.67rem", opacity: 0.6, marginTop: 4 } }, item.topic) : null),
                     React.createElement("div", { style: { marginTop: 8 }, title: "התקדמות: " + pct + "%" },
                         React.createElement(ProgressBar, { pct: pct, mastered: mastered, struggling: struggling }))));
             })),
+        openWord !== null && !modalOpen && (function () {
+            const item = vocab.find((w) => w.id === openWord);
+            if (!item) return null;
+            const pct = progressPct(item);
+            return React.createElement("div", { className: "zl-overlay", onClick: () => setOpenWord(null) },
+                React.createElement("div", { className: "zl-sheet zl-anim", onClick: (e) => e.stopPropagation() },
+                    React.createElement("div", { style: { display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: 10 } },
+                        React.createElement("div", null,
+                            React.createElement("div", { className: "zl-display", style: { fontSize: "1.5rem", fontWeight: 700, color: "var(--teal-950)" } }, item.front),
+                            React.createElement("div", { style: { fontSize: "1rem", marginTop: 2 } }, item.back)),
+                        React.createElement("button", { type: "button", onClick: () => setOpenWord(null), "aria-label": "סגור", style: { background: "none", border: "none", cursor: "pointer", padding: 4 } },
+                            React.createElement(X, { size: 18 }))),
+                    item.notes ? React.createElement("div", { className: "zl-sheet-row" },
+                        React.createElement("span", { className: "zl-sheet-key" }, "צורת רבים"),
+                        React.createElement("span", null, item.notes)) : null,
+                    item.topic ? React.createElement("div", { className: "zl-sheet-row" },
+                        React.createElement("span", { className: "zl-sheet-key" }, "נושא"),
+                        React.createElement("span", null, item.topic)) : null,
+                    React.createElement("div", { className: "zl-sheet-row" },
+                        React.createElement("span", { className: "zl-sheet-key" }, "חזרה הבאה"),
+                        React.createElement("span", null, dueLabel(item))),
+                    React.createElement("div", { className: "zl-sheet-row" },
+                        React.createElement("span", { className: "zl-sheet-key" }, "תרגולים"),
+                        React.createElement("span", null, "ידעתי " + (item.correctCount || 0) + " · לא ידעתי " + (item.wrongCount || 0))),
+                    React.createElement("div", { style: { margin: "14px 0 4px" } },
+                        React.createElement(ProgressBar, { pct: pct, mastered: isMastered(item), struggling: isStruggling(item) })),
+                    React.createElement("div", { style: { fontSize: "0.75rem", color: "var(--ink-muted)", marginBottom: 14 } }, "התקדמות " + pct + "%"),
+                    confirmDelete === item.id
+                        ? React.createElement("div", { style: { display: "flex", gap: 8, alignItems: "center", flexWrap: "wrap" } },
+                            React.createElement("span", { style: { fontWeight: 700, fontSize: "0.85rem" } }, "למחוק לצמיתות?"),
+                            React.createElement(PrimaryButton, { variant: "danger", onClick: () => removeWord(item.id) }, "כן, מחק"),
+                            React.createElement(PrimaryButton, { variant: "outline", onClick: () => setConfirmDelete(null) }, "ביטול"))
+                        : React.createElement("div", { style: { display: "flex", gap: 8 } },
+                            React.createElement(PrimaryButton, { onClick: () => startEdit(item) }, "ערוך"),
+                            React.createElement(PrimaryButton, { variant: "danger", onClick: () => setConfirmDelete(item.id) }, "מחק"),
+                            React.createElement(PrimaryButton, { variant: "outline", onClick: () => setOpenWord(null) }, "סגור"))));
+        })(),
         modalOpen && (React.createElement("div", { onClick: closeModal, style: { position: "fixed", inset: 0, background: "rgba(15,23,42,0.45)", display: "flex", alignItems: "center", justifyContent: "center", padding: 16, zIndex: 1000 } },
             React.createElement("div", { onClick: (e) => e.stopPropagation(), style: { background: "white", borderRadius: 14, padding: 22, width: "100%", maxWidth: 420 } },
                 React.createElement("div", { style: { display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 16 } },
