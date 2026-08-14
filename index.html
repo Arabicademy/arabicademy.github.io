@@ -93,6 +93,8 @@ const CheckCircle2 = (p) => React.createElement("svg", { ...iconBase(p) },
     React.createElement("path", { d: "M9 12l2 2 4-4" }));
 const BookOpen = (p) => React.createElement("svg", { ...iconBase(p) },
     React.createElement("path", { d: "M2 5.5A2.5 2.5 0 0 1 4.5 3H12v18H4.5A2.5 2.5 0 0 1 2 18.5v-13zM22 5.5A2.5 2.5 0 0 0 19.5 3H12v18h7.5a2.5 2.5 0 0 0 2.5-2.5v-13z" }));
+const BarChart = (p) => React.createElement("svg", { ...iconBase(p) },
+    React.createElement("path", { d: "M3 21h18M7 21V10M12 21V4M17 21v-7" }));
 const TypeIcon = (p) => React.createElement("svg", { ...iconBase(p) },
     React.createElement("path", { d: "M4 7V4h16v3M9 20h6M12 4v16" }));
 
@@ -199,6 +201,24 @@ const GLOBAL_CSS = `
     .zl-sortactions { display:flex; gap:8px; border-top:1px solid var(--sand-200); margin-top:8px; padding-top:10px; }
     .zl-word { text-align:right; font:inherit; color:inherit; cursor:pointer; }
     .zl-word-detail { border-top:1px solid rgba(203,213,225,0.6); margin-top:8px; padding-top:8px; font-size:0.72rem; line-height:1.7; opacity:0.85; }
+
+    .zl-mini { border:1px solid var(--sand-200); background:var(--sand-100); color:var(--teal-950); border-radius:7px; padding:5px 12px; font:inherit; font-size:0.75rem; font-weight:700; cursor:pointer; }
+    .zl-mini-danger { color:var(--clay); border-color:var(--clay); }
+    .zl-stat-grid { display:grid; grid-template-columns:repeat(auto-fit, minmax(120px, 1fr)); gap:10px; margin-bottom:16px; }
+    .zl-stat { background:var(--sand-100); border:1px solid var(--sand-200); border-radius:11px; padding:14px; }
+    .zl-stat-num { font-size:1.7rem; font-weight:800; color:var(--teal-950); line-height:1.1; }
+    .zl-stat-label { font-size:0.76rem; color:var(--ink-muted); margin-top:3px; }
+    .zl-bars { display:flex; align-items:flex-end; gap:6px; height:110px; margin:14px 0 6px; }
+    .zl-bar-col { flex:1; display:flex; flex-direction:column; justify-content:flex-end; align-items:center; gap:5px; height:100%; }
+    .zl-bar { width:100%; background:var(--gold); border-radius:5px 5px 0 0; min-height:3px; }
+    .zl-bar[data-today="true"] { background:var(--teal-950); }
+    .zl-bar-label { font-size:0.66rem; color:var(--ink-muted); white-space:nowrap; }
+    .zl-bar-val { font-size:0.7rem; font-weight:700; color:var(--teal-950); }
+    .zl-trow { display:flex; align-items:center; gap:10px; padding:7px 0; }
+    .zl-trow-name { flex:0 0 34%; font-size:0.82rem; font-weight:600; }
+    .zl-trow-track { flex:1; height:8px; background:var(--sand-200); border-radius:4px; overflow:hidden; }
+    .zl-trow-fill { height:100%; background:var(--teal-700); border-radius:4px; }
+    .zl-trow-val { font-size:0.75rem; color:var(--ink-muted); flex:0 0 52px; text-align:left; }
 
     /* ---- Expandable practice-method rows ---- */
     .zl-method {
@@ -885,6 +905,7 @@ const MAIN_TABS = [
     { id: "practice", label: "שיטות תרגול", Icon: CheckCircle2 },
     { id: "vocab", label: "אוצר מילים", Icon: BookOpen },
     { id: "alphabet", label: "אלף-בית", Icon: TypeIcon },
+    { id: "stats", label: "סטטיסטיקה", Icon: BarChart },
 ];
 
 function TopNav({ active, onChange }) {
@@ -1581,6 +1602,8 @@ function VocabTab({ vocab, setVocab }) {
     const [picked, setPicked] = useState([]);      // several topics can be shown at once
     const [sortOpen, setSortOpen] = useState(false);
     const [openWord, setOpenWord] = useState(null);
+    const [editingId, setEditingId] = useState(null);
+    const [confirmDelete, setConfirmDelete] = useState(null);
 
     const topics = useMemo(() => {
         const seen = [];
@@ -1602,13 +1625,33 @@ function VocabTab({ vocab, setVocab }) {
 
     const closeModal = () => {
         setForm({ front: "", back: "", notes: "", topic: "" });
+        setEditingId(null);
         setModalOpen(false);
+    };
+
+    const startEdit = (item) => {
+        setForm({ front: item.front, back: item.back, notes: item.notes || "", topic: item.topic || "" });
+        setEditingId(item.id);
+        setModalOpen(true);
+    };
+
+    const removeWord = (id) => {
+        setVocab((prev) => prev.filter((w) => w.id !== id));
+        setConfirmDelete(null);
+        setOpenWord(null);
     };
 
     const addWord = (e) => {
         if (e && e.preventDefault) e.preventDefault();
         if (!form.front.trim() || !form.back.trim())
             return;
+        if (editingId !== null) {
+            setVocab((prev) => prev.map((w) => (w.id === editingId
+                ? { ...w, front: form.front.trim(), back: form.back.trim(), notes: form.notes.trim(), topic: form.topic.trim() || w.topic }
+                : w)));
+            closeModal();
+            return;
+        }
         /* FIX #10: new ids came from Date.now(), which collides with nothing
            in practice but can equal an existing id when two words are added
            in the same millisecond. The id is now guaranteed to be above every
@@ -1696,17 +1739,25 @@ function VocabTab({ vocab, setVocab }) {
                         React.createElement("div", { style: { fontWeight: 700, fontSize: "1rem" } }, item.front),
                         React.createElement("div", { style: { fontSize: "0.78rem", opacity: 0.8, marginTop: 2 } }, item.back),
                         item.topic ? React.createElement("div", { style: { fontSize: "0.67rem", opacity: 0.6, marginTop: 4 } }, item.topic) : null,
-                        open ? React.createElement("div", { className: "zl-word-detail zl-anim" },
+                        open ? React.createElement("div", { className: "zl-word-detail zl-anim", onClick: (e) => e.stopPropagation() },
                             item.notes ? React.createElement("div", null, item.notes) : null,
-                            React.createElement("div", null, "חזרה: " + dueLabel(item)),
-                            React.createElement("div", null, "ידעתי " + (item.correctCount || 0) + " · לא ידעתי " + (item.wrongCount || 0))) : null),
+                            React.createElement("div", null, "חזרה הבאה: " + dueLabel(item)),
+                            React.createElement("div", null, "ידעתי " + (item.correctCount || 0) + " · לא ידעתי " + (item.wrongCount || 0)),
+                            confirmDelete === item.id
+                                ? React.createElement("div", { style: { display: "flex", gap: 6, marginTop: 8, alignItems: "center", flexWrap: "wrap" } },
+                                    React.createElement("span", { style: { fontWeight: 700 } }, "למחוק לצמיתות?"),
+                                    React.createElement("button", { type: "button", className: "zl-mini zl-mini-danger", onClick: () => removeWord(item.id) }, "כן, מחק"),
+                                    React.createElement("button", { type: "button", className: "zl-mini", onClick: () => setConfirmDelete(null) }, "ביטול"))
+                                : React.createElement("div", { style: { display: "flex", gap: 6, marginTop: 8 } },
+                                    React.createElement("button", { type: "button", className: "zl-mini", onClick: () => startEdit(item) }, "ערוך"),
+                                    React.createElement("button", { type: "button", className: "zl-mini zl-mini-danger", onClick: () => setConfirmDelete(item.id) }, "מחק"))) : null),
                     React.createElement("div", { style: { marginTop: 8 }, title: "התקדמות: " + pct + "%" },
                         React.createElement(ProgressBar, { pct: pct, mastered: mastered, struggling: struggling }))));
             })),
         modalOpen && (React.createElement("div", { onClick: closeModal, style: { position: "fixed", inset: 0, background: "rgba(15,23,42,0.45)", display: "flex", alignItems: "center", justifyContent: "center", padding: 16, zIndex: 1000 } },
             React.createElement("div", { onClick: (e) => e.stopPropagation(), style: { background: "white", borderRadius: 14, padding: 22, width: "100%", maxWidth: 420 } },
                 React.createElement("div", { style: { display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 16 } },
-                    React.createElement("h3", { className: "zl-display", style: { fontWeight: 700, color: "var(--teal-950)" } }, "\u05D4\u05D5\u05E1\u05E4\u05EA \u05DE\u05D9\u05DC\u05D4 \u05D7\u05D3\u05E9\u05D4"),
+                    React.createElement("h3", { className: "zl-display", style: { fontWeight: 700, color: "var(--teal-950)" } }, editingId !== null ? "עריכת מילה" : "הוספת מילה חדשה"),
                     React.createElement("button", { type: "button", onClick: closeModal, "aria-label": "\u05E1\u05D2\u05D5\u05E8", style: { background: "none", border: "none", cursor: "pointer" } },
                         React.createElement(X, { size: 18 }))),
                 React.createElement("form", { onSubmit: addWord },
@@ -1716,7 +1767,7 @@ function VocabTab({ vocab, setVocab }) {
                     React.createElement(FormField, { label: "\u05E0\u05D5\u05E9\u05D0 (\u05E8\u05E9\u05D5\u05EA)", value: form.topic, onChange: (v) => setForm((f) => ({ ...f, topic: v })), placeholder: topics[0] || "\u05DC\u05DE\u05E9\u05DC: \u05DE\u05E9\u05E4\u05D7\u05D4" }),
                     React.createElement("div", { style: { display: "flex", gap: 8, justifyContent: "flex-end", marginTop: 16 } },
                         React.createElement(PrimaryButton, { variant: "outline", type: "button", onClick: closeModal }, "\u05D1\u05D9\u05D8\u05D5\u05DC"),
-                        React.createElement(PrimaryButton, { type: "submit" }, "\u05D4\u05D5\u05E1\u05E3 \u05DC\u05DE\u05D0\u05D2\u05E8"))))))));
+                        React.createElement(PrimaryButton, { type: "submit" }, editingId !== null ? "שמור שינויים" : "הוסף למאגר"))))))));
 }
 
 const FormField = ({ label, value, onChange, placeholder, required }) => (React.createElement("div", { style: { marginBottom: 12 } },
@@ -1754,6 +1805,117 @@ function AlphabetTab({ letters }) {
 }
 
 /* =========================================================================
+   STATISTICS TAB
+   Everything here is derived from data that was already being stored — the
+   review dates, the hit/miss counts and the daily checklist. Nothing new is
+   recorded for it.
+   ========================================================================= */
+function routineStreak(checklist) {
+    let streak = 0;
+    for (let back = 0; back < 400; back++) {
+        const day = new Date();
+        day.setDate(day.getDate() - back);
+        const entry = checklist[localDateKey(day)];
+        const active = entry && Object.keys(entry).some((k) => entry[k]);
+        if (active) { streak++; continue; }
+        if (back === 0) continue;   // today may simply not have started yet
+        break;
+    }
+    return streak;
+}
+
+function StatCell({ value, label }) {
+    return (React.createElement("div", { className: "zl-stat" },
+        React.createElement("div", { className: "zl-stat-num" }, value),
+        React.createElement("div", { className: "zl-stat-label" }, label)));
+}
+
+function TopicRow({ name, done, total }) {
+    const pct = total ? Math.round((done / total) * 100) : 0;
+    return (React.createElement("div", { className: "zl-trow" },
+        React.createElement("span", { className: "zl-trow-name" }, name),
+        React.createElement("span", { className: "zl-trow-track" },
+            React.createElement("span", { className: "zl-trow-fill", style: { width: pct + "%" } })),
+        React.createElement("span", { className: "zl-trow-val" }, done + "/" + total)));
+}
+
+function StatsTab({ vocab, letters, checklist }) {
+    const all = vocab.concat(letters);
+    const mastered = vocab.filter(isMastered).length;
+    const struggling = vocab.filter(isStruggling).length;
+    const fresh = vocab.filter((w) => !w.dueAt).length;
+    const due = dueCount(vocab);
+    const answers = all.reduce((sum, w) => sum + (w.correctCount || 0) + (w.wrongCount || 0), 0);
+    const rights = all.reduce((sum, w) => sum + (w.correctCount || 0), 0);
+    const accuracy = answers ? Math.round((rights / answers) * 100) : 0;
+    const streak = routineStreak(checklist);
+
+    // reviews falling in each of the next seven days
+    const week = [];
+    for (let i = 0; i < 7; i++) {
+        const day = new Date();
+        day.setHours(0, 0, 0, 0);
+        day.setDate(day.getDate() + i);
+        const from = day.getTime();
+        const to = from + DAY_MS;
+        const count = i === 0
+            ? vocab.filter((w) => !w.dueAt || w.dueAt < to).length
+            : vocab.filter((w) => w.dueAt && w.dueAt >= from && w.dueAt < to).length;
+        week.push({ label: i === 0 ? "היום" : ["א", "ב", "ג", "ד", "ה", "ו", "ש"][day.getDay()], count: count, today: i === 0 });
+    }
+    const peak = Math.max(1, ...week.map((d) => d.count));
+
+    const topics = [];
+    vocab.forEach((w) => {
+        const name = w.topic || "ללא נושא";
+        let row = topics.find((t) => t.name === name);
+        if (!row) { row = { name: name, total: 0, done: 0 }; topics.push(row); }
+        row.total++;
+        if (isMastered(w)) row.done++;
+    });
+    topics.sort((a, b) => (a.done / a.total) - (b.done / b.total));
+
+    const weakest = vocab
+        .filter((w) => (w.wrongCount || 0) > 0 && !isMastered(w))
+        .sort((a, b) => (b.wrongCount || 0) - (a.wrongCount || 0))
+        .slice(0, 5);
+
+    return (React.createElement("div", { className: "zl-anim" },
+        React.createElement(SectionHeader, { title: "סטטיסטיקה", subtitle: "תמונת מצב של הלימוד, מחושבת מההתקדמות ששמורה אצלך" }),
+
+        React.createElement("div", { className: "zl-stat-grid" },
+            React.createElement(StatCell, { value: mastered + "/" + vocab.length, label: "מילים בשליטה מלאה" }),
+            React.createElement(StatCell, { value: due, label: "ממתינות לחזרה היום" }),
+            React.createElement(StatCell, { value: accuracy + "%", label: "אחוז הצלחה כללי" }),
+            React.createElement(StatCell, { value: streak, label: "רצף ימי לימוד" }),
+            React.createElement(StatCell, { value: fresh, label: "מילים שטרם תורגלו" }),
+            React.createElement(StatCell, { value: letters.filter(isMastered).length + "/" + letters.length, label: "אותיות בשליטה" })),
+
+        React.createElement(Card, { style: { marginBottom: 14 } },
+            React.createElement("h3", { className: "zl-display", style: { fontWeight: 700, fontSize: "1rem" } }, "עומס החזרות בשבוע הקרוב"),
+            React.createElement("p", { style: { fontSize: "0.8rem", color: "var(--ink-muted)", marginTop: 4 } }, "כמה מילים יגיעו לחזרה בכל יום, לפי לוח החזרה המרווחת"),
+            React.createElement("div", { className: "zl-bars" }, week.map((d, i) => (React.createElement("div", { key: i, className: "zl-bar-col" },
+                React.createElement("span", { className: "zl-bar-val" }, d.count),
+                React.createElement("span", { className: "zl-bar", "data-today": d.today ? "true" : "false", style: { height: Math.round((d.count / peak) * 78) + "%" } }),
+                React.createElement("span", { className: "zl-bar-label" }, d.label)))))),
+
+        React.createElement(Card, { style: { marginBottom: 14 } },
+            React.createElement("h3", { className: "zl-display", style: { fontWeight: 700, fontSize: "1rem", marginBottom: 4 } }, "שליטה לפי נושא"),
+            React.createElement("p", { style: { fontSize: "0.8rem", color: "var(--ink-muted)", marginBottom: 6 } }, "מהחלש לחזק — כאן כדאי להשקיע"),
+            topics.map((t) => React.createElement(TopicRow, { key: t.name, name: t.name, done: t.done, total: t.total }))),
+
+        React.createElement(Card, null,
+            React.createElement("h3", { className: "zl-display", style: { fontWeight: 700, fontSize: "1rem", marginBottom: 4 } }, "המילים שהכי מפילות אותך"),
+            weakest.length === 0
+                ? React.createElement("p", { style: { fontSize: "0.85rem", color: "var(--ink-muted)" } }, "עדיין אין מספיק נתונים — תרגל קצת וזה יתמלא.")
+                : weakest.map((w) => (React.createElement("div", { key: w.id, style: { display: "flex", justifyContent: "space-between", gap: 10, padding: "8px 0", borderBottom: "1px solid var(--sand-200)" } },
+                    React.createElement("span", { style: { fontWeight: 700, fontSize: "0.9rem" } }, w.front),
+                    React.createElement("span", { style: { fontSize: "0.82rem", color: "var(--ink-muted)" } }, w.back),
+                    React.createElement("span", { style: { fontSize: "0.78rem", color: "var(--clay)", fontWeight: 700 } }, "נכשלת " + w.wrongCount))))),
+        React.createElement("div", { style: { height: 10 } })));
+}
+
+/* =========================================================================
    ROOT APP
    ========================================================================= */
 function ArabicLearningApp() {
@@ -1782,7 +1944,8 @@ function ArabicLearningApp() {
             tab === "routine" && (React.createElement(RoutineTab, { checklist: checklist, setChecklist: setChecklist, navigateTo: navigateFromRoutine, vocab: vocab, letters: letters, setVocab: setVocab, setLetters: setLetters })),
             tab === "practice" && (React.createElement(PracticeTab, { screen: practiceScreen, setScreen: setPracticeScreen, vocab: vocab, setVocab: setVocab, letters: letters, setLetters: setLetters })),
             tab === "vocab" && React.createElement(VocabTab, { vocab: vocab, setVocab: setVocab }),
-            tab === "alphabet" && React.createElement(AlphabetTab, { letters: letters }))));
+            tab === "alphabet" && React.createElement(AlphabetTab, { letters: letters }),
+            tab === "stats" && React.createElement(StatsTab, { vocab: vocab, letters: letters, checklist: checklist }))));
 }
 
 ReactDOM.createRoot(document.getElementById("root")).render(React.createElement(ArabicLearningApp, null));
