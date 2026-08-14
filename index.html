@@ -187,6 +187,19 @@ const GLOBAL_CSS = `
     .zl-due { display:flex; align-items:center; justify-content:space-between; gap:12px; background:var(--sand-100); border:1px solid var(--sand-200); border-right:3px solid var(--gold); border-radius:10px; padding:13px 15px; margin-bottom:16px; }
     .zl-due-num { font-size:1.35rem; font-weight:800; color:var(--teal-950); }
 
+    .zl-sortbar { display:flex; align-items:center; gap:10px; flex-wrap:wrap; margin-bottom:10px; }
+    .zl-sortbtn { display:inline-flex; align-items:center; gap:8px; background:var(--sand-100); border:1px solid var(--sand-200); border-radius:9px; padding:9px 14px; font:inherit; font-size:0.85rem; font-weight:700; color:var(--teal-950); cursor:pointer; }
+    .zl-sortbtn[data-active="true"] { background:var(--teal-950); border-color:var(--teal-950); color:#fff; }
+    .zl-sortpanel { background:var(--sand-100); border:1px solid var(--sand-200); border-radius:11px; padding:12px; margin-bottom:12px; }
+    .zl-sortrow { display:flex; align-items:center; gap:10px; width:100%; padding:9px 8px; background:none; border:none; border-radius:8px; font:inherit; font-size:0.87rem; cursor:pointer; text-align:right; color:inherit; }
+    .zl-sortrow:hover { background:var(--sand); }
+    .zl-sortbox { flex:0 0 18px; height:18px; border-radius:5px; border:1.5px solid var(--sand-200); display:flex; align-items:center; justify-content:center; color:#fff; }
+    .zl-sortrow[data-on="true"] .zl-sortbox { background:var(--teal-950); border-color:var(--teal-950); }
+    .zl-sortcount { color:var(--ink-muted); font-size:0.78rem; }
+    .zl-sortactions { display:flex; gap:8px; border-top:1px solid var(--sand-200); margin-top:8px; padding-top:10px; }
+    .zl-word { text-align:right; font:inherit; color:inherit; cursor:pointer; }
+    .zl-word-detail { border-top:1px solid rgba(203,213,225,0.6); margin-top:8px; padding-top:8px; font-size:0.72rem; line-height:1.7; opacity:0.85; }
+
     /* ---- Expandable practice-method rows ---- */
     .zl-method {
       background:var(--sand-100);
@@ -545,6 +558,78 @@ function usePersistedState(key, initial, reviver) {
    word (different vocalisation, same consonants) are recognised as the same
    entry instead of piling up as duplicates, and their practice history is
    carried onto the current version. */
+/* The word list was rebuilt twice (new vocalisation, split variants), and a few
+   of the old entries differ in their consonants too — תִלְמִיד' became תִלְמִיז,
+   "עַם / עַמַּה" was split in two. Those cannot be matched by consonants alone,
+   so the previous built-in list is named here explicitly and skipped on import.
+   Only words you added yourself are carried over. */
+const LEGACY_FRONTS = [
+    "צַבַּאח (אל)חַ'יְר",
+    "צַבַּאח (אל)נּוּר",
+    "מַסַא (אל)חַ'יְר",
+    "מַסַא (אל)נּוּר",
+    "מַרְחַבַּא",
+    "מַרְחַבְּתֵיְן",
+    "אַהְלַן וַסַהְלַן",
+    "אַהְלַן וַסַהְלַן בִיכּ",
+    "אִסְם",
+    "אַמִיר",
+    "מַעַלֵּם",
+    "מַעַלְמַה",
+    "בִּ = פִי",
+    "מַע",
+    "דַוְרַה",
+    "טַאלִבּ",
+    "טַאלִבַּה",
+    "גַ'אמִעַה",
+    "סִכְרִתֵירַא",
+    "סִכְרִתֵיר",
+    "אַמִין",
+    "אַמִינַה",
+    "מַדְרַסַה",
+    "מֻדִיר",
+    "מֻדִירַה",
+    "שַרִכַּה",
+    "מֻחַאמִי",
+    "מֻחַאמִיַּה",
+    "וִזַארַה",
+    "עַדְל",
+    "תִלְמִיד'",
+    "תִלְמִידַ'ה",
+    "צַאַחִבּ",
+    "צַאַחִבַּה",
+    "דַאר",
+    "וַלַד",
+    "אִבְּן",
+    "בִּנְת",
+    "עַם / עַמַּה",
+    "חַ'אל / חַ'אלַה",
+    "סַלַאמַה",
+    "צַף",
+    "בַּאבּ",
+    "שֻבַּאכּ",
+    "חֵיט",
+    "כֻּרְסִי",
+    "טַאווּלַה",
+    "לוֹח",
+    "קַלַם",
+    "קַלַם רַצַאץ",
+    "דַפְתַר",
+    "כִּתַאבּ",
+    "כֻּרַּאסַה",
+    "שַנְטַה / שַנְתַה",
+    "וַרַקַה",
+    "צַפְחַה",
+    "אִסְתִרַאחַה",
+    "פֻרְצַה",
+    "קַהְוַה",
+    "שַאי",
+    "סֻכַּר",
+    "כַּאַסַה / כַּבַּאיַה",
+    "חַמַּאם",
+    "מֻחַאמַאה",
+];
+
 function wordKey(text) {
     return String(text || "")
         .replace(/[\u0591-\u05C7\u0610-\u065F]/g, "")
@@ -554,10 +639,11 @@ function wordKey(text) {
 function initialVocab() {
     const base = withProgressFields(DEFAULT_VOCAB);
     const byKey = new Map(base.map((w) => [wordKey(w.front), w]));
+    const retired = new Set(LEGACY_FRONTS.map(wordKey));
     let nextId = DEFAULT_VOCAB.reduce((m, w) => Math.max(m, w.id || 0), 0);
     const extraKeys = new Set();
 
-    ["vocab-data-v2", "vocab-data"].forEach((key) => {
+    ["vocab-data-v3", "vocab-data-v2", "vocab-data"].forEach((key) => {
         let stored = null;
         try { stored = JSON.parse(window.localStorage.getItem(key) || "null"); }
         catch (e) { stored = null; }
@@ -574,6 +660,7 @@ function initialVocab() {
                 if (w.dueAt) builtIn.dueAt = Math.max(builtIn.dueAt || 0, w.dueAt);
                 return;
             }
+            if (retired.has(k)) return;          // an old copy of a built-in word
             if (extraKeys.has(k)) return;
             extraKeys.add(k);
             nextId += 1;
@@ -981,10 +1068,9 @@ function BackupCard({ vocab, letters, checklist, setVocab, setLetters, setCheckl
 /* =========================================================================
    FLASHCARD PRACTICE (shared for vocab + letters)
    ========================================================================= */
-function FlashcardPractice({ mode, vocab, setVocab, letters, setLetters, onBack }) {
+function FlashcardPractice({ mode, vocab, setVocab, letters, setLetters, onBack, dir, setDir }) {
     const data = mode === "vocab" ? vocab : letters;
     const setData = mode === "vocab" ? setVocab : setLetters;
-    const [dir, setDir] = useState("ar2he");
     const [cardDir, setCardDir] = useState("ar2he");
     const [order, setOrder] = useState(() => weightedOrder(data));
     const [pos, setPos] = useState(0);
@@ -1136,10 +1222,9 @@ function buildQuestion(data, item, mode, dir) {
     };
 }
 
-function AmericanQuiz({ mode, vocab, setVocab, letters, setLetters, onBack }) {
+function AmericanQuiz({ mode, vocab, setVocab, letters, setLetters, onBack, dir, setDir }) {
     const data = mode === "vocab" ? vocab : letters;
     const setData = mode === "vocab" ? setVocab : setLetters;
-    const [dir, setDir] = useState("ar2he");
     const [order, setOrder] = useState(() => weightedOrder(data));
     const [pos, setPos] = useState(0);
     const [question, setQuestion] = useState(null);
@@ -1255,8 +1340,7 @@ function AmericanQuiz({ mode, vocab, setVocab, letters, setLetters, onBack }) {
 /* =========================================================================
    SENTENCE BUILDER GAME
    ========================================================================= */
-function SentenceBuilder() {
-    const [dir, setDir] = useState("he2ar");
+function SentenceBuilder({ dir, setDir }) {
     const [activeDir, setActiveDir] = useState("he2ar");
     const [order, setOrder] = useState(() => shuffle(SENTENCES.map((_, i) => i)));
     const [pos, setPos] = useState(0);
@@ -1347,9 +1431,10 @@ function RevealList({ items, renderTop, renderBottom, emptyLabel }) {
         items.length === 0 && React.createElement("p", { style: { color: "var(--ink-muted)" } }, emptyLabel)));
 }
 
-function SentencesReadingHub({ initialSub }) {
+function SentencesReadingHub({ initialSub, dir, setDir }) {
     const [sub, setSub] = useState(initialSub || "builder");
-    const [readDir, setReadDir] = useState("ar2he");
+    const readDir = dir;
+    const setReadDir = setDir;
     // in "ערבוב" each sentence independently decides which side is shown first
     const mixSides = useMemo(() => {
         const map = {};
@@ -1373,7 +1458,7 @@ function SentencesReadingHub({ initialSub }) {
                 fontSize: "0.85rem",
                 fontWeight: 600,
             } }, t.label)))),
-        sub === "builder" && React.createElement(SentenceBuilder, null),
+        sub === "builder" && React.createElement(SentenceBuilder, { dir: dir, setDir: setDir }),
         sub === "reading" && (React.createElement(Card, null,
             React.createElement("div", { style: { display: "flex", justifyContent: "space-between", alignItems: "center", gap: 10, flexWrap: "wrap", marginBottom: 12 } },
                 React.createElement("h3", { className: "zl-display", style: { fontWeight: 700 } }, "\u05E7\u05E8\u05D9\u05D0\u05D4 \u05D5\u05D4\u05D2\u05D9\u05D9\u05D4"),
@@ -1450,6 +1535,7 @@ function MethodRow({ method, open, onToggle, onPick }) {
 
 function PracticeTab({ screen, setScreen, vocab, setVocab, letters, setLetters }) {
     const [openMethod, setOpenMethod] = useState(null);
+    const [dir, setDir] = useState("ar2he");   // one direction setting for every practice mode
 
     const backToList = (methodId) => () => {
         setOpenMethod(methodId);
@@ -1457,10 +1543,10 @@ function PracticeTab({ screen, setScreen, vocab, setVocab, letters, setLetters }
     };
 
     if (screen && screen.screen === "flashcards") {
-        return (React.createElement(FlashcardPractice, { mode: screen.mode || "vocab", vocab: vocab, setVocab: setVocab, letters: letters, setLetters: setLetters, onBack: backToList("flashcards") }));
+        return (React.createElement(FlashcardPractice, { mode: screen.mode || "vocab", vocab: vocab, setVocab: setVocab, letters: letters, setLetters: setLetters, onBack: backToList("flashcards"), dir: dir, setDir: setDir }));
     }
     if (screen && screen.screen === "quiz") {
-        return (React.createElement(AmericanQuiz, { mode: screen.mode || "vocab", vocab: vocab, setVocab: setVocab, letters: letters, setLetters: setLetters, onBack: backToList("quiz") }));
+        return (React.createElement(AmericanQuiz, { mode: screen.mode || "vocab", vocab: vocab, setVocab: setVocab, letters: letters, setLetters: setLetters, onBack: backToList("quiz"), dir: dir, setDir: setDir }));
     }
     if (screen && (screen.screen === "sentences" || screen.screen === "sentence-builder" || screen.screen === "reading")) {
         // "sentence-builder" / "reading" are kept so the shortcuts on the home tab keep working.
@@ -1468,12 +1554,14 @@ function PracticeTab({ screen, setScreen, vocab, setVocab, letters, setLetters }
         return (React.createElement("div", { className: "zl-anim" },
             React.createElement(BackLink, { onClick: backToList("sentences") }, "\u05D7\u05D6\u05E8\u05D4 \u05DC\u05E9\u05D9\u05D8\u05D5\u05EA \u05EA\u05E8\u05D2\u05D5\u05DC"),
             React.createElement(SectionHeader, { title: "\u05EA\u05E8\u05D2\u05D5\u05DC \u05DE\u05E9\u05E4\u05D8\u05D9\u05DD \u05D5\u05E7\u05E8\u05D9\u05D0\u05D4" }),
-            React.createElement(SentencesReadingHub, { initialSub: sub })));
+            React.createElement(SentencesReadingHub, { initialSub: sub, dir: dir, setDir: setDir })));
     }
 
     // Top level: the three methods, each opening its own options in place.
     return (React.createElement("div", { className: "zl-anim" },
-        React.createElement(SectionHeader, { title: "\u05E9\u05D9\u05D8\u05D5\u05EA \u05EA\u05E8\u05D2\u05D5\u05DC", subtitle: "\u05DB\u05DC \u05D4\u05EA\u05E8\u05D2\u05D5\u05DC\u05D9\u05DD \u05D1\u05E1\u05D3\u05E8 \u05D0\u05E7\u05E8\u05D0\u05D9, \u05E2\u05DD \u05D3\u05D2\u05E9 \u05E2\u05DC \u05DE\u05D4 \u05E9\u05E4\u05D7\u05D5\u05EA \u05D6\u05DB\u05E8\u05EA" }),
+        React.createElement("div", { style: { display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: 12, flexWrap: "wrap" } },
+            React.createElement(SectionHeader, { title: "\u05E9\u05D9\u05D8\u05D5\u05EA \u05EA\u05E8\u05D2\u05D5\u05DC", subtitle: "\u05DB\u05DC \u05D4\u05EA\u05E8\u05D2\u05D5\u05DC\u05D9\u05DD \u05D1\u05E1\u05D3\u05E8 \u05D0\u05E7\u05E8\u05D0\u05D9, \u05E2\u05DD \u05D3\u05D2\u05E9 \u05E2\u05DC \u05DE\u05D4 \u05E9\u05E4\u05D7\u05D5\u05EA \u05D6\u05DB\u05E8\u05EA" }),
+            React.createElement(DirectionToggle, { value: dir, onChange: setDir })),
         PRACTICE_METHODS.map((m) => (React.createElement(MethodRow, {
             key: m.id,
             method: m,
@@ -1490,7 +1578,9 @@ function VocabTab({ vocab, setVocab }) {
     const [modalOpen, setModalOpen] = useState(false);
     const [form, setForm] = useState({ front: "", back: "", notes: "", topic: "" });
     const [query, setQuery] = useState("");
-    const [topic, setTopic] = useState("all");
+    const [picked, setPicked] = useState([]);      // several topics can be shown at once
+    const [sortOpen, setSortOpen] = useState(false);
+    const [openWord, setOpenWord] = useState(null);
 
     const topics = useMemo(() => {
         const seen = [];
@@ -1501,8 +1591,9 @@ function VocabTab({ vocab, setVocab }) {
     // search strips vowel points, so "כתאב" finds "כְּתַאבּ" without typing nikud
     const bare = (text) => String(text || "").replace(/[\u0591-\u05C7\u0610-\u065F]/g, "");
     const needle = bare(query).trim();
+    const toggleTopic = (t) => setPicked((prev) => (prev.indexOf(t) === -1 ? prev.concat([t]) : prev.filter((x) => x !== t)));
     const visible = vocab.filter((w) => {
-        if (topic !== "all" && w.topic !== topic) return false;
+        if (picked.length > 0 && picked.indexOf(w.topic) === -1) return false;
         if (!needle) return true;
         return bare(w.front).indexOf(needle) !== -1
             || bare(w.back).indexOf(needle) !== -1
@@ -1539,13 +1630,32 @@ function VocabTab({ vocab, setVocab }) {
             placeholder: "\u05D7\u05E4\u05E9 \u05DE\u05D9\u05DC\u05D4 \u05D1\u05EA\u05E2\u05EA\u05D9\u05E7 \u05D0\u05D5 \u05D1\u05EA\u05E8\u05D2\u05D5\u05DD (\u05DC\u05DC\u05D0 \u05E0\u05D9\u05E7\u05D5\u05D3)",
             type: "search",
         }),
-        React.createElement("div", { className: "zl-chips" },
-            React.createElement("button", { type: "button", className: "zl-chip", "data-active": topic === "all" ? "true" : "false", onClick: () => setTopic("all") },
-                "\u05D4\u05DB\u05DC (" + vocab.length + ")"),
-            topics.map((t) => (React.createElement("button", { key: t, type: "button", className: "zl-chip", "data-active": topic === t ? "true" : "false", onClick: () => setTopic(t) },
-                t + " (" + vocab.filter((w) => w.topic === t).length + ")")))),
-        needle || topic !== "all" ? React.createElement("p", { style: { fontSize: "0.8rem", color: "var(--ink-muted)", marginBottom: 10 } },
-            visible.length + " \u05DE\u05EA\u05D5\u05DA " + vocab.length + " \u05DE\u05D9\u05DC\u05D9\u05DD") : null,
+        React.createElement("div", { className: "zl-sortbar" },
+            React.createElement("button", {
+                type: "button",
+                className: "zl-sortbtn",
+                "data-active": (sortOpen || picked.length > 0) ? "true" : "false",
+                "aria-expanded": sortOpen,
+                onClick: () => setSortOpen((v) => !v),
+            },
+                "\u05DE\u05D9\u05D9\u05DF",
+                picked.length > 0 ? " (" + picked.length + ")" : "",
+                React.createElement(ChevronLeft, { size: 15, style: { transform: sortOpen ? "rotate(-90deg)" : "none" } })),
+            React.createElement("span", { style: { fontSize: "0.82rem", color: "var(--ink-muted)" } },
+                picked.length === 0
+                    ? "\u05DE\u05E6\u05D9\u05D2 \u05D0\u05EA \u05DB\u05DC " + vocab.length + " \u05D4\u05DE\u05D9\u05DC\u05D9\u05DD"
+                    : visible.length + " \u05DE\u05EA\u05D5\u05DA " + vocab.length + " \u05DE\u05D9\u05DC\u05D9\u05DD")),
+        sortOpen ? React.createElement("div", { className: "zl-sortpanel zl-anim" },
+            topics.map((t) => {
+                const on = picked.indexOf(t) !== -1;
+                return React.createElement("button", { key: t, type: "button", className: "zl-sortrow", "data-on": on ? "true" : "false", onClick: () => toggleTopic(t) },
+                    React.createElement("span", { className: "zl-sortbox" }, on ? React.createElement(Check, { size: 12 }) : null),
+                    React.createElement("span", { style: { flex: 1, fontWeight: on ? 700 : 500 } }, t),
+                    React.createElement("span", { className: "zl-sortcount" }, vocab.filter((w) => w.topic === t).length));
+            }),
+            React.createElement("div", { className: "zl-sortactions" },
+                React.createElement(PrimaryButton, { variant: "outline", onClick: () => setPicked(topics.slice()) }, "\u05D1\u05D7\u05E8 \u05D4\u05DB\u05DC"),
+                React.createElement(PrimaryButton, { variant: "outline", onClick: () => setPicked([]) }, "\u05E0\u05E7\u05D4"))) : null,
         React.createElement("div", { style: { display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(135px, 1fr))", gap: 10 } },
             React.createElement("button", { type: "button", onClick: () => setModalOpen(true), style: {
                     border: "2px dashed var(--gold)",
@@ -1566,7 +1676,11 @@ function VocabTab({ vocab, setVocab }) {
                 const pct = progressPct(item);
                 const mastered = isMastered(item);
                 const struggling = isStruggling(item);
-                return (React.createElement("div", { key: item.id, style: {
+                const open = openWord === item.id;
+                return (React.createElement("div", { key: item.id, className: "zl-word", role: "button", tabIndex: 0,
+                    onClick: () => setOpenWord(open ? null : item.id),
+                    onKeyDown: (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); setOpenWord(open ? null : item.id); } },
+                    style: {
                         background: mastered ? "var(--teal-700)" : struggling ? "var(--clay-bg)" : "var(--sand-100)",
                         color: mastered ? "white" : "var(--ink)",
                         border: "1px solid " + (mastered ? "var(--teal-700)" : struggling ? "var(--clay)" : "var(--sand-200)"),
@@ -1576,12 +1690,17 @@ function VocabTab({ vocab, setVocab }) {
                         display: "flex",
                         flexDirection: "column",
                         justifyContent: "space-between",
+                        gridColumn: open ? "1 / -1" : "auto",
                     } },
                     React.createElement("div", null,
                         React.createElement("div", { style: { fontWeight: 700, fontSize: "1rem" } }, item.front),
                         React.createElement("div", { style: { fontSize: "0.78rem", opacity: 0.8, marginTop: 2 } }, item.back),
-                        item.topic ? React.createElement("div", { style: { fontSize: "0.67rem", opacity: 0.6, marginTop: 4 } }, item.topic) : null),
-                    React.createElement("div", { style: { marginTop: 8 }, title: "התקדמות: " + pct + "% · " + dueLabel(item) },
+                        item.topic ? React.createElement("div", { style: { fontSize: "0.67rem", opacity: 0.6, marginTop: 4 } }, item.topic) : null,
+                        open ? React.createElement("div", { className: "zl-word-detail zl-anim" },
+                            item.notes ? React.createElement("div", null, item.notes) : null,
+                            React.createElement("div", null, "חזרה: " + dueLabel(item)),
+                            React.createElement("div", null, "ידעתי " + (item.correctCount || 0) + " · לא ידעתי " + (item.wrongCount || 0))) : null),
+                    React.createElement("div", { style: { marginTop: 8 }, title: "התקדמות: " + pct + "%" },
                         React.createElement(ProgressBar, { pct: pct, mastered: mastered, struggling: struggling }))));
             })),
         modalOpen && (React.createElement("div", { onClick: closeModal, style: { position: "fixed", inset: 0, background: "rgba(15,23,42,0.45)", display: "flex", alignItems: "center", justifyContent: "center", padding: 16, zIndex: 1000 } },
@@ -1640,7 +1759,7 @@ function AlphabetTab({ letters }) {
 function ArabicLearningApp() {
     const [tab, setTab] = useState("routine");
     const [practiceScreen, setPracticeScreen] = useState(null);
-    const [vocab, setVocab] = usePersistedState("vocab-data-v3", useMemo(initialVocab, []), (raw) => mergeDefaults(raw, DEFAULT_VOCAB));
+    const [vocab, setVocab] = usePersistedState("vocab-data-v4", useMemo(initialVocab, []), (raw) => mergeDefaults(raw, DEFAULT_VOCAB));
     const [letters, setLetters] = usePersistedState("letters-data-v2", withProgressFields(ALPHABET), (raw) => mergeDefaults(raw, ALPHABET));
     const [checklist, setChecklist] = usePersistedState("routine-checklist", {});
 
