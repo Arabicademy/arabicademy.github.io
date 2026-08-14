@@ -3,6 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<meta name="apple-mobile-web-app-capable" content="yes">
 <title>לומדים ערבית</title>
 <style>
   #boot-error {
@@ -59,6 +62,7 @@ try {
     throw new Error("React / ReactDOM לא נטענו מה-CDN (בדוק חיבור לאינטרנט או חסימת סקריפטים).");
   }
 "use strict";
+const APP_BUILD = "14.08 · 5";   // bump this every time the file is replaced
 const { useState, useEffect, useCallback, useMemo, useRef } = React;
 
 /* Inline icon set (stand-ins for lucide-react, so this file has zero build
@@ -961,6 +965,7 @@ function RoutineTab({ checklist, setChecklist, navigateTo, vocab, letters, setVo
         }));
     };
     const due = dueCount(vocab);
+    const streak = routineStreak(checklist);
 
     return (React.createElement("div", { className: "zl-anim" },
         React.createElement("div", { className: "zl-due" },
@@ -968,6 +973,10 @@ function RoutineTab({ checklist, setChecklist, navigateTo, vocab, letters, setVo
                 React.createElement("div", { className: "zl-due-num" }, due),
                 React.createElement("div", { style: { fontSize: "0.82rem", color: "var(--ink-muted)" } },
                     due === 0 ? "אין מילים לחזרה היום — כל הכבוד" : "מילים ממתינות לחזרה היום")),
+            React.createElement("div", { style: { textAlign: "center" } },
+                React.createElement("div", { className: "zl-due-num" }, streak),
+                React.createElement("div", { style: { fontSize: "0.82rem", color: "var(--ink-muted)" } },
+                    streak === 1 ? "יום לימוד ברצף" : "ימי לימוד ברצף")),
             due > 0 ? React.createElement(PrimaryButton, { onClick: () => navigateTo({ screen: "flashcards", mode: "vocab" }) }, "\u05D4\u05EA\u05D7\u05DC \u05D7\u05D6\u05E8\u05D4") : null),
         React.createElement(SectionHeader, { title: "\u05DE\u05E9\u05D9\u05DE\u05D5\u05EA \u05D4\u05D9\u05D5\u05DD", subtitle: "\u05E1\u05DE\u05DF \u05DB\u05DC \u05D7\u05DC\u05E7 \u05E2\u05DD \u05E1\u05D9\u05D5\u05DE\u05D5, \u05D0\u05D5 \u05DC\u05D7\u05E5 \u05E2\u05DC \u05D4\u05D7\u05E5 \u05DC\u05DE\u05E2\u05D1\u05E8 \u05D9\u05E9\u05D9\u05E8 \u05DC\u05EA\u05E8\u05D2\u05D5\u05DC" }),
         React.createElement(Card, null, ROUTINE_ITEMS.map((item, idx) => (React.createElement("div", { key: item.key, style: {
@@ -984,7 +993,9 @@ function RoutineTab({ checklist, setChecklist, navigateTo, vocab, letters, setVo
                     React.createElement("div", { style: { fontWeight: 700 } }, item.label),
                     React.createElement("div", { style: { fontSize: "0.85rem", color: "var(--ink-muted)" } }, item.desc))),
             React.createElement(ArrowButton, { title: "\u05E2\u05D1\u05D5\u05E8 \u05DC\u05EA\u05E8\u05D2\u05D5\u05DC", onClick: () => navigateTo(item.target) }))))),
-        React.createElement(BackupCard, { vocab: vocab, letters: letters, checklist: checklist, setVocab: setVocab, setLetters: setLetters, setChecklist: setChecklist })));
+        React.createElement(BackupCard, { vocab: vocab, letters: letters, checklist: checklist, setVocab: setVocab, setLetters: setLetters, setChecklist: setChecklist }),
+        React.createElement("p", { style: { textAlign: "center", fontSize: "0.72rem", color: "var(--ink-muted)", marginTop: 14 } },
+            "\u05D2\u05E8\u05E1\u05D4 " + APP_BUILD)));
 }
 
 /* =========================================================================
