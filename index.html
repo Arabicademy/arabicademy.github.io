@@ -62,7 +62,7 @@ try {
     throw new Error("React / ReactDOM לא נטענו מה-CDN (בדוק חיבור לאינטרנט או חסימת סקריפטים).");
   }
 "use strict";
-const APP_BUILD = "14.08 · 6";   // bump this every time the file is replaced
+const APP_BUILD = "14.08 · 7";   // bump this every time the file is replaced
 const { useState, useEffect, useCallback, useMemo, useRef } = React;
 
 /* Inline icon set (stand-ins for lucide-react, so this file has zero build
@@ -203,8 +203,16 @@ const GLOBAL_CSS = `
     .zl-sortrow[data-on="true"] .zl-sortbox { background:var(--teal-950); border-color:var(--teal-950); }
     .zl-sortcount { color:var(--ink-muted); font-size:0.78rem; }
     .zl-sortactions { display:flex; gap:8px; border-top:1px solid var(--sand-200); margin-top:8px; padding-top:10px; }
-    .zl-word { text-align:right; }
-    .zl-word-head { display:block; width:100%; background:none; border:none; padding:0; margin:0; font:inherit; color:inherit; text-align:right; cursor:pointer; -webkit-appearance:none; }
+    .zl-word { text-align:right; cursor:pointer; touch-action:manipulation; }
+    .zl-word-head {
+      display:flex; flex-direction:column; align-items:stretch;
+      flex:1 1 auto; width:100%; min-height:52px;
+      background:none; border:none; padding:0; margin:0;
+      font:inherit; color:inherit; text-align:right;
+      cursor:pointer; touch-action:manipulation;
+      -webkit-appearance:none; -webkit-tap-highlight-color:rgba(30,58,138,0.12);
+    }
+    .zl-word-chev { align-self:flex-start; margin-top:auto; opacity:0.45; }
     .zl-word-detail { border-top:1px solid rgba(203,213,225,0.6); margin-top:8px; padding-top:8px; font-size:0.72rem; line-height:1.7; opacity:0.85; }
 
     .zl-mini { border:1px solid var(--sand-200); background:var(--sand-100); color:var(--teal-950); border-radius:7px; padding:5px 12px; font:inherit; font-size:0.75rem; font-weight:700; cursor:pointer; }
@@ -996,7 +1004,7 @@ function RoutineTab({ checklist, setChecklist, navigateTo, vocab, letters, setVo
             React.createElement(ArrowButton, { title: "\u05E2\u05D1\u05D5\u05E8 \u05DC\u05EA\u05E8\u05D2\u05D5\u05DC", onClick: () => navigateTo(item.target) }))))),
         React.createElement(BackupCard, { vocab: vocab, letters: letters, checklist: checklist, setVocab: setVocab, setLetters: setLetters, setChecklist: setChecklist }),
         React.createElement("p", { style: { textAlign: "center", fontSize: "0.72rem", color: "var(--ink-muted)", marginTop: 14 } },
-            "\u05D2\u05E8\u05E1\u05D4 " + APP_BUILD)));
+            "\u05D2\u05E8\u05E1\u05D4 " + APP_BUILD + " \u00B7 Emanuel Nassimiha 2026")));
 }
 
 /* =========================================================================
@@ -1739,7 +1747,8 @@ function VocabTab({ vocab, setVocab }) {
                    is unreliable on iPadOS Safari, which only dispatches click on
                    natively interactive elements. The action buttons live outside
                    it, since a button cannot legally contain other buttons. */
-                return (React.createElement("div", { key: item.id, className: "zl-word", style: {
+                const toggle = () => { setConfirmDelete(null); setOpenWord(open ? null : item.id); };
+                return (React.createElement("div", { key: item.id, className: "zl-word", onClick: toggle, style: {
                         background: mastered ? "var(--teal-700)" : struggling ? "var(--clay-bg)" : "var(--sand-100)",
                         color: mastered ? "white" : "var(--ink)",
                         border: "1px solid " + (mastered ? "var(--teal-700)" : struggling ? "var(--clay)" : "var(--sand-200)"),
@@ -1755,12 +1764,14 @@ function VocabTab({ vocab, setVocab }) {
                         type: "button",
                         className: "zl-word-head",
                         "aria-expanded": open,
-                        onClick: () => { setConfirmDelete(null); setOpenWord(open ? null : item.id); },
+                        onClick: (e) => { e.stopPropagation(); toggle(); },
                     },
                         React.createElement("span", { style: { display: "block", fontWeight: 700, fontSize: "1rem" } }, item.front),
                         React.createElement("span", { style: { display: "block", fontSize: "0.78rem", opacity: 0.8, marginTop: 2 } }, item.back),
-                        item.topic ? React.createElement("span", { style: { display: "block", fontSize: "0.67rem", opacity: 0.6, marginTop: 4 } }, item.topic) : null),
-                    open ? React.createElement("div", { className: "zl-word-detail zl-anim" },
+                        item.topic ? React.createElement("span", { style: { display: "block", fontSize: "0.67rem", opacity: 0.6, marginTop: 4 } }, item.topic) : null,
+                        React.createElement("span", { className: "zl-word-chev" },
+                            React.createElement(ChevronLeft, { size: 14, style: { transform: open ? "rotate(90deg)" : "rotate(-90deg)" } }))),
+                    open ? React.createElement("div", { className: "zl-word-detail zl-anim", onClick: (e) => e.stopPropagation() },
                         item.notes ? React.createElement("div", null, item.notes) : null,
                         React.createElement("div", null, "חזרה הבאה: " + dueLabel(item)),
                         React.createElement("div", null, "ידעתי " + (item.correctCount || 0) + " · לא ידעתי " + (item.wrongCount || 0)),
