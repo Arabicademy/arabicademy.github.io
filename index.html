@@ -62,7 +62,7 @@ try {
     throw new Error("React / ReactDOM לא נטענו מה-CDN (בדוק חיבור לאינטרנט או חסימת סקריפטים).");
   }
 "use strict";
-const APP_BUILD = "14.08 · 11";   // bump this every time the file is replaced
+const APP_BUILD = "14.08 · 12";   // bump this every time the file is replaced
 
 
 const { useState, useEffect, useCallback, useMemo, useRef } = React;
@@ -1466,6 +1466,167 @@ function AmericanQuiz({ mode, vocab, setVocab, letters, setLetters, onBack, dir,
 }
 
 /* =========================================================================
+   FULL EXAM
+   Mixes the practice styles in one session: some questions are multiple
+   choice, some are open — you type the answer. Typing is only ever asked
+   when the prompt is the Arabic side, so the answer is always Hebrew.
+   ========================================================================= */
+function normAnswer(text) {
+    return String(text || "")
+        .replace(/[\u0591-\u05C7\u0610-\u065F]/g, "")   // vowel points and shadda
+        .replace(/[\s()'"\u2013\-,.\/]/g, "")
+        .trim();
+}
+
+/* A word with several meanings counts as correct on any one of them:
+   "דלת / שער" accepts דלת, or שער, or the whole string. */
+function acceptableAnswers(text) {
+    const out = new Set();
+    const add = (t) => { const k = normAnswer(t); if (k) out.add(k); };
+    add(text);
+    const withoutBrackets = String(text || "").replace(/\([^)]*\)/g, " ");
+    add(withoutBrackets);
+    withoutBrackets.split("/").forEach(add);
+    String(text || "").split("/").forEach(add);
+    (String(text || "").match(/\(([^)]*)\)/g) || []).forEach((seg) => {
+        seg.replace(/[()]/g, "").split("/").forEach(add);
+    });
+    return out;
+}
+
+function FullExam({ mode, vocab, setVocab, letters, setLetters, onBack, dir, setDir }) {
+    const data = mode === "vocab" ? vocab : letters;
+    const setData = mode === "vocab" ? setVocab : setLetters;
+    const [order, setOrder] = useState(() => weightedOrder(data));
+    const [pos, setPos] = useState(0);
+    const [task, setTask] = useState(null);
+    const [typed, setTyped] = useState("");
+    const [result, setResult] = useState(null);      // null | "correct" | "wrong"
+    const [score, setScore] = useState({ correct: 0, total: 0 });
+    const inputRef = useRef(null);
+
+    useEffect(() => {
+        setOrder(weightedOrder(data));
+        setPos(0);
+    }, [data.length, mode]);
+
+    useEffect(() => {
+        if (data.length === 0 || order.length === 0) return;
+        if (pos > 0 && pos % order.length === 0) setOrder(weightedOrder(data));
+        const item = data[order[pos % order.length]];
+        if (!item) return;
+        const useDir = resolveDir(dir);
+        // an open question needs the prompt to be the Arabic side
+        const open = useDir === "ar2he" && Math.random() < 0.5;
+        setTask({
+            item: item,
+            open: open,
+            question: buildQuestion(data, item, mode, useDir),
+        });
+        setTyped("");
+        setResult(null);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [pos, order, data.length, dir]);
+
+    if (data.length < 4) {
+        return (React.createElement("div", { className: "zl-anim" },
+            React.createElement(BackLink, { onClick: onBack }, "חזרה לשיטות תרגול"),
+            React.createElement(Card, null, "צריך לפחות 4 פריטים במאגר כדי להריץ מבחן מלא.")));
+    }
+    if (!task) return null;
+
+    const record = (correct) => {
+        setScore((sc) => ({ correct: sc.correct + (correct ? 1 : 0), total: sc.total + 1 }));
+        setData((prev) => prev.map((d) => d.id === task.item.id
+            ? {
+                ...d,
+                correctCount: (d.correctCount || 0) + (correct ? 1 : 0),
+                wrongCount: (d.wrongCount || 0) + (correct ? 0 : 1),
+                ...scheduleNext(d, correct),
+            }
+            : d));
+        setResult(correct ? "correct" : "wrong");
+    };
+
+    const submitTyped = () => {
+        if (result || !typed.trim()) return;
+        record(acceptableAnswers(task.question.correctAnswer).has(normAnswer(typed)));
+    };
+
+    const choose = (opt) => {
+        if (result) return;
+        setTyped(opt);
+        record(opt === task.question.correctAnswer);
+    };
+
+    const next = () => setPos((prev) => prev + 1);
+
+    return (React.createElement("div", { className: "zl-anim" },
+        React.createElement(BackLink, { onClick: onBack }, "חזרה לשיטות תרגול"),
+        React.createElement(Card, null,
+            React.createElement("div", { style: { display: "flex", justifyContent: "space-between", alignItems: "center", gap: 10, flexWrap: "wrap", marginBottom: 14 } },
+                React.createElement("h2", { className: "zl-display", style: { fontSize: "1.15rem", fontWeight: 700 } },
+                    "מבחן מלא · ", mode === "vocab" ? "אוצר מילים" : "אותיות"),
+                React.createElement(DirectionToggle, { value: dir, onChange: setDir }),
+                React.createElement("span", { style: { fontSize: "0.85rem", color: "var(--ink-muted)" } }, score.correct + " / " + score.total)),
+
+            React.createElement("div", { style: { fontSize: "0.75rem", fontWeight: 700, color: "var(--gold)", marginBottom: 6 } },
+                task.open ? "שאלה פתוחה — הקלד את התרגום" : "בחר את התשובה הנכונה"),
+
+            React.createElement("div", { className: task.question.promptIsLetter ? "zl-arabic" : "zl-display", style: {
+                    textAlign: "center",
+                    fontSize: task.question.promptIsLetter ? "3.5rem" : "1.8rem",
+                    fontWeight: 700,
+                    padding: "26px 12px",
+                    background: "var(--sand)",
+                    borderRadius: 12,
+                    marginBottom: 16,
+                    border: "1px solid var(--sand-200)",
+                } }, task.question.prompt),
+
+            task.open
+                ? React.createElement("div", null,
+                    React.createElement("input", {
+                        ref: inputRef,
+                        className: "zl-search",
+                        style: { marginBottom: 10 },
+                        value: typed,
+                        disabled: !!result,
+                        onChange: (e) => setTyped(e.target.value),
+                        onKeyDown: (e) => { if (e.key === "Enter") { e.preventDefault(); result ? next() : submitTyped(); } },
+                        placeholder: "הקלד את התשובה בעברית",
+                    }),
+                    !result ? React.createElement(PrimaryButton, { onClick: submitTyped, disabled: !typed.trim() }, "בדוק") : null)
+                : React.createElement("div", { style: { display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10 } },
+                    task.question.options.map((opt, i) => {
+                        const isCorrect = opt === task.question.correctAnswer;
+                        const isChosen = opt === typed;
+                        let bg = "var(--sand-100)", border = "var(--sand-200)", color = "var(--ink)";
+                        if (result) {
+                            if (isCorrect) { bg = "var(--teal-700)"; border = "var(--teal-700)"; color = "white"; }
+                            else if (isChosen) { bg = "var(--clay)"; border = "var(--clay)"; color = "white"; }
+                        }
+                        return React.createElement("button", { key: i, type: "button",
+                            className: task.question.answersAreLetters ? "zl-arabic" : undefined,
+                            onClick: () => choose(opt), disabled: !!result,
+                            style: {
+                                padding: task.question.answersAreLetters ? "10px" : "14px 10px",
+                                borderRadius: 10,
+                                border: "1px solid " + border,
+                                background: bg, color: color,
+                                fontWeight: 600,
+                                fontSize: task.question.answersAreLetters ? "2.2rem" : "0.95rem",
+                                cursor: result ? "default" : "pointer",
+                            } }, opt);
+                    })),
+
+            result ? React.createElement("div", { className: "zl-anim", style: { marginTop: 14 } },
+                React.createElement("p", { style: { fontWeight: 700, marginBottom: 8, color: result === "correct" ? "var(--teal-700)" : "var(--clay)" } },
+                    result === "correct" ? "נכון!" : "לא נכון — התשובה: " + task.question.correctAnswer),
+                React.createElement(PrimaryButton, { onClick: next }, "השאלה הבאה")) : null)));
+}
+
+/* =========================================================================
    SENTENCE BUILDER GAME
    ========================================================================= */
 function SentenceBuilder({ dir, setDir }) {
@@ -1631,6 +1792,16 @@ const PRACTICE_METHODS = [
         ],
     },
     {
+        id: "exam",
+        title: "מבחן מלא",
+        desc: "ערבוב של כל השיטות, כולל שאלות פתוחות בהקלדה.",
+        Icon: Check,
+        options: [
+            { key: "vocab", title: "אוצר מילים", desc: "בחירה מ-4 והקלדת תרגום, לסירוגין.", target: { screen: "exam", mode: "vocab" } },
+            { key: "letters", title: "אלף-בית", desc: "בחירה מ-4 והקלדת שם האות, לסירוגין.", target: { screen: "exam", mode: "letters" } },
+        ],
+    },
+    {
         id: "sentences",
         title: "משפטים וקריאה",
         desc: "בניית משפטים שלמים, קריאה שוטפת וניבי לשון.",
@@ -1672,6 +1843,9 @@ function PracticeTab({ screen, setScreen, vocab, setVocab, letters, setLetters }
 
     if (screen && screen.screen === "flashcards") {
         return (React.createElement(FlashcardPractice, { mode: screen.mode || "vocab", vocab: vocab, setVocab: setVocab, letters: letters, setLetters: setLetters, onBack: backToList("flashcards"), dir: dir, setDir: setDir }));
+    }
+    if (screen && screen.screen === "exam") {
+        return (React.createElement(FullExam, { mode: screen.mode || "vocab", vocab: vocab, setVocab: setVocab, letters: letters, setLetters: setLetters, onBack: backToList("exam"), dir: dir, setDir: setDir }));
     }
     if (screen && screen.screen === "quiz") {
         return (React.createElement(AmericanQuiz, { mode: screen.mode || "vocab", vocab: vocab, setVocab: setVocab, letters: letters, setLetters: setLetters, onBack: backToList("quiz"), dir: dir, setDir: setDir }));
