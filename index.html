@@ -62,7 +62,7 @@ try {
     throw new Error("React / ReactDOM לא נטענו מה-CDN (בדוק חיבור לאינטרנט או חסימת סקריפטים).");
   }
 "use strict";
-const APP_BUILD = "14.08 · 5";   // bump this every time the file is replaced
+const APP_BUILD = "14.08 · 6";   // bump this every time the file is replaced
 const { useState, useEffect, useCallback, useMemo, useRef } = React;
 
 /* Inline icon set (stand-ins for lucide-react, so this file has zero build
@@ -203,7 +203,8 @@ const GLOBAL_CSS = `
     .zl-sortrow[data-on="true"] .zl-sortbox { background:var(--teal-950); border-color:var(--teal-950); }
     .zl-sortcount { color:var(--ink-muted); font-size:0.78rem; }
     .zl-sortactions { display:flex; gap:8px; border-top:1px solid var(--sand-200); margin-top:8px; padding-top:10px; }
-    .zl-word { text-align:right; font:inherit; color:inherit; cursor:pointer; }
+    .zl-word { text-align:right; }
+    .zl-word-head { display:block; width:100%; background:none; border:none; padding:0; margin:0; font:inherit; color:inherit; text-align:right; cursor:pointer; -webkit-appearance:none; }
     .zl-word-detail { border-top:1px solid rgba(203,213,225,0.6); margin-top:8px; padding-top:8px; font-size:0.72rem; line-height:1.7; opacity:0.85; }
 
     .zl-mini { border:1px solid var(--sand-200); background:var(--sand-100); color:var(--teal-950); border-radius:7px; padding:5px 12px; font:inherit; font-size:0.75rem; font-weight:700; cursor:pointer; }
@@ -1695,6 +1696,9 @@ function VocabTab({ vocab, setVocab }) {
                 "\u05DE\u05D9\u05D9\u05DF",
                 picked.length > 0 ? " (" + picked.length + ")" : "",
                 React.createElement(ChevronLeft, { size: 15, style: { transform: sortOpen ? "rotate(-90deg)" : "none" } })),
+            React.createElement(PrimaryButton, { onClick: () => { setEditingId(null); setForm({ front: "", back: "", notes: "", topic: "" }); setModalOpen(true); }, style: { padding: "9px 14px" } },
+                React.createElement(Plus, { size: 15 }),
+                "\u05D4\u05D5\u05E1\u05E3 \u05DE\u05D9\u05DC\u05D4"),
             React.createElement("span", { style: { fontSize: "0.82rem", color: "var(--ink-muted)" } },
                 picked.length === 0
                     ? "\u05DE\u05E6\u05D9\u05D2 \u05D0\u05EA \u05DB\u05DC " + vocab.length + " \u05D4\u05DE\u05D9\u05DC\u05D9\u05DD"
@@ -1731,10 +1735,11 @@ function VocabTab({ vocab, setVocab }) {
                 const mastered = isMastered(item);
                 const struggling = isStruggling(item);
                 const open = openWord === item.id;
-                return (React.createElement("div", { key: item.id, className: "zl-word", role: "button", tabIndex: 0,
-                    onClick: () => setOpenWord(open ? null : item.id),
-                    onKeyDown: (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); setOpenWord(open ? null : item.id); } },
-                    style: {
+                /* The tappable area is a real <button>. A div with role="button"
+                   is unreliable on iPadOS Safari, which only dispatches click on
+                   natively interactive elements. The action buttons live outside
+                   it, since a button cannot legally contain other buttons. */
+                return (React.createElement("div", { key: item.id, className: "zl-word", style: {
                         background: mastered ? "var(--teal-700)" : struggling ? "var(--clay-bg)" : "var(--sand-100)",
                         color: mastered ? "white" : "var(--ink)",
                         border: "1px solid " + (mastered ? "var(--teal-700)" : struggling ? "var(--clay)" : "var(--sand-200)"),
@@ -1746,22 +1751,27 @@ function VocabTab({ vocab, setVocab }) {
                         justifyContent: "space-between",
                         gridColumn: open ? "1 / -1" : "auto",
                     } },
-                    React.createElement("div", null,
-                        React.createElement("div", { style: { fontWeight: 700, fontSize: "1rem" } }, item.front),
-                        React.createElement("div", { style: { fontSize: "0.78rem", opacity: 0.8, marginTop: 2 } }, item.back),
-                        item.topic ? React.createElement("div", { style: { fontSize: "0.67rem", opacity: 0.6, marginTop: 4 } }, item.topic) : null,
-                        open ? React.createElement("div", { className: "zl-word-detail zl-anim", onClick: (e) => e.stopPropagation() },
-                            item.notes ? React.createElement("div", null, item.notes) : null,
-                            React.createElement("div", null, "חזרה הבאה: " + dueLabel(item)),
-                            React.createElement("div", null, "ידעתי " + (item.correctCount || 0) + " · לא ידעתי " + (item.wrongCount || 0)),
-                            confirmDelete === item.id
-                                ? React.createElement("div", { style: { display: "flex", gap: 6, marginTop: 8, alignItems: "center", flexWrap: "wrap" } },
-                                    React.createElement("span", { style: { fontWeight: 700 } }, "למחוק לצמיתות?"),
-                                    React.createElement("button", { type: "button", className: "zl-mini zl-mini-danger", onClick: () => removeWord(item.id) }, "כן, מחק"),
-                                    React.createElement("button", { type: "button", className: "zl-mini", onClick: () => setConfirmDelete(null) }, "ביטול"))
-                                : React.createElement("div", { style: { display: "flex", gap: 6, marginTop: 8 } },
-                                    React.createElement("button", { type: "button", className: "zl-mini", onClick: () => startEdit(item) }, "ערוך"),
-                                    React.createElement("button", { type: "button", className: "zl-mini zl-mini-danger", onClick: () => setConfirmDelete(item.id) }, "מחק"))) : null),
+                    React.createElement("button", {
+                        type: "button",
+                        className: "zl-word-head",
+                        "aria-expanded": open,
+                        onClick: () => { setConfirmDelete(null); setOpenWord(open ? null : item.id); },
+                    },
+                        React.createElement("span", { style: { display: "block", fontWeight: 700, fontSize: "1rem" } }, item.front),
+                        React.createElement("span", { style: { display: "block", fontSize: "0.78rem", opacity: 0.8, marginTop: 2 } }, item.back),
+                        item.topic ? React.createElement("span", { style: { display: "block", fontSize: "0.67rem", opacity: 0.6, marginTop: 4 } }, item.topic) : null),
+                    open ? React.createElement("div", { className: "zl-word-detail zl-anim" },
+                        item.notes ? React.createElement("div", null, item.notes) : null,
+                        React.createElement("div", null, "חזרה הבאה: " + dueLabel(item)),
+                        React.createElement("div", null, "ידעתי " + (item.correctCount || 0) + " · לא ידעתי " + (item.wrongCount || 0)),
+                        confirmDelete === item.id
+                            ? React.createElement("div", { style: { display: "flex", gap: 6, marginTop: 8, alignItems: "center", flexWrap: "wrap" } },
+                                React.createElement("span", { style: { fontWeight: 700 } }, "למחוק לצמיתות?"),
+                                React.createElement("button", { type: "button", className: "zl-mini zl-mini-danger", onClick: () => removeWord(item.id) }, "כן, מחק"),
+                                React.createElement("button", { type: "button", className: "zl-mini", onClick: () => setConfirmDelete(null) }, "ביטול"))
+                            : React.createElement("div", { style: { display: "flex", gap: 6, marginTop: 8 } },
+                                React.createElement("button", { type: "button", className: "zl-mini", onClick: () => startEdit(item) }, "ערוך"),
+                                React.createElement("button", { type: "button", className: "zl-mini zl-mini-danger", onClick: () => setConfirmDelete(item.id) }, "מחק"))) : null,
                     React.createElement("div", { style: { marginTop: 8 }, title: "התקדמות: " + pct + "%" },
                         React.createElement(ProgressBar, { pct: pct, mastered: mastered, struggling: struggling }))));
             })),
