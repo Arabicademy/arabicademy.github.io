@@ -65,7 +65,7 @@ try {
     throw new Error("React / ReactDOM לא נטענו מה-CDN (בדוק חיבור לאינטרנט או חסימת סקריפטים).");
   }
 "use strict";
-const APP_BUILD = "14.08 · 19";   // bump this every time the file is replaced
+const APP_BUILD = "14.08 · 20";   // bump this every time the file is replaced
 
 
 const { useState, useEffect, useCallback, useMemo, useRef } = React;
@@ -2144,8 +2144,16 @@ function VocabTab({ vocab, setVocab }) {
                     React.createElement("div", null,
                         React.createElement("div", { style: { fontWeight: 700, fontSize: "1rem" } }, item.front),
                         React.createElement("div", { style: { fontSize: "0.78rem", opacity: 0.8, marginTop: 2 } }, item.back),
-                        React.createElement("div", { style: { fontSize: "0.67rem", opacity: 0.6, marginTop: 4 } },
-                            [item.topic, item.form].filter(Boolean).join(" · "))),
+                        (function () {
+                            // the counterpart form, or nothing at all for words without one
+                            if (!item.pair || !item.pair.length) return null;
+                            const others = item.pair
+                                .map((pid) => { const other = vocab.find((w) => w.id === pid); return other ? other.front : null; })
+                                .filter(Boolean);
+                            if (!others.length) return null;
+                            return React.createElement("div", { style: { fontSize: "0.67rem", opacity: 0.6, marginTop: 4 } },
+                                (item.form === "רבים" ? "יחיד: " : "רבים: ") + others.join(" · "));
+                        })()),
                     React.createElement("div", { style: { marginTop: 8 }, title: "התקדמות: " + pct + "%" },
                         React.createElement(ProgressBar, { pct: pct, mastered: mastered, struggling: struggling }))));
             })),
