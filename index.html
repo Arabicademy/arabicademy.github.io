@@ -62,7 +62,7 @@ try {
     throw new Error("React / ReactDOM לא נטענו מה-CDN (בדוק חיבור לאינטרנט או חסימת סקריפטים).");
   }
 "use strict";
-const APP_BUILD = "14.08 · 6";   // bump this every time the file is replaced
+const APP_BUILD = "14.08 · 7";   // bump this every time the file is replaced
 
 
 const { useState, useEffect, useCallback, useMemo, useRef } = React;
@@ -1697,6 +1697,9 @@ function VocabTab({ vocab, setVocab }) {
                 "\u05DE\u05D9\u05D9\u05DF",
                 picked.length > 0 ? " (" + picked.length + ")" : "",
                 React.createElement(ChevronLeft, { size: 15, style: { transform: sortOpen ? "rotate(-90deg)" : "none" } })),
+            React.createElement(PrimaryButton, { onClick: () => { setEditingId(null); setForm({ front: "", back: "", notes: "", topic: "" }); setModalOpen(true); }, style: { padding: "9px 14px" } },
+                React.createElement(Plus, { size: 15 }),
+                "\u05D4\u05D5\u05E1\u05E3 \u05DE\u05D9\u05DC\u05D4"),
             React.createElement("span", { style: { fontSize: "0.82rem", color: "var(--ink-muted)" } },
                 picked.length === 0
                     ? "\u05DE\u05E6\u05D9\u05D2 \u05D0\u05EA \u05DB\u05DC " + vocab.length + " \u05D4\u05DE\u05D9\u05DC\u05D9\u05DD"
@@ -1713,21 +1716,6 @@ function VocabTab({ vocab, setVocab }) {
                 React.createElement(PrimaryButton, { variant: "outline", onClick: () => setPicked(topics.slice()) }, "\u05D1\u05D7\u05E8 \u05D4\u05DB\u05DC"),
                 React.createElement(PrimaryButton, { variant: "outline", onClick: () => setPicked([]) }, "\u05E0\u05E7\u05D4"))) : null,
         React.createElement("div", { style: { display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(135px, 1fr))", gap: 10 } },
-            React.createElement("button", { type: "button", onClick: () => setModalOpen(true), style: {
-                    border: "2px dashed var(--gold)",
-                    borderRadius: 10,
-                    background: "var(--sand-100)",
-                    color: "var(--teal-950)",
-                    minHeight: 100,
-                    display: "flex",
-                    flexDirection: "column",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    gap: 6,
-                    cursor: "pointer",
-                } },
-                React.createElement(Plus, { size: 22 }),
-                React.createElement("span", { style: { fontSize: "0.8rem", fontWeight: 700 } }, "הוסף מילה")),
             visible.map((item) => {
                 const pct = progressPct(item);
                 const mastered = isMastered(item);
