@@ -39,6 +39,34 @@
 <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
 <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
 
+<script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore-compat.js"></script>
+
+<script>
+  /* These keys are meant to be public — they identify the project, they do not
+     grant access. Access is decided by the Firestore rules, which allow each
+     signed-in user to touch only their own document. */
+  window.ZL_FIREBASE_READY = false;
+  try {
+    firebase.initializeApp({
+      apiKey: "AIzaSyAb_HWw3Cynt6kPN8lrXDiieIv7o-AnTqA",
+      authDomain: "arabical.firebaseapp.com",
+      projectId: "arabical",
+      storageBucket: "arabical.firebasestorage.app",
+      messagingSenderId: "169112830781",
+      appId: "1:169112830781:web:2e2db4deeab06882bf7b54"
+    });
+    firebase.firestore().enablePersistence({ synchronizeTabs: true }).catch(function () {
+      /* more than one tab open, or a browser that refuses it — the app still
+         works, it just will not serve cached data while offline */
+    });
+    window.ZL_FIREBASE_READY = true;
+  } catch (e) {
+    window.ZL_FIREBASE_ERROR = e && e.message;
+  }
+</script>
+
 <script>
   function showBootError(title, err) {
     var box = document.getElementById('boot-error');
@@ -65,7 +93,7 @@ try {
     throw new Error("React / ReactDOM לא נטענו מה-CDN (בדוק חיבור לאינטרנט או חסימת סקריפטים).");
   }
 "use strict";
-const APP_BUILD = "14.08 · 27";   // bump this every time the file is replaced
+const APP_BUILD = "17.08 · 28";   // bump this every time the file is replaced
 
 
 const { useState, useEffect, useCallback, useMemo, useRef } = React;
@@ -1153,7 +1181,7 @@ function lastSevenDays(checklist, weeksBack) {
 }
 
 
-function RoutineTab({ checklist, setChecklist, navigateTo, vocab, letters, setVocab, setLetters }) {
+function RoutineTab({ checklist, setChecklist, navigateTo, vocab, letters, setVocab, setLetters, user, syncStatus }) {
     const [weeksBack, setWeeksBack] = useState(0);
     const [openDay, setOpenDay] = useState(null);
     const today = localDateKey();
@@ -1224,7 +1252,7 @@ function RoutineTab({ checklist, setChecklist, navigateTo, vocab, letters, setVo
                     React.createElement("div", { style: { fontWeight: 700 } }, item.label),
                     React.createElement("div", { style: { fontSize: "0.85rem", color: "var(--ink-muted)" } }, item.desc))),
             React.createElement(ArrowButton, { title: "\u05E2\u05D1\u05D5\u05E8 \u05DC\u05EA\u05E8\u05D2\u05D5\u05DC", onClick: () => navigateTo(item.target) }))))),
-        React.createElement(BackupCard, { vocab: vocab, letters: letters, checklist: checklist, setVocab: setVocab, setLetters: setLetters, setChecklist: setChecklist }),
+        React.createElement(BackupCard, { vocab: vocab, letters: letters, checklist: checklist, setVocab: setVocab, setLetters: setLetters, setChecklist: setChecklist, user: user, syncStatus: syncStatus }),
         React.createElement("p", { style: { textAlign: "center", fontSize: "0.72rem", color: "var(--ink-muted)", marginTop: 14 } },
             "\u05D2\u05E8\u05E1\u05D4 " + APP_BUILD + " \u00B7 Emanuel Nassimiha 2026")));
 }
@@ -1238,7 +1266,7 @@ function RoutineTab({ checklist, setChecklist, navigateTo, vocab, letters, setVo
    ========================================================================= */
 const BACKUP_VERSION = 1;
 
-function BackupCard({ vocab, letters, checklist, setVocab, setLetters, setChecklist }) {
+function BackupCard({ vocab, letters, checklist, setVocab, setLetters, setChecklist, user, syncStatus }) {
     const [status, setStatus] = useState(null);
     const fileRef = useRef(null);
 
@@ -1308,7 +1336,15 @@ function BackupCard({ vocab, letters, checklist, setVocab, setLetters, setCheckl
 
     const mastered = vocab.filter(isMastered).length;
 
-    return (React.createElement(Card, { style: { marginTop: 22 } },
+    const syncText = { loading: "מסתנכרן…", synced: "מסונכרן עם החשבון", error: "הסינכרון נכשל — יש עדיין עותק מקומי", idle: "" }[syncStatus] || "";
+
+    return (React.createElement(React.Fragment, null,
+        React.createElement(Card, { style: { marginTop: 22 } },
+            React.createElement("h3", { className: "zl-display", style: { fontSize: "1rem", fontWeight: 700, marginBottom: 4 } }, "החשבון שלי"),
+            React.createElement("p", { style: { fontSize: "0.85rem", marginBottom: 2 } }, user && user.email),
+            React.createElement("p", { style: { fontSize: "0.78rem", color: syncStatus === "error" ? "var(--clay)" : "var(--ink-muted)", marginBottom: 12 } }, syncText),
+            React.createElement(PrimaryButton, { variant: "outline", onClick: () => firebase.auth().signOut() }, "התנתקות")),
+        React.createElement(Card, { style: { marginTop: 14 } },
         React.createElement("h3", { className: "zl-display", style: { fontSize: "1rem", fontWeight: 700, marginBottom: 4 } }, "\u05D2\u05D9\u05D1\u05D5\u05D9 \u05D5\u05E9\u05D7\u05D6\u05D5\u05E8"),
         React.createElement("p", { style: { fontSize: "0.83rem", color: "var(--ink-muted)", lineHeight: 1.6, marginBottom: 12 } },
             "\u05D4\u05D4\u05EA\u05E7\u05D3\u05DE\u05D5\u05EA \u05E0\u05E9\u05DE\u05E8\u05EA \u05D1\u05D3\u05E4\u05D3\u05E4\u05DF \u05D4\u05D6\u05D4 \u05D1\u05DC\u05D1\u05D3. \u05D9\u05E6\u05D0 \u05E7\u05D5\u05D1\u05E5 \u05DB\u05D3\u05D9 \u05DC\u05E2\u05D1\u05D5\u05E8 \u05DC\u05DE\u05DB\u05E9\u05D9\u05E8 \u05D0\u05D7\u05E8 \u05D0\u05D5 \u05DC\u05D4\u05EA\u05D2\u05D5\u05E0\u05DF \u05DE\u05E0\u05D9\u05E7\u05D5\u05D9 \u05E0\u05EA\u05D5\u05E0\u05D9 \u05D2\u05DC\u05D9\u05E9\u05D4."),
@@ -1325,7 +1361,7 @@ function BackupCard({ vocab, letters, checklist, setVocab, setLetters, setCheckl
         status && (React.createElement("p", { className: "zl-anim", style: {
                 marginTop: 10, fontSize: "0.82rem", fontWeight: 600,
                 color: status.kind === "ok" ? "var(--teal-700)" : "var(--clay)",
-            } }, status.text))));
+            } }, status.text)))));
 }
 
 /* =========================================================================
@@ -2452,6 +2488,121 @@ function StatsTab({ vocab, letters, checklist }) {
 }
 
 /* =========================================================================
+   ACCOUNTS AND CLOUD SYNC
+   The app is closed: without an account created in the Firebase console there
+   is no way past this screen. Progress lives in the user's own Firestore
+   document, cached locally so a session survives a dropped connection.
+   ========================================================================= */
+const AUTH_MESSAGES = {
+    "auth/invalid-email": "כתובת המייל אינה תקינה",
+    "auth/missing-password": "חסרה סיסמה",
+    "auth/wrong-password": "המייל או הסיסמה שגויים",
+    "auth/user-not-found": "המייל או הסיסמה שגויים",
+    "auth/invalid-credential": "המייל או הסיסמה שגויים",
+    "auth/user-disabled": "המשתמש הזה הושבת",
+    "auth/too-many-requests": "יותר מדי ניסיונות. נסה שוב בעוד כמה דקות",
+    "auth/network-request-failed": "אין חיבור לאינטרנט",
+};
+
+function authMessage(err) {
+    if (!err) return "משהו נכשל. נסה שוב";
+    return AUTH_MESSAGES[err.code] || ("ההתחברות נכשלה (" + (err.code || "שגיאה") + ")");
+}
+
+function LoginScreen({ theme, onToggleTheme }) {
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+    const [busy, setBusy] = useState(false);
+    const [error, setError] = useState(null);
+
+    const submit = (e) => {
+        if (e && e.preventDefault) e.preventDefault();
+        if (!email.trim() || !password) { setError("יש למלא מייל וסיסמה"); return; }
+        setBusy(true);
+        setError(null);
+        firebase.auth().signInWithEmailAndPassword(email.trim(), password)
+            .catch((err) => { setError(authMessage(err)); setBusy(false); });
+    };
+
+    return (React.createElement("div", { className: "zl-root", "data-theme": theme, style: { padding: "20px 20px 60px", display: "flex", alignItems: "center", justifyContent: "center", minHeight: "100vh" } },
+        React.createElement(GlobalStyle, null),
+        React.createElement("button", { type: "button", className: "zl-theme", onClick: onToggleTheme,
+            "aria-label": theme === "dark" ? "מצב יום" : "מצב לילה" },
+            React.createElement(theme === "dark" ? Sun : Moon, { size: 19 })),
+        React.createElement("div", { style: { width: "100%", maxWidth: 380 } },
+            React.createElement("h1", { className: "zl-display", style: { fontSize: "1.6rem", fontWeight: 700, color: "var(--teal-950)", textAlign: "center", marginBottom: 6 } }, "לומדים ערבית"),
+            React.createElement("p", { style: { textAlign: "center", fontSize: "0.85rem", color: "var(--ink-muted)", marginBottom: 22 } }, "התחבר כדי להמשיך"),
+            React.createElement(Card, null,
+                React.createElement("form", { onSubmit: submit },
+                    React.createElement("label", { style: { display: "block", fontSize: "0.8rem", fontWeight: 700, marginBottom: 4 } }, "מייל",
+                        React.createElement("input", { type: "email", value: email, autoComplete: "username", inputMode: "email",
+                            onChange: (e) => setEmail(e.target.value), className: "zl-search", style: { marginTop: 4, marginBottom: 12 } })),
+                    React.createElement("label", { style: { display: "block", fontSize: "0.8rem", fontWeight: 700, marginBottom: 4 } }, "סיסמה",
+                        React.createElement("input", { type: "password", value: password, autoComplete: "current-password",
+                            onChange: (e) => setPassword(e.target.value), className: "zl-search", style: { marginTop: 4, marginBottom: 6 } })),
+                    error ? React.createElement("p", { className: "zl-shake", style: { color: "var(--clay)", fontWeight: 600, fontSize: "0.82rem", margin: "6px 0 10px" } }, error) : null,
+                    React.createElement(PrimaryButton, { type: "submit", disabled: busy, style: { width: "100%", justifyContent: "center", marginTop: 6 } },
+                        busy ? "מתחבר…" : "התחברות"))),
+            React.createElement("p", { style: { textAlign: "center", fontSize: "0.72rem", color: "var(--ink-muted)", marginTop: 14 } },
+                "משתמשים נוצרים על ידי מנהל האתר"),
+            React.createElement("p", { style: { textAlign: "center", fontSize: "0.72rem", color: "var(--ink-muted)", marginTop: 4 } },
+                "גרסה " + APP_BUILD + " · Emanuel Nassimiha 2026"))));
+}
+
+const SYNC_STAMP_KEY = "sync-updated-at";
+
+/* Whichever copy was written last wins. The stamp is kept next to the local
+   data, so a device that practised offline still uploads its work when it
+   reconnects instead of being overwritten by an older cloud copy. */
+function useCloudSync(user, vocab, letters, checklist, setVocab, setLetters, setChecklist) {
+    const [status, setStatus] = useState("idle");   // idle | loading | synced | error
+    const ready = useRef(false);
+    const docRef = useRef(null);
+
+    const push = (v, l, c) => {
+        if (!docRef.current) return Promise.resolve();
+        const stamp = Date.now();
+        return docRef.current.set({ vocab: v, letters: l, checklist: c, updatedAt: stamp }, { merge: true })
+            .then(() => {
+                try { window.localStorage.setItem(SYNC_STAMP_KEY, String(stamp)); } catch (e) {}
+                setStatus("synced");
+            })
+            .catch(() => setStatus("error"));
+    };
+
+    useEffect(() => {
+        ready.current = false;
+        if (!user || !window.ZL_FIREBASE_READY) { docRef.current = null; setStatus("idle"); return; }
+        docRef.current = firebase.firestore().collection("users").doc(user.uid);
+        setStatus("loading");
+        docRef.current.get().then((snap) => {
+            const localStamp = Number(window.localStorage.getItem(SYNC_STAMP_KEY) || 0);
+            const cloud = snap.exists ? snap.data() : null;
+            if (cloud && Array.isArray(cloud.vocab) && (cloud.updatedAt || 0) >= localStamp) {
+                setVocab(mergeDefaults(cloud.vocab, DEFAULT_VOCAB));
+                setLetters(mergeDefaults(Array.isArray(cloud.letters) ? cloud.letters : [], ALPHABET));
+                if (cloud.checklist && typeof cloud.checklist === "object") setChecklist(cloud.checklist);
+                try { window.localStorage.setItem(SYNC_STAMP_KEY, String(cloud.updatedAt || Date.now())); } catch (e) {}
+                setStatus("synced");
+            } else {
+                push(vocab, letters, checklist);   // first sign-in, or this device is ahead
+            }
+            ready.current = true;
+        }).catch(() => { setStatus("error"); ready.current = true; });
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [user]);
+
+    useEffect(() => {
+        if (!user || !ready.current) return;
+        const timer = setTimeout(() => push(vocab, letters, checklist), 1200);
+        return () => clearTimeout(timer);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [vocab, letters, checklist, user]);
+
+    return status;
+}
+
+/* =========================================================================
    ROOT APP
    ========================================================================= */
 function ArabicLearningApp() {
@@ -2461,6 +2612,13 @@ function ArabicLearningApp() {
     const [letters, setLetters] = usePersistedState("letters-data-v2", withProgressFields(ALPHABET), (raw) => mergeDefaults(raw, ALPHABET));
     const [checklist, setChecklist] = usePersistedState("routine-checklist", {});
     const [theme, setTheme] = usePersistedState("theme", "light");
+    const [user, setUser] = useState(undefined);        // undefined = still checking
+    const syncStatus = useCloudSync(user, vocab, letters, checklist, setVocab, setLetters, setChecklist);
+
+    useEffect(() => {
+        if (!window.ZL_FIREBASE_READY) { setUser(null); return; }
+        return firebase.auth().onAuthStateChanged((u) => setUser(u || null));
+    }, []);
 
     // the page background sits outside the app container, so it is set here too
     useEffect(() => {
@@ -2482,6 +2640,27 @@ function ArabicLearningApp() {
         setPracticeScreen(target);
     };
 
+    const toggleTheme = () => setTheme(theme === "dark" ? "light" : "dark");
+
+    if (!window.ZL_FIREBASE_READY) {
+        return (React.createElement("div", { className: "zl-root", "data-theme": theme, style: { padding: 30 } },
+            React.createElement(GlobalStyle, null),
+            React.createElement(Card, { style: { maxWidth: 420, margin: "40px auto" } },
+                React.createElement("h2", { className: "zl-display", style: { fontWeight: 700, marginBottom: 8 } }, "לא ניתן להתחבר לשרת"),
+                React.createElement("p", { style: { fontSize: "0.88rem", color: "var(--ink-muted)", lineHeight: 1.7 } },
+                    "טעינת שירותי ההתחברות נכשלה. בדוק את החיבור לאינטרנט ורענן את הדף."))));
+    }
+
+    if (user === undefined) {
+        return (React.createElement("div", { className: "zl-root", "data-theme": theme, style: { padding: 30, textAlign: "center" } },
+            React.createElement(GlobalStyle, null),
+            React.createElement("p", { style: { color: "var(--ink-muted)", marginTop: 60 } }, "טוען…")));
+    }
+
+    if (!user) {
+        return React.createElement(LoginScreen, { theme: theme, onToggleTheme: toggleTheme });
+    }
+
     return (React.createElement("div", { className: "zl-root", "data-theme": theme, style: { padding: "20px 20px 60px" } },
         React.createElement(GlobalStyle, null),
         React.createElement("button", {
@@ -2489,7 +2668,7 @@ function ArabicLearningApp() {
             className: "zl-theme",
             title: theme === "dark" ? "מצב יום" : "מצב לילה",
             "aria-label": theme === "dark" ? "מצב יום" : "מצב לילה",
-            onClick: () => setTheme(theme === "dark" ? "light" : "dark"),
+            onClick: toggleTheme,
         }, React.createElement(theme === "dark" ? Sun : Moon, { size: 19 })),
         React.createElement("div", { style: { maxWidth: 1100, margin: "0 auto" } },
             React.createElement("header", { style: { marginBottom: 24, borderBottom: "1px solid var(--sand-200)", paddingBottom: 18 } },
@@ -2500,7 +2679,7 @@ function ArabicLearningApp() {
                     if (t !== "practice")
                         setPracticeScreen(null);
                 } }),
-            tab === "routine" && (React.createElement(RoutineTab, { checklist: checklist, setChecklist: setChecklist, navigateTo: navigateFromRoutine, vocab: vocab, letters: letters, setVocab: setVocab, setLetters: setLetters })),
+            tab === "routine" && (React.createElement(RoutineTab, { checklist: checklist, setChecklist: setChecklist, navigateTo: navigateFromRoutine, vocab: vocab, letters: letters, setVocab: setVocab, setLetters: setLetters, user: user, syncStatus: syncStatus })),
             tab === "practice" && (React.createElement(PracticeTab, { screen: practiceScreen, setScreen: setPracticeScreen, vocab: vocab, setVocab: setVocab, letters: letters, setLetters: setLetters, onSessionDone: markRoutineDone })),
             tab === "vocab" && React.createElement(VocabTab, { vocab: vocab, setVocab: setVocab }),
             tab === "alphabet" && React.createElement(AlphabetTab, { letters: letters }),
