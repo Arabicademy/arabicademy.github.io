@@ -65,7 +65,7 @@ try {
     throw new Error("React / ReactDOM לא נטענו מה-CDN (בדוק חיבור לאינטרנט או חסימת סקריפטים).");
   }
 "use strict";
-const APP_BUILD = "14.08 · 26";   // bump this every time the file is replaced
+const APP_BUILD = "14.08 · 27";   // bump this every time the file is replaced
 
 
 const { useState, useEffect, useCallback, useMemo, useRef } = React;
@@ -599,6 +599,13 @@ const AL_FATIHA = [
 const DAY_MS = 86400000;
 const SRS_LADDER = [1, 2, 4, 7, 10, 14];
 
+/* Flashcards run as a finite session rather than an endless loop. The daily
+   session covers what the schedule says is due, capped so a backlog never
+   turns into an unfinishable pile; opening flashcards from the practice list
+   is a shorter, off-schedule drill. */
+const DAILY_CARD_TARGET = 60;
+const FREE_SESSION_SIZE = 20;
+
 function isDue(item) {
     return !item.dueAt || item.dueAt <= Date.now();
 }
@@ -1107,7 +1114,7 @@ function TopNav({ active, onChange }) {
    ROUTINE TAB
    ========================================================================= */
 const ROUTINE_ITEMS = [
-    { key: "morning", label: "בוקר", desc: "חזרה על כרטיסיות אוצר מילים", target: { screen: "flashcards", mode: "vocab" } },
+    { key: "morning", label: "בוקר", desc: "חזרה על כרטיסיות אוצר מילים", target: { screen: "flashcards", mode: "vocab", limit: "daily" } },
     { key: "noon", label: "צהריים", desc: "תרגול הבנה: קריאה והגייה", target: { screen: "reading" } },
     { key: "evening", label: "ערב", desc: "קריאה והרכבת משפטים", target: { screen: "sentence-builder" } },
 ];
@@ -1324,50 +1331,81 @@ function BackupCard({ vocab, letters, checklist, setVocab, setLetters, setCheckl
 /* =========================================================================
    FLASHCARD PRACTICE (shared for vocab + letters)
    ========================================================================= */
-function FlashcardPractice({ mode, vocab, setVocab, letters, setLetters, onBack, dir, setDir }) {
+function FlashcardPractice({ mode, vocab, setVocab, letters, setLetters, onBack, dir, setDir, limit, onSessionDone }) {
     const data = mode === "vocab" ? vocab : letters;
     const setData = mode === "vocab" ? setVocab : setLetters;
+    const daily = limit === "daily";
+    const dueNow = data.filter(isDue).length;
+    const noneDue = daily && dueNow === 0;
+    const sessionSize = daily
+        ? (dueNow > 0 ? Math.min(DAILY_CARD_TARGET, dueNow) : FREE_SESSION_SIZE)
+        : FREE_SESSION_SIZE;
+
     const [cardDir, setCardDir] = useState("ar2he");
     const [feedback, setFeedback] = useState("");
     const [meaning, setMeaning] = useState("");
-    const [pending, setPending] = useState(false);   // guards the 250ms gap before the next card
-    const [order, setOrder] = useState(() => weightedOrder(data));
+    const [pending, setPending] = useState(false);
+    const [revealed, setRevealed] = useState(false);   // a miss shows the answer and waits
+    const [order, setOrder] = useState(() => weightedOrder(data).slice(0, sessionSize));
     const [pos, setPos] = useState(0);
     const [flipped, setFlipped] = useState(false);
+    const [tally, setTally] = useState({ right: 0, wrong: 0 });
+    const [finished, setFinished] = useState(false);
     const timerRef = useRef(null);
 
-    useEffect(() => {
-        setOrder(weightedOrder(data));
+    const startSession = (size) => {
+        setOrder(weightedOrder(data).slice(0, size));
         setPos(0);
-    }, [data.length, mode]);
+        setTally({ right: 0, wrong: 0 });
+        setFinished(false);
+        setFlipped(false);
+        setRevealed(false);
+        setPending(false);
+    };
 
     useEffect(() => {
+        startSession(sessionSize);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [data.length, mode, limit]);
+
+    useEffect(() => {
+        const current = order.length ? data[order[Math.min(pos, order.length - 1)]] : null;
         setCardDir(resolveDir(dir));
         setFeedback("");
         setPending(false);
-        const current = data[order.length ? order[Math.min(pos, order.length - 1)] : 0];
+        setRevealed(false);
+        setFlipped(false);
         if (current) setMeaning(mode === "vocab" ? pickMeaning(current) : "");
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [pos, dir, order]);
 
-    // a finished pass is reshuffled with the scores earned during it
+    // finishing a session ticks the morning task for today
     useEffect(() => {
-        if (order.length > 0 && pos >= order.length) {
-            setOrder(weightedOrder(data));
-            setPos(0);
-        }
+        if (finished && onSessionDone) onSessionDone("morning");
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [pos, order.length]);
+    }, [finished]);
 
-    /* FIX #6: the "next card" setTimeout kept running after the component
-       unmounted (for example when the back link was pressed right after
-       answering), causing a state update on an unmounted component. */
     useEffect(() => () => { if (timerRef.current) clearTimeout(timerRef.current); }, []);
 
     if (data.length === 0) {
         return (React.createElement("div", { className: "zl-anim" },
-            React.createElement(BackLink, { onClick: onBack }, "\u05D7\u05D6\u05E8\u05D4 \u05DC\u05E9\u05D9\u05D8\u05D5\u05EA \u05EA\u05E8\u05D2\u05D5\u05DC"),
-            React.createElement(Card, null, "\u05D0\u05D9\u05DF \u05E4\u05E8\u05D9\u05D8\u05D9\u05DD \u05D1\u05DE\u05D0\u05D2\u05E8 \u05E2\u05D3\u05D9\u05D9\u05DF.")));
+            React.createElement(BackLink, { onClick: onBack }, "חזרה לשיטות תרגול"),
+            React.createElement(Card, null, "אין פריטים במאגר עדיין.")));
+    }
+
+    if (finished) {
+        return (React.createElement("div", { className: "zl-anim" },
+            React.createElement(BackLink, { onClick: onBack }, "חזרה לשיטות תרגול"),
+            React.createElement(Card, null,
+                React.createElement("h2", { className: "zl-display", style: { fontSize: "1.2rem", fontWeight: 700, marginBottom: 10 } }, "סיימת את הסשן"),
+                React.createElement("p", { style: { fontSize: "0.95rem", marginBottom: 4 } },
+                    "סיימת " + order.length + " כרטיסיות"),
+                React.createElement("p", { style: { fontSize: "0.9rem", color: "var(--ink-muted)", marginBottom: 16 } },
+                    tally.right + " ידעתי · " + tally.wrong + " לא ידעתי"),
+                React.createElement("div", { style: { display: "flex", gap: 8, flexWrap: "wrap" } },
+                    React.createElement(PrimaryButton, { onClick: () => startSession(FREE_SESSION_SIZE) },
+                        "עוד " + FREE_SESSION_SIZE + " כרטיסיות"),
+                    React.createElement(PrimaryButton, { variant: "outline", onClick: onBack }, "חזרה")))));
     }
 
     const index = order.length ? order[Math.min(pos, order.length - 1)] : 0;
@@ -1379,16 +1417,18 @@ function FlashcardPractice({ mode, vocab, setVocab, letters, setLetters, onBack,
     const backText = reversed ? nativeFront : nativeBack;
     const frontIsArabicLetter = mode === "letters" && !reversed;
     const backIsArabicLetter = mode === "letters" && reversed;
-    // vocabulary cards show the translation only — no note underneath
     const noteText = mode === "vocab" ? "" : (item.hebrew ? item.hebrew + " \u00B7 " + item.sound : item.sound);
 
+    const advance = () => {
+        if (pos + 1 >= order.length) setFinished(true);
+        else setPos(pos + 1);
+    };
+
     const mark = (correct) => {
-        /* The card stays on screen for a moment after you answer. Without this
-           guard a second tap in that window lands on the same word again — three
-           quick taps used to record three misses on one card. */
         if (pending) return;
         setPending(true);
         setFeedback(correct ? " zl-pop" : " zl-shake");
+        setTally((t) => ({ right: t.right + (correct ? 1 : 0), wrong: t.wrong + (correct ? 0 : 1) }));
         setData((prev) => prev.map((d) => d.id === item.id
             ? {
                 ...d,
@@ -1397,9 +1437,15 @@ function FlashcardPractice({ mode, vocab, setVocab, letters, setLetters, onBack,
                 ...scheduleNext(d, correct),
             }
             : d));
-        setFlipped(false);
-        if (timerRef.current) clearTimeout(timerRef.current);
-        timerRef.current = setTimeout(() => setPos((prev) => prev + 1), 250);
+        if (correct) {
+            setFlipped(false);
+            if (timerRef.current) clearTimeout(timerRef.current);
+            timerRef.current = setTimeout(advance, 250);
+        } else {
+            // a miss shows the other side, and the word does not return this session
+            setFlipped(true);
+            setRevealed(true);
+        }
     };
 
     const mastered = isMastered(item);
@@ -1408,23 +1454,17 @@ function FlashcardPractice({ mode, vocab, setVocab, letters, setLetters, onBack,
     const faceColor = mastered ? "white" : "var(--ink)";
 
     return (React.createElement("div", { className: "zl-anim" },
-        React.createElement(BackLink, { onClick: onBack }, "\u05D7\u05D6\u05E8\u05D4 \u05DC\u05E9\u05D9\u05D8\u05D5\u05EA \u05EA\u05E8\u05D2\u05D5\u05DC"),
+        React.createElement(BackLink, { onClick: onBack }, "חזרה לשיטות תרגול"),
         React.createElement(Card, null,
             React.createElement("div", { style: { display: "flex", justifyContent: "space-between", alignItems: "center", gap: 10, flexWrap: "wrap", marginBottom: 10 } },
                 React.createElement("h2", { className: "zl-display", style: { fontSize: "1.15rem", fontWeight: 700 } },
-                    "\u05EA\u05E8\u05D2\u05D5\u05DC \u05DB\u05E8\u05D8\u05D9\u05E1\u05D9\u05D5\u05EA \u00B7 ",
-                    mode === "vocab" ? "אוצר מילים" : "אותיות"),
+                    "תרגול כרטיסיות · ", mode === "vocab" ? "אוצר מילים" : "אותיות"),
                 React.createElement(DirectionToggle, { value: dir, onChange: setDir }),
                 React.createElement("span", { style: { fontSize: "0.85rem", color: "var(--ink-muted)" } },
-                    Math.min(pos, Math.max(0, order.length - 1)) + 1,
-                    " / ",
-                    data.length)),
-            React.createElement("div", { onClick: () => setFlipped((f) => !f), style: {
-                    height: 220,
-                    margin: "18px 0",
-                    cursor: "pointer",
-                    perspective: 1000,
-                } },
+                    (pos + 1) + " / " + order.length)),
+            noneDue ? React.createElement("p", { style: { fontSize: "0.82rem", color: "var(--gold)", fontWeight: 600, marginBottom: 10 } },
+                "אין מילים ספציפיות הממתינות לתרגול — תרגל בכל זאת") : null,
+            React.createElement("div", { onClick: () => setFlipped((f) => !f), style: { height: 220, margin: "18px 0", cursor: "pointer", perspective: 1000 } },
                 React.createElement("div", { key: item.id + String(flipped) + feedback, className: "zl-anim" + feedback, style: {
                         height: "100%",
                         borderRadius: 12,
@@ -1440,24 +1480,25 @@ function FlashcardPractice({ mode, vocab, setVocab, letters, setLetters, onBack,
                         boxShadow: "none",
                     } }, !flipped ? (React.createElement(React.Fragment, null,
                     React.createElement("div", { className: frontIsArabicLetter ? "zl-arabic" : "zl-display", style: { fontSize: frontIsArabicLetter ? "4rem" : "1.9rem", fontWeight: 700, marginBottom: 8 } }, frontText),
-                    React.createElement("div", { style: { fontSize: "0.8rem", opacity: 0.7 } }, "(\u05DC\u05D7\u05E5 \u05DC\u05D4\u05E4\u05D9\u05DB\u05D4)"))) : (React.createElement(React.Fragment, null,
+                    React.createElement("div", { style: { fontSize: "0.8rem", opacity: 0.7 } }, "(לחץ להפיכה)"))) : (React.createElement(React.Fragment, null,
                     React.createElement("div", { className: backIsArabicLetter ? "zl-arabic" : "zl-display", style: { fontSize: backIsArabicLetter ? "3.4rem" : "1.7rem", fontWeight: 700, marginBottom: 6 } }, backText),
                     noteText ? React.createElement("div", { style: { fontSize: "0.85rem", opacity: 0.8 } }, noteText) : null)))),
-            React.createElement("div", { style: { display: "flex", justifyContent: "space-between", marginBottom: 14 } },
-                React.createElement(PrimaryButton, { variant: "outline", onClick: () => { setFlipped(false); setPos((prevPos) => (prevPos - 1 + order.length) % order.length); } }, "\u05E7\u05D5\u05D3\u05DD"),
-                React.createElement(PrimaryButton, { variant: "outline", onClick: () => { setFlipped(false); setPos((prevPos) => prevPos + 1); } }, "\u05D4\u05D1\u05D0")),
-            React.createElement("div", { style: { display: "flex", justifyContent: "center", gap: 12 } },
-                React.createElement(PrimaryButton, { variant: "danger", disabled: pending, onClick: () => mark(false) },
-                    React.createElement(X, { size: 16 }),
-                    "\u05DC\u05D0 \u05D9\u05D3\u05E2\u05EA\u05D9"),
-                React.createElement(PrimaryButton, { variant: "success", disabled: pending, onClick: () => mark(true) },
-                    React.createElement(Check, { size: 16 }),
-                    "\u05D9\u05D3\u05E2\u05EA\u05D9")),
-            React.createElement("p", { style: { textAlign: "center", fontSize: "0.8rem", color: "var(--ink-muted)", marginTop: 12 } },
-                "\u05D4\u05E6\u05DC\u05D7\u05D5\u05EA: ",
-                item.correctCount || 0,
-                " | \u05DB\u05E9\u05DC\u05D5\u05E0\u05D5\u05EA: ",
-                item.wrongCount || 0))));
+            revealed
+                ? React.createElement("div", { style: { textAlign: "center" } },
+                    React.createElement("p", { style: { color: "var(--clay)", fontWeight: 700, fontSize: "0.9rem", marginBottom: 10 } },
+                        "התשובה: " + backText),
+                    React.createElement(PrimaryButton, { onClick: advance }, "המשך"))
+                : React.createElement(React.Fragment, null,
+                    React.createElement("div", { style: { display: "flex", justifyContent: "space-between", marginBottom: 14 } },
+                        React.createElement(PrimaryButton, { variant: "outline", disabled: pos === 0, onClick: () => { setFlipped(false); setPos(Math.max(0, pos - 1)); } }, "קודם"),
+                        React.createElement(PrimaryButton, { variant: "outline", onClick: advance }, "הבא")),
+                    React.createElement("div", { style: { display: "flex", justifyContent: "center", gap: 12 } },
+                        React.createElement(PrimaryButton, { variant: "danger", disabled: pending, onClick: () => mark(false) },
+                            React.createElement(X, { size: 16 }), "לא ידעתי"),
+                        React.createElement(PrimaryButton, { variant: "success", disabled: pending, onClick: () => mark(true) },
+                            React.createElement(Check, { size: 16 }), "ידעתי")),
+                    React.createElement("p", { style: { textAlign: "center", fontSize: "0.8rem", color: "var(--ink-muted)", marginTop: 12 } },
+                        "הצלחות: " + (item.correctCount || 0) + " | כשלונות: " + (item.wrongCount || 0))))));
 }
 
 /* =========================================================================
@@ -1939,11 +1980,11 @@ const PRACTICE_METHODS = [
     {
         id: "flashcards",
         title: "כרטיסיות",
-        desc: "שליפה פעילה — צד אחד מילה, צד שני תרגום.",
+        desc: "שליפה פעילה — סשן של 20 כרטיסיות.",
         Icon: BookOpen,
         options: [
-            { key: "vocab", title: "אוצר מילים", desc: "שליפה פעילה של מילים בכרטיסיות.", target: { screen: "flashcards", mode: "vocab" } },
-            { key: "letters", title: "אלף-בית", desc: "היכרות וזיהוי מהיר של אותיות.", target: { screen: "flashcards", mode: "letters" } },
+            { key: "vocab", title: "אוצר מילים", desc: "20 כרטיסיות מילים.", target: { screen: "flashcards", mode: "vocab", limit: FREE_SESSION_SIZE } },
+            { key: "letters", title: "אלף-בית", desc: "20 כרטיסיות אותיות.", target: { screen: "flashcards", mode: "letters", limit: FREE_SESSION_SIZE } },
         ],
     },
     {
@@ -1996,7 +2037,7 @@ function MethodRow({ method, open, onToggle, onPick }) {
                 React.createElement(ChevronLeft, { size: 16 })))))))));
 }
 
-function PracticeTab({ screen, setScreen, vocab, setVocab, letters, setLetters }) {
+function PracticeTab({ screen, setScreen, vocab, setVocab, letters, setLetters, onSessionDone }) {
     const [openMethod, setOpenMethod] = useState(null);
     const [dir, setDir] = useState("ar2he");   // one direction setting for every practice mode
 
@@ -2006,7 +2047,7 @@ function PracticeTab({ screen, setScreen, vocab, setVocab, letters, setLetters }
     };
 
     if (screen && screen.screen === "flashcards") {
-        return (React.createElement(FlashcardPractice, { mode: screen.mode || "vocab", vocab: vocab, setVocab: setVocab, letters: letters, setLetters: setLetters, onBack: backToList("flashcards"), dir: dir, setDir: setDir }));
+        return (React.createElement(FlashcardPractice, { mode: screen.mode || "vocab", vocab: vocab, setVocab: setVocab, letters: letters, setLetters: setLetters, onBack: backToList("flashcards"), dir: dir, setDir: setDir, limit: screen.limit, onSessionDone: onSessionDone }));
     }
     if (screen && screen.screen === "exam") {
         return (React.createElement(FullExam, { vocab: vocab, setVocab: setVocab, letters: letters, setLetters: setLetters, onBack: backToList("exam") }));
@@ -2426,6 +2467,16 @@ function ArabicLearningApp() {
         document.body.style.background = theme === "dark" ? "#191512" : "#EFE6D4";
     }, [theme]);
 
+    /* Finishing a card session counts as the morning task being done. */
+    const markRoutineDone = (key) => {
+        const day = localDateKey();
+        setChecklist((prev) => {
+            const today = prev[day] || {};
+            if (today[key]) return prev;
+            return { ...prev, [day]: { ...today, [key]: true } };
+        });
+    };
+
     const navigateFromRoutine = (target) => {
         setTab("practice");
         setPracticeScreen(target);
@@ -2450,7 +2501,7 @@ function ArabicLearningApp() {
                         setPracticeScreen(null);
                 } }),
             tab === "routine" && (React.createElement(RoutineTab, { checklist: checklist, setChecklist: setChecklist, navigateTo: navigateFromRoutine, vocab: vocab, letters: letters, setVocab: setVocab, setLetters: setLetters })),
-            tab === "practice" && (React.createElement(PracticeTab, { screen: practiceScreen, setScreen: setPracticeScreen, vocab: vocab, setVocab: setVocab, letters: letters, setLetters: setLetters })),
+            tab === "practice" && (React.createElement(PracticeTab, { screen: practiceScreen, setScreen: setPracticeScreen, vocab: vocab, setVocab: setVocab, letters: letters, setLetters: setLetters, onSessionDone: markRoutineDone })),
             tab === "vocab" && React.createElement(VocabTab, { vocab: vocab, setVocab: setVocab }),
             tab === "alphabet" && React.createElement(AlphabetTab, { letters: letters }),
             tab === "stats" && React.createElement(StatsTab, { vocab: vocab, letters: letters, checklist: checklist }))));
