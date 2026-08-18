@@ -89,7 +89,7 @@ try {
     throw new Error("React / ReactDOM לא נטענו מה-CDN (בדוק חיבור לאינטרנט או חסימת סקריפטים).");
   }
 "use strict";
-const APP_BUILD = "18.08 · 29";   // bump this every time the file is replaced
+const APP_BUILD = "18.08 · 30";   // bump this every time the file is replaced
 
 
 const { useState, useEffect, useCallback, useMemo, useRef } = React;
@@ -2560,10 +2560,19 @@ function useCloudSync(user, vocab, letters, checklist, setVocab, setLetters, set
     const ready = useRef(false);
     const docRef = useRef(null);
 
+    /* Firestore rejects an entire document if any field is undefined, and a word
+       that has never been practised carries empty streak / dueAt / lastSeen keys.
+       A round-trip through JSON drops those keys instead of sending them. */
+    const stripUndefined = (value) => {
+        try { return JSON.parse(JSON.stringify(value)); }
+        catch (e) { return value; }
+    };
+
     const push = (v, l, c) => {
         if (!docRef.current) return Promise.resolve();
         const stamp = Date.now();
-        return docRef.current.set({ vocab: v, letters: l, checklist: c, updatedAt: stamp }, { merge: true })
+        const payload = stripUndefined({ vocab: v, letters: l, checklist: c, updatedAt: stamp });
+        return docRef.current.set(payload, { merge: true })
             .then(() => {
                 try { window.localStorage.setItem(SYNC_STAMP_KEY, String(stamp)); } catch (e) {}
                 setStatus("synced");
