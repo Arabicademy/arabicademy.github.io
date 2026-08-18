@@ -57,10 +57,6 @@
       messagingSenderId: "169112830781",
       appId: "1:169112830781:web:2e2db4deeab06882bf7b54"
     });
-    firebase.firestore().enablePersistence({ synchronizeTabs: true }).catch(function () {
-      /* more than one tab open, or a browser that refuses it — the app still
-         works, it just will not serve cached data while offline */
-    });
     window.ZL_FIREBASE_READY = true;
   } catch (e) {
     window.ZL_FIREBASE_ERROR = e && e.message;
@@ -93,7 +89,7 @@ try {
     throw new Error("React / ReactDOM לא נטענו מה-CDN (בדוק חיבור לאינטרנט או חסימת סקריפטים).");
   }
 "use strict";
-const APP_BUILD = "17.08 · 28";   // bump this every time the file is replaced
+const APP_BUILD = "18.08 · 29";   // bump this every time the file is replaced
 
 
 const { useState, useEffect, useCallback, useMemo, useRef } = React;
@@ -1336,13 +1332,17 @@ function BackupCard({ vocab, letters, checklist, setVocab, setLetters, setCheckl
 
     const mastered = vocab.filter(isMastered).length;
 
-    const syncText = { loading: "מסתנכרן…", synced: "מסונכרן עם החשבון", error: "הסינכרון נכשל — יש עדיין עותק מקומי", idle: "" }[syncStatus] || "";
+    const syncState = (syncStatus && syncStatus.status) || "idle";
+    const syncText = { loading: "מסתנכרן…", synced: "מסונכרן עם החשבון", error: "הסינכרון נכשל — יש עדיין עותק מקומי", idle: "" }[syncState] || "";
 
     return (React.createElement(React.Fragment, null,
         React.createElement(Card, { style: { marginTop: 22 } },
             React.createElement("h3", { className: "zl-display", style: { fontSize: "1rem", fontWeight: 700, marginBottom: 4 } }, "החשבון שלי"),
             React.createElement("p", { style: { fontSize: "0.85rem", marginBottom: 2 } }, user && user.email),
-            React.createElement("p", { style: { fontSize: "0.78rem", color: syncStatus === "error" ? "var(--clay)" : "var(--ink-muted)", marginBottom: 12 } }, syncText),
+            React.createElement("p", { style: { fontSize: "0.78rem", color: syncState === "error" ? "var(--clay)" : "var(--ink-muted)", marginBottom: 4 } }, syncText),
+            syncState === "error" && syncStatus.detail
+                ? React.createElement("p", { style: { fontSize: "0.72rem", color: "var(--ink-muted)", marginBottom: 12, direction: "ltr", textAlign: "right" } }, syncStatus.detail)
+                : React.createElement("span", { style: { display: "block", marginBottom: 8 } }),
             React.createElement(PrimaryButton, { variant: "outline", onClick: () => firebase.auth().signOut() }, "התנתקות")),
         React.createElement(Card, { style: { marginTop: 14 } },
         React.createElement("h3", { className: "zl-display", style: { fontSize: "1rem", fontWeight: 700, marginBottom: 4 } }, "\u05D2\u05D9\u05D1\u05D5\u05D9 \u05D5\u05E9\u05D7\u05D6\u05D5\u05E8"),
@@ -2556,6 +2556,7 @@ const SYNC_STAMP_KEY = "sync-updated-at";
    reconnects instead of being overwritten by an older cloud copy. */
 function useCloudSync(user, vocab, letters, checklist, setVocab, setLetters, setChecklist) {
     const [status, setStatus] = useState("idle");   // idle | loading | synced | error
+    const [detail, setDetail] = useState("");
     const ready = useRef(false);
     const docRef = useRef(null);
 
@@ -2567,7 +2568,10 @@ function useCloudSync(user, vocab, letters, checklist, setVocab, setLetters, set
                 try { window.localStorage.setItem(SYNC_STAMP_KEY, String(stamp)); } catch (e) {}
                 setStatus("synced");
             })
-            .catch(() => setStatus("error"));
+            .catch((err) => {
+                setStatus("error");
+                setDetail((err && (err.code || err.message)) || "שגיאה לא ידועה");
+            });
     };
 
     useEffect(() => {
@@ -2588,7 +2592,11 @@ function useCloudSync(user, vocab, letters, checklist, setVocab, setLetters, set
                 push(vocab, letters, checklist);   // first sign-in, or this device is ahead
             }
             ready.current = true;
-        }).catch(() => { setStatus("error"); ready.current = true; });
+        }).catch((err) => {
+            setStatus("error");
+            setDetail((err && (err.code || err.message)) || "שגיאה לא ידועה");
+            ready.current = true;
+        });
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [user]);
 
@@ -2599,7 +2607,7 @@ function useCloudSync(user, vocab, letters, checklist, setVocab, setLetters, set
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [vocab, letters, checklist, user]);
 
-    return status;
+    return { status: status, detail: detail };
 }
 
 /* =========================================================================
@@ -2613,7 +2621,7 @@ function ArabicLearningApp() {
     const [checklist, setChecklist] = usePersistedState("routine-checklist", {});
     const [theme, setTheme] = usePersistedState("theme", "light");
     const [user, setUser] = useState(undefined);        // undefined = still checking
-    const syncStatus = useCloudSync(user, vocab, letters, checklist, setVocab, setLetters, setChecklist);
+    const sync = useCloudSync(user, vocab, letters, checklist, setVocab, setLetters, setChecklist);
 
     useEffect(() => {
         if (!window.ZL_FIREBASE_READY) { setUser(null); return; }
@@ -2679,7 +2687,7 @@ function ArabicLearningApp() {
                     if (t !== "practice")
                         setPracticeScreen(null);
                 } }),
-            tab === "routine" && (React.createElement(RoutineTab, { checklist: checklist, setChecklist: setChecklist, navigateTo: navigateFromRoutine, vocab: vocab, letters: letters, setVocab: setVocab, setLetters: setLetters, user: user, syncStatus: syncStatus })),
+            tab === "routine" && (React.createElement(RoutineTab, { checklist: checklist, setChecklist: setChecklist, navigateTo: navigateFromRoutine, vocab: vocab, letters: letters, setVocab: setVocab, setLetters: setLetters, user: user, syncStatus: sync })),
             tab === "practice" && (React.createElement(PracticeTab, { screen: practiceScreen, setScreen: setPracticeScreen, vocab: vocab, setVocab: setVocab, letters: letters, setLetters: setLetters, onSessionDone: markRoutineDone })),
             tab === "vocab" && React.createElement(VocabTab, { vocab: vocab, setVocab: setVocab }),
             tab === "alphabet" && React.createElement(AlphabetTab, { letters: letters }),
