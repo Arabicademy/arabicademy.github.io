@@ -57,6 +57,9 @@
       messagingSenderId: "169112830781",
       appId: "1:169112830781:web:2e2db4deeab06882bf7b54"
     });
+    /* Session persistence, not local: closing the app ends the session, so the
+       login screen appears every time the site is opened afresh. */
+    firebase.auth().setPersistence(firebase.auth.Auth.Persistence.SESSION).catch(function () {});
     window.ZL_FIREBASE_READY = true;
   } catch (e) {
     window.ZL_FIREBASE_ERROR = e && e.message;
@@ -89,7 +92,7 @@ try {
     throw new Error("React / ReactDOM לא נטענו מה-CDN (בדוק חיבור לאינטרנט או חסימת סקריפטים).");
   }
 "use strict";
-const APP_BUILD = "18.08 · 30";   // bump this every time the file is replaced
+const APP_BUILD = "18.08 · 31";   // bump this every time the file is replaced
 
 
 const { useState, useEffect, useCallback, useMemo, useRef } = React;
@@ -126,6 +129,9 @@ const CheckCircle2 = (p) => React.createElement("svg", { ...iconBase(p) },
     React.createElement("path", { d: "M9 12l2 2 4-4" }));
 const BookOpen = (p) => React.createElement("svg", { ...iconBase(p) },
     React.createElement("path", { d: "M2 5.5A2.5 2.5 0 0 1 4.5 3H12v18H4.5A2.5 2.5 0 0 1 2 18.5v-13zM22 5.5A2.5 2.5 0 0 0 19.5 3H12v18h7.5a2.5 2.5 0 0 0 2.5-2.5v-13z" }));
+const UserIcon = (p) => React.createElement("svg", { ...iconBase(p) },
+    React.createElement("path", { d: "M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" }),
+    React.createElement("circle", { cx: "12", cy: "7", r: "4" }));
 const Moon = (p) => React.createElement("svg", { ...iconBase(p) },
     React.createElement("path", { d: "M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z" }));
 const Sun = (p) => React.createElement("svg", { ...iconBase(p) },
@@ -198,6 +204,29 @@ const GLOBAL_CSS = `
     }
     .zl-root[data-theme="dark"] .zl-day[data-on="true"] { background:rgba(92,161,132,0.18); border-color:rgba(92,161,132,0.45); }
     .zl-root[data-theme="dark"] .zl-day[data-full="true"] { color:#12100E; }
+    .zl-account {
+      position:fixed; left:66px; top:14px; z-index:1200;
+      width:42px; height:42px; border-radius:50%;
+      display:flex; align-items:center; justify-content:center;
+      background:var(--sand-100); border:1px solid var(--sand-200);
+      color:var(--teal-950); cursor:pointer; padding:0;
+      box-shadow:0 3px 10px rgba(36,32,27,0.16);
+      touch-action:manipulation; -webkit-appearance:none;
+    }
+    .zl-syncdot {
+      position:absolute; bottom:-1px; left:-1px;
+      width:16px; height:16px; border-radius:50%;
+      display:flex; align-items:center; justify-content:center;
+      border:2px solid var(--sand); color:#fff; background:var(--clay);
+    }
+    .zl-syncdot[data-ok="true"] { background:var(--teal-700); }
+    .zl-syncmark {
+      width:18px; height:18px; border-radius:50%;
+      display:inline-flex; align-items:center; justify-content:center;
+      color:#fff; background:var(--clay); flex:0 0 18px;
+    }
+    .zl-syncmark[data-ok="true"] { background:var(--teal-700); }
+
     .zl-theme {
       position:fixed; left:14px; top:14px; z-index:1200;
       width:42px; height:42px; border-radius:50%;
@@ -1177,7 +1206,7 @@ function lastSevenDays(checklist, weeksBack) {
 }
 
 
-function RoutineTab({ checklist, setChecklist, navigateTo, vocab, letters, setVocab, setLetters, user, syncStatus }) {
+function RoutineTab({ checklist, setChecklist, navigateTo, vocab, letters }) {
     const [weeksBack, setWeeksBack] = useState(0);
     const [openDay, setOpenDay] = useState(null);
     const today = localDateKey();
@@ -1248,7 +1277,6 @@ function RoutineTab({ checklist, setChecklist, navigateTo, vocab, letters, setVo
                     React.createElement("div", { style: { fontWeight: 700 } }, item.label),
                     React.createElement("div", { style: { fontSize: "0.85rem", color: "var(--ink-muted)" } }, item.desc))),
             React.createElement(ArrowButton, { title: "\u05E2\u05D1\u05D5\u05E8 \u05DC\u05EA\u05E8\u05D2\u05D5\u05DC", onClick: () => navigateTo(item.target) }))))),
-        React.createElement(BackupCard, { vocab: vocab, letters: letters, checklist: checklist, setVocab: setVocab, setLetters: setLetters, setChecklist: setChecklist, user: user, syncStatus: syncStatus }),
         React.createElement("p", { style: { textAlign: "center", fontSize: "0.72rem", color: "var(--ink-muted)", marginTop: 14 } },
             "\u05D2\u05E8\u05E1\u05D4 " + APP_BUILD + " \u00B7 Emanuel Nassimiha 2026")));
 }
@@ -1262,9 +1290,12 @@ function RoutineTab({ checklist, setChecklist, navigateTo, vocab, letters, setVo
    ========================================================================= */
 const BACKUP_VERSION = 1;
 
-function BackupCard({ vocab, letters, checklist, setVocab, setLetters, setChecklist, user, syncStatus }) {
+function AccountSheet({ vocab, letters, checklist, setVocab, setLetters, setChecklist, user, syncStatus, onClose }) {
     const [status, setStatus] = useState(null);
     const fileRef = useRef(null);
+
+    const syncState = (syncStatus && syncStatus.status) || "idle";
+    const synced = syncState === "synced";
 
     const buildPayload = () => JSON.stringify({
         app: "lomdim-aravit",
@@ -1286,22 +1317,9 @@ function BackupCard({ vocab, letters, checklist, setVocab, setLetters, setCheckl
             a.click();
             document.body.removeChild(a);
             setTimeout(() => URL.revokeObjectURL(url), 1000);
-            setStatus({ kind: "ok", text: "\u05D4\u05D2\u05D9\u05D1\u05D5\u05D9 \u05D9\u05E8\u05D3 \u05DB\u05E7\u05D5\u05D1\u05E5. \u05E9\u05DE\u05D5\u05E8 \u05D0\u05D5\u05EA\u05D5 \u05D1\u05DE\u05E7\u05D5\u05DD \u05D1\u05D8\u05D5\u05D7." });
+            setStatus({ kind: "ok", text: "הגיבוי ירד כקובץ" });
         }
-        catch (e) {
-            setStatus({ kind: "err", text: "\u05D4\u05D5\u05E8\u05D3\u05D4 \u05E0\u05DB\u05E9\u05DC\u05D4. \u05E0\u05E1\u05D4 \u05D0\u05EA \u05DB\u05E4\u05EA\u05D5\u05E8 \u05D4\u05D4\u05E2\u05EA\u05E7\u05D4." });
-        }
-    };
-
-    const copyBackup = () => {
-        const text = buildPayload();
-        const done = () => setStatus({ kind: "ok", text: "\u05D4\u05D2\u05D9\u05D1\u05D5\u05D9 \u05D4\u05D5\u05E2\u05EA\u05E7. \u05D4\u05D3\u05D1\u05E7 \u05D0\u05D5\u05EA\u05D5 \u05D1\u05E4\u05EA\u05E7 \u05D5\u05E9\u05DE\u05D5\u05E8." });
-        if (navigator.clipboard && navigator.clipboard.writeText) {
-            navigator.clipboard.writeText(text).then(done).catch(() => setStatus({ kind: "err", text: "\u05D4\u05D4\u05E2\u05EA\u05E7\u05D4 \u05E0\u05D7\u05E1\u05DE\u05D4 \u05E2\u05DC \u05D9\u05D3\u05D9 \u05D4\u05D3\u05E4\u05D3\u05E4\u05DF." }));
-        }
-        else {
-            setStatus({ kind: "err", text: "\u05D4\u05D3\u05E4\u05D3\u05E4\u05DF \u05DC\u05D0 \u05EA\u05D5\u05DE\u05DA \u05D1\u05D4\u05E2\u05EA\u05E7\u05D4 \u05D0\u05D5\u05D8\u05D5\u05DE\u05D8\u05D9\u05EA." });
-        }
+        catch (e) { setStatus({ kind: "err", text: "ההורדה נכשלה" }); }
     };
 
     const withCounts = (list) => list.map((item) => ({ correctCount: 0, wrongCount: 0, ...item }));
@@ -1314,54 +1332,45 @@ function BackupCard({ vocab, letters, checklist, setVocab, setLetters, setCheckl
         reader.onload = () => {
             try {
                 const data = JSON.parse(String(reader.result));
-                if (!data || !Array.isArray(data.vocab) || !Array.isArray(data.letters)) {
-                    throw new Error("bad shape");
-                }
+                if (!data || !Array.isArray(data.vocab) || !Array.isArray(data.letters)) throw new Error("bad shape");
                 setVocab(withCounts(data.vocab));
                 setLetters(withCounts(data.letters));
                 if (data.checklist && typeof data.checklist === "object") setChecklist(data.checklist);
-                setStatus({ kind: "ok", text: "\u05D4\u05D2\u05D9\u05D1\u05D5\u05D9 \u05E9\u05D5\u05D7\u05D6\u05E8: " + data.vocab.length + " \u05DE\u05D9\u05DC\u05D9\u05DD, " + data.letters.length + " \u05D0\u05D5\u05EA\u05D9\u05D5\u05EA." });
+                setStatus({ kind: "ok", text: "הגיבוי שוחזר: " + data.vocab.length + " מילים" });
             }
-            catch (e) {
-                setStatus({ kind: "err", text: "\u05D4\u05E7\u05D5\u05D1\u05E5 \u05D0\u05D9\u05E0\u05D5 \u05D2\u05D9\u05D1\u05D5\u05D9 \u05EA\u05E7\u05D9\u05DF \u05E9\u05DC \u05D4\u05D0\u05EA\u05E8." });
-            }
+            catch (e) { setStatus({ kind: "err", text: "הקובץ אינו גיבוי תקין" }); }
         };
-        reader.onerror = () => setStatus({ kind: "err", text: "\u05E7\u05E8\u05D9\u05D0\u05EA \u05D4\u05E7\u05D5\u05D1\u05E5 \u05E0\u05DB\u05E9\u05DC\u05D4." });
+        reader.onerror = () => setStatus({ kind: "err", text: "קריאת הקובץ נכשלה" });
         reader.readAsText(file);
     };
 
-    const mastered = vocab.filter(isMastered).length;
-
-    const syncState = (syncStatus && syncStatus.status) || "idle";
-    const syncText = { loading: "מסתנכרן…", synced: "מסונכרן עם החשבון", error: "הסינכרון נכשל — יש עדיין עותק מקומי", idle: "" }[syncState] || "";
-
-    return (React.createElement(React.Fragment, null,
-        React.createElement(Card, { style: { marginTop: 22 } },
-            React.createElement("h3", { className: "zl-display", style: { fontSize: "1rem", fontWeight: 700, marginBottom: 4 } }, "החשבון שלי"),
-            React.createElement("p", { style: { fontSize: "0.85rem", marginBottom: 2 } }, user && user.email),
-            React.createElement("p", { style: { fontSize: "0.78rem", color: syncState === "error" ? "var(--clay)" : "var(--ink-muted)", marginBottom: 4 } }, syncText),
-            syncState === "error" && syncStatus.detail
-                ? React.createElement("p", { style: { fontSize: "0.72rem", color: "var(--ink-muted)", marginBottom: 12, direction: "ltr", textAlign: "right" } }, syncStatus.detail)
-                : React.createElement("span", { style: { display: "block", marginBottom: 8 } }),
-            React.createElement(PrimaryButton, { variant: "outline", onClick: () => firebase.auth().signOut() }, "התנתקות")),
-        React.createElement(Card, { style: { marginTop: 14 } },
-        React.createElement("h3", { className: "zl-display", style: { fontSize: "1rem", fontWeight: 700, marginBottom: 4 } }, "\u05D2\u05D9\u05D1\u05D5\u05D9 \u05D5\u05E9\u05D7\u05D6\u05D5\u05E8"),
-        React.createElement("p", { style: { fontSize: "0.83rem", color: "var(--ink-muted)", lineHeight: 1.6, marginBottom: 12 } },
-            "\u05D4\u05D4\u05EA\u05E7\u05D3\u05DE\u05D5\u05EA \u05E0\u05E9\u05DE\u05E8\u05EA \u05D1\u05D3\u05E4\u05D3\u05E4\u05DF \u05D4\u05D6\u05D4 \u05D1\u05DC\u05D1\u05D3. \u05D9\u05E6\u05D0 \u05E7\u05D5\u05D1\u05E5 \u05DB\u05D3\u05D9 \u05DC\u05E2\u05D1\u05D5\u05E8 \u05DC\u05DE\u05DB\u05E9\u05D9\u05E8 \u05D0\u05D7\u05E8 \u05D0\u05D5 \u05DC\u05D4\u05EA\u05D2\u05D5\u05E0\u05DF \u05DE\u05E0\u05D9\u05E7\u05D5\u05D9 \u05E0\u05EA\u05D5\u05E0\u05D9 \u05D2\u05DC\u05D9\u05E9\u05D4."),
-        React.createElement("p", { style: { fontSize: "0.83rem", fontWeight: 600, marginBottom: 12 } },
-            vocab.length,
-            " \u05DE\u05D9\u05DC\u05D9\u05DD \u00B7 ",
-            mastered,
-            " \u05D1\u05E9\u05DC\u05D9\u05D8\u05D4 \u05DE\u05DC\u05D0\u05D4"),
-        React.createElement("div", { style: { display: "flex", flexWrap: "wrap", gap: 8 } },
-            React.createElement(PrimaryButton, { onClick: exportBackup }, "\u05D9\u05E6\u05D0 \u05E7\u05D5\u05D1\u05E5 \u05D2\u05D9\u05D1\u05D5\u05D9"),
-            React.createElement(PrimaryButton, { variant: "outline", onClick: () => fileRef.current && fileRef.current.click() }, "\u05E9\u05D7\u05D6\u05E8 \u05DE\u05E7\u05D5\u05D1\u05E5"),
-            React.createElement(PrimaryButton, { variant: "outline", onClick: copyBackup }, "\u05D4\u05E2\u05EA\u05E7 \u05DC\u05DC\u05D5\u05D7")),
-        React.createElement("input", { ref: fileRef, type: "file", accept: "application/json,.json", onChange: importBackup, style: { display: "none" } }),
-        status && (React.createElement("p", { className: "zl-anim", style: {
-                marginTop: 10, fontSize: "0.82rem", fontWeight: 600,
-                color: status.kind === "ok" ? "var(--teal-700)" : "var(--clay)",
-            } }, status.text)))));
+    return (React.createElement("div", { className: "zl-overlay", onClick: onClose },
+        React.createElement("div", { className: "zl-sheet zl-anim", onClick: (e) => e.stopPropagation() },
+            React.createElement("div", { style: { display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 14 } },
+                React.createElement("h3", { className: "zl-display", style: { fontSize: "1.2rem", fontWeight: 700, color: "var(--teal-950)" } }, "החשבון שלי"),
+                React.createElement("button", { type: "button", onClick: onClose, "aria-label": "סגור", style: { background: "none", border: "none", cursor: "pointer", padding: 4 } },
+                    React.createElement(X, { size: 18 }))),
+            React.createElement("p", { style: { fontSize: "0.9rem", marginBottom: 10 } }, user && user.email),
+            React.createElement("div", { style: { display: "flex", alignItems: "center", gap: 8, marginBottom: 4 } },
+                React.createElement("span", { className: "zl-syncmark", "data-ok": synced ? "true" : "false" },
+                    React.createElement(synced ? Check : X, { size: 12 })),
+                React.createElement("span", { style: { fontSize: "0.85rem", fontWeight: 600, color: synced ? "var(--teal-700)" : "var(--clay)" } },
+                    synced ? "מסונכרן עם החשבון" : (syncState === "loading" ? "מסתנכרן…" : "לא מסונכרן"))),
+            (!synced && syncStatus && syncStatus.detail)
+                ? React.createElement("p", { style: { fontSize: "0.72rem", color: "var(--ink-muted)", direction: "ltr", textAlign: "right", marginBottom: 6 } }, syncStatus.detail)
+                : null,
+            React.createElement("p", { style: { fontSize: "0.78rem", color: "var(--ink-muted)", marginBottom: 16 } },
+                vocab.length + " מילים · " + vocab.filter(isMastered).length + " בשליטה מלאה"),
+            React.createElement(PrimaryButton, { variant: "outline", onClick: () => firebase.auth().signOut(), style: { width: "100%", justifyContent: "center" } }, "התנתקות"),
+            React.createElement("div", { style: { borderTop: "1px solid var(--sand-200)", marginTop: 16, paddingTop: 12 } },
+                React.createElement("p", { style: { fontSize: "0.75rem", color: "var(--ink-muted)", lineHeight: 1.6, marginBottom: 8 } },
+                    "ההתקדמות נשמרת בחשבון אוטומטית. קובץ גיבוי נחוץ רק כדי לשחזר מחיקה בטעות."),
+                React.createElement("div", { style: { display: "flex", gap: 8, flexWrap: "wrap" } },
+                    React.createElement("button", { type: "button", className: "zl-mini", onClick: exportBackup }, "ייצא קובץ"),
+                    React.createElement("button", { type: "button", className: "zl-mini", onClick: () => fileRef.current && fileRef.current.click() }, "שחזר מקובץ")),
+                React.createElement("input", { ref: fileRef, type: "file", accept: "application/json,.json", onChange: importBackup, style: { display: "none" } }),
+                status ? React.createElement("p", { className: "zl-anim", style: { marginTop: 8, fontSize: "0.78rem", fontWeight: 600,
+                    color: status.kind === "ok" ? "var(--teal-700)" : "var(--clay)" } }, status.text) : null))));
 }
 
 /* =========================================================================
@@ -2630,6 +2639,7 @@ function ArabicLearningApp() {
     const [checklist, setChecklist] = usePersistedState("routine-checklist", {});
     const [theme, setTheme] = usePersistedState("theme", "light");
     const [user, setUser] = useState(undefined);        // undefined = still checking
+    const [accountOpen, setAccountOpen] = useState(false);
     const sync = useCloudSync(user, vocab, letters, checklist, setVocab, setLetters, setChecklist);
 
     useEffect(() => {
@@ -2687,6 +2697,21 @@ function ArabicLearningApp() {
             "aria-label": theme === "dark" ? "מצב יום" : "מצב לילה",
             onClick: toggleTheme,
         }, React.createElement(theme === "dark" ? Sun : Moon, { size: 19 })),
+        React.createElement("button", {
+            type: "button",
+            className: "zl-account",
+            title: "החשבון שלי",
+            "aria-label": "החשבון שלי",
+            onClick: () => setAccountOpen(true),
+        },
+            React.createElement(UserIcon, { size: 19 }),
+            React.createElement("span", { className: "zl-syncdot", "data-ok": sync.status === "synced" ? "true" : "false" },
+                React.createElement(sync.status === "synced" ? Check : X, { size: 9 }))),
+        accountOpen ? React.createElement(AccountSheet, {
+            vocab: vocab, letters: letters, checklist: checklist,
+            setVocab: setVocab, setLetters: setLetters, setChecklist: setChecklist,
+            user: user, syncStatus: sync, onClose: () => setAccountOpen(false),
+        }) : null,
         React.createElement("div", { style: { maxWidth: 1100, margin: "0 auto" } },
             React.createElement("header", { style: { marginBottom: 24, borderBottom: "1px solid var(--sand-200)", paddingBottom: 18 } },
                 React.createElement("h1", { className: "zl-display", style: { fontSize: "1.5rem", fontWeight: 700, color: "var(--teal-950)", letterSpacing: "-0.02em" } }, "\u05DC\u05D5\u05DE\u05D3\u05D9\u05DD \u05E2\u05E8\u05D1\u05D9\u05EA"),
@@ -2696,7 +2721,7 @@ function ArabicLearningApp() {
                     if (t !== "practice")
                         setPracticeScreen(null);
                 } }),
-            tab === "routine" && (React.createElement(RoutineTab, { checklist: checklist, setChecklist: setChecklist, navigateTo: navigateFromRoutine, vocab: vocab, letters: letters, setVocab: setVocab, setLetters: setLetters, user: user, syncStatus: sync })),
+            tab === "routine" && (React.createElement(RoutineTab, { checklist: checklist, setChecklist: setChecklist, navigateTo: navigateFromRoutine, vocab: vocab, letters: letters })),
             tab === "practice" && (React.createElement(PracticeTab, { screen: practiceScreen, setScreen: setPracticeScreen, vocab: vocab, setVocab: setVocab, letters: letters, setLetters: setLetters, onSessionDone: markRoutineDone })),
             tab === "vocab" && React.createElement(VocabTab, { vocab: vocab, setVocab: setVocab }),
             tab === "alphabet" && React.createElement(AlphabetTab, { letters: letters }),
