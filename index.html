@@ -92,7 +92,7 @@ try {
     throw new Error("React / ReactDOM לא נטענו מה-CDN (בדוק חיבור לאינטרנט או חסימת סקריפטים).");
   }
 "use strict";
-const APP_BUILD = "18.08 · 31";   // bump this every time the file is replaced
+const APP_BUILD = "18.08 · 32";   // bump this every time the file is replaced
 
 
 const { useState, useEffect, useCallback, useMemo, useRef } = React;
@@ -1359,8 +1359,7 @@ function AccountSheet({ vocab, letters, checklist, setVocab, setLetters, setChec
             (!synced && syncStatus && syncStatus.detail)
                 ? React.createElement("p", { style: { fontSize: "0.72rem", color: "var(--ink-muted)", direction: "ltr", textAlign: "right", marginBottom: 6 } }, syncStatus.detail)
                 : null,
-            React.createElement("p", { style: { fontSize: "0.78rem", color: "var(--ink-muted)", marginBottom: 16 } },
-                vocab.length + " מילים · " + vocab.filter(isMastered).length + " בשליטה מלאה"),
+            React.createElement("div", { style: { height: 12 } }),
             React.createElement(PrimaryButton, { variant: "outline", onClick: () => firebase.auth().signOut(), style: { width: "100%", justifyContent: "center" } }, "התנתקות"),
             React.createElement("div", { style: { borderTop: "1px solid var(--sand-200)", marginTop: 16, paddingTop: 12 } },
                 React.createElement("p", { style: { fontSize: "0.75rem", color: "var(--ink-muted)", lineHeight: 1.6, marginBottom: 8 } },
