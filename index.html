@@ -92,7 +92,7 @@ try {
     throw new Error("React / ReactDOM לא נטענו מה-CDN (בדוק חיבור לאינטרנט או חסימת סקריפטים).");
   }
 "use strict";
-const APP_BUILD = "19.08 · 33";   // bump this every time the file is replaced
+const APP_BUILD = "19.08 · 36";   // bump this every time the file is replaced
 
 /* The institute logo, carried inline so the page stays a single file.
    LOGO_MARK is the emblem alone (header); LOGO_FULL includes the name
@@ -285,6 +285,29 @@ const GLOBAL_CSS = `
     .zl-pop { animation:zl-pop .3s ease; }
     .zl-shake { animation:zl-shake .34s ease; }
     @media (prefers-reduced-motion: reduce) { .zl-pop, .zl-shake { animation:none; } }
+
+    /* ---- login: a single card, navy above and form below ---- */
+    .zl-login {
+      background:var(--surface);
+      border:1px solid var(--line);
+      border-radius:var(--r-lg);
+      overflow:hidden;
+      box-shadow:var(--shadow-md);
+    }
+    .zl-login-head {
+      position:relative;
+      text-align:center;
+      padding:26px 22px 22px;
+      background:
+        radial-gradient(115% 150% at 50% -30%, rgba(46,124,184,0.35) 0%, rgba(0,34,59,0) 62%),
+        linear-gradient(160deg, #013A61 0%, #00223B 55%, #001A2E 100%);
+    }
+    .zl-login-head::after {
+      content:""; position:absolute; inset:auto 0 0 0; height:3px;
+      background:linear-gradient(90deg, var(--accent) 0%, rgba(230,40,42,0) 70%);
+    }
+    .zl-login-logo { width:min(190px, 58%); display:block; margin:2px auto 12px; }
+    .zl-login-body { padding:20px; }
 
     /* ---- greeting screen ---- */
     @keyframes zl-rise { from { opacity:0; transform:translateY(12px) scale(0.97);} to { opacity:1; transform:none;} }
@@ -583,78 +606,78 @@ const DEFAULT_VOCAB = [
     { id: 6, front: "מַרְחַבְּתֵין", back: "רב שלומות", topic: "ברכות" },
     { id: 7, front: "אַהְלַן וְסַהְלַן", back: "שלום וברכה", topic: "ברכות" },
     { id: 8, front: "אַהְלַן וְסַהְלַן בִּיכּ", back: "שלום וברכה לך", topic: "ברכות" },
-    { id: 9, front: "אִסֶם", back: "שם", topic: "מושגים", form: "יחיד", pair: [70] },
+    { id: 9, front: "אִסֵם", back: "שם", topic: "מושגים", form: "יחיד", pair: [70] },
     { id: 10, front: "אַמִיר", back: "נסיך", topic: "אנשים ותפקידים", form: "יחיד", pair: [71] },
     { id: 11, front: "מְעַלֵّם", back: "מורה / אחראי", topic: "אנשים ותפקידים", form: "יחיד", pair: [72] },
-    { id: 12, front: "מְעַלְמֶה", back: "מורָה", topic: "אנשים ותפקידים", form: "יחיד", pair: [73] },
-    { id: 13, front: "בְּ", back: "ב...", topic: "מילות יחס" },
+    { id: 12, front: "מְעַלְّמֵה", back: "מורָה", topic: "אנשים ותפקידים", form: "יחיד", pair: [73] },
+    { id: 13, front: "בִּ", back: "ב...", topic: "מילות יחס" },
     { id: 14, front: "פִי", back: "ב...", alts: ["יש"], topic: "מילות יחס" },
     { id: 15, front: "מַע", back: "עם", topic: "מילות יחס" },
     { id: 16, front: "דַוְרַה", back: "קורס", topic: "לימודים ומוסדות", form: "יחיד", pair: [74] },
-    { id: 17, front: "טַאלֶבּ", back: "סטודנט", topic: "אנשים ותפקידים", form: "יחיד", pair: [75] },
-    { id: 18, front: "טַאלְבֶּה", back: "סטודנטית", topic: "אנשים ותפקידים", form: "יחיד", pair: [76] },
+    { id: 17, front: "טַאלֵבּ", back: "סטודנט", topic: "אנשים ותפקידים", form: "יחיד", pair: [75] },
+    { id: 18, front: "טַאלְבֵּה", back: "סטודנטית", topic: "אנשים ותפקידים", form: "יחיד", pair: [76] },
     { id: 19, front: "גַ'אמְעַה", back: "אוניברסיטה", topic: "לימודים ומוסדות", form: "יחיד", pair: [77] },
-    { id: 20, front: "סִכְּרֵתִירַא", back: "מזכירה", topic: "אנשים ותפקידים", form: "יחיד", pair: [78] },
-    { id: 21, front: "סִכְּרֵתֵיר", back: "מזכיר", topic: "אנשים ותפקידים", form: "יחיד", pair: [79] },
+    { id: 20, front: "סֵכְּרֵתֵירַא", back: "מזכירה", topic: "אנשים ותפקידים", form: "יחיד", pair: [78] },
+    { id: 21, front: "סֵכְּרֵתֵיר", back: "מזכיר", topic: "אנשים ותפקידים", form: "יחיד", pair: [79] },
     { id: 22, front: "אַמִין", back: "מזכיר של גוף רשמי / ישר / אמין", alts: ["שם של גבר"], topic: "אנשים ותפקידים" },
-    { id: 23, front: "אַמִינֶה", back: "מזכירה של גוף רשמי / ישרה / אמינה", alts: ["שם של בחורה"], topic: "אנשים ותפקידים" },
-    { id: 24, front: "מַדְרַסֶה", back: "בית ספר", topic: "לימודים ומוסדות", form: "יחיד", pair: [80] },
+    { id: 23, front: "אַמִינֵה", back: "מזכירה של גוף רשמי / ישרה / אמינה", alts: ["שם של בחורה"], topic: "אנשים ותפקידים" },
+    { id: 24, front: "מַדְרַסֵה", back: "בית ספר", topic: "לימודים ומוסדות", form: "יחיד", pair: [80] },
     { id: 25, front: "מֻדִיר", back: "מנהל", topic: "אנשים ותפקידים", form: "יחיד", pair: [81] },
-    { id: 26, front: "מֻדִירֶה", back: "מנהלת", topic: "אנשים ותפקידים", form: "יחיד", pair: [82] },
-    { id: 27, front: "שִרְכֶּה", back: "חברה (ארגון / עסק)", topic: "לימודים ומוסדות", form: "יחיד", pair: [83] },
+    { id: 26, front: "מֻדִירֵה", back: "מנהלת", topic: "אנשים ותפקידים", form: "יחיד", pair: [82] },
+    { id: 27, front: "שִרְכֵּה", back: "חברה (ארגון / עסק)", topic: "לימודים ומוסדות", form: "יחיד", pair: [83] },
     { id: 28, front: "מֻחַאמִי", back: "עורך דין", topic: "אנשים ותפקידים", form: "יחיד", pair: [84] },
-    { id: 29, front: "מֻחַאמִיֶّה", back: "עורכת דין", topic: "אנשים ותפקידים", form: "יחיד", pair: [85] },
+    { id: 29, front: "מֻחַאמִיֵّה", back: "עורכת דין", topic: "אנשים ותפקידים", form: "יחיד", pair: [85] },
     { id: 30, front: "וִזַארַה", back: "משרד ממשלתי", topic: "לימודים ומוסדות", form: "יחיד", pair: [86] },
-    { id: 31, front: "עַדֶל", back: "צדק", topic: "מושגים" },
+    { id: 31, front: "עַדֵל", back: "צדק", topic: "מושגים" },
     { id: 32, front: "תִלְמִיז", back: "תלמיד", topic: "אנשים ותפקידים", form: "יחיד", pair: [87] },
-    { id: 33, front: "תִלְמִיזֶה", back: "תלמידה", topic: "אנשים ותפקידים", form: "יחיד", pair: [88] },
-    { id: 34, front: "צַאחֶבּ", back: "חבר / בעל מקום או עסק", topic: "אנשים ותפקידים", form: "יחיד", pair: [89] },
-    { id: 35, front: "צַאחְבֶּה", back: "חברה / בעלת מקום או עסק", topic: "אנשים ותפקידים", form: "יחיד", pair: [90] },
+    { id: 33, front: "תִלְמִיזֵה", back: "תלמידה", topic: "אנשים ותפקידים", form: "יחיד", pair: [88] },
+    { id: 34, front: "צַאחֵבּ", back: "חבר / בעל מקום או עסק", topic: "אנשים ותפקידים", form: "יחיד", pair: [89] },
+    { id: 35, front: "צַאחְבֵּה", back: "חברה / בעלת מקום או עסק", topic: "אנשים ותפקידים", form: "יחיד", pair: [90] },
     { id: 36, front: "דַאר", back: "בית", topic: "בית ומקומות", form: "יחיד", pair: [91] },
     { id: 37, front: "וַלַד", back: "ילד", topic: "משפחה", form: "יחיד", pair: [92] },
-    { id: 38, front: "אִבֶּן", back: "בן", topic: "משפחה", form: "יחיד", pair: [93] },
+    { id: 38, front: "אִבֵּן", back: "בן", topic: "משפחה", form: "יחיד", pair: [93] },
     { id: 39, front: "בִּנְת", back: "ילדה / בת", topic: "משפחה", form: "יחיד", pair: [94] },
     { id: 40, front: "עַםّ", back: "דוד מצד האב", topic: "משפחה", form: "יחיד", pair: [95] },
-    { id: 41, front: "עַמֶّה", back: "דודה מצד האב", topic: "משפחה", form: "יחיד", pair: [96] },
+    { id: 41, front: "עַמֵّה", back: "דודה מצד האב", topic: "משפחה", form: "יחיד", pair: [96] },
     { id: 42, front: "חַ'אל", back: "דוד מצד האם", topic: "משפחה", form: "יחיד", pair: [97] },
-    { id: 43, front: "חַ'אלֶה", back: "דודה מצד האם", topic: "משפחה", form: "יחיד", pair: [98] },
-    { id: 44, front: "סַלַאמֶה", back: "בריאות / שלמות", topic: "מושגים" },
-    { id: 45, front: "צַףّ", back: "כיתה", topic: "כיתה וציוד", form: "יחיד", pair: [99] },
+    { id: 43, front: "חַ'אלֵה", back: "דודה מצד האם", topic: "משפחה", form: "יחיד", pair: [98] },
+    { id: 44, front: "סַלַאמֵה", back: "בריאות / שלמות", topic: "מושגים" },
+    { id: 45, front: "צַّפ", back: "כיתה", topic: "כיתה וציוד", form: "יחיד", pair: [99] },
     { id: 46, front: "בַּאבּ", back: "דלת / שער", topic: "כיתה וציוד", form: "יחיד", pair: [100] },
     { id: 47, front: "שֻבַּّאכּ", back: "חלון", topic: "כיתה וציוד", form: "יחיד", pair: [101] },
     { id: 48, front: "חֵיט", back: "קיר", topic: "כיתה וציוד", form: "יחיד", pair: [102] },
     { id: 49, front: "כֻּרְסִי", back: "כסא", topic: "כיתה וציוד", form: "יחיד", pair: [103] },
-    { id: 50, front: "טַאוְלֶה", back: "שולחן", topic: "כיתה וציוד", form: "יחיד", pair: [104] },
+    { id: 50, front: "טַאוְלֵה", back: "שולחן", topic: "כיתה וציוד", form: "יחיד", pair: [104] },
     { id: 51, front: "לוֹח", back: "לוח", topic: "כיתה וציוד", form: "יחיד", pair: [105] },
     { id: 52, front: "קַלַם", back: "עט", topic: "כיתה וציוד", form: "יחיד", pair: [106] },
-    { id: 53, front: "קַלַם רְצַאץ", back: "עיפרון", topic: "כיתה וציוד", form: "יחיד", pair: [107] },
+    { id: 53, front: "קַלַם רְצַאצ", back: "עיפרון", topic: "כיתה וציוד", form: "יחיד", pair: [107] },
     { id: 54, front: "דַפְתַר", back: "מחברת", topic: "כיתה וציוד", form: "יחיד", pair: [108] },
-    { id: 55, front: "כְּתַאבּ", back: "ספר", topic: "כיתה וציוד", form: "יחיד", pair: [109] },
-    { id: 56, front: "כֻּרַّאסֶה", back: "חוברת", topic: "כיתה וציוד", form: "יחיד", pair: [110, 111] },
+    { id: 55, front: "כְּתַאב", back: "ספר", topic: "כיתה וציוד", form: "יחיד", pair: [109] },
+    { id: 56, front: "כֻּרַّאסֵה", back: "חוברת", topic: "כיתה וציוד", form: "יחיד", pair: [110, 111] },
     { id: 57, front: "שַנְטַה", back: "תיק / מזוודה", topic: "כיתה וציוד", form: "יחיד", pair: [112, 113] },
     { id: 58, front: "שַנְתַה", back: "תיק / מזוודה", topic: "כיתה וציוד", form: "יחיד", pair: [114, 115] },
     { id: 59, front: "וַרְקַה", back: "דף", topic: "כיתה וציוד", form: "יחיד", pair: [116, 117] },
     { id: 60, front: "צַפְחַה", back: "עמוד", topic: "כיתה וציוד", form: "יחיד", pair: [118] },
     { id: 61, front: "אִסְתִרַאחַה", back: "הפסקה", topic: "אוכל והפסקה", form: "יחיד", pair: [119] },
     { id: 62, front: "פֻרְצַה", back: "הזדמנות / סיכוי / חופשה / הפסקה", topic: "אוכל והפסקה", form: "יחיד", pair: [120] },
-    { id: 63, front: "קַהְוֶה", back: "קפה", topic: "אוכל והפסקה" },
-    { id: 64, front: "שַאי", back: "תה", topic: "אוכל והפסקה" },
+    { id: 63, front: "קַהְוֵה", back: "קפה", topic: "אוכל והפסקה" },
+    { id: 64, front: "שַאיְ", back: "תה", topic: "אוכל והפסקה" },
     { id: 65, front: "סֻכַּّר", back: "סוכר", topic: "אוכל והפסקה" },
-    { id: 66, front: "כַּאְסֶה", back: "כוס", topic: "אוכל והפסקה", form: "יחיד", pair: [121] },
-    { id: 67, front: "כְּבַּאיֶה", back: "כוס", topic: "אוכל והפסקה", form: "יחיד", pair: [122] },
+    { id: 66, front: "כַּאסֵה", back: "כוס", topic: "אוכל והפסקה", form: "יחיד", pair: [121] },
+    { id: 67, front: "כֻּבַּّאיֵה", back: "כוס", topic: "אוכל והפסקה", form: "יחיד", pair: [122] },
     { id: 68, front: "חַמַّאם", back: "אמבטיה / בית שימוש", topic: "בית ומקומות", form: "יחיד", pair: [123] },
-    { id: 69, front: "מְחַאמַאה", back: "עריכת דין", topic: "מושגים" },
+    { id: 69, front: "מֻחַאמַאה", back: "עריכת דין", topic: "מושגים" },
     { id: 70, front: "אַסַאמִי", back: "שמות", topic: "מושגים", form: "רבים", pair: [9] },
     { id: 71, front: "אֻמַרַאא", back: "נסיכים", topic: "אנשים ותפקידים", form: "רבים", pair: [10] },
-    { id: 72, front: "מְעַלְמִין", back: "מורים / אחראים", topic: "אנשים ותפקידים", form: "רבים", pair: [11] },
-    { id: 73, front: "מְעַלְמַאת", back: "מורות", topic: "אנשים ותפקידים", form: "רבים", pair: [12] },
+    { id: 72, front: "מְעַלְّמִין", back: "מורים / אחראים", topic: "אנשים ותפקידים", form: "רבים", pair: [11] },
+    { id: 73, front: "מְעַלְّמַאת", back: "מורות", topic: "אנשים ותפקידים", form: "רבים", pair: [12] },
     { id: 74, front: "דַוְרַאת", back: "קורסים", topic: "לימודים ומוסדות", form: "רבים", pair: [16] },
     { id: 75, front: "טֻלַّאבּ", back: "סטודנטים", topic: "אנשים ותפקידים", form: "רבים", pair: [17] },
-    { id: 76, front: "טַאלְבַּאת", back: "סטודנטיות", topic: "אנשים ותפקידים", form: "רבים", pair: [18] },
-    { id: 77, front: "גַ'אמְעַאת", back: "אוניברסיטאות", topic: "לימודים ומוסדות", form: "רבים", pair: [19] },
-    { id: 78, front: "סִכְּרֵתִירַאת", back: "מזכירות", topic: "אנשים ותפקידים", form: "רבים", pair: [20] },
-    { id: 79, front: "סִכְּרֵתִירִיّוֹן", back: "מזכירים", topic: "אנשים ותפקידים", form: "רבים", pair: [21] },
-    { id: 80, front: "מַדַארֶס", back: "בתי ספר", topic: "לימודים ומוסדות", form: "רבים", pair: [24] },
+    { id: 76, front: "טַאלִבַּאת", back: "סטודנטיות", topic: "אנשים ותפקידים", form: "רבים", pair: [18] },
+    { id: 77, front: "גַ'אמִעַאת", back: "אוניברסיטאות", topic: "לימודים ומוסדות", form: "רבים", pair: [19] },
+    { id: 78, front: "סֵכְּרֵתֵירַאת", back: "מזכירות", topic: "אנשים ותפקידים", form: "רבים", pair: [20] },
+    { id: 79, front: "סֵכְּרֵתֵירִיוּן", back: "מזכירים", topic: "אנשים ותפקידים", form: "רבים", pair: [21] },
+    { id: 80, front: "מַדַארֵס", back: "בתי ספר", topic: "לימודים ומוסדות", form: "רבים", pair: [24] },
     { id: 81, front: "מֻדַרַאא", back: "מנהלים", topic: "אנשים ותפקידים", form: "רבים", pair: [25] },
     { id: 82, front: "מֻדִירַאת", back: "מנהלות", topic: "אנשים ותפקידים", form: "רבים", pair: [26] },
     { id: 83, front: "שַרִכַּאת", back: "חברות (ארגונים / עסקים)", topic: "לימודים ומוסדות", form: "רבים", pair: [27] },
@@ -669,11 +692,11 @@ const DEFAULT_VOCAB = [
     { id: 92, front: "וְלַאד", back: "ילדים", topic: "משפחה", form: "רבים", pair: [37] },
     { id: 93, front: "אַבְּנַאא", back: "בנים", topic: "משפחה", form: "רבים", pair: [38] },
     { id: 94, front: "בַּנַאת", back: "ילדות / בנות", topic: "משפחה", form: "רבים", pair: [39] },
-    { id: 95, front: "עְמוּם", back: "דודים מצד האב", topic: "משפחה", form: "רבים", pair: [40] },
+    { id: 95, front: "עֻמוּם", back: "דודים מצד האב", topic: "משפחה", form: "רבים", pair: [40] },
     { id: 96, front: "עַמַّאת", back: "דודות מצד האב", topic: "משפחה", form: "רבים", pair: [41] },
     { id: 97, front: "אַחְ'וַאל", back: "דודים מצד האם", topic: "משפחה", form: "רבים", pair: [42] },
     { id: 98, front: "חַ'אלַאת", back: "דודות מצד האם", topic: "משפחה", form: "רבים", pair: [43] },
-    { id: 99, front: "צְפוּף", back: "כיתות", topic: "כיתה וציוד", form: "רבים", pair: [45] },
+    { id: 99, front: "צְפוּפ", back: "כיתות", topic: "כיתה וציוד", form: "רבים", pair: [45] },
     { id: 100, front: "אַבְּוַאבּ", back: "דלתות / שערים", topic: "כיתה וציוד", form: "רבים", pair: [46] },
     { id: 101, front: "שַבַּאבִּיכּ", back: "חלונות", topic: "כיתה וציוד", form: "רבים", pair: [47] },
     { id: 102, front: "חֵיטַאן", back: "קירות", topic: "כיתה וציוד", form: "רבים", pair: [48] },
@@ -681,48 +704,48 @@ const DEFAULT_VOCAB = [
     { id: 104, front: "טַאוְלַאת", back: "שולחנות", topic: "כיתה וציוד", form: "רבים", pair: [50] },
     { id: 105, front: "אַלְוַאח", back: "לוחות", topic: "כיתה וציוד", form: "רבים", pair: [51] },
     { id: 106, front: "קְלַאם", back: "עטים", topic: "כיתה וציוד", form: "רבים", pair: [52] },
-    { id: 107, front: "קְלַאם רְצַאץ", back: "עפרונות", topic: "כיתה וציוד", form: "רבים", pair: [53] },
-    { id: 108, front: "דַפַאתֶר", back: "מחברות", topic: "כיתה וציוד", form: "רבים", pair: [54] },
+    { id: 107, front: "קְלַאם רְצַאצ", back: "עפרונות", topic: "כיתה וציוד", form: "רבים", pair: [53] },
+    { id: 108, front: "דַפַאתֵר", back: "מחברות", topic: "כיתה וציוד", form: "רבים", pair: [54] },
     { id: 109, front: "כֻּתֻבּ", back: "ספרים", topic: "כיתה וציוד", form: "רבים", pair: [55] },
     { id: 110, front: "כֻּרַّאסַאת", back: "חוברות", topic: "כיתה וציוד", form: "רבים", pair: [56] },
     { id: 111, front: "כַּרַארִיס", back: "חוברות", topic: "כיתה וציוד", form: "רבים", pair: [56] },
-    { id: 112, front: "שְנַט", back: "תיקים / מזוודות", topic: "כיתה וציוד", form: "רבים", pair: [57] },
+    { id: 112, front: "שֻנַט", back: "תיקים / מזוודות", topic: "כיתה וציוד", form: "רבים", pair: [57] },
     { id: 113, front: "שַנְטַאת", back: "תיקים / מזוודות", topic: "כיתה וציוד", form: "רבים", pair: [57] },
-    { id: 114, front: "שְנַת", back: "תיקים / מזוודות", topic: "כיתה וציוד", form: "רבים", pair: [58] },
+    { id: 114, front: "שֻנַת", back: "תיקים / מזוודות", topic: "כיתה וציוד", form: "רבים", pair: [58] },
     { id: 115, front: "שַנְתַאת", back: "תיקים / מזוודות", topic: "כיתה וציוד", form: "רבים", pair: [58] },
     { id: 116, front: "אַוְרַאק", back: "דפים", topic: "כיתה וציוד", form: "רבים", pair: [59] },
     { id: 117, front: "וְרַאק", back: "דפים", topic: "כיתה וציוד", form: "רבים", pair: [59] },
     { id: 118, front: "צַפְחַאת", back: "עמודים", topic: "כיתה וציוד", form: "רבים", pair: [60] },
     { id: 119, front: "אִסְתִרַאחַאת", back: "הפסקות", topic: "אוכל והפסקה", form: "רבים", pair: [61] },
-    { id: 120, front: "פֻרַץ", back: "הזדמנויות / סיכויים / חופשות / הפסקות", topic: "אוכל והפסקה", form: "רבים", pair: [62] },
+    { id: 120, front: "פֻרַצ", back: "הזדמנויות / סיכויים / חופשות / הפסקות", topic: "אוכל והפסקה", form: "רבים", pair: [62] },
     { id: 121, front: "כַּאסַאת", back: "כוסות", topic: "אוכל והפסקה", form: "רבים", pair: [66] },
-    { id: 122, front: "כְּבַּאיַאת", back: "כוסות", topic: "אוכל והפסקה", form: "רבים", pair: [67] },
+    { id: 122, front: "כֻּבַּّאיַאת", back: "כוסות", topic: "אוכל והפסקה", form: "רבים", pair: [67] },
     { id: 123, front: "חַמַّאמַאת", back: "אמבטיות / בתי שימוש", topic: "בית ומקומות", form: "רבים", pair: [68] },
 ];
 
 const ALPHABET = [
-    { id: 1, letter: "أ", name: "אַלִף", hebrew: "א", sound: "מבוטאת כ- א או משמשת כאם קריאה (לא נהגית)." },
+    { id: 1, letter: "أ", name: "אַלִפ", hebrew: "א", sound: "מבוטאת כ- א או משמשת כאם קריאה (לא נהגית)." },
     { id: 2, letter: "ب", name: "בַּא", hebrew: "בּ", sound: "מבוטאת כ- ב דגושה (ב רפויה לא קיימת בערבית)." },
-    { id: 3, letter: "ت", name: "תַּא", hebrew: "תּ", sound: "מבוטאת כ- ת דגושה." },
-    { id: 4, letter: "ث", name: "תַּ'א", hebrew: "תּ'", sound: "ע\"י העירוניים מבוטאת לעיתים כ- ס ולעיתים כ- ת דגושה, אצל הכפריים והבדואים תבוטא כ- ת רפויה." },
+    { id: 3, letter: "ت", name: "תַא", hebrew: "ת", sound: "מבוטאת כ- ת דגושה." },
+    { id: 4, letter: "ث", name: "תַ'א", hebrew: "ת'", sound: "ע\"י העירוניים מבוטאת לעיתים כ- ס ולעיתים כ- ת דגושה, אצל הכפריים והבדואים תבוטא כ- ת רפויה." },
     { id: 5, letter: "ج", name: "גִ'ים", hebrew: "ג'", sound: "מבוטאת כ- ג' כמו במילה מַגְ'נוּן." },
     { id: 6, letter: "ح", name: "חַא", hebrew: "ח", sound: "מבוטאת כ- ח גרונית / מזרחית." },
     { id: 7, letter: "خ", name: "חַ'א", hebrew: "ח'", sound: "מבוטאת כאות כ שאינה דגושה (כ- ח אשכנזית)." },
     { id: 8, letter: "د", name: "דַאל", hebrew: "ד", sound: "מבוטאת כ- ד." },
     { id: 9, letter: "ذ", name: "דַ'אל", hebrew: "ד'", sound: "מבוטאת לעיתים כ- ד רגילה ולעיתים כ- ז, וע\"י הכפריים/בדואים כ- ד רפויה." },
     { id: 10, letter: "ر", name: "רַא", hebrew: "ר", sound: "מבוטאת כ- ר מזרחית." },
-    { id: 11, letter: "ز", name: "זַאי", hebrew: "ז", sound: "מבוטאת כ- ז." },
+    { id: 11, letter: "ز", name: "זַאיְ", hebrew: "ז", sound: "מבוטאת כ- ז." },
     { id: 12, letter: "س", name: "סִין", hebrew: "ס", sound: "מבוטאת כ- ס." },
     { id: 13, letter: "ش", name: "שִין", hebrew: "ש", sound: "מבוטאת כ- ש." },
     { id: 14, letter: "ص", name: "צַאד", hebrew: "צ", sound: "מבוטאת כ- צ תימנית / מזרחית (ס נחצית / עבה)." },
     { id: 15, letter: "ض", name: "צַ'אד", hebrew: "צ'", sound: "מבוטאת כ- ד נחצית עבה (אות ייחודית לשפה הערבית)." },
     { id: 16, letter: "ط", name: "טַא", hebrew: "ט", sound: "מבוטאת כ- ט מזרחית (ת דגושה ונחצית / עבה)." },
     { id: 17, letter: "ظ", name: "טַ'א", hebrew: "ט'", sound: "לעיתים מבוטאת כ- ז נחצית ולעיתים כ- צ'." },
-    { id: 18, letter: "ع", name: "עַיְן", hebrew: "ע", sound: "מבוטאת כ- ע גרונית (מזרחית)." },
-    { id: 19, letter: "غ", name: "עַ'יְן", hebrew: "ע'", sound: "מבוטאת כ- ר צרפתית." },
+    { id: 18, letter: "ع", name: "עֵין", hebrew: "ע", sound: "מבוטאת כ- ע גרונית (מזרחית)." },
+    { id: 19, letter: "غ", name: "עֵ'ין", hebrew: "ע'", sound: "מבוטאת כ- ר צרפתית." },
     { id: 20, letter: "ف", name: "פַא", hebrew: "פ", sound: "מבוטאת כ- פ רפויה (פ דגושה לא קיימת בערבית)." },
-    { id: 21, letter: "ق", name: "קַאף", hebrew: "ק", sound: "כ- ק גרונית בכפרים, כ- א ע\"י העירוניים, וכ- ג רגילה ע\"י הבדווים." },
-    { id: 22, letter: "ك", name: "כַּאף", hebrew: "כּ", sound: "מבוטאת כ- כ דגושה." },
+    { id: 21, letter: "ق", name: "קַאפ", hebrew: "ק", sound: "כ- ק גרונית בכפרים, כ- א ע\"י העירוניים, וכ- ג רגילה ע\"י הבדווים." },
+    { id: 22, letter: "ك", name: "כַּאפ", hebrew: "כּ", sound: "מבוטאת כ- כ דגושה." },
     { id: 23, letter: "ل", name: "לַאם", hebrew: "ל", sound: "מבוטאת כ- ל." },
     { id: 24, letter: "م", name: "מִים", hebrew: "מ", sound: "מבוטאת כ- מ." },
     { id: 25, letter: "ن", name: "נוּן", hebrew: "נ", sound: "מבוטאת כ- נ." },
@@ -733,37 +756,37 @@ const ALPHABET = [
 
 // sentences used for reading practice + sentence-building game (hebrew meaning <-> arabic transliteration)
 const SENTENCES = [
-    { id: 1, hebrew: "עמודי הספר.", arabic: "צַפְחַאת (א)לְכְּתַאבּ." },
+    { id: 1, hebrew: "עמודי הספר.", arabic: "צַפְחַאת (א)לִכְּתַאבּ." },
     { id: 2, hebrew: "זאת הילדה וזה הילד.", arabic: "הַ(א)לְבִּנְת וְהַ(א)לְוַלַד." },
-    { id: 3, hebrew: "זה אמבטיית (בית שימוש) הבית, זה לא הבית.", arabic: "הַאד חַמַّאם (א)לְבֵּית, הַאד מֵש (א)לְבֵּית." },
-    { id: 4, hebrew: "זאת דלת בית הספר, זאת לא דלת המשרד הממשלתי.", arabic: "הַאדַא בַּאבּ (א)לְמַדְרַסֶה, הַאדַא מֵש בַּאבּ (א)לְוִזַארַה." },
-    { id: 5, hebrew: "זאת החוברת וזה העט.", arabic: "הַאיְ (א)לְכֻּרַّאסֶה וְהַאדַא (א)לְקַלַם." },
-    { id: 6, hebrew: "ההוא קיר בית הספר וההיא תיק המנהלת.", arabic: "הַדַאכּ חֵיט (א)לְמַדְרַסֶה וְהַדִיכּ שַנְטַת (א)לְמְדִירֶה." },
-    { id: 7, hebrew: "אלו הכסא והספר.", arabic: "הַדוֹל (א)לְכֻּרְסִי וְ(א)לְכְּתַאבּ." },
-    { id: 8, hebrew: "ההן המורה והילדה (והבת).", arabic: "הַדוֹלַאכּ (א)לְמְעַלְמֶה וְ(א)לְבִּנְת." },
-    { id: 9, hebrew: "זאת המנהלת וזה המורה.", arabic: "הַאדִי (א)לְמְדִירֶה וְהַאדַא (א)לְמְעַלֵّם." },
-    { id: 10, hebrew: "אלו מחברות וספרים וכסאות.", arabic: "הַדוֹל דַפַאתֶר וְכְּתֻבּ וְכַּרַאסִי." },
-    { id: 11, hebrew: "אתם סטודנטים (של) אוניברסיטה והם תלמידי בתי ספר.", arabic: "אִנְתוּ טֻלַّאבּ גַ'אמְעַה וְהֵםّ תַלַאמִיז מַדַארֶס." },
-    { id: 12, hebrew: "הוא מנהל משרד המשפטים.", arabic: "הֻוֶّ מְדִיר וִזַארַת (א)לְעַדֶל." },
-    { id: 13, hebrew: "זה כוס קפה וזה כוס תה וההוא סוכר.", arabic: "הַאדִי כַּאסֶת קַהְוֶה וְהַאדִי כַּאסֶת שַאי וְהַדַאכּ סֻכַּّר." },
-    { id: 14, hebrew: "אחמד הוא בן דודי (מצד אבי) ונג'אח היא בת דודי (מצד אימי).", arabic: "אַחְמַד הֻוֶّ אִבֶּן עַמִّי וְנַגַ'אח הִיֶّ בִּנְת חַ'אלִי." },
-    { id: 15, hebrew: "מזכירה בחברת עריכת דין.", arabic: "סִכְּרֵתִירַא פִי שַרְכֶּת מְחַאמַאה." },
+    { id: 3, hebrew: "זה אמבטיית (בית שימוש) הבית, זה לא הבית.", arabic: "הַאד חַמַّאםִ (א)לְבֵּית, הַאד מֻשִ (א)לְבֵּית." },
+    { id: 4, hebrew: "זאת דלת בית הספר, זאת לא דלת המשרד הממשלתי.", arabic: "הַאדַא בַּאבִּ (א)לְמַדְרַסֵה, הַאדַא מֻש בַּאבִּ (א)לְוִזַארַה." },
+    { id: 5, hebrew: "זאת החוברת וזה העט.", arabic: "הַאיִ (א)לְכֻּרַّאסֵה וְהַאדַא (א)לְקַלַם." },
+    { id: 6, hebrew: "ההוא קיר בית הספר וההיא תיק המנהלת.", arabic: "הַדַאכּ חֵיטִ (א)לְמַדְרַסֵה וְהַדִיכּ שַנְטַתִ (א)לְמֻדִירֵה." },
+    { id: 7, hebrew: "אלו הכסא והספר.", arabic: "הַדוֹלִ (א)לְכֻּרְסִי וִ(א)לִכְּתַאבּ." },
+    { id: 8, hebrew: "ההן המורה והילדה (והבת).", arabic: "הַדוֹלַאכּ (א)לִמְעַלְّמֵה וִ(א)לְבִּנְת." },
+    { id: 9, hebrew: "זאת המנהלת וזה המורה.", arabic: "הַאדִי (א)לְמֻדִירֵה וְהַאדַא (א)לִמְעַלֵّם." },
+    { id: 10, hebrew: "אלו מחברות וספרים וכסאות.", arabic: "הַדוֹל דַפַאתֵר וְכֻּתֻבּ וְכַּרַאסִי." },
+    { id: 11, hebrew: "אתם סטודנטים (של) אוניברסיטה והם תלמידי בתי ספר.", arabic: "אִנְתוּ טֻלַّאבּ גַ'אמְעַה וְהֻםֵّ תַלַאמִיז מַדַארֵס." },
+    { id: 12, hebrew: "הוא מנהל משרד המשפטים.", arabic: "הֻוֵّ מֻדִיר וִזַארַתִ (א)לְעַדֵל." },
+    { id: 13, hebrew: "זה כוס קפה וזה כוס תה וההוא סוכר.", arabic: "הַאדִי כַּאסֵת קַהְוֵה וְהַאדִי כַּאסֵת שַאיְ וְהַדַאכּ סֻכַּّר." },
+    { id: 14, hebrew: "אחמד הוא בן דודי (מצד אבי) ונג'אח היא בת דודי (מצד אימי).", arabic: "אַחְמַד הֻוֵّ אִבֵּן עַמִّי וְנַגַ'אח הִיֵّ בִּנְת חַ'אלִי." },
+    { id: 15, hebrew: "מזכירה בחברת עריכת דין.", arabic: "סֵכְּרֵתֵירַא פִי שִרְכֵּת מֻחַאמַאה." },
 ];
 
 const IDIOMS = [
-    { id: 1, arabic: "לָאזֶם תִּתְעַדַّא פִי, קַבַּל מָא יִתְעַשַّא פִיכּ", literal: "תאכל אותו לארוחת צהריים, לפני שהוא יאכל אותך לארוחת ערב.", meaning: "תקדים תרופה למכה." },
-    { id: 2, arabic: "אלִי כַּתַבּוֹ רַבַּנָא בִּידוֹ יְצִיר", literal: "מה שכתב הבורא, זה מה שיקרה.", meaning: "מה שיהיה - יהיה." },
-    { id: 3, arabic: "בִּיקוּלוּ תוֹר, בִּיקוּל אַחְלְבּוּ", literal: "אומרים לו שור, הוא אומר לחלוב אותו.", meaning: "אדם עקשן / אדם שלא מחובר לסיטואציה." },
-    { id: 4, arabic: "אלִי פָאת – מָאת", literal: "מה שעבר, מת.", meaning: "מה שהיה, היה." },
-    { id: 5, arabic: "זַמָאן אַוֻל תְחַוַّל", literal: "הזמנים של פעם עברו.", meaning: "לא ניתן להחזיר את הגלגל לאחור." },
+    { id: 1, arabic: "לָאזֶם תִּתְעַ'דָّא פִי, קַבַּל מָא יִתְעַשָّא פִיכּ", literal: "תאכל אותו לארוחת צהריים, לפני שהוא יאכל אותך לארוחת ערב.", meaning: "תקדים תרופה למכה." },
+    { id: 2, arabic: "אִלִי כַּתַבּוֹ רַבַּנָא בִּידוֹ יְצִיר", literal: "מה שכתב הבורא, זה מה שיקרה.", meaning: "מה שיהיה - יהיה." },
+    { id: 3, arabic: "בִּיקוּלוּ תוֹר, בִּיקוּל אִחְלְבּוּ", literal: "אומרים לו שור, הוא אומר לחלוב אותו.", meaning: "אדם עקשן / אדם שלא מחובר לסיטואציה." },
+    { id: 4, arabic: "אִלִי פָאת – מָאת", literal: "מה שעבר, מת.", meaning: "מה שהיה, היה." },
+    { id: 5, arabic: "זַמָאן אַוַّל תְחַוַّל", literal: "הזמנים של פעם עברו.", meaning: "לא ניתן להחזיר את הגלגל לאחור." },
     { id: 6, arabic: "שִיטָאן רָאכֶּב עַקְלוֹ", literal: "השטן רוכב על ראשו.", meaning: "נכנס בו שד, השתגע." },
     { id: 7, arabic: "טִלְעַת רִיחְתוֹ", literal: "יצא הריח שלו.", meaning: "הסריח, עבר את הגבול, האמת יצאה." },
-    { id: 8, arabic: "והו, פִי חַ'בַּר בִּיִתְחַבָּא?", literal: "והאם יש אמת / ידיעה שאפשר להסתיר?", meaning: "אי אפשר להסתיר כלום." },
-    { id: 9, arabic: "אלִי בַּדּّוֹ מַצָארִי לָאזֶם יִשְׁתַעֶ'ל", literal: "מי שרוצה כסף צריך לעבוד.", meaning: "יגעת ומצאת - תאמין, אין כסף בלי עבודה." },
+    { id: 8, arabic: "וּהוּ, פִי חַ'בַּר בִּיִתְחַבָּא?", literal: "והאם יש אמת / ידיעה שאפשר להסתיר?", meaning: "אי אפשר להסתיר כלום." },
+    { id: 9, arabic: "אִלִי בִּדוֹ מַצָארִי לָאזֶם יִשְתַעֶ'ל", literal: "מי שרוצה כסף צריך לעבוד.", meaning: "יגעת ומצאת - תאמין, אין כסף בלי עבודה." },
     { id: 10, arabic: "רוּחְ בַּלֵّט (א)לְבַּחַר", literal: "לך תרצף את הים.", meaning: "תעשה עבודה שאין בה תועלת, לך מפה." },
-    { id: 11, arabic: "וַלִי? גָ'אי תִּתְפַלְסַף עַלַיָّא אַנְתֶ?", literal: "מה? אתה בא להתפלסף עלי?", meaning: "אל תתפוס עליי תחת." },
+    { id: 11, arabic: "וַלְ? גָ'אי תִּתְפַלְסַף עַלַיָّא אִנְתַ?", literal: "מה? אתה בא להתפלסף עלי?", meaning: "אל תתפוס עליי תחת." },
     { id: 12, arabic: "עִיש חַיָאתַכּ", literal: "חיה את חייך.", meaning: "שחרר, תהנה מהרגע." },
-    { id: 13, arabic: "הו פִי וָאד וַאַנָא פִי וָאד", literal: "הוא בוואדי ואני בוואדי.", meaning: "אנחנו כל אחד במקום אחר, יש ריחוק." },
+    { id: 13, arabic: "הוּ פִי וָאד וַאֲנָא פִי וָאד", literal: "הוא בוואדי ואני בוואדי.", meaning: "אנחנו כל אחד במקום אחר, יש ריחוק." },
 ];
 
 /* The surah keeps the booklet's own marks: the shadda over doubled letters,
@@ -1476,11 +1499,12 @@ function ExamDetailSheet({ exam, index, onClose }) {
 
 function AccountSheet({ vocab, letters, sentences, idioms, checklist, exams, profile,
                         setVocab, setLetters, setSentences, setIdioms, setChecklist, setProfile, setExams,
-                        user, syncStatus, onClose }) {
+                        user, syncStatus, onClose, onLogout }) {
     const [status, setStatus] = useState(null);
     const [name, setName] = useState((profile && profile.name) || "");
     const [saved, setSaved] = useState(false);
     const [openExam, setOpenExam] = useState(null);
+    const [confirmOut, setConfirmOut] = useState(false);
     const fileRef = useRef(null);
 
     const syncState = (syncStatus && syncStatus.status) || "idle";
@@ -1603,7 +1627,7 @@ function AccountSheet({ vocab, letters, sentences, idioms, checklist, exams, pro
 
                 /* --- account actions --- */
                 React.createElement("div", { style: { borderTop: "1px solid var(--line)", marginTop: 16, paddingTop: 14 } },
-                    React.createElement(PrimaryButton, { variant: "outline", onClick: () => firebase.auth().signOut(), style: { width: "100%", justifyContent: "center" } }, "התנתקות"),
+                    React.createElement(PrimaryButton, { variant: "danger", onClick: () => setConfirmOut(true), style: { width: "100%", justifyContent: "center" } }, "התנתקות"),
                     React.createElement("p", { style: { fontSize: "0.75rem", color: "var(--ink-muted)", lineHeight: 1.6, margin: "12px 0 8px" } },
                         "ההתקדמות נשמרת בחשבון אוטומטית. קובץ גיבוי נחוץ רק כדי לשחזר מחיקה בטעות."),
                     React.createElement("div", { style: { display: "flex", gap: 8, flexWrap: "wrap" } },
@@ -1617,7 +1641,16 @@ function AccountSheet({ vocab, letters, sentences, idioms, checklist, exams, pro
                     "גרסה " + APP_BUILD))),
         openExam ? React.createElement(ExamDetailSheet, {
             exam: openExam.exam, index: openExam.index, onClose: () => setOpenExam(null),
-        }) : null));
+        }) : null,
+        confirmOut ? React.createElement("div", { className: "zl-overlay", onClick: () => setConfirmOut(false) },
+            React.createElement("div", { className: "zl-sheet zl-anim", style: { maxWidth: 340 }, onClick: (e) => e.stopPropagation() },
+                React.createElement("h3", { className: "zl-sheet-title", style: { marginBottom: 18, textAlign: "center" } },
+                    "האם אתה בטוח שברצונך להתנתק?"),
+                React.createElement("div", { style: { display: "flex", gap: 10 } },
+                    React.createElement(PrimaryButton, { variant: "outline", onClick: () => setConfirmOut(false),
+                        style: { flex: 1, justifyContent: "center" } }, "חזור"),
+                    React.createElement(PrimaryButton, { variant: "danger", onClick: () => { setConfirmOut(false); onLogout(); },
+                        style: { flex: 1, justifyContent: "center" } }, "התנתק")))) : null));
 }
 
 /* =========================================================================
@@ -2021,7 +2054,11 @@ function AmericanQuiz({ deckKind, banks, applyResult, onBack, dir, setDir }) {
 function normAnswer(text) {
     return String(text || "")
         .replace(/[\u0591-\u05C7\u0610-\u065F]/g, "")   // vowel points and shadda
-        .replace(/[\s()'"\u2013\-,.\/]/g, "")
+        /* A phone keyboard is not a typewriter: iOS folds "..." into a single
+           ellipsis, quotes come out curly, and the Hebrew geresh has its own
+           codepoint. All of them are stripped so a right answer typed on a
+           phone is never marked wrong over punctuation. */
+        .replace(/[\s()\[\]{}'"\u2018\u2019\u201C\u201D\u05F3\u05F4\u2013\u2014\u2026\u05BE\-,.:;!?\/\\]/g, "")
         .trim();
 }
 
@@ -2287,6 +2324,12 @@ function examCategoryMeta(kind) {
 /* Draw a fresh set of tasks. Items are chosen by the same weighting the
    practice queues use, so a shaky word is likelier to be tested, and the
    order is shuffled so no two exams feel alike. */
+/* "ב..." normalises down to a single letter — there is nothing to type and
+   nothing to judge. Words like that are always asked as multiple choice. */
+function isTypeable(item) {
+    return allMeanings(item).some((m) => normAnswer(m).length >= 2);
+}
+
 function buildExamTasks(banks) {
     const tasks = [];
     EXAM_PLAN.forEach((part) => {
@@ -2301,7 +2344,7 @@ function buildExamTasks(banks) {
                 /* Half the word questions are typed rather than picked. Typing is
                    only ever asked when the prompt is Arabic, so the answer stays
                    in Hebrew and the keyboard never has to switch. */
-                const open = idx % 2 === 1 && dir === "ar2he";
+                const open = idx % 2 === 1 && dir === "ar2he" && isTypeable(item);
                 tasks.push({ kind: "vocab", item: item, dir: dir, open: open, question: buildQuestion(deck, item, dir) });
             } else {
                 tasks.push({ kind: part.kind, item: item, dir: dir, question: buildQuestion(deck, item, dir) });
@@ -2915,26 +2958,27 @@ function LoginScreen({ theme, onToggleTheme }) {
     return (React.createElement("div", { className: "zl-root", "data-theme": theme, style: { padding: "20px 20px 60px", display: "flex", alignItems: "center", justifyContent: "center", minHeight: "100vh" } },
         React.createElement(GlobalStyle, null),
         React.createElement("div", { style: { width: "100%", maxWidth: 390 } },
-            React.createElement("div", { className: "zl-appbar", style: { textAlign: "center", padding: "26px 22px 24px" } },
-                React.createElement("div", { className: "zl-corner" },
-                    React.createElement("button", { type: "button", className: "zl-iconbtn", onClick: onToggleTheme,
-                        title: theme === "dark" ? "מצב יום" : "מצב לילה",
-                        "aria-label": theme === "dark" ? "מצב יום" : "מצב לילה" },
-                        React.createElement(theme === "dark" ? Sun : Moon, { size: 19 }))),
-                React.createElement("img", { src: LOGO_FULL, alt: "המדרשה לערבית וביטחון", style: { width: "min(200px, 60%)", display: "block", margin: "6px auto 14px" } }),
-                React.createElement("h1", { className: "zl-brand-title", style: { fontSize: "1.35rem" } }, "לומדים ערבית"),
-                React.createElement("p", { style: { fontSize: "0.82rem", color: "rgba(255,255,255,0.62)", marginTop: 6 } }, "התחבר כדי להמשיך")),
-            React.createElement(Card, { style: { boxShadow: "var(--shadow-md)" } },
-                React.createElement("form", { onSubmit: submit },
-                    React.createElement("label", { style: { display: "block", fontSize: "0.8rem", fontWeight: 700, marginBottom: 4 } }, "מייל",
-                        React.createElement("input", { type: "email", value: email, autoComplete: "username", inputMode: "email",
-                            onChange: (e) => setEmail(e.target.value), className: "zl-search", style: { marginTop: 4, marginBottom: 12 } })),
-                    React.createElement("label", { style: { display: "block", fontSize: "0.8rem", fontWeight: 700, marginBottom: 4 } }, "סיסמה",
-                        React.createElement("input", { type: "password", value: password, autoComplete: "current-password",
-                            onChange: (e) => setPassword(e.target.value), className: "zl-search", style: { marginTop: 4, marginBottom: 6 } })),
-                    error ? React.createElement("p", { className: "zl-shake", style: { color: "var(--bad)", fontWeight: 600, fontSize: "0.82rem", margin: "6px 0 10px" } }, error) : null,
-                    React.createElement(PrimaryButton, { type: "submit", disabled: busy, style: { width: "100%", justifyContent: "center", marginTop: 6 } },
-                        busy ? "מתחבר…" : "התחברות"))),
+            React.createElement("div", { className: "zl-login" },
+                React.createElement("div", { className: "zl-login-head" },
+                    React.createElement("div", { className: "zl-corner" },
+                        React.createElement("button", { type: "button", className: "zl-iconbtn", onClick: onToggleTheme,
+                            title: theme === "dark" ? "מצב יום" : "מצב לילה",
+                            "aria-label": theme === "dark" ? "מצב יום" : "מצב לילה" },
+                            React.createElement(theme === "dark" ? Sun : Moon, { size: 19 }))),
+                    React.createElement("img", { className: "zl-login-logo", src: LOGO_FULL, alt: "המדרשה לערבית וביטחון" }),
+                    React.createElement("h1", { className: "zl-brand-title", style: { fontSize: "1.35rem" } }, "לומדים ערבית"),
+                    React.createElement("p", { style: { fontSize: "0.82rem", color: "rgba(255,255,255,0.62)", marginTop: 6 } }, "התחבר כדי להמשיך")),
+                React.createElement("div", { className: "zl-login-body" },
+                    React.createElement("form", { onSubmit: submit },
+                        React.createElement("label", { style: { display: "block", fontSize: "0.8rem", fontWeight: 700, marginBottom: 4 } }, "מייל",
+                            React.createElement("input", { type: "email", value: email, autoComplete: "username", inputMode: "email",
+                                onChange: (e) => setEmail(e.target.value), className: "zl-search", style: { marginTop: 4, marginBottom: 12 } })),
+                        React.createElement("label", { style: { display: "block", fontSize: "0.8rem", fontWeight: 700, marginBottom: 4 } }, "סיסמה",
+                            React.createElement("input", { type: "password", value: password, autoComplete: "current-password",
+                                onChange: (e) => setPassword(e.target.value), className: "zl-search", style: { marginTop: 4, marginBottom: 6 } })),
+                        error ? React.createElement("p", { className: "zl-shake", style: { color: "var(--bad)", fontWeight: 600, fontSize: "0.82rem", margin: "6px 0 10px" } }, error) : null,
+                        React.createElement(PrimaryButton, { type: "submit", disabled: busy, style: { width: "100%", justifyContent: "center", marginTop: 6 } },
+                            busy ? "מתחבר…" : "התחברות")))),
             React.createElement("p", { style: { textAlign: "center", fontSize: "0.72rem", color: "var(--ink-muted)", marginTop: 14 } },
                 "משתמשים נוצרים על ידי מנהל האתר"),
             React.createElement("p", { style: { textAlign: "center", fontSize: "0.72rem", color: "var(--ink-muted)", marginTop: 4 } },
@@ -2946,14 +2990,17 @@ function LoginScreen({ theme, onToggleTheme }) {
    Sits between the login and the app while the cloud copy is fetched, so the
    wait reads as a welcome rather than as a blank screen.
    ========================================================================= */
-function GreetingScreen({ name }) {
+function GreetingScreen({ headline, note }) {
     return (React.createElement("div", { className: "zl-greet" },
         React.createElement("img", { className: "zl-greet-logo", src: LOGO_FULL, alt: "המדרשה לערבית וביטחון" }),
         React.createElement("span", { className: "zl-greet-rule" }),
-        React.createElement("p", { className: "zl-greet-hi zl-display" },
-            name ? "אַהְלַן יַא " + name + "!" : "אַהְלַן!"),
-        React.createElement("p", { className: "zl-greet-note" }, "טוען את ההתקדמות שלך…")));
+        React.createElement("p", { className: "zl-greet-hi zl-display" }, headline),
+        React.createElement("p", { className: "zl-greet-note" }, note)));
 }
+
+/* The farewell mirrors the welcome, so signing out closes the same door the
+   session opened. The wording is the booklet's own parting line. */
+const FAREWELL_MS = 1800;
 
 const SYNC_STAMP_KEY = "sync-updated-at";
 
@@ -3061,6 +3108,7 @@ function ArabicLearningApp() {
     const [accountOpen, setAccountOpen] = useState(false);
     const [greetElapsed, setGreetElapsed] = useState(false);
     const [greetTimedOut, setGreetTimedOut] = useState(false);
+    const [leaving, setLeaving] = useState(false);
 
     const syncState = { vocab, letters, sentences, idioms, checklist, exams, profile };
     const sync = useCloudSync(user, syncState, {
@@ -3140,6 +3188,22 @@ function ArabicLearningApp() {
 
     const toggleTheme = () => setTheme(theme === "dark" ? "light" : "dark");
 
+    /* Signing out shows the parting line first, then actually ends the
+       session — the sign-out flips `user` to null, which lands on the login
+       screen on its own. */
+    const startLogout = () => {
+        setAccountOpen(false);
+        setLeaving(true);
+    };
+    useEffect(() => {
+        if (!leaving) return;
+        const t = setTimeout(() => {
+            firebase.auth().signOut().catch(() => {});
+            setLeaving(false);
+        }, FAREWELL_MS);
+        return () => clearTimeout(t);
+    }, [leaving]);
+
     if (!window.ZL_FIREBASE_READY) {
         return (React.createElement("div", { className: "zl-root", "data-theme": theme, style: { padding: 30 } },
             React.createElement(GlobalStyle, null),
@@ -3155,6 +3219,15 @@ function ArabicLearningApp() {
             React.createElement("p", { style: { color: "var(--ink-muted)", marginTop: 60 } }, "טוען…")));
     }
 
+    if (leaving) {
+        return (React.createElement("div", { className: "zl-root", "data-theme": theme },
+            React.createElement(GlobalStyle, null),
+            React.createElement(GreetingScreen, {
+                headline: "מַע (אל)סַّלַאמֵה!",
+                note: "מתנתק…",
+            })));
+    }
+
     if (!user) {
         return React.createElement(LoginScreen, { theme: theme, onToggleTheme: toggleTheme });
     }
@@ -3163,7 +3236,10 @@ function ArabicLearningApp() {
     if (stillGreeting) {
         return (React.createElement("div", { className: "zl-root", "data-theme": theme },
             React.createElement(GlobalStyle, null),
-            React.createElement(GreetingScreen, { name: (profile && profile.name) || "" })));
+            React.createElement(GreetingScreen, {
+                headline: (profile && profile.name) ? "אַהְלַן יַא " + profile.name + "!" : "אַהְלַן!",
+                note: "טוען את ההתקדמות שלך…",
+            })));
     }
 
     return (React.createElement("div", { className: "zl-root", "data-theme": theme, style: { padding: "16px 16px 60px" } },
@@ -3174,6 +3250,7 @@ function ArabicLearningApp() {
             setVocab: setVocab, setLetters: setLetters, setSentences: setSentences,
             setIdioms: setIdioms, setChecklist: setChecklist, setProfile: setProfile, setExams: setExams,
             user: user, syncStatus: sync, onClose: () => setAccountOpen(false),
+            onLogout: startLogout,
         }) : null,
         React.createElement("div", { style: { maxWidth: 1100, margin: "0 auto" } },
             React.createElement("header", { className: "zl-appbar" },
