@@ -132,7 +132,7 @@ try {
     throw new Error("React / ReactDOM לא נטענו מה-CDN (בדוק חיבור לאינטרנט או חסימת סקריפטים).");
   }
 "use strict";
-const APP_BUILD = "19.08 · 37";   // bump this every time the file is replaced
+const APP_BUILD = "20.08 · 39";   // bump this every time the file is replaced
 
 /* The institute logo, carried inline so the page stays a single file.
    LOGO_MARK is the emblem alone (header); LOGO_FULL includes the name
@@ -1534,7 +1534,8 @@ function ExamDetailSheet({ exam, index, onClose }) {
                     "המבחן לא הושלם ולכן נרשם כנכשל. אין פירוט קטגוריות למבחן שלא הסתיים.")
                 : React.createElement(React.Fragment, null,
                     React.createElement(ExamBreakdown, { cats: cats }),
-                    React.createElement("div", { className: "zl-note", style: { marginTop: 14 } }, exam.notes || examNotes(cats))))));
+                    React.createElement("div", { className: "zl-note", style: { marginTop: 14 } },
+                        (exam.cats && Object.keys(exam.cats).length) ? examNotes(cats) : exam.notes)))));
 }
 
 function AccountSheet({ vocab, letters, sentences, idioms, checklist, exams, profile,
@@ -2395,34 +2396,69 @@ function buildExamTasks(banks) {
 }
 
 /* A short read on the result, built from the per-category scores. */
+/* A short read on the result.
+
+   The bars above it already show how many questions were right in each
+   category, so repeating that adds nothing. What the bars cannot show is
+   where the *marks* went: the categories are weighted, so one missed sentence
+   costs six points while a missed letter costs one. 14/15 on vocabulary is a
+   bigger dent than 7/8 on letters, and nobody works that out in their head.
+   That is what this paragraph is for. */
+const EXAM_TIPS = {
+    vocab: "סבב כרטיסיות יומי הוא הדרך המהירה לסגור את זה.",
+    sentence: "תרגול הרכבת משפטים בכיוון עברית ← ערבית מטפל בזה ישירות.",
+    idiom: "הניבים הם הקטגוריה הקטנה — כמה סבבים קצרים והם נסגרים.",
+    letter: "סבב כרטיסיות אותיות של חמש דקות בדרך כלל מספיק.",
+};
+
+function examVerdict(score) {
+    if (score >= 90) return "תוצאה מצוינת.";
+    if (score >= 75) return "תוצאה טובה.";
+    if (score >= 60) return "תוצאה סבירה.";
+    return "יש כאן פער שכדאי לסגור.";
+}
+
 function examNotes(cats) {
-    const rows = Object.keys(cats)
-        .filter((k) => cats[k].total > 0)
-        .map((k) => ({ kind: k, label: examCategoryMeta(k).label, pct: cats[k].right / cats[k].total, right: cats[k].right, total: cats[k].total }));
+    const rows = EXAM_PLAN
+        .filter((part) => cats[part.kind] && cats[part.kind].total > 0)
+        .map((part) => {
+            const row = cats[part.kind];
+            const pct = row.right / row.total;
+            return {
+                kind: part.kind, label: part.label,
+                right: row.right, total: row.total, pct: pct,
+                lost: part.weight * (1 - pct),      // marks given up here
+            };
+        });
     if (rows.length === 0) return "אין מספיק נתונים למבחן הזה.";
-    const strong = rows.filter((r) => r.pct >= 0.8).sort((a, b) => b.pct - a.pct);
-    const weak = rows.filter((r) => r.pct < 0.6).sort((a, b) => a.pct - b.pct);
-    const middle = rows.filter((r) => r.pct >= 0.6 && r.pct < 0.8);
-    const parts = [];
-    if (strong.length) {
-        parts.push("חזק ב" + strong.map((r) => r.label).join(", ") + " — " +
-            strong.map((r) => r.right + "/" + r.total).join(", ") + ".");
+
+    const score = Math.round(rows.reduce((sum, r) => sum + examCategoryMeta(r.kind).weight * r.pct, 0));
+    if (score >= 100) return "מבחן מושלם — כל " + EXAM_TOTAL + " השאלות נכונות. אפשר להעלות קצב.";
+
+    const parts = [examVerdict(score)];
+    const lost = rows.filter((r) => r.lost > 0).sort((a, b) => b.lost - a.lost);
+    const totalLost = Math.max(1, 100 - score);
+    const worst = lost[0];
+
+    if (worst) {
+        const marks = Math.max(1, Math.round(worst.lost));
+        const where = "ב" + worst.label + " (" + worst.right + " מתוך " + worst.total + ")";
+        if (lost.length === 1) {
+            parts.push(totalLost === 1
+                ? "הנקודה היחידה שירדה היא " + where + "."
+                : "כל " + totalLost + " הנקודות שירדו הן " + where + ".");
+        } else {
+            parts.push("הכי הרבה נקודות ירדו " + where + " — " +
+                (marks === 1 ? "נקודה אחת" : marks + " נקודות") + " מתוך " + totalLost + ".");
+        }
+        parts.push(EXAM_TIPS[worst.kind] || "");
     }
-    if (middle.length) {
-        parts.push("סביר ב" + middle.map((r) => r.label).join(", ") + ", יש עוד מרווח.");
+
+    const clean = rows.filter((r) => r.pct >= 1).map((r) => r.label);
+    if (clean.length && clean.length < rows.length) {
+        parts.push("ללא טעות ב" + clean.join(", ") + ".");
     }
-    if (weak.length) {
-        parts.push("כדאי להשקיע ב" + weak.map((r) => r.label).join(", ") + " — " +
-            weak.map((r) => r.right + "/" + r.total).join(", ") + ".");
-        const first = weak[0];
-        if (first.kind === "vocab") parts.push("סבב כרטיסיות יומי יסגור את הפער הזה הכי מהר.");
-        else if (first.kind === "sentence") parts.push("תרגול הרכבת משפטים בכיוון עברית ← ערבית הוא התרגיל שיעזור כאן.");
-        else if (first.kind === "idiom") parts.push("הניבים הם הקטגוריה הקטנה — כמה סבבים קצרים והם ייסגרו.");
-        else parts.push("סבב כרטיסיות אותיות של חמש דקות מספיק בדרך כלל.");
-    }
-    if (!strong.length && !weak.length && !middle.length) parts.push("תוצאה מאוזנת בכל הקטגוריות.");
-    if (!weak.length && strong.length === rows.length) parts.push("אין קטגוריה חלשה במבחן הזה — אפשר להעלות קצב.");
-    return parts.join(" ");
+    return parts.filter(Boolean).join(" ");
 }
 
 function FullExam({ banks, onBack, onExamStart, onExamFinish }) {
@@ -2980,7 +3016,7 @@ function authMessage(err) {
     return AUTH_MESSAGES[err.code] || ("ההתחברות נכשלה (" + (err.code || "שגיאה") + ")");
 }
 
-function LoginScreen({ theme, onToggleTheme }) {
+function LoginScreen({ theme, onToggleTheme, notice }) {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [busy, setBusy] = useState(false);
@@ -3009,6 +3045,11 @@ function LoginScreen({ theme, onToggleTheme }) {
                     React.createElement("h1", { className: "zl-brand-title", style: { fontSize: "1.35rem" } }, "לומדים ערבית"),
                     React.createElement("p", { style: { fontSize: "0.82rem", color: "rgba(255,255,255,0.62)", marginTop: 6 } }, "התחבר כדי להמשיך")),
                 React.createElement("div", { className: "zl-login-body" },
+                    notice ? React.createElement("p", { className: "zl-anim", style: {
+                        background: "var(--bad-bg)", color: "var(--bad)", fontWeight: 600,
+                        fontSize: "0.8rem", borderRadius: 9, padding: "9px 12px", marginBottom: 14,
+                        textAlign: "center",
+                    } }, notice) : null,
                     React.createElement("form", { onSubmit: submit },
                         React.createElement("label", { style: { display: "block", fontSize: "0.8rem", fontWeight: 700, marginBottom: 4 } }, "מייל",
                             React.createElement("input", { type: "email", value: email, autoComplete: "username", inputMode: "email",
@@ -3131,6 +3172,7 @@ function useCloudSync(user, state, setters) {
    ROOT APP
    ========================================================================= */
 const GREETING_MIN_MS = 1500;
+const IDLE_LIMIT_MS = 5 * 60 * 1000;   // sign out after five idle minutes
 const GREETING_MAX_MS = 6000;
 
 function ArabicLearningApp() {
@@ -3149,6 +3191,13 @@ function ArabicLearningApp() {
     const [greetElapsed, setGreetElapsed] = useState(false);
     const [greetTimedOut, setGreetTimedOut] = useState(false);
     const [leaving, setLeaving] = useState(false);
+    const [showGreeting, setShowGreeting] = useState(false);
+    const [idleOut, setIdleOut] = useState(false);
+    const [waitTimedOut, setWaitTimedOut] = useState(false);
+    /* Firebase reports a restored session and a fresh sign-in identically.
+       The difference is that a sign-in is preceded by a signed-out state, so
+       remembering that we saw one tells a login apart from a page reload. */
+    const wasSignedOut = useRef(false);
 
     const syncState = { vocab, letters, sentences, idioms, checklist, exams, profile };
     const sync = useCloudSync(user, syncState, {
@@ -3157,20 +3206,34 @@ function ArabicLearningApp() {
 
     useEffect(() => {
         if (!window.ZL_FIREBASE_READY) { setUser(null); return; }
-        return firebase.auth().onAuthStateChanged((u) => setUser(u || null));
+        return firebase.auth().onAuthStateChanged((u) => {
+            if (!u) { wasSignedOut.current = true; setUser(null); return; }
+            if (wasSignedOut.current) {
+                wasSignedOut.current = false;
+                setShowGreeting(true);      // arriving from the login screen
+                setIdleOut(false);
+            }
+            setUser(u);
+        });
     }, []);
 
     /* The greeting holds for a beat, and for as long as the first sync is
        still running — but never past the ceiling, so a stalled network can
        not lock anyone out of their own progress. */
     useEffect(() => {
-        if (!user) { setGreetElapsed(false); setGreetTimedOut(false); return; }
+        if (!user) { setWaitTimedOut(false); return; }
+        const t = setTimeout(() => setWaitTimedOut(true), GREETING_MAX_MS);
+        return () => clearTimeout(t);
+    }, [user]);
+
+    useEffect(() => {
+        if (!showGreeting) { setGreetElapsed(false); setGreetTimedOut(false); return; }
         setGreetElapsed(false);
         setGreetTimedOut(false);
         const a = setTimeout(() => setGreetElapsed(true), GREETING_MIN_MS);
         const b = setTimeout(() => setGreetTimedOut(true), GREETING_MAX_MS);
         return () => { clearTimeout(a); clearTimeout(b); };
-    }, [user]);
+    }, [showGreeting]);
 
     // the page background sits outside the app container, so it is set here too
     useEffect(() => {
@@ -3235,6 +3298,35 @@ function ArabicLearningApp() {
         setAccountOpen(false);
         setLeaving(true);
     };
+    /* Five unbroken minutes without a touch, a key or a scroll ends the
+       session.
+
+       The clock is a timestamp rather than a countdown on purpose. A phone
+       suspends timers the moment the tab goes to the background, so a plain
+       setTimeout would simply stop counting while the app is away — and
+       resetting it on return would treat "gone for an hour" as activity.
+       Comparing against the time of the last real interaction gets both
+       cases right. */
+    useEffect(() => {
+        if (!user || leaving) return;
+        let last = Date.now();
+        const mark = () => { last = Date.now(); };
+        const check = () => {
+            if (Date.now() - last >= IDLE_LIMIT_MS) { setIdleOut(true); startLogout(); }
+        };
+        const events = ["pointerdown", "keydown", "wheel", "touchstart", "mousemove"];
+        events.forEach((e) => window.addEventListener(e, mark, { passive: true }));
+        const onVisible = () => { if (!document.hidden) check(); };
+        document.addEventListener("visibilitychange", onVisible);
+        const tick = setInterval(check, 15000);
+        return () => {
+            clearInterval(tick);
+            events.forEach((e) => window.removeEventListener(e, mark));
+            document.removeEventListener("visibilitychange", onVisible);
+        };
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [user, leaving]);
+
     useEffect(() => {
         if (!leaving) return;
         const t = setTimeout(() => {
@@ -3253,7 +3345,13 @@ function ArabicLearningApp() {
                     "טעינת שירותי ההתחברות נכשלה. בדוק את החיבור לאינטרנט ורענן את הדף."))));
     }
 
-    if (user === undefined) {
+    /* A reload keeps the same screen the browser painted before React
+       existed, right through the auth check and the first sync, so the page
+       never flickers between two different waiting states. */
+    const settling = sync.status === "idle" || sync.status === "loading";
+    const restoring = user === undefined
+        || (!!user && !showGreeting && settling && !waitTimedOut);
+    if (restoring) {
         return (React.createElement("div", { className: "zl-root", "data-theme": theme },
             React.createElement(GlobalStyle, null),
             React.createElement(GreetingScreen, {
@@ -3272,10 +3370,13 @@ function ArabicLearningApp() {
     }
 
     if (!user) {
-        return React.createElement(LoginScreen, { theme: theme, onToggleTheme: toggleTheme });
+        return React.createElement(LoginScreen, {
+            theme: theme, onToggleTheme: toggleTheme,
+            notice: idleOut ? "נותקת אוטומטית לאחר חמש דקות ללא פעילות" : null,
+        });
     }
 
-    const stillGreeting = !greetTimedOut && (!greetElapsed || sync.status === "loading");
+    const stillGreeting = showGreeting && !greetTimedOut && (!greetElapsed || settling);
     if (stillGreeting) {
         return (React.createElement("div", { className: "zl-root", "data-theme": theme },
             React.createElement(GlobalStyle, null),
