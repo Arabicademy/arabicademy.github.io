@@ -132,7 +132,7 @@ try {
     throw new Error("React / ReactDOM לא נטענו מה-CDN (בדוק חיבור לאינטרנט או חסימת סקריפטים).");
   }
 "use strict";
-const APP_BUILD = "20.08 · 39";   // bump this every time the file is replaced
+const APP_BUILD = "21.08 · 41";   // bump this every time the file is replaced
 
 /* The institute logo, carried inline so the page stays a single file.
    LOGO_MARK is the emblem alone (header); LOGO_FULL includes the name
@@ -638,129 +638,129 @@ const GlobalStyle = () => (React.createElement("style", null, GLOBAL_CSS));
    `alts` holds a second, unrelated meaning of the same word (אַמִין is both a
    role and a man's name); practice alternates between them. */
 const DEFAULT_VOCAB = [
-    { id: 1, front: "צַבַּאח (א)לְחֵ'יר", back: "בוקר טוב", topic: "ברכות" },
-    { id: 2, front: "צַבַּאח (אל)נّוּר", back: "בוקר אור", topic: "ברכות" },
-    { id: 3, front: "מַסַא (א)לְחֵ'יר", back: "ערב טוב", topic: "ברכות" },
-    { id: 4, front: "מַסַא (אל)נّוּר", back: "ערב אור", topic: "ברכות" },
-    { id: 5, front: "מַרְחַבַּא", back: "שלום רב", topic: "ברכות" },
-    { id: 6, front: "מַרְחַבְּתֵין", back: "רב שלומות", topic: "ברכות" },
-    { id: 7, front: "אַהְלַן וְסַהְלַן", back: "שלום וברכה", topic: "ברכות" },
-    { id: 8, front: "אַהְלַן וְסַהְלַן בִּיכּ", back: "שלום וברכה לך", topic: "ברכות" },
-    { id: 9, front: "אִסֵם", back: "שם", topic: "מושגים", form: "יחיד", pair: [70] },
-    { id: 10, front: "אַמִיר", back: "נסיך", topic: "אנשים ותפקידים", form: "יחיד", pair: [71] },
-    { id: 11, front: "מְעַלֵّם", back: "מורה / אחראי", topic: "אנשים ותפקידים", form: "יחיד", pair: [72] },
-    { id: 12, front: "מְעַלְّמֵה", back: "מורָה", topic: "אנשים ותפקידים", form: "יחיד", pair: [73] },
-    { id: 13, front: "בִּ", back: "ב...", topic: "מילות יחס" },
-    { id: 14, front: "פִי", back: "ב...", alts: ["יש"], topic: "מילות יחס" },
-    { id: 15, front: "מַע", back: "עם", topic: "מילות יחס" },
-    { id: 16, front: "דַוְרַה", back: "קורס", topic: "לימודים ומוסדות", form: "יחיד", pair: [74] },
-    { id: 17, front: "טַאלֵבּ", back: "סטודנט", topic: "אנשים ותפקידים", form: "יחיד", pair: [75] },
-    { id: 18, front: "טַאלְבֵּה", back: "סטודנטית", topic: "אנשים ותפקידים", form: "יחיד", pair: [76] },
-    { id: 19, front: "גַ'אמְעַה", back: "אוניברסיטה", topic: "לימודים ומוסדות", form: "יחיד", pair: [77] },
-    { id: 20, front: "סֵכְּרֵתֵירַא", back: "מזכירה", topic: "אנשים ותפקידים", form: "יחיד", pair: [78] },
-    { id: 21, front: "סֵכְּרֵתֵיר", back: "מזכיר", topic: "אנשים ותפקידים", form: "יחיד", pair: [79] },
-    { id: 22, front: "אַמִין", back: "מזכיר של גוף רשמי / ישר / אמין", alts: ["שם של גבר"], topic: "אנשים ותפקידים" },
-    { id: 23, front: "אַמִינֵה", back: "מזכירה של גוף רשמי / ישרה / אמינה", alts: ["שם של בחורה"], topic: "אנשים ותפקידים" },
-    { id: 24, front: "מַדְרַסֵה", back: "בית ספר", topic: "לימודים ומוסדות", form: "יחיד", pair: [80] },
-    { id: 25, front: "מֻדִיר", back: "מנהל", topic: "אנשים ותפקידים", form: "יחיד", pair: [81] },
-    { id: 26, front: "מֻדִירֵה", back: "מנהלת", topic: "אנשים ותפקידים", form: "יחיד", pair: [82] },
-    { id: 27, front: "שִרְכֵּה", back: "חברה (ארגון / עסק)", topic: "לימודים ומוסדות", form: "יחיד", pair: [83] },
-    { id: 28, front: "מֻחַאמִי", back: "עורך דין", topic: "אנשים ותפקידים", form: "יחיד", pair: [84] },
-    { id: 29, front: "מֻחַאמִיֵّה", back: "עורכת דין", topic: "אנשים ותפקידים", form: "יחיד", pair: [85] },
-    { id: 30, front: "וִזַארַה", back: "משרד ממשלתי", topic: "לימודים ומוסדות", form: "יחיד", pair: [86] },
-    { id: 31, front: "עַדֵל", back: "צדק", topic: "מושגים" },
-    { id: 32, front: "תִלְמִיז", back: "תלמיד", topic: "אנשים ותפקידים", form: "יחיד", pair: [87] },
-    { id: 33, front: "תִלְמִיזֵה", back: "תלמידה", topic: "אנשים ותפקידים", form: "יחיד", pair: [88] },
-    { id: 34, front: "צַאחֵבּ", back: "חבר / בעל מקום או עסק", topic: "אנשים ותפקידים", form: "יחיד", pair: [89] },
-    { id: 35, front: "צַאחְבֵּה", back: "חברה / בעלת מקום או עסק", topic: "אנשים ותפקידים", form: "יחיד", pair: [90] },
-    { id: 36, front: "דַאר", back: "בית", topic: "בית ומקומות", form: "יחיד", pair: [91] },
-    { id: 37, front: "וַלַד", back: "ילד", topic: "משפחה", form: "יחיד", pair: [92] },
-    { id: 38, front: "אִבֵּן", back: "בן", topic: "משפחה", form: "יחיד", pair: [93] },
-    { id: 39, front: "בִּנְת", back: "ילדה / בת", topic: "משפחה", form: "יחיד", pair: [94] },
-    { id: 40, front: "עַםّ", back: "דוד מצד האב", topic: "משפחה", form: "יחיד", pair: [95] },
-    { id: 41, front: "עַמֵّה", back: "דודה מצד האב", topic: "משפחה", form: "יחיד", pair: [96] },
-    { id: 42, front: "חַ'אל", back: "דוד מצד האם", topic: "משפחה", form: "יחיד", pair: [97] },
-    { id: 43, front: "חַ'אלֵה", back: "דודה מצד האם", topic: "משפחה", form: "יחיד", pair: [98] },
-    { id: 44, front: "סַלַאמֵה", back: "בריאות / שלמות", topic: "מושגים" },
-    { id: 45, front: "צַّפ", back: "כיתה", topic: "כיתה וציוד", form: "יחיד", pair: [99] },
-    { id: 46, front: "בַּאבּ", back: "דלת / שער", topic: "כיתה וציוד", form: "יחיד", pair: [100] },
-    { id: 47, front: "שֻבַּّאכּ", back: "חלון", topic: "כיתה וציוד", form: "יחיד", pair: [101] },
-    { id: 48, front: "חֵיט", back: "קיר", topic: "כיתה וציוד", form: "יחיד", pair: [102] },
-    { id: 49, front: "כֻּרְסִי", back: "כסא", topic: "כיתה וציוד", form: "יחיד", pair: [103] },
-    { id: 50, front: "טַאוְלֵה", back: "שולחן", topic: "כיתה וציוד", form: "יחיד", pair: [104] },
-    { id: 51, front: "לוֹח", back: "לוח", topic: "כיתה וציוד", form: "יחיד", pair: [105] },
-    { id: 52, front: "קַלַם", back: "עט", topic: "כיתה וציוד", form: "יחיד", pair: [106] },
-    { id: 53, front: "קַלַם רְצַאצ", back: "עיפרון", topic: "כיתה וציוד", form: "יחיד", pair: [107] },
-    { id: 54, front: "דַפְתַר", back: "מחברת", topic: "כיתה וציוד", form: "יחיד", pair: [108] },
-    { id: 55, front: "כְּתַאב", back: "ספר", topic: "כיתה וציוד", form: "יחיד", pair: [109] },
-    { id: 56, front: "כֻּרַّאסֵה", back: "חוברת", topic: "כיתה וציוד", form: "יחיד", pair: [110, 111] },
-    { id: 57, front: "שַנְטַה", back: "תיק / מזוודה", topic: "כיתה וציוד", form: "יחיד", pair: [112, 113] },
-    { id: 58, front: "שַנְתַה", back: "תיק / מזוודה", topic: "כיתה וציוד", form: "יחיד", pair: [114, 115] },
-    { id: 59, front: "וַרְקַה", back: "דף", topic: "כיתה וציוד", form: "יחיד", pair: [116, 117] },
-    { id: 60, front: "צַפְחַה", back: "עמוד", topic: "כיתה וציוד", form: "יחיד", pair: [118] },
-    { id: 61, front: "אִסְתִרַאחַה", back: "הפסקה", topic: "אוכל והפסקה", form: "יחיד", pair: [119] },
-    { id: 62, front: "פֻרְצַה", back: "הזדמנות / סיכוי / חופשה / הפסקה", topic: "אוכל והפסקה", form: "יחיד", pair: [120] },
-    { id: 63, front: "קַהְוֵה", back: "קפה", topic: "אוכל והפסקה" },
-    { id: 64, front: "שַאיְ", back: "תה", topic: "אוכל והפסקה" },
-    { id: 65, front: "סֻכַּّר", back: "סוכר", topic: "אוכל והפסקה" },
-    { id: 66, front: "כַּאסֵה", back: "כוס", topic: "אוכל והפסקה", form: "יחיד", pair: [121] },
-    { id: 67, front: "כֻּבַּّאיֵה", back: "כוס", topic: "אוכל והפסקה", form: "יחיד", pair: [122] },
-    { id: 68, front: "חַמַّאם", back: "אמבטיה / בית שימוש", topic: "בית ומקומות", form: "יחיד", pair: [123] },
-    { id: 69, front: "מֻחַאמַאה", back: "עריכת דין", topic: "מושגים" },
-    { id: 70, front: "אַסַאמִי", back: "שמות", topic: "מושגים", form: "רבים", pair: [9] },
-    { id: 71, front: "אֻמַרַאא", back: "נסיכים", topic: "אנשים ותפקידים", form: "רבים", pair: [10] },
-    { id: 72, front: "מְעַלְّמִין", back: "מורים / אחראים", topic: "אנשים ותפקידים", form: "רבים", pair: [11] },
-    { id: 73, front: "מְעַלְّמַאת", back: "מורות", topic: "אנשים ותפקידים", form: "רבים", pair: [12] },
-    { id: 74, front: "דַוְרַאת", back: "קורסים", topic: "לימודים ומוסדות", form: "רבים", pair: [16] },
-    { id: 75, front: "טֻלַّאבּ", back: "סטודנטים", topic: "אנשים ותפקידים", form: "רבים", pair: [17] },
-    { id: 76, front: "טַאלִבַּאת", back: "סטודנטיות", topic: "אנשים ותפקידים", form: "רבים", pair: [18] },
-    { id: 77, front: "גַ'אמִעַאת", back: "אוניברסיטאות", topic: "לימודים ומוסדות", form: "רבים", pair: [19] },
-    { id: 78, front: "סֵכְּרֵתֵירַאת", back: "מזכירות", topic: "אנשים ותפקידים", form: "רבים", pair: [20] },
-    { id: 79, front: "סֵכְּרֵתֵירִיוּן", back: "מזכירים", topic: "אנשים ותפקידים", form: "רבים", pair: [21] },
-    { id: 80, front: "מַדַארֵס", back: "בתי ספר", topic: "לימודים ומוסדות", form: "רבים", pair: [24] },
-    { id: 81, front: "מֻדַרַאא", back: "מנהלים", topic: "אנשים ותפקידים", form: "רבים", pair: [25] },
-    { id: 82, front: "מֻדִירַאת", back: "מנהלות", topic: "אנשים ותפקידים", form: "רבים", pair: [26] },
-    { id: 83, front: "שַרִכַּאת", back: "חברות (ארגונים / עסקים)", topic: "לימודים ומוסדות", form: "רבים", pair: [27] },
-    { id: 84, front: "מֻחַאמִיִّין", back: "עורכי דין", topic: "אנשים ותפקידים", form: "רבים", pair: [28] },
-    { id: 85, front: "מֻחַאמִיַّאת", back: "עורכות דין", topic: "אנשים ותפקידים", form: "רבים", pair: [29] },
-    { id: 86, front: "וִזַארַאת", back: "משרדי ממשלה", topic: "לימודים ומוסדות", form: "רבים", pair: [30] },
-    { id: 87, front: "תַלַאמִיז", back: "תלמידים", topic: "אנשים ותפקידים", form: "רבים", pair: [32] },
-    { id: 88, front: "תִלְמִיזַאת", back: "תלמידות", topic: "אנשים ותפקידים", form: "רבים", pair: [33] },
-    { id: 89, front: "אַצְחַאבּ", back: "חברים / בעלי מקום או עסק", topic: "אנשים ותפקידים", form: "רבים", pair: [34] },
-    { id: 90, front: "צַאחְבַּאת", back: "חברות / בעלות מקום או עסק", topic: "אנשים ותפקידים", form: "רבים", pair: [35] },
-    { id: 91, front: "דוּר", back: "בתים", topic: "בית ומקומות", form: "רבים", pair: [36] },
-    { id: 92, front: "וְלַאד", back: "ילדים", topic: "משפחה", form: "רבים", pair: [37] },
-    { id: 93, front: "אַבְּנַאא", back: "בנים", topic: "משפחה", form: "רבים", pair: [38] },
-    { id: 94, front: "בַּנַאת", back: "ילדות / בנות", topic: "משפחה", form: "רבים", pair: [39] },
-    { id: 95, front: "עֻמוּם", back: "דודים מצד האב", topic: "משפחה", form: "רבים", pair: [40] },
-    { id: 96, front: "עַמַّאת", back: "דודות מצד האב", topic: "משפחה", form: "רבים", pair: [41] },
-    { id: 97, front: "אַחְ'וַאל", back: "דודים מצד האם", topic: "משפחה", form: "רבים", pair: [42] },
-    { id: 98, front: "חַ'אלַאת", back: "דודות מצד האם", topic: "משפחה", form: "רבים", pair: [43] },
-    { id: 99, front: "צְפוּפ", back: "כיתות", topic: "כיתה וציוד", form: "רבים", pair: [45] },
-    { id: 100, front: "אַבְּוַאבּ", back: "דלתות / שערים", topic: "כיתה וציוד", form: "רבים", pair: [46] },
-    { id: 101, front: "שַבַּאבִּיכּ", back: "חלונות", topic: "כיתה וציוד", form: "רבים", pair: [47] },
-    { id: 102, front: "חֵיטַאן", back: "קירות", topic: "כיתה וציוד", form: "רבים", pair: [48] },
-    { id: 103, front: "כַּרַאסִי", back: "כסאות", topic: "כיתה וציוד", form: "רבים", pair: [49] },
-    { id: 104, front: "טַאוְלַאת", back: "שולחנות", topic: "כיתה וציוד", form: "רבים", pair: [50] },
-    { id: 105, front: "אַלְוַאח", back: "לוחות", topic: "כיתה וציוד", form: "רבים", pair: [51] },
-    { id: 106, front: "קְלַאם", back: "עטים", topic: "כיתה וציוד", form: "רבים", pair: [52] },
-    { id: 107, front: "קְלַאם רְצַאצ", back: "עפרונות", topic: "כיתה וציוד", form: "רבים", pair: [53] },
-    { id: 108, front: "דַפַאתֵר", back: "מחברות", topic: "כיתה וציוד", form: "רבים", pair: [54] },
-    { id: 109, front: "כֻּתֻבּ", back: "ספרים", topic: "כיתה וציוד", form: "רבים", pair: [55] },
-    { id: 110, front: "כֻּרַّאסַאת", back: "חוברות", topic: "כיתה וציוד", form: "רבים", pair: [56] },
-    { id: 111, front: "כַּרַארִיס", back: "חוברות", topic: "כיתה וציוד", form: "רבים", pair: [56] },
-    { id: 112, front: "שֻנַט", back: "תיקים / מזוודות", topic: "כיתה וציוד", form: "רבים", pair: [57] },
-    { id: 113, front: "שַנְטַאת", back: "תיקים / מזוודות", topic: "כיתה וציוד", form: "רבים", pair: [57] },
-    { id: 114, front: "שֻנַת", back: "תיקים / מזוודות", topic: "כיתה וציוד", form: "רבים", pair: [58] },
-    { id: 115, front: "שַנְתַאת", back: "תיקים / מזוודות", topic: "כיתה וציוד", form: "רבים", pair: [58] },
-    { id: 116, front: "אַוְרַאק", back: "דפים", topic: "כיתה וציוד", form: "רבים", pair: [59] },
-    { id: 117, front: "וְרַאק", back: "דפים", topic: "כיתה וציוד", form: "רבים", pair: [59] },
-    { id: 118, front: "צַפְחַאת", back: "עמודים", topic: "כיתה וציוד", form: "רבים", pair: [60] },
-    { id: 119, front: "אִסְתִרַאחַאת", back: "הפסקות", topic: "אוכל והפסקה", form: "רבים", pair: [61] },
-    { id: 120, front: "פֻרַצ", back: "הזדמנויות / סיכויים / חופשות / הפסקות", topic: "אוכל והפסקה", form: "רבים", pair: [62] },
-    { id: 121, front: "כַּאסַאת", back: "כוסות", topic: "אוכל והפסקה", form: "רבים", pair: [66] },
-    { id: 122, front: "כֻּבַּّאיַאת", back: "כוסות", topic: "אוכל והפסקה", form: "רבים", pair: [67] },
-    { id: 123, front: "חַמַّאמַאת", back: "אמבטיות / בתי שימוש", topic: "בית ומקומות", form: "רבים", pair: [68] },
+    { id: 1, front: "צַבַּאח (א)לְחֵ'יר", back: "בוקר טוב", topic: "ברכות", meeting: 1 },
+    { id: 2, front: "צַבַּאח (אל)נّוּר", back: "בוקר אור", topic: "ברכות", meeting: 1 },
+    { id: 3, front: "מַסַא (א)לְחֵ'יר", back: "ערב טוב", topic: "ברכות", meeting: 1 },
+    { id: 4, front: "מַסַא (אל)נّוּר", back: "ערב אור", topic: "ברכות", meeting: 1 },
+    { id: 5, front: "מַרְחַבַּא", back: "שלום רב", topic: "ברכות", meeting: 1 },
+    { id: 6, front: "מַרְחַבְּתֵין", back: "רב שלומות", topic: "ברכות", meeting: 1 },
+    { id: 7, front: "אַהְלַן וְסַהְלַן", back: "שלום וברכה", topic: "ברכות", meeting: 1 },
+    { id: 8, front: "אַהְלַן וְסַהְלַן בִּיכּ", back: "שלום וברכה לך", topic: "ברכות", meeting: 1 },
+    { id: 9, front: "אִסֵם", back: "שם", topic: "מושגים", form: "יחיד", pair: [70], meeting: 1 },
+    { id: 10, front: "אַמִיר", back: "נסיך", topic: "אנשים ותפקידים", form: "יחיד", pair: [71], meeting: 1 },
+    { id: 11, front: "מְעַלֵّם", back: "מורה / אחראי", topic: "אנשים ותפקידים", form: "יחיד", pair: [72], meeting: 1 },
+    { id: 12, front: "מְעַלְّמֵה", back: "מורָה", topic: "אנשים ותפקידים", form: "יחיד", pair: [73], meeting: 1 },
+    { id: 13, front: "בִּ", back: "ב...", topic: "מילות יחס", meeting: 1 },
+    { id: 14, front: "פִי", back: "ב...", alts: ["יש"], topic: "מילות יחס", meeting: 1 },
+    { id: 15, front: "מַע", back: "עם", topic: "מילות יחס", meeting: 1 },
+    { id: 16, front: "דַוְרַה", back: "קורס", topic: "לימודים ומוסדות", form: "יחיד", pair: [74], meeting: 1 },
+    { id: 17, front: "טַאלֵבּ", back: "סטודנט", topic: "אנשים ותפקידים", form: "יחיד", pair: [75], meeting: 1 },
+    { id: 18, front: "טַאלְבֵּה", back: "סטודנטית", topic: "אנשים ותפקידים", form: "יחיד", pair: [76], meeting: 1 },
+    { id: 19, front: "גַ'אמְעַה", back: "אוניברסיטה", topic: "לימודים ומוסדות", form: "יחיד", pair: [77], meeting: 1 },
+    { id: 20, front: "סֵכְּרֵתֵירַא", back: "מזכירה", topic: "אנשים ותפקידים", form: "יחיד", pair: [78], meeting: 1 },
+    { id: 21, front: "סֵכְּרֵתֵיר", back: "מזכיר", topic: "אנשים ותפקידים", form: "יחיד", pair: [79], meeting: 1 },
+    { id: 22, front: "אַמִין", back: "מזכיר של גוף רשמי / ישר / אמין", alts: ["שם של גבר"], topic: "אנשים ותפקידים", meeting: 1 },
+    { id: 23, front: "אַמִינֵה", back: "מזכירה של גוף רשמי / ישרה / אמינה", alts: ["שם של בחורה"], topic: "אנשים ותפקידים", meeting: 1 },
+    { id: 24, front: "מַדְרַסֵה", back: "בית ספר", topic: "לימודים ומוסדות", form: "יחיד", pair: [80], meeting: 1 },
+    { id: 25, front: "מֻדִיר", back: "מנהל", topic: "אנשים ותפקידים", form: "יחיד", pair: [81], meeting: 1 },
+    { id: 26, front: "מֻדִירֵה", back: "מנהלת", topic: "אנשים ותפקידים", form: "יחיד", pair: [82], meeting: 1 },
+    { id: 27, front: "שִרְכֵּה", back: "חברה (ארגון / עסק)", topic: "לימודים ומוסדות", form: "יחיד", pair: [83], meeting: 1 },
+    { id: 28, front: "מֻחַאמִי", back: "עורך דין", topic: "אנשים ותפקידים", form: "יחיד", pair: [84], meeting: 1 },
+    { id: 29, front: "מֻחַאמִיֵّה", back: "עורכת דין", topic: "אנשים ותפקידים", form: "יחיד", pair: [85], meeting: 1 },
+    { id: 30, front: "וִזַארַה", back: "משרד ממשלתי", topic: "לימודים ומוסדות", form: "יחיד", pair: [86], meeting: 1 },
+    { id: 31, front: "עַדֵל", back: "צדק", topic: "מושגים", meeting: 1 },
+    { id: 32, front: "תִלְמִיז", back: "תלמיד", topic: "אנשים ותפקידים", form: "יחיד", pair: [87], meeting: 1 },
+    { id: 33, front: "תִלְמִיזֵה", back: "תלמידה", topic: "אנשים ותפקידים", form: "יחיד", pair: [88], meeting: 1 },
+    { id: 34, front: "צַאחֵבּ", back: "חבר / בעל מקום או עסק", topic: "אנשים ותפקידים", form: "יחיד", pair: [89], meeting: 1 },
+    { id: 35, front: "צַאחְבֵּה", back: "חברה / בעלת מקום או עסק", topic: "אנשים ותפקידים", form: "יחיד", pair: [90], meeting: 1 },
+    { id: 36, front: "דַאר", back: "בית", topic: "בית ומקומות", form: "יחיד", pair: [91], meeting: 1 },
+    { id: 37, front: "וַלַד", back: "ילד", topic: "משפחה", form: "יחיד", pair: [92], meeting: 1 },
+    { id: 38, front: "אִבֵּן", back: "בן", topic: "משפחה", form: "יחיד", pair: [93], meeting: 1 },
+    { id: 39, front: "בִּנְת", back: "ילדה / בת", topic: "משפחה", form: "יחיד", pair: [94], meeting: 1 },
+    { id: 40, front: "עַםّ", back: "דוד מצד האב", topic: "משפחה", form: "יחיד", pair: [95], meeting: 1 },
+    { id: 41, front: "עַמֵّה", back: "דודה מצד האב", topic: "משפחה", form: "יחיד", pair: [96], meeting: 1 },
+    { id: 42, front: "חַ'אל", back: "דוד מצד האם", topic: "משפחה", form: "יחיד", pair: [97], meeting: 1 },
+    { id: 43, front: "חַ'אלֵה", back: "דודה מצד האם", topic: "משפחה", form: "יחיד", pair: [98], meeting: 1 },
+    { id: 44, front: "סַלַאמֵה", back: "בריאות / שלמות", topic: "מושגים", meeting: 1 },
+    { id: 45, front: "צַّפ", back: "כיתה", topic: "כיתה וציוד", form: "יחיד", pair: [99], meeting: 1 },
+    { id: 46, front: "בַּאבּ", back: "דלת / שער", topic: "כיתה וציוד", form: "יחיד", pair: [100], meeting: 1 },
+    { id: 47, front: "שֻבַּّאכּ", back: "חלון", topic: "כיתה וציוד", form: "יחיד", pair: [101], meeting: 1 },
+    { id: 48, front: "חֵיט", back: "קיר", topic: "כיתה וציוד", form: "יחיד", pair: [102], meeting: 1 },
+    { id: 49, front: "כֻּרְסִי", back: "כסא", topic: "כיתה וציוד", form: "יחיד", pair: [103], meeting: 1 },
+    { id: 50, front: "טַאוְלֵה", back: "שולחן", topic: "כיתה וציוד", form: "יחיד", pair: [104], meeting: 1 },
+    { id: 51, front: "לוֹח", back: "לוח", topic: "כיתה וציוד", form: "יחיד", pair: [105], meeting: 1 },
+    { id: 52, front: "קַלַם", back: "עט", topic: "כיתה וציוד", form: "יחיד", pair: [106], meeting: 1 },
+    { id: 53, front: "קַלַם רְצַאצ", back: "עיפרון", topic: "כיתה וציוד", form: "יחיד", pair: [107], meeting: 1 },
+    { id: 54, front: "דַפְתַר", back: "מחברת", topic: "כיתה וציוד", form: "יחיד", pair: [108], meeting: 1 },
+    { id: 55, front: "כְּתַאב", back: "ספר", topic: "כיתה וציוד", form: "יחיד", pair: [109], meeting: 1 },
+    { id: 56, front: "כֻּרַّאסֵה", back: "חוברת", topic: "כיתה וציוד", form: "יחיד", pair: [110, 111], meeting: 1 },
+    { id: 57, front: "שַנְטַה", back: "תיק / מזוודה", topic: "כיתה וציוד", form: "יחיד", pair: [112, 113], meeting: 1 },
+    { id: 58, front: "שַנְתַה", back: "תיק / מזוודה", topic: "כיתה וציוד", form: "יחיד", pair: [114, 115], meeting: 1 },
+    { id: 59, front: "וַרְקַה", back: "דף", topic: "כיתה וציוד", form: "יחיד", pair: [116, 117], meeting: 1 },
+    { id: 60, front: "צַפְחַה", back: "עמוד", topic: "כיתה וציוד", form: "יחיד", pair: [118], meeting: 1 },
+    { id: 61, front: "אִסְתִרַאחַה", back: "הפסקה", topic: "אוכל והפסקה", form: "יחיד", pair: [119], meeting: 1 },
+    { id: 62, front: "פֻרְצַה", back: "הזדמנות / סיכוי / חופשה / הפסקה", topic: "אוכל והפסקה", form: "יחיד", pair: [120], meeting: 1 },
+    { id: 63, front: "קַהְוֵה", back: "קפה", topic: "אוכל והפסקה", meeting: 1 },
+    { id: 64, front: "שַאיְ", back: "תה", topic: "אוכל והפסקה", meeting: 1 },
+    { id: 65, front: "סֻכַּّר", back: "סוכר", topic: "אוכל והפסקה", meeting: 1 },
+    { id: 66, front: "כַּאסֵה", back: "כוס", topic: "אוכל והפסקה", form: "יחיד", pair: [121], meeting: 1 },
+    { id: 67, front: "כֻּבַּّאיֵה", back: "כוס", topic: "אוכל והפסקה", form: "יחיד", pair: [122], meeting: 1 },
+    { id: 68, front: "חַמַّאם", back: "אמבטיה / בית שימוש", topic: "בית ומקומות", form: "יחיד", pair: [123], meeting: 1 },
+    { id: 69, front: "מֻחַאמַאה", back: "עריכת דין", topic: "מושגים", meeting: 1 },
+    { id: 70, front: "אַסַאמִי", back: "שמות", topic: "מושגים", form: "רבים", pair: [9], meeting: 1 },
+    { id: 71, front: "אֻמַרַאא", back: "נסיכים", topic: "אנשים ותפקידים", form: "רבים", pair: [10], meeting: 1 },
+    { id: 72, front: "מְעַלְّמִין", back: "מורים / אחראים", topic: "אנשים ותפקידים", form: "רבים", pair: [11], meeting: 1 },
+    { id: 73, front: "מְעַלְّמַאת", back: "מורות", topic: "אנשים ותפקידים", form: "רבים", pair: [12], meeting: 1 },
+    { id: 74, front: "דַוְרַאת", back: "קורסים", topic: "לימודים ומוסדות", form: "רבים", pair: [16], meeting: 1 },
+    { id: 75, front: "טֻלַّאבּ", back: "סטודנטים", topic: "אנשים ותפקידים", form: "רבים", pair: [17], meeting: 1 },
+    { id: 76, front: "טַאלִבַּאת", back: "סטודנטיות", topic: "אנשים ותפקידים", form: "רבים", pair: [18], meeting: 1 },
+    { id: 77, front: "גַ'אמִעַאת", back: "אוניברסיטאות", topic: "לימודים ומוסדות", form: "רבים", pair: [19], meeting: 1 },
+    { id: 78, front: "סֵכְּרֵתֵירַאת", back: "מזכירות", topic: "אנשים ותפקידים", form: "רבים", pair: [20], meeting: 1 },
+    { id: 79, front: "סֵכְּרֵתֵירִיוּן", back: "מזכירים", topic: "אנשים ותפקידים", form: "רבים", pair: [21], meeting: 1 },
+    { id: 80, front: "מַדַארֵס", back: "בתי ספר", topic: "לימודים ומוסדות", form: "רבים", pair: [24], meeting: 1 },
+    { id: 81, front: "מֻדַרַאא", back: "מנהלים", topic: "אנשים ותפקידים", form: "רבים", pair: [25], meeting: 1 },
+    { id: 82, front: "מֻדִירַאת", back: "מנהלות", topic: "אנשים ותפקידים", form: "רבים", pair: [26], meeting: 1 },
+    { id: 83, front: "שַרִכַּאת", back: "חברות (ארגונים / עסקים)", topic: "לימודים ומוסדות", form: "רבים", pair: [27], meeting: 1 },
+    { id: 84, front: "מֻחַאמִיִّין", back: "עורכי דין", topic: "אנשים ותפקידים", form: "רבים", pair: [28], meeting: 1 },
+    { id: 85, front: "מֻחַאמִיַّאת", back: "עורכות דין", topic: "אנשים ותפקידים", form: "רבים", pair: [29], meeting: 1 },
+    { id: 86, front: "וִזַארַאת", back: "משרדי ממשלה", topic: "לימודים ומוסדות", form: "רבים", pair: [30], meeting: 1 },
+    { id: 87, front: "תַלַאמִיז", back: "תלמידים", topic: "אנשים ותפקידים", form: "רבים", pair: [32], meeting: 1 },
+    { id: 88, front: "תִלְמִיזַאת", back: "תלמידות", topic: "אנשים ותפקידים", form: "רבים", pair: [33], meeting: 1 },
+    { id: 89, front: "אַצְחַאבּ", back: "חברים / בעלי מקום או עסק", topic: "אנשים ותפקידים", form: "רבים", pair: [34], meeting: 1 },
+    { id: 90, front: "צַאחְבַּאת", back: "חברות / בעלות מקום או עסק", topic: "אנשים ותפקידים", form: "רבים", pair: [35], meeting: 1 },
+    { id: 91, front: "דוּר", back: "בתים", topic: "בית ומקומות", form: "רבים", pair: [36], meeting: 1 },
+    { id: 92, front: "וְלַאד", back: "ילדים", topic: "משפחה", form: "רבים", pair: [37], meeting: 1 },
+    { id: 93, front: "אַבְּנַאא", back: "בנים", topic: "משפחה", form: "רבים", pair: [38], meeting: 1 },
+    { id: 94, front: "בַּנַאת", back: "ילדות / בנות", topic: "משפחה", form: "רבים", pair: [39], meeting: 1 },
+    { id: 95, front: "עֻמוּם", back: "דודים מצד האב", topic: "משפחה", form: "רבים", pair: [40], meeting: 1 },
+    { id: 96, front: "עַמַّאת", back: "דודות מצד האב", topic: "משפחה", form: "רבים", pair: [41], meeting: 1 },
+    { id: 97, front: "אַחְ'וַאל", back: "דודים מצד האם", topic: "משפחה", form: "רבים", pair: [42], meeting: 1 },
+    { id: 98, front: "חַ'אלַאת", back: "דודות מצד האם", topic: "משפחה", form: "רבים", pair: [43], meeting: 1 },
+    { id: 99, front: "צְפוּפ", back: "כיתות", topic: "כיתה וציוד", form: "רבים", pair: [45], meeting: 1 },
+    { id: 100, front: "אַבְּוַאבּ", back: "דלתות / שערים", topic: "כיתה וציוד", form: "רבים", pair: [46], meeting: 1 },
+    { id: 101, front: "שַבַּאבִּיכּ", back: "חלונות", topic: "כיתה וציוד", form: "רבים", pair: [47], meeting: 1 },
+    { id: 102, front: "חֵיטַאן", back: "קירות", topic: "כיתה וציוד", form: "רבים", pair: [48], meeting: 1 },
+    { id: 103, front: "כַּרַאסִי", back: "כסאות", topic: "כיתה וציוד", form: "רבים", pair: [49], meeting: 1 },
+    { id: 104, front: "טַאוְלַאת", back: "שולחנות", topic: "כיתה וציוד", form: "רבים", pair: [50], meeting: 1 },
+    { id: 105, front: "אַלְוַאח", back: "לוחות", topic: "כיתה וציוד", form: "רבים", pair: [51], meeting: 1 },
+    { id: 106, front: "קְלַאם", back: "עטים", topic: "כיתה וציוד", form: "רבים", pair: [52], meeting: 1 },
+    { id: 107, front: "קְלַאם רְצַאצ", back: "עפרונות", topic: "כיתה וציוד", form: "רבים", pair: [53], meeting: 1 },
+    { id: 108, front: "דַפַאתֵר", back: "מחברות", topic: "כיתה וציוד", form: "רבים", pair: [54], meeting: 1 },
+    { id: 109, front: "כֻּתֻבּ", back: "ספרים", topic: "כיתה וציוד", form: "רבים", pair: [55], meeting: 1 },
+    { id: 110, front: "כֻּרַّאסַאת", back: "חוברות", topic: "כיתה וציוד", form: "רבים", pair: [56], meeting: 1 },
+    { id: 111, front: "כַּרַארִיס", back: "חוברות", topic: "כיתה וציוד", form: "רבים", pair: [56], meeting: 1 },
+    { id: 112, front: "שֻנַט", back: "תיקים / מזוודות", topic: "כיתה וציוד", form: "רבים", pair: [57], meeting: 1 },
+    { id: 113, front: "שַנְטַאת", back: "תיקים / מזוודות", topic: "כיתה וציוד", form: "רבים", pair: [57], meeting: 1 },
+    { id: 114, front: "שֻנַת", back: "תיקים / מזוודות", topic: "כיתה וציוד", form: "רבים", pair: [58], meeting: 1 },
+    { id: 115, front: "שַנְתַאת", back: "תיקים / מזוודות", topic: "כיתה וציוד", form: "רבים", pair: [58], meeting: 1 },
+    { id: 116, front: "אַוְרַאק", back: "דפים", topic: "כיתה וציוד", form: "רבים", pair: [59], meeting: 1 },
+    { id: 117, front: "וְרַאק", back: "דפים", topic: "כיתה וציוד", form: "רבים", pair: [59], meeting: 1 },
+    { id: 118, front: "צַפְחַאת", back: "עמודים", topic: "כיתה וציוד", form: "רבים", pair: [60], meeting: 1 },
+    { id: 119, front: "אִסְתִרַאחַאת", back: "הפסקות", topic: "אוכל והפסקה", form: "רבים", pair: [61], meeting: 1 },
+    { id: 120, front: "פֻרַצ", back: "הזדמנויות / סיכויים / חופשות / הפסקות", topic: "אוכל והפסקה", form: "רבים", pair: [62], meeting: 1 },
+    { id: 121, front: "כַּאסַאת", back: "כוסות", topic: "אוכל והפסקה", form: "רבים", pair: [66], meeting: 1 },
+    { id: 122, front: "כֻּבַּّאיַאת", back: "כוסות", topic: "אוכל והפסקה", form: "רבים", pair: [67], meeting: 1 },
+    { id: 123, front: "חַמַّאמַאת", back: "אמבטיות / בתי שימוש", topic: "בית ומקומות", form: "רבים", pair: [68], meeting: 1 },
 ];
 
 const ALPHABET = [
@@ -796,21 +796,21 @@ const ALPHABET = [
 
 // sentences used for reading practice + sentence-building game (hebrew meaning <-> arabic transliteration)
 const SENTENCES = [
-    { id: 1, hebrew: "עמודי הספר.", arabic: "צַפְחַאת (א)לִכְּתַאבּ." },
-    { id: 2, hebrew: "זאת הילדה וזה הילד.", arabic: "הַ(א)לְבִּנְת וְהַ(א)לְוַלַד." },
-    { id: 3, hebrew: "זה אמבטיית (בית שימוש) הבית, זה לא הבית.", arabic: "הַאד חַמַّאםִ (א)לְבֵּית, הַאד מֻשִ (א)לְבֵּית." },
-    { id: 4, hebrew: "זאת דלת בית הספר, זאת לא דלת המשרד הממשלתי.", arabic: "הַאדַא בַּאבִּ (א)לְמַדְרַסֵה, הַאדַא מֻש בַּאבִּ (א)לְוִזַארַה." },
-    { id: 5, hebrew: "זאת החוברת וזה העט.", arabic: "הַאיִ (א)לְכֻּרַّאסֵה וְהַאדַא (א)לְקַלַם." },
-    { id: 6, hebrew: "ההוא קיר בית הספר וההיא תיק המנהלת.", arabic: "הַדַאכּ חֵיטִ (א)לְמַדְרַסֵה וְהַדִיכּ שַנְטַתִ (א)לְמֻדִירֵה." },
-    { id: 7, hebrew: "אלו הכסא והספר.", arabic: "הַדוֹלִ (א)לְכֻּרְסִי וִ(א)לִכְּתַאבּ." },
-    { id: 8, hebrew: "ההן המורה והילדה (והבת).", arabic: "הַדוֹלַאכּ (א)לִמְעַלְّמֵה וִ(א)לְבִּנְת." },
-    { id: 9, hebrew: "זאת המנהלת וזה המורה.", arabic: "הַאדִי (א)לְמֻדִירֵה וְהַאדַא (א)לִמְעַלֵّם." },
-    { id: 10, hebrew: "אלו מחברות וספרים וכסאות.", arabic: "הַדוֹל דַפַאתֵר וְכֻּתֻבּ וְכַּרַאסִי." },
-    { id: 11, hebrew: "אתם סטודנטים (של) אוניברסיטה והם תלמידי בתי ספר.", arabic: "אִנְתוּ טֻלַّאבּ גַ'אמְעַה וְהֻםֵّ תַלַאמִיז מַדַארֵס." },
-    { id: 12, hebrew: "הוא מנהל משרד המשפטים.", arabic: "הֻוֵّ מֻדִיר וִזַארַתִ (א)לְעַדֵל." },
-    { id: 13, hebrew: "זה כוס קפה וזה כוס תה וההוא סוכר.", arabic: "הַאדִי כַּאסֵת קַהְוֵה וְהַאדִי כַּאסֵת שַאיְ וְהַדַאכּ סֻכַּّר." },
-    { id: 14, hebrew: "אחמד הוא בן דודי (מצד אבי) ונג'אח היא בת דודי (מצד אימי).", arabic: "אַחְמַד הֻוֵّ אִבֵּן עַמִّי וְנַגַ'אח הִיֵّ בִּנְת חַ'אלִי." },
-    { id: 15, hebrew: "מזכירה בחברת עריכת דין.", arabic: "סֵכְּרֵתֵירַא פִי שִרְכֵּת מֻחַאמַאה." },
+    { id: 1, hebrew: "עמודי הספר.", arabic: "צַפְחַאת (א)לִכְּתַאבּ.", meeting: 1 },
+    { id: 2, hebrew: "זאת הילדה וזה הילד.", arabic: "הַ(א)לְבִּנְת וְהַ(א)לְוַלַד.", meeting: 1 },
+    { id: 3, hebrew: "זה אמבטיית (בית שימוש) הבית, זה לא הבית.", arabic: "הַאד חַמַّאםִ (א)לְבֵּית, הַאד מֻשִ (א)לְבֵּית.", meeting: 1 },
+    { id: 4, hebrew: "זאת דלת בית הספר, זאת לא דלת המשרד הממשלתי.", arabic: "הַאדַא בַּאבִּ (א)לְמַדְרַסֵה, הַאדַא מֻש בַּאבִּ (א)לְוִזַארַה.", meeting: 1 },
+    { id: 5, hebrew: "זאת החוברת וזה העט.", arabic: "הַאיִ (א)לְכֻּרַّאסֵה וְהַאדַא (א)לְקַלַם.", meeting: 1 },
+    { id: 6, hebrew: "ההוא קיר בית הספר וההיא תיק המנהלת.", arabic: "הַדַאכּ חֵיטִ (א)לְמַדְרַסֵה וְהַדִיכּ שַנְטַתִ (א)לְמֻדִירֵה.", meeting: 1 },
+    { id: 7, hebrew: "אלו הכסא והספר.", arabic: "הַדוֹלִ (א)לְכֻּרְסִי וִ(א)לִכְּתַאבּ.", meeting: 1 },
+    { id: 8, hebrew: "ההן המורה והילדה (והבת).", arabic: "הַדוֹלַאכּ (א)לִמְעַלְّמֵה וִ(א)לְבִּנְת.", meeting: 1 },
+    { id: 9, hebrew: "זאת המנהלת וזה המורה.", arabic: "הַאדִי (א)לְמֻדִירֵה וְהַאדַא (א)לִמְעַלֵّם.", meeting: 1 },
+    { id: 10, hebrew: "אלו מחברות וספרים וכסאות.", arabic: "הַדוֹל דַפַאתֵר וְכֻּתֻבּ וְכַּרַאסִי.", meeting: 1 },
+    { id: 11, hebrew: "אתם סטודנטים (של) אוניברסיטה והם תלמידי בתי ספר.", arabic: "אִנְתוּ טֻלַّאבּ גַ'אמְעַה וְהֻםֵّ תַלַאמִיז מַדַארֵס.", meeting: 1 },
+    { id: 12, hebrew: "הוא מנהל משרד המשפטים.", arabic: "הֻוֵّ מֻדִיר וִזַארַתִ (א)לְעַדֵל.", meeting: 1 },
+    { id: 13, hebrew: "זה כוס קפה וזה כוס תה וההוא סוכר.", arabic: "הַאדִי כַּאסֵת קַהְוֵה וְהַאדִי כַּאסֵת שַאיְ וְהַדַאכּ סֻכַּّר.", meeting: 1 },
+    { id: 14, hebrew: "אחמד הוא בן דודי (מצד אבי) ונג'אח היא בת דודי (מצד אימי).", arabic: "אַחְמַד הֻוֵّ אִבֵּן עַמִّי וְנַגַ'אח הִיֵّ בִּנְת חַ'אלִי.", meeting: 1 },
+    { id: 15, hebrew: "מזכירה בחברת עריכת דין.", arabic: "סֵכְּרֵתֵירַא פִי שִרְכֵּת מֻחַאמַאה.", meeting: 1 },
 ];
 
 const IDIOMS = [
@@ -861,6 +861,25 @@ const SRS_LADDER = [1, 2, 4, 7, 10, 14];
    turns into an unfinishable pile; opening flashcards from the practice list
    is a shorter, off-schedule drill. */
 const DAILY_CARD_TARGET = 60;
+
+/* The book runs to fifteen meetings. Words and practice sentences belong to
+   the meeting that introduced them; letters and idioms carry no meeting at
+   all, because they are not taught in one — they stay available throughout.
+
+   Nothing is ever locked. The meeting you mark simply decides which material
+   the practice queues draw on, so the app follows the course rather than
+   deciding when you are allowed to move on. */
+const TOTAL_MEETINGS = 15;
+
+function itemMeeting(item) {
+    return item && typeof item.meeting === "number" ? item.meeting : 0;
+}
+
+/* 0 means "not tied to a meeting" and is always in play. */
+function isUnlocked(item, upTo) {
+    const m = itemMeeting(item);
+    return m === 0 || m <= upTo;
+}
 
 const DECK_LABELS = {
     vocab: "אוצר מילים",
@@ -926,21 +945,40 @@ function pickMeaning(item) {
     return list[Math.floor(Math.random() * list.length)];
 }
 
-function itemWeight(item) {
+/* A small tilt toward the meeting most recently opened.
+
+   The heavy lifting for new material is already done by the "never reviewed"
+   term below, which is worth 1.5. This bonus is deliberately an order smaller:
+   its job is to break the tie *among* untouched items so that the meeting you
+   just started comes up before words from meeting 1 you never got to — not to
+   outrank the review schedule.
+
+   The size matters. An earlier version used 1.2 and a brand-new word overtook
+   a word that was a week overdue, which is exactly backwards: lateness is the
+   strongest evidence of forgetting there is. At 0.3 the ordering holds, and
+   the bonus fades to nothing after four correct answers. */
+function freshMeetingBonus(item, currentMeeting) {
+    if (!currentMeeting || itemMeeting(item) !== currentMeeting) return 0;
+    const right = item.correctCount || 0;
+    return Math.max(0, 0.3 - 0.075 * right);
+}
+
+function itemWeight(item, currentMeeting) {
     const right = item.correctCount || 0;
     const wrong = item.wrongCount || 0;
     let weight = 1 + 1.6 * wrong - 0.45 * right;
     if (isMastered(item)) weight = Math.min(weight, 0.3);
     weight = Math.max(0.25, weight);
-    if (!item.dueAt) return weight + 1.5;               // never reviewed — show it early
+    const fresh = freshMeetingBonus(item, currentMeeting);
+    if (!item.dueAt) return weight + 1.5 + fresh;       // never reviewed — show it early
     const overdueDays = (Date.now() - item.dueAt) / DAY_MS;
     if (overdueDays < 0) return weight * 0.12;          // scheduled for a later day
-    return weight + Math.min(3, overdueDays);           // the longer it is overdue, the higher
+    return weight + Math.min(3, overdueDays) + fresh;   // the longer it is overdue, the higher
 }
 
-function weightedOrder(data) {
+function weightedOrder(data, currentMeeting) {
     return data
-        .map((d, i) => ({ i: i, score: itemWeight(d) * (0.55 + Math.random() * 0.9) }))
+        .map((d, i) => ({ i: i, score: itemWeight(d, currentMeeting) * (0.55 + Math.random() * 0.9) }))
         .sort((a, b) => b.score - a.score)
         .map((entry) => entry.i);
 }
@@ -1509,6 +1547,23 @@ function RoutineTab({ checklist, setChecklist, navigateTo, vocab, letters }) {
 const BACKUP_VERSION = 2;
 const EXAM_HISTORY_LIMIT = 20;
 
+/* Where the learner has marked themselves; meeting 1 until told otherwise. */
+function profileMeeting(profile) {
+    const n = profile && profile.meeting;
+    return (typeof n === "number" && n >= 1 && n <= TOTAL_MEETINGS) ? n : 1;
+}
+
+/* How settled a meeting's material is: the share of its words and sentences
+   that have reached full mastery. Used only to decide whether to say
+   something before the learner moves on, never to stop them. */
+function meetingReadiness(vocab, sentences, meeting) {
+    const items = (vocab || []).concat(sentences || [])
+        .filter((it) => itemMeeting(it) === meeting);
+    if (items.length === 0) return { total: 0, mastered: 0, pct: 1 };
+    const mastered = items.filter(isMastered).length;
+    return { total: items.length, mastered: mastered, pct: mastered / items.length };
+}
+
 function examDateLabel(ms) {
     const d = new Date(ms);
     const pad = (n) => String(n).padStart(2, "0");
@@ -1543,6 +1598,9 @@ function AccountSheet({ vocab, letters, sentences, idioms, checklist, exams, pro
                         user, syncStatus, onClose, onLogout }) {
     const [status, setStatus] = useState(null);
     const [name, setName] = useState((profile && profile.name) || "");
+    const [meeting, setMeeting] = useState(profileMeeting(profile));
+    const [meetingSaved, setMeetingSaved] = useState(false);
+    const [confirmJump, setConfirmJump] = useState(null);
     const [saved, setSaved] = useState(false);
     const [openExam, setOpenExam] = useState(null);
     const [confirmOut, setConfirmOut] = useState(false);
@@ -1551,6 +1609,29 @@ function AccountSheet({ vocab, letters, sentences, idioms, checklist, exams, pro
     const syncState = (syncStatus && syncStatus.status) || "idle";
     const synced = syncState === "synced";
     const history = (exams || []).slice().sort((a, b) => b.at - a.at);
+
+    /* Marking a later meeting is always allowed — the app follows the course,
+       it does not gate it. But if the meeting being left behind is still shaky
+       it says so first, because adding new material on top of an unsteady
+       foundation is the one mistake worth pausing over. */
+    const commitMeeting = (value) => {
+        setProfile((prev) => ({ ...(prev || {}), meeting: value }));
+        setConfirmJump(null);
+        setMeetingSaved(true);
+        setTimeout(() => setMeetingSaved(false), 1800);
+    };
+
+    const saveMeeting = () => {
+        const current = profileMeeting(profile);
+        if (meeting > current) {
+            const behind = meetingReadiness(vocab, sentences, current);
+            if (behind.total > 0 && behind.pct < 0.8) {
+                setConfirmJump({ from: current, to: meeting, pct: Math.round(behind.pct * 100) });
+                return;
+            }
+        }
+        commitMeeting(meeting);
+    };
 
     const saveName = () => {
         setProfile((prev) => ({ ...(prev || {}), name: name.trim() }));
@@ -1638,6 +1719,20 @@ function AccountSheet({ vocab, letters, sentences, idioms, checklist, exams, pro
                     React.createElement(PrimaryButton, { onClick: saveName, disabled: name.trim() === ((profile && profile.name) || "") }, "שמור שם"),
                     saved ? React.createElement("span", { className: "zl-anim", style: { fontSize: "0.8rem", fontWeight: 700, color: "var(--ok)" } }, "נשמר") : null),
 
+                /* --- how far along the course --- */
+                React.createElement("label", { style: { display: "block", fontSize: "0.8rem", fontWeight: 700, marginBottom: 4 } }, "אני במפגש",
+                    React.createElement("select", {
+                        className: "zl-search", style: { marginTop: 4, marginBottom: 6 },
+                        value: String(meeting),
+                        onChange: (e) => setMeeting(parseInt(e.target.value, 10)),
+                    }, Array.from({ length: TOTAL_MEETINGS }, (_, i) => i + 1).map((n) =>
+                        React.createElement("option", { key: n, value: String(n) }, "מפגש " + n)))),
+                React.createElement("p", { style: { fontSize: "0.75rem", color: "var(--ink-muted)", lineHeight: 1.6, marginBottom: 8 } },
+                    "התרגול נשען על החומר מכל המפגשים עד המפגש שבחרת, עם עדיפות קלה לחדש."),
+                React.createElement("div", { style: { display: "flex", alignItems: "center", gap: 10, marginBottom: 14 } },
+                    React.createElement(PrimaryButton, { onClick: saveMeeting, disabled: meeting === profileMeeting(profile) }, "שמור מפגש"),
+                    meetingSaved ? React.createElement("span", { className: "zl-anim", style: { fontSize: "0.8rem", fontWeight: 700, color: "var(--ok)" } }, "נשמר") : null),
+
                 /* --- sync --- */
                 React.createElement("div", { style: { display: "flex", alignItems: "center", gap: 8, marginBottom: 4 } },
                     React.createElement("span", { className: "zl-syncmark", "data-ok": synced ? "true" : "false" },
@@ -1683,6 +1778,16 @@ function AccountSheet({ vocab, letters, sentences, idioms, checklist, exams, pro
         openExam ? React.createElement(ExamDetailSheet, {
             exam: openExam.exam, index: openExam.index, onClose: () => setOpenExam(null),
         }) : null,
+        confirmJump ? React.createElement("div", { className: "zl-overlay", onClick: () => setConfirmJump(null) },
+            React.createElement("div", { className: "zl-sheet zl-anim", style: { maxWidth: 360 }, onClick: (e) => e.stopPropagation() },
+                React.createElement("h3", { className: "zl-sheet-title", style: { marginBottom: 10 } }, "לעבור למפגש " + confirmJump.to + "?"),
+                React.createElement("p", { style: { fontSize: "0.88rem", color: "var(--ink-muted)", lineHeight: 1.7, marginBottom: 16 } },
+                    "במפגש " + confirmJump.from + " אתה על " + confirmJump.pct + "% שליטה. אפשר להתקדם בכל מקרה — החומר הישן לא נעלם וימשיך לחזור בתרגול."),
+                React.createElement("div", { style: { display: "flex", gap: 10 } },
+                    React.createElement(PrimaryButton, { variant: "outline", onClick: () => { setMeeting(confirmJump.from); setConfirmJump(null); },
+                        style: { flex: 1, justifyContent: "center" } }, "אשאר"),
+                    React.createElement(PrimaryButton, { onClick: () => commitMeeting(confirmJump.to),
+                        style: { flex: 1, justifyContent: "center" } }, "התקדם")))) : null,
         confirmOut ? React.createElement("div", { className: "zl-overlay", onClick: () => setConfirmOut(false) },
             React.createElement("div", { className: "zl-sheet zl-anim", style: { maxWidth: 340 }, onClick: (e) => e.stopPropagation() },
                 React.createElement("h3", { className: "zl-sheet-title", style: { marginBottom: 18, textAlign: "center" } },
@@ -1707,8 +1812,20 @@ function tagDeck(list, name) {
 }
 
 function buildDeck(kind, banks) {
-    if (kind === "mix") return tagDeck(banks.vocab, "vocab").concat(tagDeck(banks.letters, "letters"));
-    return tagDeck(banks[kind], kind);
+    /* `banks.meeting` is how far the learner has marked themselves in the
+       course. Letters and idioms carry no meeting and survive the filter.
+
+       If the meeting is missing the filter is skipped rather than applied with
+       a zero, which would quietly empty every deck. A fault here should leave
+       too much material on the table, never none. */
+    const upTo = banks.meeting;
+    const limited = typeof upTo === "number" && upTo >= 1;
+    const pick = (name) => {
+        const deck = tagDeck(banks[name], name);
+        return limited ? deck.filter((it) => isUnlocked(it, upTo)) : deck;
+    };
+    if (kind === "mix") return pick("vocab").concat(pick("letters"));
+    return pick(kind);
 }
 
 /* The two faces of a card, whichever bank it came from. `reversed` means the
@@ -1802,7 +1919,7 @@ function FlashcardPractice({ deckKind, banks, applyResult, onBack, dir, setDir, 
     const [sense, setSense] = useState("");
     const [pending, setPending] = useState(false);
     const [revealed, setRevealed] = useState(false);
-    const [order, setOrder] = useState(() => weightedOrder(data).slice(0, sessionSize));
+    const [order, setOrder] = useState(() => weightedOrder(data, banks.meeting).slice(0, sessionSize));
     const [pos, setPos] = useState(0);
     const [tally, setTally] = useState({ right: 0, wrong: 0 });
     const [flipped, setFlipped] = useState(false);
@@ -1810,7 +1927,7 @@ function FlashcardPractice({ deckKind, banks, applyResult, onBack, dir, setDir, 
     const timerRef = useRef(null);
 
     const startSession = (count) => {
-        setOrder(weightedOrder(data).slice(0, count));
+        setOrder(weightedOrder(data, banks.meeting).slice(0, count));
         setPos(0);
         setTally({ right: 0, wrong: 0 });
         setFinished(false);
@@ -2016,7 +2133,7 @@ function PromptBox({ text, isLetter }) {
 function AmericanQuiz({ deckKind, banks, applyResult, onBack, dir, setDir }) {
     const data = useMemo(() => buildDeck(deckKind, banks), [deckKind, banks]);
     const total = SESSION_SIZES.quiz;
-    const [order, setOrder] = useState(() => weightedOrder(data).slice(0, total));
+    const [order, setOrder] = useState(() => weightedOrder(data, banks.meeting).slice(0, total));
     const [pos, setPos] = useState(0);
     const [question, setQuestion] = useState(null);
     const [selected, setSelected] = useState(null);
@@ -2025,7 +2142,7 @@ function AmericanQuiz({ deckKind, banks, applyResult, onBack, dir, setDir }) {
     const timerRef = useRef(null);
 
     const startSession = () => {
-        setOrder(weightedOrder(data).slice(0, total));
+        setOrder(weightedOrder(data, banks.meeting).slice(0, total));
         setPos(0);
         setScore({ correct: 0, total: 0 });
         setSelected(null);
@@ -2119,10 +2236,42 @@ function acceptableAnswers(text) {
     return out;
 }
 
+/* Words thrown into the bank that do not belong to the sentence.
+
+   They are drawn from the other sentences in the same deck, so they are real
+   words in the right register — sometimes near-misses from a similar sentence,
+   sometimes plainly unrelated. Anything that already appears in the answer is
+   excluded, otherwise a decoy could be indistinguishable from a tile that is
+   genuinely needed.
+
+   The count varies to keep the drill from becoming predictable, but a long
+   sentence gets fewer: the bank is already crowded, and on a phone it would
+   otherwise run to several lines. */
+function decoyCount(answerLength) {
+    const max = answerLength > 4 ? 2 : 4;
+    return 1 + Math.floor(Math.random() * max);
+}
+
+function pickDecoys(item, dir, pool, answerWords) {
+    const reversed = dir === "he2ar";
+    const taken = new Set(answerWords);
+    const words = [];
+    (pool || []).forEach((other) => {
+        if (other._key === item._key) return;
+        const text = reversed ? other.arabic : other.hebrew;
+        String(text || "").split(" ").forEach((word) => {
+            if (!word || taken.has(word)) return;
+            taken.add(word);
+            words.push(word);
+        });
+    });
+    return shuffle(words).slice(0, decoyCount(answerWords.length));
+}
+
 /* One sentence to assemble from shuffled tiles. Used both as its own drill
    and as a question inside the full exam, so the scoring is reported out
    rather than recorded here. */
-function SentenceTask({ item, dir, onResult, locked, result }) {
+function SentenceTask({ item, dir, onResult, locked, result, pool }) {
     const reversed = dir === "he2ar";
     const promptText = reversed ? item.hebrew : item.arabic;
     const answerText = reversed ? item.arabic : item.hebrew;
@@ -2130,8 +2279,19 @@ function SentenceTask({ item, dir, onResult, locked, result }) {
     const [bank, setBank] = useState([]);
     const [built, setBuilt] = useState([]);
 
+    /* Held in a ref so that resetting the exercise reshuffles the same tiles
+       rather than quietly drawing a different set of decoys mid-question. */
+    const tilesRef = useRef([]);
+    const layTiles = () => {
+        const decoys = pickDecoys(item, dir, pool, answerWords);
+        const tiles = answerWords.map((w, i) => ({ w: w, key: "a" + i }))
+            .concat(decoys.map((w, i) => ({ w: w, key: "d" + i })));
+        tilesRef.current = tiles;
+        return shuffle(tiles);
+    };
+
     useEffect(() => {
-        setBank(shuffle(answerWords.map((w, i) => ({ w: w, key: i }))));
+        setBank(layTiles());
         setBuilt([]);
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [item._key, dir]);
@@ -2161,15 +2321,15 @@ function SentenceTask({ item, dir, onResult, locked, result }) {
         result === "wrong" && React.createElement("p", { className: "zl-shake", style: { color: "var(--bad)", fontWeight: 700, marginBottom: 10, lineHeight: 1.6 } },
             "לא בדיוק — התשובה הנכונה: " + answerText),
         !locked && React.createElement("div", { style: { display: "flex", gap: 10 } },
-            React.createElement(PrimaryButton, { variant: "outline", onClick: () => { setBank(shuffle(answerWords.map((w, i) => ({ w: w, key: i })))); setBuilt([]); } },
+            React.createElement(PrimaryButton, { variant: "outline", onClick: () => { setBank(shuffle(tilesRef.current)); setBuilt([]); } },
                 React.createElement(RotateCcw, { size: 15 }), "איפוס"),
-            React.createElement(PrimaryButton, { onClick: check, disabled: bank.length > 0 }, "בדוק"))));
+            React.createElement(PrimaryButton, { onClick: check, disabled: built.length === 0 }, "בדוק"))));
 }
 
 function SentenceBuilderSession({ banks, applyResult, onBack, dir, setDir, onSessionDone }) {
     const data = useMemo(() => buildDeck("sentences", banks), [banks]);
     const total = Math.min(SESSION_SIZES.builder, data.length);
-    const [order, setOrder] = useState(() => weightedOrder(data).slice(0, total));
+    const [order, setOrder] = useState(() => weightedOrder(data, banks.meeting).slice(0, total));
     const [pos, setPos] = useState(0);
     const [result, setResult] = useState(null);
     const [taskDir, setTaskDir] = useState("he2ar");
@@ -2177,7 +2337,7 @@ function SentenceBuilderSession({ banks, applyResult, onBack, dir, setDir, onSes
     const [finished, setFinished] = useState(false);
 
     const startSession = () => {
-        setOrder(weightedOrder(data).slice(0, total));
+        setOrder(weightedOrder(data, banks.meeting).slice(0, total));
         setPos(0); setResult(null); setTally({ right: 0, wrong: 0 }); setFinished(false);
     };
 
@@ -2217,7 +2377,7 @@ function SentenceBuilderSession({ banks, applyResult, onBack, dir, setDir, onSes
                 React.createElement("h3", { className: "zl-display", style: { fontSize: "1.15rem", fontWeight: 800 } }, "הרכבת משפטים"),
                 React.createElement(DirectionToggle, { value: dir, onChange: setDir })),
             React.createElement(SessionBar, { pos: pos + 1, total: order.length }),
-            React.createElement(SentenceTask, { item: item, dir: taskDir, onResult: record, locked: !!result, result: result }),
+            React.createElement(SentenceTask, { item: item, dir: taskDir, onResult: record, locked: !!result, result: result, pool: data }),
             result ? React.createElement(PrimaryButton, { variant: "gold", onClick: next }, "המשפט הבא") : null)));
 }
 
@@ -2376,7 +2536,7 @@ function buildExamTasks(banks) {
     EXAM_PLAN.forEach((part) => {
         const deck = buildDeck(part.deck, banks);
         if (deck.length === 0) return;
-        const picked = weightedOrder(deck).slice(0, part.count).map((i) => deck[i]);
+        const picked = weightedOrder(deck, banks.meeting).slice(0, part.count).map((i) => deck[i]);
         picked.forEach((item, idx) => {
             const dir = resolveDir("mix");
             if (part.kind === "sentence") {
@@ -2568,7 +2728,7 @@ function FullExam({ banks, onBack, onExamStart, onExamFinish }) {
             task.kind === "sentence"
                 ? React.createElement(SentenceTask, {
                     item: task.item, dir: task.dir, onResult: record,
-                    locked: !!result, result: result })
+                    locked: !!result, result: result, pool: buildDeck("sentences", banks) })
                 : React.createElement(React.Fragment, null,
                     React.createElement("div", { style: { fontSize: "0.75rem", fontWeight: 700, color: "var(--accent)", marginBottom: 8 } },
                         task.open ? "שאלה פתוחה — הקלד את התרגום" : "בחר את התשובה הנכונה"),
@@ -2907,12 +3067,17 @@ function TopicRow({ name, counts, total }) {
         React.createElement("span", { className: "zl-trow-val" }, counts.mastered + "/" + total)));
 }
 
-function StatsTab({ vocab, letters, sentences, idioms, checklist }) {
-    const all = vocab.concat(letters);
-    const mastered = vocab.filter(isMastered).length;
-    const struggling = vocab.filter(isStruggling).length;
-    const fresh = vocab.filter((w) => !w.dueAt).length;
-    const due = dueCount(vocab);
+function StatsTab({ vocab, letters, sentences, idioms, checklist, meeting }) {
+    const upTo = meeting || 1;
+    /* Statistics describe the material actually in play, so the numbers match
+       what the practice queues are drawing from. */
+    const openVocab = (vocab || []).filter((w) => isUnlocked(w, upTo));
+    const openSentences = (sentences || []).filter((s) => isUnlocked(s, upTo));
+    const all = openVocab.concat(letters);
+    const mastered = openVocab.filter(isMastered).length;
+    const struggling = openVocab.filter(isStruggling).length;
+    const fresh = openVocab.filter((w) => !w.dueAt).length;
+    const due = dueCount(openVocab);
     const answers = all.reduce((sum, w) => sum + (w.correctCount || 0) + (w.wrongCount || 0), 0);
     const rights = all.reduce((sum, w) => sum + (w.correctCount || 0), 0);
     const accuracy = answers ? Math.round((rights / answers) * 100) : 0;
@@ -2927,14 +3092,14 @@ function StatsTab({ vocab, letters, sentences, idioms, checklist }) {
         const from = day.getTime();
         const to = from + DAY_MS;
         const count = i === 0
-            ? vocab.filter((w) => !w.dueAt || w.dueAt < to).length
-            : vocab.filter((w) => w.dueAt && w.dueAt >= from && w.dueAt < to).length;
+            ? openVocab.filter((w) => !w.dueAt || w.dueAt < to).length
+            : openVocab.filter((w) => w.dueAt && w.dueAt >= from && w.dueAt < to).length;
         week.push({ label: i === 0 ? "היום" : ["א", "ב", "ג", "ד", "ה", "ו", "ש"][day.getDay()], count: count, today: i === 0 });
     }
     const peak = Math.max(1, ...week.map((d) => d.count));
 
     const topics = [];
-    vocab.forEach((w) => {
+    openVocab.forEach((w) => {
         const name = w.topic || "ללא נושא";
         let row = topics.find((t) => t.name === name);
         if (!row) { row = { name: name, total: 0, counts: { mastered: 0, progress: 0, struggling: 0, fresh: 0 } }; topics.push(row); }
@@ -2947,7 +3112,7 @@ function StatsTab({ vocab, letters, sentences, idioms, checklist }) {
     });
     topics.sort((a, b) => (a.counts.mastered / a.total) - (b.counts.mastered / b.total));
 
-    const weakest = vocab
+    const weakest = openVocab
         .filter((w) => (w.wrongCount || 0) > 0 && !isMastered(w))
         .sort((a, b) => (b.wrongCount || 0) - (a.wrongCount || 0))
         .slice(0, 5);
@@ -2956,13 +3121,13 @@ function StatsTab({ vocab, letters, sentences, idioms, checklist }) {
         React.createElement(SectionHeader, { title: "סטטיסטיקה", subtitle: "תמונת מצב של הלימוד, מחושבת מההתקדמות ששמורה אצלך" }),
 
         React.createElement("div", { className: "zl-stat-grid" },
-            React.createElement(StatCell, { value: mastered + "/" + vocab.length, label: "מילים בשליטה מלאה" }),
+            React.createElement(StatCell, { value: mastered + "/" + openVocab.length, label: "מילים בשליטה מלאה" }),
             React.createElement(StatCell, { value: due, label: "ממתינות לחזרה היום" }),
             React.createElement(StatCell, { value: accuracy + "%", label: "אחוז הצלחה כללי" }),
             React.createElement(StatCell, { value: streak, label: "רצף ימי לימוד" }),
             React.createElement(StatCell, { value: fresh, label: "מילים שטרם תורגלו" }),
             React.createElement(StatCell, { value: letters.filter(isMastered).length + "/" + letters.length, label: "אותיות בשליטה" }),
-            React.createElement(StatCell, { value: (sentences || []).filter(isMastered).length + "/" + (sentences || []).length, label: "משפטים בשליטה" }),
+            React.createElement(StatCell, { value: openSentences.filter(isMastered).length + "/" + openSentences.length, label: "משפטים בשליטה" }),
             React.createElement(StatCell, { value: (idioms || []).filter(isMastered).length + "/" + (idioms || []).length, label: "ניבים בשליטה" })),
 
         React.createElement(Card, { style: { marginBottom: 14 } },
@@ -2972,6 +3137,34 @@ function StatsTab({ vocab, letters, sentences, idioms, checklist }) {
                 React.createElement("span", { className: "zl-bar-val" }, d.count),
                 React.createElement("span", { className: "zl-bar", "data-today": d.today ? "true" : "false", style: { height: Math.round((d.count / peak) * 78) + "%" } }),
                 React.createElement("span", { className: "zl-bar-label" }, d.label)))))),
+
+        (function () {
+            /* Every meeting that has material, whether open or still ahead. */
+            const rows = [];
+            (vocab || []).concat(sentences || []).forEach((it) => {
+                const m = itemMeeting(it);
+                if (!m) return;
+                let row = rows.find((r) => r.m === m);
+                if (!row) { row = { m: m, total: 0, mastered: 0 }; rows.push(row); }
+                row.total++;
+                if (isMastered(it)) row.mastered++;
+            });
+            if (rows.length < 2) return null;   // nothing to compare yet
+            rows.sort((a, b) => a.m - b.m);
+            return React.createElement(Card, { style: { marginBottom: 14 } },
+                React.createElement("h3", { className: "zl-display", style: { fontWeight: 700, fontSize: "1rem", marginBottom: 4 } }, "התקדמות לפי מפגש"),
+                React.createElement("p", { style: { fontSize: "0.8rem", color: "var(--ink-muted)", marginBottom: 6 } },
+                    "אתה מסומן במפגש " + upTo + " — התרגול נשען על המפגשים עד אליו"),
+                rows.map((r) => {
+                    const pct = r.total ? (r.mastered / r.total) * 100 : 0;
+                    const open = r.m <= upTo;
+                    return React.createElement("div", { key: r.m, className: "zl-catrow", style: { opacity: open ? 1 : 0.45 } },
+                        React.createElement("span", { className: "zl-catrow-name" }, "מפגש " + r.m + (open ? "" : " · סגור")),
+                        React.createElement("span", { className: "zl-catrow-track" },
+                            React.createElement("span", { className: "zl-catrow-fill", style: { width: pct + "%", background: pct >= 80 ? "var(--ok)" : "var(--focus)" } })),
+                        React.createElement("span", { className: "zl-catrow-val" }, r.mastered + "/" + r.total));
+                }));
+        })(),
 
         React.createElement(Card, { style: { marginBottom: 14 } },
             React.createElement("h3", { className: "zl-display", style: { fontWeight: 700, fontSize: "1rem", marginBottom: 4 } }, "שליטה לפי נושא"),
@@ -3242,7 +3435,8 @@ function ArabicLearningApp() {
 
     /* One place that knows which bank an item came from, so every practice
        mode can score anything without caring where it lives. */
-    const banks = { vocab: vocab, letters: letters, sentences: sentences, idioms: idioms };
+    const meeting = profileMeeting(profile);
+    const banks = { vocab: vocab, letters: letters, sentences: sentences, idioms: idioms, meeting: meeting };
     const bankSetters = { vocab: setVocab, letters: setLetters, sentences: setSentences, idioms: setIdioms };
 
     const applyResult = useCallback((item, correct) => {
@@ -3433,7 +3627,7 @@ function ArabicLearningApp() {
             })),
             tab === "vocab" && React.createElement(VocabTab, { vocab: vocab, setVocab: setVocab }),
             tab === "alphabet" && React.createElement(AlphabetTab, { letters: letters }),
-            tab === "stats" && React.createElement(StatsTab, { vocab: vocab, letters: letters, sentences: sentences, idioms: idioms, checklist: checklist }))));
+            tab === "stats" && React.createElement(StatsTab, { vocab: vocab, letters: letters, sentences: sentences, idioms: idioms, checklist: checklist, meeting: meeting }))));
 }
 
 ReactDOM.createRoot(document.getElementById("root")).render(React.createElement(ArabicLearningApp, null));
