@@ -132,7 +132,7 @@ try {
     throw new Error("React / ReactDOM לא נטענו מה-CDN (בדוק חיבור לאינטרנט או חסימת סקריפטים).");
   }
 "use strict";
-const APP_BUILD = "21.08 · 41";   // bump this every time the file is replaced
+const APP_BUILD = "28.08 · 43";   // bump this every time the file is replaced
 
 /* The institute logo, carried inline so the page stays a single file.
    LOGO_MARK is the emblem alone (header); LOGO_FULL includes the name
@@ -188,6 +188,9 @@ const BarChart = (p) => React.createElement("svg", { ...iconBase(p) },
     React.createElement("path", { d: "M3 21h18M7 21V10M12 21V4M17 21v-7" }));
 const TypeIcon = (p) => React.createElement("svg", { ...iconBase(p) },
     React.createElement("path", { d: "M4 7V4h16v3M9 20h6M12 4v16" }));
+const GameIcon = (p) => React.createElement("svg", { ...iconBase(p) },
+    React.createElement("rect", { x: "2", y: "6", width: "20", height: "12", rx: "4" }),
+    React.createElement("path", { d: "M7 12h3M8.5 10.5v3M15 11h.01M17.5 13.5h.01" }));
 
 /* =========================================================================
    FONTS / GLOBAL STYLE INJECTION
@@ -648,39 +651,39 @@ const DEFAULT_VOCAB = [
     { id: 8, front: "אַהְלַן וְסַהְלַן בִּיכּ", back: "שלום וברכה לך", topic: "ברכות", meeting: 1 },
     { id: 9, front: "אִסֵם", back: "שם", topic: "מושגים", form: "יחיד", pair: [70], meeting: 1 },
     { id: 10, front: "אַמִיר", back: "נסיך", topic: "אנשים ותפקידים", form: "יחיד", pair: [71], meeting: 1 },
-    { id: 11, front: "מְעַלֵّם", back: "מורה / אחראי", topic: "אנשים ותפקידים", form: "יחיד", pair: [72], meeting: 1 },
-    { id: 12, front: "מְעַלְّמֵה", back: "מורָה", topic: "אנשים ותפקידים", form: "יחיד", pair: [73], meeting: 1 },
+    { id: 11, front: "מְעַלֵّם", back: "מורה / אחראי", topic: "אנשים ותפקידים", form: "יחיד", pair: [72], meeting: 1, gender: "m", mate: 12 },
+    { id: 12, front: "מְעַלְّמֵה", back: "מורָה", topic: "אנשים ותפקידים", form: "יחיד", pair: [73], meeting: 1, gender: "f", mate: 11 },
     { id: 13, front: "בִּ", back: "ב...", topic: "מילות יחס", meeting: 1 },
     { id: 14, front: "פִי", back: "ב...", alts: ["יש"], topic: "מילות יחס", meeting: 1 },
     { id: 15, front: "מַע", back: "עם", topic: "מילות יחס", meeting: 1 },
     { id: 16, front: "דַוְרַה", back: "קורס", topic: "לימודים ומוסדות", form: "יחיד", pair: [74], meeting: 1 },
-    { id: 17, front: "טַאלֵבּ", back: "סטודנט", topic: "אנשים ותפקידים", form: "יחיד", pair: [75], meeting: 1 },
-    { id: 18, front: "טַאלְבֵּה", back: "סטודנטית", topic: "אנשים ותפקידים", form: "יחיד", pair: [76], meeting: 1 },
+    { id: 17, front: "טַאלֵבּ", back: "סטודנט", topic: "אנשים ותפקידים", form: "יחיד", pair: [75], meeting: 1, gender: "m", mate: 18 },
+    { id: 18, front: "טַאלְבֵּה", back: "סטודנטית", topic: "אנשים ותפקידים", form: "יחיד", pair: [76], meeting: 1, gender: "f", mate: 17 },
     { id: 19, front: "גַ'אמְעַה", back: "אוניברסיטה", topic: "לימודים ומוסדות", form: "יחיד", pair: [77], meeting: 1 },
-    { id: 20, front: "סֵכְּרֵתֵירַא", back: "מזכירה", topic: "אנשים ותפקידים", form: "יחיד", pair: [78], meeting: 1 },
-    { id: 21, front: "סֵכְּרֵתֵיר", back: "מזכיר", topic: "אנשים ותפקידים", form: "יחיד", pair: [79], meeting: 1 },
-    { id: 22, front: "אַמִין", back: "מזכיר של גוף רשמי / ישר / אמין", alts: ["שם של גבר"], topic: "אנשים ותפקידים", meeting: 1 },
-    { id: 23, front: "אַמִינֵה", back: "מזכירה של גוף רשמי / ישרה / אמינה", alts: ["שם של בחורה"], topic: "אנשים ותפקידים", meeting: 1 },
+    { id: 20, front: "סֵכְּרֵתֵירַא", back: "מזכירה", topic: "אנשים ותפקידים", form: "יחיד", pair: [78], meeting: 1, gender: "f", mate: 21 },
+    { id: 21, front: "סֵכְּרֵתֵיר", back: "מזכיר", topic: "אנשים ותפקידים", form: "יחיד", pair: [79], meeting: 1, gender: "m", mate: 20 },
+    { id: 22, front: "אַמִין", back: "מזכיר של גוף רשמי / ישר / אמין", alts: ["שם של גבר"], topic: "אנשים ותפקידים", meeting: 1, gender: "m", mate: 23 },
+    { id: 23, front: "אַמִינֵה", back: "מזכירה של גוף רשמי / ישרה / אמינה", alts: ["שם של בחורה"], topic: "אנשים ותפקידים", meeting: 1, gender: "f", mate: 22 },
     { id: 24, front: "מַדְרַסֵה", back: "בית ספר", topic: "לימודים ומוסדות", form: "יחיד", pair: [80], meeting: 1 },
-    { id: 25, front: "מֻדִיר", back: "מנהל", topic: "אנשים ותפקידים", form: "יחיד", pair: [81], meeting: 1 },
-    { id: 26, front: "מֻדִירֵה", back: "מנהלת", topic: "אנשים ותפקידים", form: "יחיד", pair: [82], meeting: 1 },
+    { id: 25, front: "מֻדִיר", back: "מנהל", topic: "אנשים ותפקידים", form: "יחיד", pair: [81], meeting: 1, gender: "m", mate: 26 },
+    { id: 26, front: "מֻדִירֵה", back: "מנהלת", topic: "אנשים ותפקידים", form: "יחיד", pair: [82], meeting: 1, gender: "f", mate: 25 },
     { id: 27, front: "שִרְכֵּה", back: "חברה (ארגון / עסק)", topic: "לימודים ומוסדות", form: "יחיד", pair: [83], meeting: 1 },
-    { id: 28, front: "מֻחַאמִי", back: "עורך דין", topic: "אנשים ותפקידים", form: "יחיד", pair: [84], meeting: 1 },
-    { id: 29, front: "מֻחַאמִיֵّה", back: "עורכת דין", topic: "אנשים ותפקידים", form: "יחיד", pair: [85], meeting: 1 },
+    { id: 28, front: "מֻחַאמִי", back: "עורך דין", topic: "אנשים ותפקידים", form: "יחיד", pair: [84], meeting: 1, gender: "m", mate: 29 },
+    { id: 29, front: "מֻחַאמִיֵّה", back: "עורכת דין", topic: "אנשים ותפקידים", form: "יחיד", pair: [85], meeting: 1, gender: "f", mate: 28 },
     { id: 30, front: "וִזַארַה", back: "משרד ממשלתי", topic: "לימודים ומוסדות", form: "יחיד", pair: [86], meeting: 1 },
     { id: 31, front: "עַדֵל", back: "צדק", topic: "מושגים", meeting: 1 },
-    { id: 32, front: "תִלְמִיז", back: "תלמיד", topic: "אנשים ותפקידים", form: "יחיד", pair: [87], meeting: 1 },
-    { id: 33, front: "תִלְמִיזֵה", back: "תלמידה", topic: "אנשים ותפקידים", form: "יחיד", pair: [88], meeting: 1 },
-    { id: 34, front: "צַאחֵבּ", back: "חבר / בעל מקום או עסק", topic: "אנשים ותפקידים", form: "יחיד", pair: [89], meeting: 1 },
-    { id: 35, front: "צַאחְבֵּה", back: "חברה / בעלת מקום או עסק", topic: "אנשים ותפקידים", form: "יחיד", pair: [90], meeting: 1 },
+    { id: 32, front: "תִלְמִיז", back: "תלמיד", topic: "אנשים ותפקידים", form: "יחיד", pair: [87], meeting: 1, gender: "m", mate: 33 },
+    { id: 33, front: "תִלְמִיזֵה", back: "תלמידה", topic: "אנשים ותפקידים", form: "יחיד", pair: [88], meeting: 1, gender: "f", mate: 32 },
+    { id: 34, front: "צַאחֵבּ", back: "חבר / בעל מקום או עסק", topic: "אנשים ותפקידים", form: "יחיד", pair: [89], meeting: 1, gender: "m", mate: 35 },
+    { id: 35, front: "צַאחְבֵּה", back: "חברה / בעלת מקום או עסק", topic: "אנשים ותפקידים", form: "יחיד", pair: [90], meeting: 1, gender: "f", mate: 34 },
     { id: 36, front: "דַאר", back: "בית", topic: "בית ומקומות", form: "יחיד", pair: [91], meeting: 1 },
     { id: 37, front: "וַלַד", back: "ילד", topic: "משפחה", form: "יחיד", pair: [92], meeting: 1 },
     { id: 38, front: "אִבֵּן", back: "בן", topic: "משפחה", form: "יחיד", pair: [93], meeting: 1 },
     { id: 39, front: "בִּנְת", back: "ילדה / בת", topic: "משפחה", form: "יחיד", pair: [94], meeting: 1 },
-    { id: 40, front: "עַםّ", back: "דוד מצד האב", topic: "משפחה", form: "יחיד", pair: [95], meeting: 1 },
-    { id: 41, front: "עַמֵّה", back: "דודה מצד האב", topic: "משפחה", form: "יחיד", pair: [96], meeting: 1 },
-    { id: 42, front: "חַ'אל", back: "דוד מצד האם", topic: "משפחה", form: "יחיד", pair: [97], meeting: 1 },
-    { id: 43, front: "חַ'אלֵה", back: "דודה מצד האם", topic: "משפחה", form: "יחיד", pair: [98], meeting: 1 },
+    { id: 40, front: "עַםّ", back: "דוד מצד האב", topic: "משפחה", form: "יחיד", pair: [95], meeting: 1, gender: "m", mate: 41 },
+    { id: 41, front: "עַמֵّה", back: "דודה מצד האב", topic: "משפחה", form: "יחיד", pair: [96], meeting: 1, gender: "f", mate: 40 },
+    { id: 42, front: "חַ'אל", back: "דוד מצד האם", topic: "משפחה", form: "יחיד", pair: [97], meeting: 1, gender: "m", mate: 43 },
+    { id: 43, front: "חַ'אלֵה", back: "דודה מצד האם", topic: "משפחה", form: "יחיד", pair: [98], meeting: 1, gender: "f", mate: 42 },
     { id: 44, front: "סַלַאמֵה", back: "בריאות / שלמות", topic: "מושגים", meeting: 1 },
     { id: 45, front: "צַّפ", back: "כיתה", topic: "כיתה וציוד", form: "יחיד", pair: [99], meeting: 1 },
     { id: 46, front: "בַּאבּ", back: "דלת / שער", topic: "כיתה וציוד", form: "יחיד", pair: [100], meeting: 1 },
@@ -709,33 +712,33 @@ const DEFAULT_VOCAB = [
     { id: 69, front: "מֻחַאמַאה", back: "עריכת דין", topic: "מושגים", meeting: 1 },
     { id: 70, front: "אַסַאמִי", back: "שמות", topic: "מושגים", form: "רבים", pair: [9], meeting: 1 },
     { id: 71, front: "אֻמַרַאא", back: "נסיכים", topic: "אנשים ותפקידים", form: "רבים", pair: [10], meeting: 1 },
-    { id: 72, front: "מְעַלְّמִין", back: "מורים / אחראים", topic: "אנשים ותפקידים", form: "רבים", pair: [11], meeting: 1 },
-    { id: 73, front: "מְעַלְّמַאת", back: "מורות", topic: "אנשים ותפקידים", form: "רבים", pair: [12], meeting: 1 },
+    { id: 72, front: "מְעַלְّמִין", back: "מורים / אחראים", topic: "אנשים ותפקידים", form: "רבים", pair: [11], meeting: 1, gender: "m", mate: 73 },
+    { id: 73, front: "מְעַלְّמַאת", back: "מורות", topic: "אנשים ותפקידים", form: "רבים", pair: [12], meeting: 1, gender: "f", mate: 72 },
     { id: 74, front: "דַוְרַאת", back: "קורסים", topic: "לימודים ומוסדות", form: "רבים", pair: [16], meeting: 1 },
-    { id: 75, front: "טֻלַّאבּ", back: "סטודנטים", topic: "אנשים ותפקידים", form: "רבים", pair: [17], meeting: 1 },
-    { id: 76, front: "טַאלִבַּאת", back: "סטודנטיות", topic: "אנשים ותפקידים", form: "רבים", pair: [18], meeting: 1 },
+    { id: 75, front: "טֻלַّאבּ", back: "סטודנטים", topic: "אנשים ותפקידים", form: "רבים", pair: [17], meeting: 1, gender: "m", mate: 76 },
+    { id: 76, front: "טַאלִבַּאת", back: "סטודנטיות", topic: "אנשים ותפקידים", form: "רבים", pair: [18], meeting: 1, gender: "f", mate: 75 },
     { id: 77, front: "גַ'אמִעַאת", back: "אוניברסיטאות", topic: "לימודים ומוסדות", form: "רבים", pair: [19], meeting: 1 },
-    { id: 78, front: "סֵכְּרֵתֵירַאת", back: "מזכירות", topic: "אנשים ותפקידים", form: "רבים", pair: [20], meeting: 1 },
-    { id: 79, front: "סֵכְּרֵתֵירִיוּן", back: "מזכירים", topic: "אנשים ותפקידים", form: "רבים", pair: [21], meeting: 1 },
+    { id: 78, front: "סֵכְּרֵתֵירַאת", back: "מזכירות", topic: "אנשים ותפקידים", form: "רבים", pair: [20], meeting: 1, gender: "f", mate: 79 },
+    { id: 79, front: "סֵכְּרֵתֵירִיוּן", back: "מזכירים", topic: "אנשים ותפקידים", form: "רבים", pair: [21], meeting: 1, gender: "m", mate: 78 },
     { id: 80, front: "מַדַארֵס", back: "בתי ספר", topic: "לימודים ומוסדות", form: "רבים", pair: [24], meeting: 1 },
-    { id: 81, front: "מֻדַרַאא", back: "מנהלים", topic: "אנשים ותפקידים", form: "רבים", pair: [25], meeting: 1 },
-    { id: 82, front: "מֻדִירַאת", back: "מנהלות", topic: "אנשים ותפקידים", form: "רבים", pair: [26], meeting: 1 },
+    { id: 81, front: "מֻדַרַאא", back: "מנהלים", topic: "אנשים ותפקידים", form: "רבים", pair: [25], meeting: 1, gender: "m", mate: 82 },
+    { id: 82, front: "מֻדִירַאת", back: "מנהלות", topic: "אנשים ותפקידים", form: "רבים", pair: [26], meeting: 1, gender: "f", mate: 81 },
     { id: 83, front: "שַרִכַּאת", back: "חברות (ארגונים / עסקים)", topic: "לימודים ומוסדות", form: "רבים", pair: [27], meeting: 1 },
-    { id: 84, front: "מֻחַאמִיִّין", back: "עורכי דין", topic: "אנשים ותפקידים", form: "רבים", pair: [28], meeting: 1 },
-    { id: 85, front: "מֻחַאמִיַّאת", back: "עורכות דין", topic: "אנשים ותפקידים", form: "רבים", pair: [29], meeting: 1 },
+    { id: 84, front: "מֻחַאמִיִّין", back: "עורכי דין", topic: "אנשים ותפקידים", form: "רבים", pair: [28], meeting: 1, gender: "m", mate: 85 },
+    { id: 85, front: "מֻחַאמִיַّאת", back: "עורכות דין", topic: "אנשים ותפקידים", form: "רבים", pair: [29], meeting: 1, gender: "f", mate: 84 },
     { id: 86, front: "וִזַארַאת", back: "משרדי ממשלה", topic: "לימודים ומוסדות", form: "רבים", pair: [30], meeting: 1 },
-    { id: 87, front: "תַלַאמִיז", back: "תלמידים", topic: "אנשים ותפקידים", form: "רבים", pair: [32], meeting: 1 },
-    { id: 88, front: "תִלְמִיזַאת", back: "תלמידות", topic: "אנשים ותפקידים", form: "רבים", pair: [33], meeting: 1 },
-    { id: 89, front: "אַצְחַאבּ", back: "חברים / בעלי מקום או עסק", topic: "אנשים ותפקידים", form: "רבים", pair: [34], meeting: 1 },
-    { id: 90, front: "צַאחְבַּאת", back: "חברות / בעלות מקום או עסק", topic: "אנשים ותפקידים", form: "רבים", pair: [35], meeting: 1 },
+    { id: 87, front: "תַלַאמִיז", back: "תלמידים", topic: "אנשים ותפקידים", form: "רבים", pair: [32], meeting: 1, gender: "m", mate: 88 },
+    { id: 88, front: "תִלְמִיזַאת", back: "תלמידות", topic: "אנשים ותפקידים", form: "רבים", pair: [33], meeting: 1, gender: "f", mate: 87 },
+    { id: 89, front: "אַצְחַאבּ", back: "חברים / בעלי מקום או עסק", topic: "אנשים ותפקידים", form: "רבים", pair: [34], meeting: 1, gender: "m", mate: 90 },
+    { id: 90, front: "צַאחְבַּאת", back: "חברות / בעלות מקום או עסק", topic: "אנשים ותפקידים", form: "רבים", pair: [35], meeting: 1, gender: "f", mate: 89 },
     { id: 91, front: "דוּר", back: "בתים", topic: "בית ומקומות", form: "רבים", pair: [36], meeting: 1 },
     { id: 92, front: "וְלַאד", back: "ילדים", topic: "משפחה", form: "רבים", pair: [37], meeting: 1 },
-    { id: 93, front: "אַבְּנַאא", back: "בנים", topic: "משפחה", form: "רבים", pair: [38], meeting: 1 },
-    { id: 94, front: "בַּנַאת", back: "ילדות / בנות", topic: "משפחה", form: "רבים", pair: [39], meeting: 1 },
-    { id: 95, front: "עֻמוּם", back: "דודים מצד האב", topic: "משפחה", form: "רבים", pair: [40], meeting: 1 },
-    { id: 96, front: "עַמַّאת", back: "דודות מצד האב", topic: "משפחה", form: "רבים", pair: [41], meeting: 1 },
-    { id: 97, front: "אַחְ'וַאל", back: "דודים מצד האם", topic: "משפחה", form: "רבים", pair: [42], meeting: 1 },
-    { id: 98, front: "חַ'אלַאת", back: "דודות מצד האם", topic: "משפחה", form: "רבים", pair: [43], meeting: 1 },
+    { id: 93, front: "אַבְּנַאא", back: "בנים", topic: "משפחה", form: "רבים", pair: [38], meeting: 1, gender: "m", mate: 94 },
+    { id: 94, front: "בַּנַאת", back: "ילדות / בנות", topic: "משפחה", form: "רבים", pair: [39], meeting: 1, gender: "f", mate: 93 },
+    { id: 95, front: "עֻמוּם", back: "דודים מצד האב", topic: "משפחה", form: "רבים", pair: [40], meeting: 1, gender: "m", mate: 96 },
+    { id: 96, front: "עַמַّאת", back: "דודות מצד האב", topic: "משפחה", form: "רבים", pair: [41], meeting: 1, gender: "f", mate: 95 },
+    { id: 97, front: "אַחְ'וַאל", back: "דודים מצד האם", topic: "משפחה", form: "רבים", pair: [42], meeting: 1, gender: "m", mate: 98 },
+    { id: 98, front: "חַ'אלַאת", back: "דודות מצד האם", topic: "משפחה", form: "רבים", pair: [43], meeting: 1, gender: "f", mate: 97 },
     { id: 99, front: "צְפוּפ", back: "כיתות", topic: "כיתה וציוד", form: "רבים", pair: [45], meeting: 1 },
     { id: 100, front: "אַבְּוַאבּ", back: "דלתות / שערים", topic: "כיתה וציוד", form: "רבים", pair: [46], meeting: 1 },
     { id: 101, front: "שַבַּאבִּיכּ", back: "חלונות", topic: "כיתה וציוד", form: "רבים", pair: [47], meeting: 1 },
@@ -919,11 +922,43 @@ function dueLabel(item) {
     return "בעוד " + days + " ימים";
 }
 
+/* Not every right answer is worth the same.
+
+   Picking the right option out of four is recognition; typing the word from
+   memory, or assembling a whole sentence, is recall — a different and harder
+   skill. Counting them equally would flatter a score built entirely on
+   multiple choice, so recall is worth double.
+
+   A wrong answer costs half a point and never resets the word to zero. One
+   slip on a tired evening should cost a step backwards, not a month of work.  */
+const ANSWER_WEIGHT = {
+    choice: 1,      // multiple choice — recognition
+    card: 1,        // a flashcard marked "ידעתי" — self-reported recall
+    typed: 2,       // typed from memory
+    sentence: 2,    // a sentence assembled correctly
+};
+
+function answerCredit(kind) {
+    return ANSWER_WEIGHT[kind] || 1;
+}
+
 const MASTERY_TARGET = 6;
+/* `correctCount` accumulates credit, not answers, so it can hold halves. */
 const netScore = (item) => Math.max(0, (item.correctCount || 0) - 0.5 * (item.wrongCount || 0));
 const progressPct = (item) => Math.min(100, Math.round((netScore(item) / MASTERY_TARGET) * 100));
 const isMastered = (item) => progressPct(item) >= 100;
 const isStruggling = (item) => !isMastered(item) && (item.wrongCount || 0) >= 2 && progressPct(item) < 50;
+
+/* A continuous read on how well a deck is known, as opposed to how many of
+   its items have crossed the mastery line. Every item contributes what it has
+   earned so far, so an evening of good practice moves the number instead of
+   leaving it at zero for a month. */
+function knowledgeScore(items) {
+    const list = items || [];
+    if (list.length === 0) return 0;
+    const sum = list.reduce((acc, it) => acc + Math.min(1, netScore(it) / MASTERY_TARGET), 0);
+    return Math.round((sum / list.length) * 100);
+}
 
 function withProgressFields(list) {
     return list.map((i) => ({ correctCount: 0, wrongCount: 0, ...i }));
@@ -1991,7 +2026,7 @@ function FlashcardPractice({ deckKind, banks, applyResult, onBack, dir, setDir, 
         setPending(true);
         setFeedback(correct ? " zl-pop" : " zl-shake");
         setTally((t) => ({ right: t.right + (correct ? 1 : 0), wrong: t.wrong + (correct ? 0 : 1) }));
-        applyResult(item, correct);
+        applyResult(item, correct, "card");
         if (correct) {
             setFlipped(false);
             if (timerRef.current) clearTimeout(timerRef.current);
@@ -2049,7 +2084,7 @@ function FlashcardPractice({ deckKind, banks, applyResult, onBack, dir, setDir, 
                         React.createElement(PrimaryButton, { variant: "success", disabled: pending, onClick: () => mark(true) },
                             React.createElement(Check, { size: 16 }), "ידעתי")),
                     React.createElement("p", { style: { textAlign: "center", fontSize: "0.8rem", color: "var(--ink-muted)", marginTop: 12 } },
-                        "הצלחות: " + (item.correctCount || 0) + " | כשלונות: " + (item.wrongCount || 0))))));
+                        "הצלחות: " + Math.round(item.correctCount || 0) + " | כשלונות: " + (item.wrongCount || 0))))));
 }
 
 /* =========================================================================
@@ -2186,7 +2221,7 @@ function AmericanQuiz({ deckKind, banks, applyResult, onBack, dir, setDir }) {
         setSelected(opt);
         const correct = opt === question.correctAnswer;
         setScore((s) => ({ correct: s.correct + (correct ? 1 : 0), total: s.total + 1 }));
-        applyResult(currentItem, correct);
+        applyResult(currentItem, correct, "choice");
         if (timerRef.current) clearTimeout(timerRef.current);
         timerRef.current = setTimeout(() => {
             if (pos + 1 >= order.length) setFinished(true);
@@ -2363,7 +2398,7 @@ function SentenceBuilderSession({ banks, applyResult, onBack, dir, setDir, onSes
         if (result) return;
         setResult(correct ? "correct" : "wrong");
         setTally((t) => ({ right: t.right + (correct ? 1 : 0), wrong: t.wrong + (correct ? 0 : 1) }));
-        applyResult(item, correct);
+        applyResult(item, correct, "sentence");
     };
     const next = () => {
         if (pos + 1 >= order.length) setFinished(true);
@@ -2379,6 +2414,366 @@ function SentenceBuilderSession({ banks, applyResult, onBack, dir, setDir, onSes
             React.createElement(SessionBar, { pos: pos + 1, total: order.length }),
             React.createElement(SentenceTask, { item: item, dir: taskDir, onResult: record, locked: !!result, result: result, pool: data }),
             result ? React.createElement(PrimaryButton, { variant: "gold", onClick: next }, "המשפט הבא") : null)));
+}
+
+/* =========================================================================
+   GAMES
+
+   Lighter drills that still count towards what you know — but at the weight
+   of recognition, not recall. Matching a pair or picking from a closed set of
+   tiles is easier than producing the word, so each correct answer is worth
+   the same as a multiple-choice answer rather than a typed one.
+   ========================================================================= */
+const GAME_SIZES = { pairs: 6, clock: 60, blank: 10 };
+
+/* ---- pairing ------------------------------------------------------------
+   Two columns of tiles; tap one on each side to join them. The pairs come
+   either from the singular/plural links already in the word list, or from the
+   masculine/feminine ones. */
+function buildPairRounds(deck, kind, count) {
+    const byId = new Map(deck.map((d) => [d.id, d]));
+    const seen = new Set();
+    const rounds = [];
+    deck.forEach((item) => {
+        if (seen.has(item.id)) return;
+        let mate = null;
+        if (kind === "gender") {
+            mate = item.mate ? byId.get(item.mate) : null;
+        } else if (item.form === "יחיד" && item.pair && item.pair.length) {
+            mate = byId.get(item.pair[0]);
+        }
+        if (!mate || seen.has(mate.id)) return;
+        seen.add(item.id); seen.add(mate.id);
+        /* The left column always holds the same side of the relationship, so
+           the exercise is "find its partner" rather than a free-for-all. */
+        rounds.push(kind === "gender" && item.gender === "f"
+            ? { left: mate, right: item }
+            : { left: item, right: mate });
+    });
+    return shuffle(rounds).slice(0, count);
+}
+
+function PairGame({ kind, banks, applyResult, onBack, onSessionDone }) {
+    const deck = useMemo(() => buildDeck("vocab", banks), [banks]);
+    const [rounds, setRounds] = useState(() => buildPairRounds(deck, kind, GAME_SIZES.pairs));
+    const [leftPick, setLeftPick] = useState(null);
+    const [done, setDone] = useState({});
+    const [missed, setMissed] = useState(null);
+    const [tally, setTally] = useState({ right: 0, wrong: 0 });
+    const [finished, setFinished] = useState(false);
+    const timerRef = useRef(null);
+
+    const rightOrder = useMemo(() => shuffle(rounds.map((_, i) => i)), [rounds]);
+
+    const restart = () => {
+        setRounds(buildPairRounds(deck, kind, GAME_SIZES.pairs));
+        setLeftPick(null); setDone({}); setMissed(null);
+        setTally({ right: 0, wrong: 0 }); setFinished(false);
+    };
+    useEffect(() => { restart(); /* eslint-disable-next-line */ }, [kind, deck.length]);
+    useEffect(() => {
+        if (Object.keys(done).length && Object.keys(done).length === rounds.length) {
+            if (timerRef.current) clearTimeout(timerRef.current);
+            timerRef.current = setTimeout(() => setFinished(true), 500);
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [done, rounds.length]);
+    useEffect(() => { if (finished && onSessionDone) onSessionDone(); /* eslint-disable-next-line */ }, [finished]);
+    useEffect(() => () => { if (timerRef.current) clearTimeout(timerRef.current); }, []);
+
+    if (rounds.length < 2) {
+        return (React.createElement("div", { className: "zl-anim" },
+            React.createElement(BackLink, { onClick: onBack }, "חזרה לשיטות תרגול"),
+            React.createElement(Card, null, "אין מספיק זוגות במאגר הפתוח כדי לשחק.")));
+    }
+    if (finished) {
+        return React.createElement(SessionSummary, {
+            title: "סיימת את המשחק",
+            total: tally.right + tally.wrong, right: tally.right, wrong: tally.wrong,
+            restartLabel: "סבב נוסף", onRestart: restart, onBack: onBack,
+        });
+    }
+
+    const answer = (rightIdx) => {
+        if (leftPick === null || done[leftPick]) return;
+        const correct = leftPick === rightIdx;
+        applyResult(rounds[leftPick].left, correct, "choice");
+        setTally((t) => ({ right: t.right + (correct ? 1 : 0), wrong: t.wrong + (correct ? 0 : 1) }));
+        if (correct) {
+            setDone((d) => ({ ...d, [leftPick]: true }));
+            setLeftPick(null); setMissed(null);
+        } else {
+            setMissed(rightIdx);
+            if (timerRef.current) clearTimeout(timerRef.current);
+            timerRef.current = setTimeout(() => setMissed(null), 500);
+        }
+    };
+
+    const tile = (text, sub, active, cleared, wrong, onClick) => React.createElement("button", {
+        type: "button", onClick: onClick, disabled: cleared,
+        className: wrong ? "zl-shake" : (cleared ? "zl-pop" : ""),
+        style: {
+            width: "100%", textAlign: "right", font: "inherit", cursor: cleared ? "default" : "pointer",
+            border: "1px solid " + (cleared ? "var(--ok)" : active ? "var(--navy)" : "var(--line)"),
+            background: cleared ? "var(--ok)" : "var(--surface)",
+            color: cleared ? "#fff" : "var(--ink)",
+            opacity: cleared ? 0.55 : 1,
+            borderRadius: 10, padding: "11px 12px", marginBottom: 8,
+            boxShadow: cleared ? "none" : "var(--shadow-sm)",
+        },
+    },
+        React.createElement("span", { style: { display: "block", fontWeight: 700, fontSize: "0.95rem" } }, text),
+        sub ? React.createElement("span", { style: { display: "block", fontSize: "0.72rem", opacity: 0.7, marginTop: 2 } }, sub) : null);
+
+    return (React.createElement("div", { className: "zl-anim" },
+        React.createElement(BackLink, { onClick: onBack }, "חזרה לשיטות תרגול"),
+        React.createElement(Card, null,
+            React.createElement("h2", { className: "zl-display", style: { fontSize: "1.15rem", fontWeight: 800, marginBottom: 12 } },
+                kind === "gender" ? "צימוד · זכר ונקבה" : "צימוד · יחיד ורבים"),
+            React.createElement(SessionBar, { pos: Object.keys(done).length, total: rounds.length }),
+            React.createElement("p", { style: { color: "var(--ink-muted)", fontSize: "0.85rem", marginBottom: 14 } },
+                kind === "gender" ? "בחר מילה בזכר ואחריה את צורת הנקבה שלה." : "בחר מילה ביחיד ואחריה את צורת הרבים שלה."),
+            React.createElement("div", { style: { display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 } },
+                React.createElement("div", null, rounds.map((r, i) =>
+                    React.createElement("div", { key: "l" + i },
+                        tile(r.left.front, r.left.back, leftPick === i, !!done[i], false,
+                             () => setLeftPick(leftPick === i ? null : i))))),
+                React.createElement("div", null, rightOrder.map((idx) =>
+                    React.createElement("div", { key: "r" + idx },
+                        tile(rounds[idx].right.front, null, false, !!done[idx], missed === idx,
+                             () => answer(idx))))))),
+        React.createElement("p", { style: { textAlign: "center", fontSize: "0.8rem", color: "var(--ink-muted)", marginTop: 12 } },
+            tally.right + " נכון · " + tally.wrong + " טעויות")));
+}
+
+/* ---- beat the clock -----------------------------------------------------
+   Sixty seconds of multiple choice. Recognising a word under time pressure is
+   a different skill from recognising it at leisure, and closer to what a
+   conversation demands. */
+function ClockGame({ banks, applyResult, onBack, dir, setDir, onSessionDone }) {
+    const deck = useMemo(() => buildDeck("mix", banks), [banks]);
+    const [order, setOrder] = useState(() => weightedOrder(deck, banks.meeting));
+    const [pos, setPos] = useState(0);
+    const [question, setQuestion] = useState(null);
+    const [selected, setSelected] = useState(null);
+    const [score, setScore] = useState({ correct: 0, total: 0 });
+    const [left, setLeft] = useState(GAME_SIZES.clock);
+    const [running, setRunning] = useState(false);
+    const [finished, setFinished] = useState(false);
+    const stepRef = useRef(null);
+
+    const start = () => {
+        setOrder(weightedOrder(deck, banks.meeting));
+        setPos(0); setScore({ correct: 0, total: 0 });
+        setLeft(GAME_SIZES.clock); setSelected(null);
+        setFinished(false); setRunning(true);
+    };
+
+    useEffect(() => {
+        if (!running) return;
+        const tick = setInterval(() => setLeft((s) => {
+            if (s <= 1) { clearInterval(tick); setRunning(false); setFinished(true); return 0; }
+            return s - 1;
+        }), 1000);
+        return () => clearInterval(tick);
+    }, [running]);
+
+    useEffect(() => {
+        if (!running || deck.length === 0 || order.length === 0) return;
+        const item = deck[order[pos % order.length]];
+        if (item) { setQuestion(buildQuestion(deck, item, resolveDir(dir))); setSelected(null); }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [pos, order, running]);
+
+    useEffect(() => { if (finished && onSessionDone) onSessionDone(); /* eslint-disable-next-line */ }, [finished]);
+    useEffect(() => () => { if (stepRef.current) clearTimeout(stepRef.current); }, []);
+
+    if (deck.length < 4) {
+        return (React.createElement("div", { className: "zl-anim" },
+            React.createElement(BackLink, { onClick: onBack }, "חזרה לשיטות תרגול"),
+            React.createElement(Card, null, "צריך לפחות 4 פריטים במאגר הפתוח.")));
+    }
+
+    if (!running && !finished) {
+        return (React.createElement("div", { className: "zl-anim" },
+            React.createElement(BackLink, { onClick: onBack }, "חזרה לשיטות תרגול"),
+            React.createElement(Card, null,
+                React.createElement("h2", { className: "zl-display", style: { fontSize: "1.15rem", fontWeight: 800, marginBottom: 10 } }, "נגד השעון"),
+                React.createElement("p", { style: { color: "var(--ink-muted)", fontSize: "0.88rem", lineHeight: 1.7, marginBottom: 16 } },
+                    GAME_SIZES.clock + " שניות, כמה שאלות שתספיק. מילים ואותיות מעורבבות."),
+                React.createElement(PrimaryButton, { onClick: start }, "התחל"))));
+    }
+
+    if (finished) {
+        return (React.createElement("div", { className: "zl-anim" },
+            React.createElement(BackLink, { onClick: onBack }, "חזרה לשיטות תרגול"),
+            React.createElement(Card, null,
+                React.createElement("div", { className: "zl-score" },
+                    React.createElement("span", { className: "zl-score-num" }, score.correct),
+                    React.createElement("span", { className: "zl-score-of" }, "מתוך " + score.total)),
+                React.createElement("h2", { className: "zl-display", style: { fontSize: "1.2rem", fontWeight: 800, textAlign: "center", marginBottom: 16 } },
+                    "הזמן נגמר"),
+                React.createElement("div", { style: { display: "flex", gap: 8, justifyContent: "center" } },
+                    React.createElement(PrimaryButton, { onClick: start }, "שוב"),
+                    React.createElement(PrimaryButton, { variant: "outline", onClick: onBack }, "חזרה")))));
+    }
+
+    if (!question) return null;
+    const item = deck[order[pos % order.length]];
+
+    const choose = (opt) => {
+        if (selected) return;
+        setSelected(opt);
+        const correct = opt === question.correctAnswer;
+        setScore((s) => ({ correct: s.correct + (correct ? 1 : 0), total: s.total + 1 }));
+        applyResult(item, correct, "choice");
+        if (stepRef.current) clearTimeout(stepRef.current);
+        stepRef.current = setTimeout(() => setPos((p) => p + 1), 320);
+    };
+
+    const low = left <= 10;
+    return (React.createElement("div", { className: "zl-anim" },
+        React.createElement(BackLink, { onClick: onBack }, "חזרה לשיטות תרגול"),
+        React.createElement(Card, null,
+            React.createElement("div", { style: { display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 12 } },
+                React.createElement("h2", { className: "zl-display", style: { fontSize: "1.15rem", fontWeight: 800 } }, "נגד השעון"),
+                React.createElement("span", { style: { fontSize: "1.4rem", fontWeight: 800, color: low ? "var(--bad)" : "var(--navy)" } }, left)),
+            React.createElement("div", { className: "zl-session" },
+                React.createElement("span", { className: "zl-session-track" },
+                    React.createElement("span", { className: "zl-session-fill", style: {
+                        width: Math.round((left / GAME_SIZES.clock) * 100) + "%",
+                        background: low ? "var(--bad)" : "var(--navy)", transition: "width 1s linear" } })),
+                React.createElement("span", { className: "zl-session-num" }, score.correct + " / " + score.total)),
+            React.createElement(PromptBox, { text: question.prompt, isLetter: question.promptIsLetter }),
+            React.createElement(ChoiceGrid, { question: question, chosen: selected, locked: !!selected, onChoose: choose }))));
+}
+
+/* ---- fill in the blank --------------------------------------------------
+   A sentence from the booklet with one word removed. Meaning in context,
+   rather than a word standing on its own. */
+function buildBlankTask(deck, item, dir) {
+    const reversed = dir === "he2ar";
+    const text = reversed ? item.arabic : item.hebrew;
+    const words = text.split(" ").filter(Boolean);
+    if (words.length < 3) return null;
+    const at = 1 + Math.floor(Math.random() * (words.length - 1));
+    const answer = words[at];
+
+    const taken = new Set([answer]);
+    const options = [];
+    shuffle(deck).forEach((other) => {
+        if (other._key === item._key || options.length >= 3) return;
+        const pool = (reversed ? other.arabic : other.hebrew).split(" ").filter(Boolean);
+        const word = pool[Math.floor(Math.random() * pool.length)];
+        if (!word || taken.has(word)) return;
+        taken.add(word); options.push(word);
+    });
+    if (options.length < 2) return null;
+    return {
+        before: words.slice(0, at).join(" "),
+        after: words.slice(at + 1).join(" "),
+        prompt: reversed ? item.hebrew : item.arabic,
+        answer: answer,
+        options: shuffle([answer].concat(options)),
+    };
+}
+
+function BlankGame({ banks, applyResult, onBack, dir, setDir, onSessionDone }) {
+    const deck = useMemo(() => buildDeck("sentences", banks), [banks]);
+    const total = Math.min(GAME_SIZES.blank, deck.length);
+    const [order, setOrder] = useState(() => weightedOrder(deck, banks.meeting).slice(0, total));
+    const [pos, setPos] = useState(0);
+    const [task, setTask] = useState(null);
+    const [chosen, setChosen] = useState(null);
+    const [tally, setTally] = useState({ right: 0, wrong: 0 });
+    const [finished, setFinished] = useState(false);
+
+    const restart = () => {
+        setOrder(weightedOrder(deck, banks.meeting).slice(0, total));
+        setPos(0); setChosen(null); setTally({ right: 0, wrong: 0 }); setFinished(false);
+    };
+    useEffect(() => { restart(); /* eslint-disable-next-line */ }, [deck.length]);
+
+    useEffect(() => {
+        if (deck.length === 0 || order.length === 0 || pos >= order.length) return;
+        /* Some sentences are too short to hide a word in; step past them. */
+        let built = null, tries = 0, at = pos;
+        while (!built && tries < order.length) {
+            built = buildBlankTask(deck, deck[order[at % order.length]], resolveDir(dir));
+            if (!built) { at++; tries++; }
+        }
+        setTask(built); setChosen(null);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [pos, order, dir]);
+
+    useEffect(() => { if (finished && onSessionDone) onSessionDone(); /* eslint-disable-next-line */ }, [finished]);
+
+    if (deck.length === 0) {
+        return (React.createElement("div", { className: "zl-anim" },
+            React.createElement(BackLink, { onClick: onBack }, "חזרה לשיטות תרגול"),
+            React.createElement(Card, null, "אין משפטים במאגר הפתוח.")));
+    }
+    if (finished) {
+        return React.createElement(SessionSummary, {
+            title: "סיימת את המשחק",
+            total: tally.right + tally.wrong, right: tally.right, wrong: tally.wrong,
+            restartLabel: "סבב נוסף", onRestart: restart, onBack: onBack,
+        });
+    }
+    if (!task) return null;
+
+    const item = deck[order[pos % order.length]];
+    const choose = (opt) => {
+        if (chosen) return;
+        setChosen(opt);
+        const correct = opt === task.answer;
+        setTally((t) => ({ right: t.right + (correct ? 1 : 0), wrong: t.wrong + (correct ? 0 : 1) }));
+        applyResult(item, correct, "choice");
+    };
+    const next = () => {
+        if (pos + 1 >= order.length) setFinished(true);
+        else setPos(pos + 1);
+    };
+
+    return (React.createElement("div", { className: "zl-anim" },
+        React.createElement(BackLink, { onClick: onBack }, "חזרה לשיטות תרגול"),
+        React.createElement(Card, null,
+            React.createElement("div", { style: { display: "flex", justifyContent: "space-between", alignItems: "center", gap: 10, flexWrap: "wrap", marginBottom: 12 } },
+                React.createElement("h2", { className: "zl-display", style: { fontSize: "1.15rem", fontWeight: 800 } }, "השלמת משפט"),
+                React.createElement(DirectionToggle, { value: dir, onChange: setDir })),
+            React.createElement(SessionBar, { pos: pos + 1, total: order.length }),
+            React.createElement("p", { style: { color: "var(--ink-muted)", fontSize: "0.85rem", marginBottom: 10 } }, "איזו מילה חסרה?"),
+            React.createElement("div", { style: {
+                    background: "var(--bg)", border: "1px solid var(--line)", borderRadius: "var(--r-md)",
+                    padding: "18px 16px", marginBottom: 12, fontWeight: 700, fontSize: "1.1rem", lineHeight: 1.9, textAlign: "center",
+                } },
+                task.before,
+                React.createElement("span", { style: {
+                    display: "inline-block", minWidth: 74, margin: "0 6px", padding: "1px 10px",
+                    borderBottom: "2px solid " + (chosen ? (chosen === task.answer ? "var(--ok)" : "var(--bad)") : "var(--accent)"),
+                    color: chosen ? (chosen === task.answer ? "var(--ok)" : "var(--bad)") : "transparent",
+                } }, chosen || "___"),
+                task.after),
+            React.createElement("p", { style: { fontSize: "0.82rem", color: "var(--ink-muted)", marginBottom: 14, textAlign: "center" } }, task.prompt),
+            React.createElement("div", { style: { display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10 } },
+                task.options.map((opt, i) => {
+                    const isRight = opt === task.answer;
+                    let bg = "var(--surface)", border = "var(--line)", color = "var(--ink)";
+                    if (chosen) {
+                        if (isRight) { bg = "var(--ok)"; border = "var(--ok)"; color = "#fff"; }
+                        else if (opt === chosen) { bg = "var(--bad)"; border = "var(--bad)"; color = "#fff"; }
+                    }
+                    const fb = chosen ? (isRight ? " zl-pop" : (opt === chosen ? " zl-shake" : "")) : "";
+                    return React.createElement("button", { key: i, type: "button", className: fb.trim(),
+                        onClick: () => choose(opt), disabled: !!chosen,
+                        style: { padding: "13px 10px", borderRadius: 10, border: "1px solid " + border,
+                                 background: bg, color: color, font: "inherit", fontWeight: 600,
+                                 cursor: chosen ? "default" : "pointer",
+                                 boxShadow: chosen ? "none" : "var(--shadow-sm)" } }, opt);
+                })),
+            chosen ? React.createElement("div", { style: { marginTop: 14 } },
+                React.createElement(PrimaryButton, { onClick: next },
+                    pos + 1 >= order.length ? "סיים" : "המשפט הבא")) : null)));
 }
 
 /* =========================================================================
@@ -2413,6 +2808,18 @@ const PRACTICE_METHODS = [
         desc: "מילים, משפטים, ניבים ואותיות — עם ציון סופי.",
         Icon: Check,
         target: { screen: "exam" },
+    },
+    {
+        id: "games",
+        title: "משחקים",
+        desc: "תרגול קליל — צימוד, מהירות והשלמה.",
+        Icon: GameIcon,
+        options: [
+            { key: "single", title: "יחיד ורבים", desc: "צימוד כל מילה לצורת הרבים שלה.", target: { screen: "pairs", kind: "number" } },
+            { key: "gender", title: "זכר ונקבה", desc: "צימוד כל מילה לצורת הנקבה שלה.", target: { screen: "pairs", kind: "gender" } },
+            { key: "clock", title: "נגד השעון", desc: GAME_SIZES.clock + " שניות, כמה שאלות שתספיק.", target: { screen: "clock" } },
+            { key: "blank", title: "השלמת משפט", desc: "איזו מילה חסרה במשפט.", target: { screen: "blank" } },
+        ],
     },
     {
         id: "sentences",
@@ -2479,10 +2886,29 @@ function PracticeTab({ screen, setScreen, banks, applyResult, onSessionDone, onE
             dir: dir, setDir: setDir, onSessionDone: () => onSessionDone("evening"),
         });
     }
+    if (screen && screen.screen === "pairs") {
+        return React.createElement(PairGame, {
+            kind: screen.kind || "number", banks: banks, applyResult: applyResult,
+            onBack: backToList("games"), onSessionDone: () => onSessionDone("morning"),
+        });
+    }
+    if (screen && screen.screen === "clock") {
+        return React.createElement(ClockGame, {
+            banks: banks, applyResult: applyResult, onBack: backToList("games"),
+            dir: dir, setDir: setDir, onSessionDone: () => onSessionDone("morning"),
+        });
+    }
+    if (screen && screen.screen === "blank") {
+        return React.createElement(BlankGame, {
+            banks: banks, applyResult: applyResult, onBack: backToList("games"),
+            dir: dir, setDir: setDir, onSessionDone: () => onSessionDone("noon"),
+        });
+    }
     if (screen && screen.screen === "exam") {
         return React.createElement(FullExam, {
             banks: banks, onBack: backToList("exam"),
             onExamStart: onExamStart, onExamFinish: onExamFinish,
+            applyResult: applyResult,
         });
     }
 
@@ -2621,7 +3047,7 @@ function examNotes(cats) {
     return parts.filter(Boolean).join(" ");
 }
 
-function FullExam({ banks, onBack, onExamStart, onExamFinish }) {
+function FullExam({ banks, onBack, onExamStart, onExamFinish, applyResult }) {
     const [tasks, setTasks] = useState(() => buildExamTasks(banks));
     const [pos, setPos] = useState(0);
     const [typed, setTyped] = useState("");
@@ -2651,6 +3077,11 @@ function FullExam({ banks, onBack, onExamStart, onExamFinish }) {
             const row = prev[kind] || { right: 0, total: 0 };
             return { ...prev, [kind]: { right: row.right + (correct ? 1 : 0), total: row.total + 1 } };
         });
+        /* The exam counts towards what you know — answering here is real
+           evidence — but it passes schedule=false so the review dates stay
+           exactly where the practice sessions left them. */
+        const answerKind = task.kind === "sentence" ? "sentence" : (task.open ? "typed" : "choice");
+        applyResult(task.item, correct, answerKind, false);
         setResult(correct ? "correct" : "wrong");
     };
 
@@ -2956,7 +3387,7 @@ function VocabTab({ vocab, setVocab }) {
                         React.createElement("span", null, dueLabel(item))),
                     React.createElement("div", { className: "zl-sheet-row" },
                         React.createElement("span", { className: "zl-sheet-key" }, "תרגולים"),
-                        React.createElement("span", null, "ידעתי " + (item.correctCount || 0) + " · לא ידעתי " + (item.wrongCount || 0))),
+                        React.createElement("span", null, "ידעתי " + Math.round(item.correctCount || 0) + " · לא ידעתי " + (item.wrongCount || 0))),
                     React.createElement("div", { style: { margin: "14px 0 4px" } },
                         React.createElement(ProgressBar, { pct: pct, mastered: isMastered(item), struggling: isStruggling(item) })),
                     React.createElement("div", { style: { fontSize: "0.75rem", color: "var(--ink-muted)", marginBottom: 14 } }, "התקדמות " + pct + "%"),
@@ -3121,6 +3552,7 @@ function StatsTab({ vocab, letters, sentences, idioms, checklist, meeting }) {
         React.createElement(SectionHeader, { title: "סטטיסטיקה", subtitle: "תמונת מצב של הלימוד, מחושבת מההתקדמות ששמורה אצלך" }),
 
         React.createElement("div", { className: "zl-stat-grid" },
+            React.createElement(StatCell, { value: knowledgeScore(openVocab) + "%", label: "ידע באוצר המילים" }),
             React.createElement(StatCell, { value: mastered + "/" + openVocab.length, label: "מילים בשליטה מלאה" }),
             React.createElement(StatCell, { value: due, label: "ממתינות לחזרה היום" }),
             React.createElement(StatCell, { value: accuracy + "%", label: "אחוז הצלחה כללי" }),
@@ -3439,15 +3871,21 @@ function ArabicLearningApp() {
     const banks = { vocab: vocab, letters: letters, sentences: sentences, idioms: idioms, meeting: meeting };
     const bankSetters = { vocab: setVocab, letters: setLetters, sentences: setSentences, idioms: setIdioms };
 
-    const applyResult = useCallback((item, correct) => {
+    /* `kind` says what sort of answer this was, which decides how much credit
+       it earns. `schedule` is false for the full exam: sitting an exam counts
+       towards what you know, but must not shift the review dates — measuring
+       something should not disturb it. */
+    const applyResult = useCallback((item, correct, kind, schedule) => {
         const setter = bankSetters[item._deck];
         if (!setter) return;
+        const credit = correct ? answerCredit(kind) : 0;
+        const touchSchedule = schedule !== false;
         setter((prev) => prev.map((d) => (d.id === item.id
             ? {
                 ...d,
-                correctCount: (d.correctCount || 0) + (correct ? 1 : 0),
+                correctCount: (d.correctCount || 0) + credit,
                 wrongCount: (d.wrongCount || 0) + (correct ? 0 : 1),
-                ...scheduleNext(d, correct),
+                ...(touchSchedule ? scheduleNext(d, correct) : { lastSeen: Date.now() }),
             }
             : d)));
         // eslint-disable-next-line react-hooks/exhaustive-deps
