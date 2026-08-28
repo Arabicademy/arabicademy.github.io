@@ -132,7 +132,7 @@ try {
     throw new Error("React / ReactDOM לא נטענו מה-CDN (בדוק חיבור לאינטרנט או חסימת סקריפטים).");
   }
 "use strict";
-const APP_BUILD = "28.08 · 43";   // bump this every time the file is replaced
+const APP_BUILD = "28.08 · 44";   // bump this every time the file is replaced
 
 /* The institute logo, carried inline so the page stays a single file.
    LOGO_MARK is the emblem alone (header); LOGO_FULL includes the name
@@ -863,7 +863,20 @@ const SRS_LADDER = [1, 2, 4, 7, 10, 14];
    session covers what the schedule says is due, capped so a backlog never
    turns into an unfinishable pile; opening flashcards from the practice list
    is a shorter, off-schedule drill. */
-const DAILY_CARD_TARGET = 60;
+/* The daily card session follows the queue rather than a fixed number: it
+   serves whatever is actually due, up to a ceiling. A fixed size stops
+   working once several meetings are open — twenty cards covered a seventh of
+   meeting 1, but would cover a fortieth of six meetings, and the older
+   material would quietly stop coming round. */
+const SESSION_CAP = 30;
+const SESSION_MIN = 10;
+
+/* Knowing the material well enough to build on it, which is what marking the
+   next meeting really asks. A full week of the daily routine earns about 46%,
+   so this sits just under that: reachable by keeping at it, not by turning up
+   once. Distinct from mastery, which asks whether you will still know it in a
+   month and takes two to three weeks per meeting. */
+const READY_PCT = 45;
 
 /* The book runs to fifteen meetings. Words and practice sentences belong to
    the meeting that introduced them; letters and idioms carry no meeting at
@@ -998,6 +1011,24 @@ function freshMeetingBonus(item, currentMeeting) {
     return Math.max(0, 0.3 - 0.075 * right);
 }
 
+/* Practice is centred on the meeting in hand.
+
+   The one before it stays close behind, the one before that is thinner, and
+   anything older is present but quiet. This is a multiplier rather than a
+   subtraction, so it scales the whole weight — including the overdue term.
+   That matters: a word from meeting 1 that is genuinely late still climbs
+   back up, which is what stops old material from being lost as the course
+   moves on. */
+function meetingDistanceFactor(item, currentMeeting) {
+    const m = itemMeeting(item);
+    if (!m || !currentMeeting) return 1;          // letters and idioms
+    const back = currentMeeting - m;
+    if (back <= 0) return 1;
+    if (back === 1) return 0.7;
+    if (back === 2) return 0.45;
+    return 0.28;
+}
+
 function itemWeight(item, currentMeeting) {
     const right = item.correctCount || 0;
     const wrong = item.wrongCount || 0;
@@ -1005,10 +1036,16 @@ function itemWeight(item, currentMeeting) {
     if (isMastered(item)) weight = Math.min(weight, 0.3);
     weight = Math.max(0.25, weight);
     const fresh = freshMeetingBonus(item, currentMeeting);
-    if (!item.dueAt) return weight + 1.5 + fresh;       // never reviewed — show it early
+    const near = meetingDistanceFactor(item, currentMeeting);
+    if (!item.dueAt) return (weight + 1.5 + fresh) * near;   // never reviewed — show it early
     const overdueDays = (Date.now() - item.dueAt) / DAY_MS;
-    if (overdueDays < 0) return weight * 0.12;          // scheduled for a later day
-    return weight + Math.min(3, overdueDays) + fresh;   // the longer it is overdue, the higher
+    if (overdueDays < 0) return weight * 0.12 * near;        // scheduled for a later day
+    /* Lateness is added after the distance factor, not multiplied by it.
+       Scaling it too would mean an old meeting could never climb back no
+       matter how thoroughly it had been forgotten — which is precisely the
+       material that most needs to return. Being far behind makes a word
+       quieter; being overdue still makes it urgent. */
+    return (weight + fresh) * near + Math.min(3, overdueDays);
 }
 
 function weightedOrder(data, currentMeeting) {
@@ -1588,15 +1625,25 @@ function profileMeeting(profile) {
     return (typeof n === "number" && n >= 1 && n <= TOTAL_MEETINGS) ? n : 1;
 }
 
-/* How settled a meeting's material is: the share of its words and sentences
-   that have reached full mastery. Used only to decide whether to say
-   something before the learner moves on, never to stop them. */
+/* How well a meeting's material is known right now.
+
+   This deliberately measures knowledge and not mastery. Mastery asks whether
+   a word will still be there in a month, and by construction takes two to
+   three weeks per meeting — a course that moves weekly could never satisfy
+   it, and a bar nobody can clear is noise rather than information. Readiness
+   asks the question that marking the next meeting actually raises: do I know
+   this well enough to build on it. */
 function meetingReadiness(vocab, sentences, meeting) {
     const items = (vocab || []).concat(sentences || [])
         .filter((it) => itemMeeting(it) === meeting);
-    if (items.length === 0) return { total: 0, mastered: 0, pct: 1 };
-    const mastered = items.filter(isMastered).length;
-    return { total: items.length, mastered: mastered, pct: mastered / items.length };
+    if (items.length === 0) return { total: 0, mastered: 0, pct: 1, ready: true };
+    const pct = knowledgeScore(items) / 100;
+    return {
+        total: items.length,
+        mastered: items.filter(isMastered).length,
+        pct: pct,
+        ready: pct * 100 >= READY_PCT,
+    };
 }
 
 function examDateLabel(ms) {
@@ -1660,7 +1707,7 @@ function AccountSheet({ vocab, letters, sentences, idioms, checklist, exams, pro
         const current = profileMeeting(profile);
         if (meeting > current) {
             const behind = meetingReadiness(vocab, sentences, current);
-            if (behind.total > 0 && behind.pct < 0.8) {
+            if (behind.total > 0 && !behind.ready) {
                 setConfirmJump({ from: current, to: meeting, pct: Math.round(behind.pct * 100) });
                 return;
             }
@@ -1763,7 +1810,23 @@ function AccountSheet({ vocab, letters, sentences, idioms, checklist, exams, pro
                     }, Array.from({ length: TOTAL_MEETINGS }, (_, i) => i + 1).map((n) =>
                         React.createElement("option", { key: n, value: String(n) }, "מפגש " + n)))),
                 React.createElement("p", { style: { fontSize: "0.75rem", color: "var(--ink-muted)", lineHeight: 1.6, marginBottom: 8 } },
-                    "התרגול נשען על החומר מכל המפגשים עד המפגש שבחרת, עם עדיפות קלה לחדש."),
+                    "התרגול נשען על החומר מכל המפגשים עד המפגש שבחרת, עם דגש על החדש."),
+                (function () {
+                    const now = profileMeeting(profile);
+                    const r = meetingReadiness(vocab, sentences, now);
+                    if (!r.total) return null;
+                    const pct = Math.round(r.pct * 100);
+                    return React.createElement("div", { style: {
+                            display: "flex", alignItems: "center", gap: 10, marginBottom: 10,
+                            background: "var(--bg)", border: "1px solid var(--line)",
+                            borderRadius: 10, padding: "10px 12px",
+                        } },
+                        React.createElement("span", { style: { fontSize: "1.3rem", fontWeight: 800, color: r.ready ? "var(--ok)" : "var(--accent)" } }, pct + "%"),
+                        React.createElement("span", { style: { fontSize: "0.76rem", color: "var(--ink-muted)", lineHeight: 1.5 } },
+                            r.ready
+                                ? "ידע במפגש " + now + " — מעל הסף למעבר (" + READY_PCT + "%)"
+                                : "ידע במפגש " + now + " — הסף המומלץ למעבר הוא " + READY_PCT + "%"));
+                })(),
                 React.createElement("div", { style: { display: "flex", alignItems: "center", gap: 10, marginBottom: 14 } },
                     React.createElement(PrimaryButton, { onClick: saveMeeting, disabled: meeting === profileMeeting(profile) }, "שמור מפגש"),
                     meetingSaved ? React.createElement("span", { className: "zl-anim", style: { fontSize: "0.8rem", fontWeight: 700, color: "var(--ok)" } }, "נשמר") : null),
@@ -1817,7 +1880,7 @@ function AccountSheet({ vocab, letters, sentences, idioms, checklist, exams, pro
             React.createElement("div", { className: "zl-sheet zl-anim", style: { maxWidth: 360 }, onClick: (e) => e.stopPropagation() },
                 React.createElement("h3", { className: "zl-sheet-title", style: { marginBottom: 10 } }, "לעבור למפגש " + confirmJump.to + "?"),
                 React.createElement("p", { style: { fontSize: "0.88rem", color: "var(--ink-muted)", lineHeight: 1.7, marginBottom: 16 } },
-                    "במפגש " + confirmJump.from + " אתה על " + confirmJump.pct + "% שליטה. אפשר להתקדם בכל מקרה — החומר הישן לא נעלם וימשיך לחזור בתרגול."),
+                    "במפגש " + confirmJump.from + " אתה על " + confirmJump.pct + "% ידע, והסף המומלץ למעבר הוא " + READY_PCT + "%. אפשר להתקדם בכל מקרה — החומר הישן לא נעלם וימשיך לחזור בתרגול."),
                 React.createElement("div", { style: { display: "flex", gap: 10 } },
                     React.createElement(PrimaryButton, { variant: "outline", onClick: () => { setMeeting(confirmJump.from); setConfirmJump(null); },
                         style: { flex: 1, justifyContent: "center" } }, "אשאר"),
@@ -1944,8 +2007,11 @@ function SessionSummary({ title, total, right, wrong, onRestart, onBack, restart
 function FlashcardPractice({ deckKind, banks, applyResult, onBack, dir, setDir, size, daily, onSessionDone }) {
     const data = useMemo(() => buildDeck(deckKind, banks), [deckKind, banks]);
     const dueNow = data.filter(isDue).length;
+    /* The daily session tracks the queue: as many cards as are actually due,
+       never fewer than a short sitting and never past the ceiling. Sessions
+       opened from the practice list keep their own fixed length. */
     const sessionSize = daily
-        ? (dueNow > 0 ? Math.min(DAILY_CARD_TARGET, dueNow) : (size || SESSION_SIZES.flashcards))
+        ? (dueNow > 0 ? Math.max(SESSION_MIN, Math.min(SESSION_CAP, dueNow)) : SESSION_MIN)
         : (size || SESSION_SIZES.flashcards);
     const noneDue = !!daily && dueNow === 0;
 
@@ -2424,7 +2490,7 @@ function SentenceBuilderSession({ banks, applyResult, onBack, dir, setDir, onSes
    tiles is easier than producing the word, so each correct answer is worth
    the same as a multiple-choice answer rather than a typed one.
    ========================================================================= */
-const GAME_SIZES = { pairs: 6, clock: 60, blank: 10 };
+const GAME_SIZES = { pairs: 4, clock: 60, blank: 5 };
 
 /* ---- pairing ------------------------------------------------------------
    Two columns of tiles; tap one on each side to join them. The pairs come
@@ -3572,30 +3638,37 @@ function StatsTab({ vocab, letters, sentences, idioms, checklist, meeting }) {
 
         (function () {
             /* Every meeting that has material, whether open or still ahead. */
-            const rows = [];
+            const groups = [];
             (vocab || []).concat(sentences || []).forEach((it) => {
                 const m = itemMeeting(it);
                 if (!m) return;
-                let row = rows.find((r) => r.m === m);
-                if (!row) { row = { m: m, total: 0, mastered: 0 }; rows.push(row); }
-                row.total++;
-                if (isMastered(it)) row.mastered++;
+                let row = groups.find((r) => r.m === m);
+                if (!row) { row = { m: m, items: [] }; groups.push(row); }
+                row.items.push(it);
             });
-            if (rows.length < 2) return null;   // nothing to compare yet
-            rows.sort((a, b) => a.m - b.m);
+            if (groups.length < 2) return null;   // nothing to compare yet
+            groups.sort((a, b) => a.m - b.m);
             return React.createElement(Card, { style: { marginBottom: 14 } },
                 React.createElement("h3", { className: "zl-display", style: { fontWeight: 700, fontSize: "1rem", marginBottom: 4 } }, "התקדמות לפי מפגש"),
-                React.createElement("p", { style: { fontSize: "0.8rem", color: "var(--ink-muted)", marginBottom: 6 } },
-                    "אתה מסומן במפגש " + upTo + " — התרגול נשען על המפגשים עד אליו"),
-                rows.map((r) => {
-                    const pct = r.total ? (r.mastered / r.total) * 100 : 0;
+                React.createElement("p", { style: { fontSize: "0.8rem", color: "var(--ink-muted)", marginBottom: 8 } },
+                    "אתה מסומן במפגש " + upTo + ". הקו מסמן " + READY_PCT + "% — הסף המומלץ למעבר למפגש הבא."),
+                groups.map((r) => {
+                    const pct = knowledgeScore(r.items);
+                    const mastered = r.items.filter(isMastered).length;
                     const open = r.m <= upTo;
                     return React.createElement("div", { key: r.m, className: "zl-catrow", style: { opacity: open ? 1 : 0.45 } },
                         React.createElement("span", { className: "zl-catrow-name" }, "מפגש " + r.m + (open ? "" : " · סגור")),
-                        React.createElement("span", { className: "zl-catrow-track" },
-                            React.createElement("span", { className: "zl-catrow-fill", style: { width: pct + "%", background: pct >= 80 ? "var(--ok)" : "var(--focus)" } })),
-                        React.createElement("span", { className: "zl-catrow-val" }, r.mastered + "/" + r.total));
-                }));
+                        React.createElement("span", { className: "zl-catrow-track", style: { position: "relative" } },
+                            React.createElement("span", { className: "zl-catrow-fill", style: { width: pct + "%", background: pct >= READY_PCT ? "var(--ok)" : "var(--focus)" } }),
+                            /* the readiness line, so the bar can be read at a glance */
+                            React.createElement("span", { style: {
+                                position: "absolute", top: -2, bottom: -2, right: READY_PCT + "%",
+                                width: 2, background: "var(--accent)", opacity: 0.85,
+                            } })),
+                        React.createElement("span", { className: "zl-catrow-val" }, pct + "% · " + mastered + " בשליטה"));
+                }),
+                React.createElement("p", { style: { fontSize: "0.74rem", color: "var(--ink-muted)", marginTop: 8, lineHeight: 1.6 } },
+                    "האחוז הוא ידע נוכחי; \"בשליטה\" הן מילים שכבר עברו את כל מחזור החזרה ונשמרות לטווח ארוך."));
         })(),
 
         React.createElement(Card, { style: { marginBottom: 14 } },
