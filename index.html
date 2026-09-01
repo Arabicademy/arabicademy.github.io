@@ -132,7 +132,7 @@ try {
     throw new Error("React / ReactDOM לא נטענו מה-CDN (בדוק חיבור לאינטרנט או חסימת סקריפטים).");
   }
 "use strict";
-const APP_BUILD = "01.09 · 54";   // bump this every time the file is replaced
+const APP_BUILD = "01.09 · 56";   // bump this every time the file is replaced
 
 /* The institute logo, carried inline so the page stays a single file.
    LOGO_MARK is the emblem alone (header); LOGO_FULL includes the name
@@ -900,9 +900,9 @@ const DEFAULT_VOCAB = [
     { id: 226, front: "טַאבֵּק", back: "קומה", topic: "הבית", form: "יחיד", pair: [227], meeting: 2 },
     { id: 227, front: "טַוַאבֵּק", back: "קומות", topic: "הבית", form: "רבים", pair: [226], meeting: 2 },
     { id: 228, front: "גַ'אר", back: "שכן", topic: "אנשים ותפקידים", form: "יחיד", pair: [229], meeting: 2, gender: "m", mate: 230 },
-    { id: 229, front: "גִ'ירַאן", back: "שכנים", topic: "אנשים ותפקידים", form: "רבים", pair: [228], meeting: 2, gender: "m" },
+    { id: 229, front: "גִ'ירַאן", back: "שכנים", topic: "אנשים ותפקידים", form: "רבים", pair: [228], meeting: 2, gender: "m", mate: 231 },
     { id: 230, front: "גַ'ארַה", back: "שכנה", topic: "אנשים ותפקידים", form: "יחיד", pair: [231], meeting: 2, gender: "f", mate: 228 },
-    { id: 231, front: "גַ'ארַאת", back: "שכנות", topic: "אנשים ותפקידים", form: "רבים", pair: [230], meeting: 2, gender: "f" },
+    { id: 231, front: "גַ'ארַאת", back: "שכנות", topic: "אנשים ותפקידים", form: "רבים", pair: [230], meeting: 2, gender: "f", mate: 229 },
     { id: 232, front: "דֻכַּّאן", back: "חנות", topic: "מקומות", form: "יחיד", pair: [233], meeting: 2 },
     { id: 233, front: "דַכַּאכִּין", back: "חנויות", topic: "מקומות", form: "רבים", pair: [232], meeting: 2 },
     { id: 234, front: "מַחַלّ", back: "מקום", topic: "מקומות", form: "יחיד", pair: [235], meeting: 2 },
@@ -930,9 +930,9 @@ const DEFAULT_VOCAB = [
     { id: 256, front: "שַארֶע", back: "רחוב", topic: "מקומות", form: "יחיד", pair: [257], meeting: 2 },
     { id: 257, front: "שַוַארֶע", back: "רחובות", topic: "מקומות", form: "רבים", pair: [256], meeting: 2 },
     { id: 258, front: "סַאכֵּן", back: "גר / שוכן", topic: "אנשים ותפקידים", form: "יחיד", pair: [259], meeting: 2, gender: "m", mate: 260 },
-    { id: 259, front: "סַאכְּנִין", back: "גרים / שוכנים", topic: "אנשים ותפקידים", form: "רבים", pair: [258], meeting: 2, gender: "m" },
+    { id: 259, front: "סַאכְּנִין", back: "גרים / שוכנים", topic: "אנשים ותפקידים", form: "רבים", pair: [258], meeting: 2, gender: "m", mate: 261 },
     { id: 260, front: "סַאכְּנֶה", back: "גרה / שוכנת", topic: "אנשים ותפקידים", form: "יחיד", pair: [261], meeting: 2, gender: "f", mate: 258 },
-    { id: 261, front: "סַאכְּנַאת", back: "גרות / שוכנות", topic: "אנשים ותפקידים", form: "רבים", pair: [260], meeting: 2, gender: "f" },
+    { id: 261, front: "סַאכְּנַאת", back: "גרות / שוכנות", topic: "אנשים ותפקידים", form: "רבים", pair: [260], meeting: 2, gender: "f", mate: 259 },
     { id: 262, front: "סֻכַּّאן", back: "תושבים", topic: "אנשים ותפקידים", meeting: 2 },
     { id: 263, front: "מֻשְכִּלֶה", back: "בעיה", topic: "כללי", form: "יחיד", pair: [264], meeting: 2 },
     { id: 264, front: "מַשַאכֶּל", back: "בעיות", topic: "כללי", form: "רבים", pair: [263], meeting: 2 },
@@ -981,7 +981,7 @@ const DEFAULT_VOCAB = [
     { id: 305, front: "אִבְּרֵה", back: "מחט / זריקה", topic: "חפצים", form: "יחיד", pair: [306], meeting: 3 },
     { id: 306, front: "אִבַּר", back: "מחטים / זריקות", topic: "חפצים", form: "רבים", pair: [305], meeting: 3 },
     { id: 307, front: "אַחְ'צַ'ר", back: "ירוק", topic: "צבעים", form: "יחיד", pair: [308], meeting: 3, gender: "m", mate: 309 },
-    { id: 308, front: "חֻ'צֻ'ר", back: "ירוק / ירוקה", topic: "צבעים", form: "רבים", pair: [307, 309], meeting: 3, gender: "m" },
+    { id: 308, front: "חֻ'צֻ'ר", back: "ירוקים / ירוקות", topic: "צבעים", form: "רבים", pair: [307, 309], meeting: 3, gender: "m" },
     { id: 309, front: "חַ'צְ'רַה", back: "ירוקה", topic: "צבעים", form: "יחיד", pair: [308], meeting: 3, gender: "f", mate: 307 },
     { id: 310, front: "שֵיח'", back: "שיח'", topic: "אנשים ותפקידים", form: "יחיד", pair: [311, 312], meeting: 3 },
     { id: 311, front: "שְיוּח'", back: "שיח'ים", topic: "אנשים ותפקידים", form: "רבים", pair: [310], meeting: 3 },
@@ -1019,17 +1019,17 @@ const DEFAULT_VOCAB = [
     { id: 341, front: "אַדְיַאן", back: "דתות", topic: "כללי", form: "רבים", pair: [340], meeting: 3 },
     { id: 342, front: "אִסְלַאם", back: "אסלאם", topic: "כללי", meeting: 3 },
     { id: 343, front: "מִסְלֶם", back: "מוסלמי", topic: "אנשים ותפקידים", form: "יחיד", pair: [344], meeting: 3, gender: "m", mate: 345 },
-    { id: 344, front: "מִסְלְמִין", back: "מוסלמים", topic: "אנשים ותפקידים", form: "רבים", pair: [343], meeting: 3, gender: "m" },
+    { id: 344, front: "מִסְלְמִין", back: "מוסלמים", topic: "אנשים ותפקידים", form: "רבים", pair: [343], meeting: 3, gender: "m", mate: 346 },
     { id: 345, front: "מִסְלְמֶה", back: "מוסלמית", topic: "אנשים ותפקידים", form: "יחיד", pair: [346], meeting: 3, gender: "f", mate: 343 },
-    { id: 346, front: "מִסְלְמַאת", back: "מוסלמיות", topic: "אנשים ותפקידים", form: "רבים", pair: [345], meeting: 3, gender: "f" },
+    { id: 346, front: "מִסְלְמַאת", back: "מוסלמיות", topic: "אנשים ותפקידים", form: "רבים", pair: [345], meeting: 3, gender: "f", mate: 344 },
     { id: 347, front: "יַהוּדִי", back: "יהודי", topic: "אנשים ותפקידים", form: "יחיד", pair: [348], meeting: 3, gender: "m", mate: 349 },
-    { id: 348, front: "יַהוּד", back: "יהודים", topic: "אנשים ותפקידים", form: "רבים", pair: [347], meeting: 3, gender: "m" },
+    { id: 348, front: "יַהוּד", back: "יהודים", topic: "אנשים ותפקידים", form: "רבים", pair: [347], meeting: 3, gender: "m", mate: 350 },
     { id: 349, front: "יַהוּדִיֶّה", back: "יהודייה", topic: "אנשים ותפקידים", form: "יחיד", pair: [350], meeting: 3, gender: "f", mate: 347 },
-    { id: 350, front: "יַהוּדִיַّאת", back: "יהודיות", topic: "אנשים ותפקידים", form: "רבים", pair: [349], meeting: 3, gender: "f" },
+    { id: 350, front: "יַהוּדִיַّאת", back: "יהודיות", topic: "אנשים ותפקידים", form: "רבים", pair: [349], meeting: 3, gender: "f", mate: 348 },
     { id: 351, front: "מַסִיחִי", back: "נוצרי", topic: "אנשים ותפקידים", form: "יחיד", pair: [352], meeting: 3, gender: "m", mate: 353 },
-    { id: 352, front: "מַסִיחִיוּן", back: "נוצרים", topic: "אנשים ותפקידים", form: "רבים", pair: [351], meeting: 3, gender: "m" },
+    { id: 352, front: "מַסִיחִיוּן", back: "נוצרים", topic: "אנשים ותפקידים", form: "רבים", pair: [351], meeting: 3, gender: "m", mate: 354 },
     { id: 353, front: "מַסִיחִיֶّה", back: "נוצרייה", topic: "אנשים ותפקידים", form: "יחיד", pair: [354], meeting: 3, gender: "f", mate: 351 },
-    { id: 354, front: "מַסִיחִיַّאת", back: "נוצריות", topic: "אנשים ותפקידים", form: "רבים", pair: [353], meeting: 3, gender: "f" },
+    { id: 354, front: "מַסִיחִיַّאת", back: "נוצריות", topic: "אנשים ותפקידים", form: "רבים", pair: [353], meeting: 3, gender: "f", mate: 352 },
     { id: 355, front: "תַכְּסִי", back: "מונית", topic: "תחבורה", form: "יחיד", pair: [356], meeting: 3 },
     { id: 356, front: "תַכְּסִיַאת", back: "מוניות", topic: "תחבורה", form: "רבים", pair: [355], meeting: 3 },
 
@@ -1044,17 +1044,17 @@ const DEFAULT_VOCAB = [
     { id: 364, front: "חַ'טّ", back: "קו", topic: "כללי", form: "יחיד", pair: [365], meeting: 3 },
     { id: 365, front: "חְ'טוּט", back: "קווים", topic: "כללי", form: "רבים", pair: [364], meeting: 3 },
     { id: 366, front: "אַח'", back: "אח", topic: "משפחה", form: "יחיד", pair: [367], meeting: 3, gender: "m", mate: 368 },
-    { id: 367, front: "אִחְ'וֶה", back: "אחים", topic: "משפחה", form: "רבים", pair: [366], meeting: 3, gender: "m" },
+    { id: 367, front: "אִחְ'וֶה", back: "אחים", topic: "משפחה", form: "רבים", pair: [366], meeting: 3, gender: "m", mate: 369 },
     { id: 368, front: "אֻחְ'ת", back: "אחות", topic: "משפחה", form: "יחיד", pair: [369], meeting: 3, gender: "f", mate: 366 },
-    { id: 369, front: "חַ'וַאת", back: "אחיות", topic: "משפחה", form: "רבים", pair: [368], meeting: 3, gender: "f" },
+    { id: 369, front: "חַ'וַאת", back: "אחיות", topic: "משפחה", form: "רבים", pair: [368], meeting: 3, gender: "f", mate: 367 },
     { id: 370, front: "מֻפְתַאח", back: "מפתח", topic: "חפצים", form: "יחיד", pair: [371], meeting: 3 },
     { id: 371, front: "מַפַאתִיח", back: "מפתחות", topic: "חפצים", form: "רבים", pair: [370], meeting: 3 },
     { id: 372, front: "קִפֵל", back: "מנעול", topic: "חפצים", form: "יחיד", pair: [373], meeting: 3 },
     { id: 373, front: "אַקְפַאל", back: "מנעולים", topic: "חפצים", form: "רבים", pair: [372], meeting: 3 },
     { id: 374, front: "שַאבّ", back: "בחור צעיר", topic: "אנשים ותפקידים", form: "יחיד", pair: [375], meeting: 3, gender: "m", mate: 376 },
-    { id: 375, front: "שַבַּאבּ", back: "בחורים צעירים", topic: "אנשים ותפקידים", form: "רבים", pair: [374], meeting: 3, gender: "m" },
+    { id: 375, front: "שַבַּאבּ", back: "בחורים צעירים", topic: "אנשים ותפקידים", form: "רבים", pair: [374], meeting: 3, gender: "m", mate: 377 },
     { id: 376, front: "שַאבֶּّה", back: "בחורה צעירה", topic: "אנשים ותפקידים", form: "יחיד", pair: [377], meeting: 3, gender: "f", mate: 374 },
-    { id: 377, front: "שַאבַּאת", back: "בחורות צעירות", topic: "אנשים ותפקידים", form: "רבים", pair: [376], meeting: 3, gender: "f" },
+    { id: 377, front: "שַאבַּאת", back: "בחורות צעירות", topic: "אנשים ותפקידים", form: "רבים", pair: [376], meeting: 3, gender: "f", mate: 375 },
     { id: 378, front: "צִ'דّ", back: "נגד", topic: "מילות יחס", meeting: 3 },
     { id: 379, front: "כֻּלّ", back: "כל", topic: "כללי", meeting: 3 },
     { id: 380, front: "אַו", back: "או", topic: "מילות קישור", meeting: 3 },
@@ -1062,9 +1062,9 @@ const DEFAULT_VOCAB = [
     { id: 382, front: "שַעַבּ", back: "עם", topic: "כללי", form: "יחיד", pair: [383], meeting: 3 },
     { id: 383, front: "שֻעוּבּ", back: "עמים", topic: "כללי", form: "רבים", pair: [382], meeting: 3 },
     { id: 384, front: "רַסְמִי", back: "רשמי", topic: "תארים", form: "יחיד", pair: [385], meeting: 3, gender: "m", mate: 386 },
-    { id: 385, front: "רַסְמִיִّין", back: "רשמיים", topic: "תארים", form: "רבים", pair: [384], meeting: 3, gender: "m" },
+    { id: 385, front: "רַסְמִיִّין", back: "רשמיים", topic: "תארים", form: "רבים", pair: [384], meeting: 3, gender: "m", mate: 387 },
     { id: 386, front: "רַסְמִיֶّה", back: "רשמית", topic: "תארים", form: "יחיד", pair: [387], meeting: 3, gender: "f", mate: 384 },
-    { id: 387, front: "רַאסְמִיַّאת", back: "רשמיות", topic: "תארים", form: "רבים", pair: [386], meeting: 3, gender: "f" },
+    { id: 387, front: "רַאסְמִיַّאת", back: "רשמיות", topic: "תארים", form: "רבים", pair: [386], meeting: 3, gender: "f", mate: 385 },
 ];
 
 const ALPHABET = [
@@ -1282,6 +1282,11 @@ const DECK_LABELS = {
 };
 
 /* How long one sitting runs. A session that ends is a session you finish. */
+/* The morning session: mostly recognition, with a third of the questions
+   asking for the word to be produced from memory. Declared here with the
+   other session sizes because the daily routine's description reads it. */
+const MORNING_PLAN = { choice: 20, typed: 10 };
+
 const SESSION_SIZES = {
     flashcards: 20,
     quiz: 20,
@@ -1920,9 +1925,42 @@ function TopNav({ active, onChange }) {
 /* =========================================================================
    ROUTINE TAB
    ========================================================================= */
+/* The midday slot alternates between reading and games, drawn at random —
+   but the draw is fixed for the day. Re-rolling on every visit would mean the
+   task changed under your hands between opening the app in the morning and
+   coming back after lunch. The date is the seed, so the same day always
+   yields the same plan. */
+const NOON_GAMES = [
+    { screen: "pairs", kind: "number", label: "יחיד ורבים" },
+    { screen: "pairs", kind: "gender", label: "זכר ונקבה" },
+    { screen: "clock", label: "נגד השעון" },
+    { screen: "blank", label: "השלמת משפט" },
+];
+
+function dayNoise(key, salt) {
+    let h = 2166136261;
+    const text = key + "|" + salt;
+    for (let i = 0; i < text.length; i++) {
+        h ^= text.charCodeAt(i);
+        h = Math.imul(h, 16777619);
+    }
+    return ((h >>> 0) % 100000) / 100000;
+}
+
+/* Two different games on a games day, so a small deck — the gender pairs are
+   the smallest — is not shown twice in one sitting. */
+function noonPlanFor(dateKey) {
+    if (dayNoise(dateKey, "noon-mode") < 0.5) {
+        return { mode: "reading" };
+    }
+    const order = NOON_GAMES.map((g, i) => ({ g: g, r: dayNoise(dateKey, "game" + i) }))
+        .sort((a, b) => a.r - b.r).map((x) => x.g);
+    return { mode: "games", games: [order[0], order[1]] };
+}
+
 const ROUTINE_ITEMS = [
-    { key: "morning", label: "בוקר", desc: "חזרה על כרטיסיות אוצר מילים", target: { screen: "flashcards", deck: "vocab", limit: "daily" } },
-    { key: "noon", label: "צהריים", desc: "תרגול הבנה: קריאה והגייה", target: { screen: "flashcards", deck: "sentences", size: SESSION_SIZES.reading } },
+    { key: "morning", label: "בוקר", desc: MORNING_PLAN.choice + " שאלות אמריקאיות ו-" + MORNING_PLAN.typed + " פתוחות", target: { screen: "morning" } },
+    { key: "noon", label: "צהריים", desc: "תרגול הבנה: קריאה או משחקים", target: { screen: "flashcards", deck: "sentences", size: SESSION_SIZES.reading } },
     { key: "evening", label: "ערב", desc: "קריאה והרכבת משפטים", target: { screen: "builder" } },
 ];
 
@@ -2025,7 +2063,17 @@ function RoutineTab({ checklist, setChecklist, navigateTo, vocab, letters }) {
                     React.createElement(ArrowButton, { title: "התחל חזרה", onClick: () => navigateTo({ screen: "flashcards", deck: "vocab", limit: "daily" }) })));
         })(),
         React.createElement(SectionHeader, { title: "\u05DE\u05E9\u05D9\u05DE\u05D5\u05EA \u05D4\u05D9\u05D5\u05DD", subtitle: "\u05E1\u05DE\u05DF \u05DB\u05DC \u05D7\u05DC\u05E7 \u05E2\u05DD \u05E1\u05D9\u05D5\u05DE\u05D5, \u05D0\u05D5 \u05DC\u05D7\u05E5 \u05E2\u05DC \u05D4\u05D7\u05E5 \u05DC\u05DE\u05E2\u05D1\u05E8 \u05D9\u05E9\u05D9\u05E8 \u05DC\u05EA\u05E8\u05D2\u05D5\u05DC" }),
-        React.createElement(Card, null, ROUTINE_ITEMS.map((item, idx) => (React.createElement("div", { key: item.key, style: {
+        React.createElement(Card, null, ROUTINE_ITEMS.map((item, idx) => {
+            /* The midday slot is drawn fresh each day: some days it is the
+               reading session, some days two games. The row shows whichever
+               it is, with a button per game so both can be started. */
+            const noon = item.key === "noon" ? noonPlanFor(today) : null;
+            const games = noon && noon.mode === "games" ? noon.games : null;
+            const desc = games
+                ? "שני משחקים: " + games.map((g) => g.label).join(" · ")
+                : item.desc;
+            const done = games ? (todayState.noonCount || 0) : 0;
+            return React.createElement("div", { key: item.key, style: {
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "space-between",
@@ -2037,8 +2085,17 @@ function RoutineTab({ checklist, setChecklist, navigateTo, vocab, letters }) {
                 React.createElement("input", { type: "checkbox", checked: !!todayState[item.key], onChange: () => toggle(item.key), style: { width: 20, height: 20, accentColor: "var(--ok)", cursor: "pointer" } }),
                 React.createElement("div", null,
                     React.createElement("div", { style: { fontWeight: 700 } }, item.label),
-                    React.createElement("div", { style: { fontSize: "0.85rem", color: "var(--ink-muted)" } }, item.desc))),
-            React.createElement(ArrowButton, { title: "\u05E2\u05D1\u05D5\u05E8 \u05DC\u05EA\u05E8\u05D2\u05D5\u05DC", onClick: () => navigateTo(item.target) }))))),
+                    React.createElement("div", { style: { fontSize: "0.85rem", color: "var(--ink-muted)" } },
+                        desc + (games && done > 0 && !todayState.noon ? "  (" + done + "/" + games.length + ")" : "")))),
+            games
+                ? React.createElement("div", { style: { display: "flex", gap: 6 } },
+                    games.map((gme, i) => React.createElement("button", {
+                        key: i, type: "button", className: "zl-iconbtn",
+                        title: gme.label, style: { width: "auto", padding: "0 12px", fontSize: "0.78rem", fontWeight: 700 },
+                        onClick: () => navigateTo({ screen: gme.screen, kind: gme.kind }),
+                    }, String(i + 1))))
+                : React.createElement(ArrowButton, { title: "\u05E2\u05D1\u05D5\u05E8 \u05DC\u05EA\u05E8\u05D2\u05D5\u05DC", onClick: () => navigateTo(item.target) }));
+        })),
         React.createElement("p", { style: { textAlign: "center", fontSize: "0.72rem", color: "var(--ink-muted)", marginTop: 14 } },
             "\u05D2\u05E8\u05E1\u05D4 " + APP_BUILD + " \u00B7 Emanuel Nassimiha 2026")));
 }
@@ -2773,6 +2830,146 @@ function AmericanQuiz({ deckKind, banks, applyResult, onBack, dir, setDir }) {
 }
 
 /* =========================================================================
+   MORNING VOCABULARY DRILL
+
+   The day's main session. Most of it is multiple choice, but a third of the
+   questions ask for the word to be typed from memory — recognising an option
+   and producing the word are different skills, and only the second is what
+   speaking demands.
+
+   Words whose translation collapses to a single character once punctuation is
+   stripped — "ב...", "מ..." — cannot be typed at all, so they are always
+   asked as multiple choice however the mix falls.
+   ========================================================================= */
+function buildMorningTasks(deck, meeting) {
+    const size = MORNING_PLAN.choice + MORNING_PLAN.typed;
+    const picked = composeSession(deck, meeting, size).map((i) => deck[i]);
+    if (picked.length === 0) return [];
+
+    /* Decide which questions are typed before shuffling, so the mix is right
+       even when the session is short of cards. */
+    const typeable = picked.filter(isTypeable);
+    const wantTyped = Math.min(MORNING_PLAN.typed,
+                               Math.round(picked.length * (MORNING_PLAN.typed / size)),
+                               typeable.length);
+    const typedKeys = new Set(shuffle(typeable).slice(0, wantTyped).map((it) => it._key));
+
+    return shuffle(picked.map((item) => ({
+        item: item,
+        open: typedKeys.has(item._key),
+        dir: resolveDir("mix"),
+    })));
+}
+
+function MorningDrill({ banks, applyResult, onBack, onSessionDone }) {
+    const deck = useMemo(() => buildDeck("vocab", banks), [banks]);
+    const [tasks, setTasks] = useState(() => buildMorningTasks(deck, banks.meeting));
+    const [pos, setPos] = useState(0);
+    const [question, setQuestion] = useState(null);
+    const [selected, setSelected] = useState(null);
+    const [typed, setTyped] = useState("");
+    const [result, setResult] = useState(null);
+    const [score, setScore] = useState({ correct: 0, total: 0 });
+    const [finished, setFinished] = useState(false);
+    const timerRef = useRef(null);
+
+    const restart = () => {
+        setTasks(buildMorningTasks(deck, banks.meeting));
+        setPos(0); setSelected(null); setTyped(""); setResult(null);
+        setScore({ correct: 0, total: 0 }); setFinished(false);
+    };
+    useEffect(() => { restart(); /* eslint-disable-next-line */ }, [deck.length]);
+
+    useEffect(() => {
+        if (!tasks.length || pos >= tasks.length) return;
+        const t = tasks[pos];
+        setQuestion(t.open ? null : buildQuestion(deck, t.item, t.dir));
+        setSelected(null); setTyped(""); setResult(null);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [pos, tasks]);
+
+    useEffect(() => { if (finished && onSessionDone) onSessionDone(); /* eslint-disable-next-line */ }, [finished]);
+    useEffect(() => () => { if (timerRef.current) clearTimeout(timerRef.current); }, []);
+
+    if (deck.length < 4) {
+        return (React.createElement("div", { className: "zl-anim" },
+            React.createElement(BackLink, { onClick: onBack }, "חזרה לשיטות תרגול"),
+            React.createElement(Card, null, "צריך לפחות 4 מילים במאגר הפתוח.")));
+    }
+    if (finished) {
+        return React.createElement(SessionSummary, {
+            title: "סיימת את תרגול הבוקר",
+            total: score.total, right: score.correct, wrong: score.total - score.correct,
+            restartLabel: "סבב נוסף", onRestart: restart, onBack: onBack,
+        });
+    }
+    if (!tasks.length) return null;
+    const task = tasks[pos];
+    if (!task) return null;
+
+    const advance = (delay) => {
+        if (timerRef.current) clearTimeout(timerRef.current);
+        timerRef.current = setTimeout(() => {
+            if (pos + 1 >= tasks.length) setFinished(true);
+            else setPos(pos + 1);
+        }, delay);
+    };
+
+    const record = (correct, kind) => {
+        setScore((s) => ({ correct: s.correct + (correct ? 1 : 0), total: s.total + 1 }));
+        applyResult(task.item, correct, kind);
+        setResult(correct ? "correct" : "wrong");
+    };
+
+    const choose = (opt) => {
+        if (selected) return;
+        setSelected(opt);
+        record(opt === question.correctAnswer, "choice");
+        advance(750);
+    };
+
+    const submitTyped = () => {
+        if (result || !typed.trim()) return;
+        const accepted = new Set();
+        allMeanings(task.item).forEach((sense) => acceptableAnswers(sense).forEach((k) => accepted.add(k)));
+        record(accepted.has(normAnswer(typed)), "typed");
+        advance(1400);
+    };
+
+    const faces = cardFaces(task.item, task.dir === "he2ar");
+    const prompt = task.open ? faces.front : (question && question.prompt);
+
+    return (React.createElement("div", { className: "zl-anim" },
+        React.createElement(BackLink, { onClick: onBack }, "חזרה לשיטות תרגול"),
+        React.createElement(Card, null,
+            React.createElement("h2", { className: "zl-display", style: { fontSize: "1.15rem", fontWeight: 800, marginBottom: 12 } },
+                "תרגול בוקר · אוצר מילים"),
+            React.createElement(SessionBar, { pos: pos + 1, total: tasks.length }),
+            React.createElement("p", { style: { color: "var(--ink-muted)", fontSize: "0.85rem", marginBottom: 10 } },
+                task.open ? "כתוב את התרגום:" : "בחר את התרגום:"),
+            React.createElement(PromptBox, { text: prompt, isLetter: false }),
+            task.open
+                ? React.createElement("div", null,
+                    React.createElement("input", {
+                        className: "zl-search", value: typed, disabled: !!result,
+                        placeholder: "התשובה שלך…", autoComplete: "off",
+                        onChange: (e) => setTyped(e.target.value),
+                        onKeyDown: (e) => { if (e.key === "Enter") submitTyped(); },
+                        style: { marginBottom: 10 },
+                    }),
+                    result
+                        ? React.createElement("p", { className: "zl-anim", style: {
+                                fontWeight: 700, color: result === "correct" ? "var(--ok)" : "var(--bad)",
+                                marginBottom: 4,
+                            } },
+                            result === "correct" ? "נכון" : "התשובה: " + faces.back)
+                        : React.createElement(PrimaryButton, { onClick: submitTyped, disabled: !typed.trim() }, "בדוק"))
+                : (question ? React.createElement(ChoiceGrid, {
+                    question: question, chosen: selected, locked: !!selected, onChoose: choose,
+                }) : null))));
+}
+
+/* =========================================================================
    SENTENCE BUILDER
    ========================================================================= */
 function normAnswer(text) {
@@ -3417,16 +3614,23 @@ function PracticeTab({ screen, setScreen, banks, applyResult, onSessionDone, onE
             dir: dir, setDir: setDir, onSessionDone: () => onSessionDone("evening"),
         });
     }
+    if (screen && screen.screen === "morning") {
+        return React.createElement(MorningDrill, {
+            banks: banks, applyResult: applyResult,
+            onBack: backToList("flashcards"),
+            onSessionDone: () => onSessionDone("morning"),
+        });
+    }
     if (screen && screen.screen === "pairs") {
         return React.createElement(PairGame, {
             kind: screen.kind || "number", banks: banks, applyResult: applyResult,
-            onBack: backToList("games"), onSessionDone: () => onSessionDone("morning"),
+            onBack: backToList("games"), onSessionDone: () => onSessionDone("noon"),
         });
     }
     if (screen && screen.screen === "clock") {
         return React.createElement(ClockGame, {
             banks: banks, applyResult: applyResult, onBack: backToList("games"),
-            dir: dir, setDir: setDir, onSessionDone: () => onSessionDone("morning"),
+            dir: dir, setDir: setDir, onSessionDone: () => onSessionDone("noon"),
         });
     }
     if (screen && screen.screen === "blank") {
@@ -4433,12 +4637,26 @@ function ArabicLearningApp() {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [setVocab, setLetters, setSentences, setIdioms]);
 
-    /* Finishing a session ticks the matching part of the daily routine. */
+    /* Finishing a session ticks the matching part of the daily routine.
+
+       The midday slot can be two games rather than one reading session, so it
+       counts finishes and only ticks once the day's plan is satisfied. The
+       count is kept under its own key so the tick itself stays a plain
+       boolean, which is what the week strip and the older stored days
+       expect. */
     const markRoutineDone = (key) => {
         const day = localDateKey();
         setChecklist((prev) => {
             const today = prev[day] || {};
             if (today[key]) return prev;
+            if (key === "noon") {
+                const plan = noonPlanFor(day);
+                const need = plan.mode === "games" ? plan.games.length : 1;
+                const done = (today.noonCount || 0) + 1;
+                return { ...prev, [day]: done >= need
+                    ? { ...today, noonCount: done, noon: true }
+                    : { ...today, noonCount: done } };
+            }
             return { ...prev, [day]: { ...today, [key]: true } };
         });
     };
