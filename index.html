@@ -132,7 +132,7 @@ try {
     throw new Error("React / ReactDOM לא נטענו מה-CDN (בדוק חיבור לאינטרנט או חסימת סקריפטים).");
   }
 "use strict";
-const APP_BUILD = "01.09 · 52";   // bump this every time the file is replaced
+const APP_BUILD = "01.09 · 53";   // bump this every time the file is replaced
 
 /* The institute logo, carried inline so the page stays a single file.
    LOGO_MARK is the emblem alone (header); LOGO_FULL includes the name
@@ -501,6 +501,35 @@ const GLOBAL_CSS = `
     .zl-sheet-title { font-size:1.2rem; font-weight:800; color:var(--navy); margin:0; }
 
     .zl-mini { border:1px solid var(--line); background:var(--surface); color:var(--navy); border-radius:8px; padding:6px 12px; font:inherit; font-size:0.75rem; font-weight:700; cursor:pointer; }
+
+    /* ---- meeting picker ----
+       Scrolls rather than growing to fifteen rows, so the rest of the
+       personal area stays reachable on a phone. */
+    .zl-meetings {
+      max-height: 210px; overflow-y: auto;
+      border: 1px solid var(--line); border-radius: var(--r-md);
+      background: var(--bg); padding: 5px; margin-bottom: 8px;
+    }
+    .zl-meeting {
+      display: flex; align-items: center; gap: 9px; width: 100%;
+      background: none; border: 1px solid transparent; border-radius: 8px;
+      padding: 8px 9px; font: inherit; color: var(--ink);
+      cursor: pointer; text-align: right;
+    }
+    .zl-meeting:hover { background: var(--surface); }
+    .zl-meeting[data-on="true"] {
+      background: var(--surface); border-color: var(--navy);
+      box-shadow: var(--shadow-sm);
+    }
+    .zl-meeting[data-open="false"] { opacity: 0.5; }
+    .zl-meeting-name { flex: 0 0 74px; font-size: 0.85rem; font-weight: 700; }
+    .zl-meeting[data-on="true"] .zl-meeting-name { color: var(--navy); }
+    .zl-meeting-track {
+      flex: 1; height: 7px; border-radius: 4px; overflow: hidden;
+      background: var(--line); display: flex; flex-direction: row-reverse;
+    }
+    .zl-meeting-fill { display: block; height: 100%; border-radius: 4px; }
+    .zl-meeting-pct { flex: 0 0 42px; text-align: left; font-size: 0.76rem; font-weight: 600; color: var(--ink-muted); }
 
     /* ---- statistics ---- */
     .zl-stat-grid { display:grid; grid-template-columns:repeat(auto-fit, minmax(120px, 1fr)); gap:10px; margin-bottom:16px; }
@@ -2209,13 +2238,34 @@ function AccountSheet({ vocab, letters, sentences, idioms, checklist, exams, pro
                     saved ? React.createElement("span", { className: "zl-anim", style: { fontSize: "0.8rem", fontWeight: 700, color: "var(--ok)" } }, "נשמר") : null),
 
                 /* --- how far along the course --- */
-                React.createElement("label", { style: { display: "block", fontSize: "0.8rem", fontWeight: 700, marginBottom: 4 } }, "אני במפגש",
-                    React.createElement("select", {
-                        className: "zl-search", style: { marginTop: 4, marginBottom: 6 },
-                        value: String(meeting),
-                        onChange: (e) => setMeeting(parseInt(e.target.value, 10)),
-                    }, Array.from({ length: TOTAL_MEETINGS }, (_, i) => i + 1).map((n) =>
-                        React.createElement("option", { key: n, value: String(n) }, "מפגש " + n)))),
+                /* A list of our own rather than a <select>: the native picker
+                   on iOS opens as a white system sheet that cannot be styled,
+                   and there is nowhere in it to show how well each meeting is
+                   known. */
+                React.createElement("span", { style: { display: "block", fontSize: "0.8rem", fontWeight: 700, marginBottom: 6 } }, "אני במפגש"),
+                React.createElement("div", { className: "zl-meetings zl-scrollbar" },
+                    Array.from({ length: TOTAL_MEETINGS }, (_, i) => i + 1).map((n) => {
+                        const r = meetingReadiness(vocab, sentences, n);
+                        /* A meeting still ahead reads 0%: its words exist but
+                           have never been in play, so any other number would
+                           be describing practice that never happened. */
+                        const open = n <= profileMeeting(profile);
+                        const pct = open ? Math.round(r.pct * 100) : 0;
+                        const chosen = n === meeting;
+                        return React.createElement("button", {
+                            key: n, type: "button", className: "zl-meeting",
+                            "data-on": chosen ? "true" : "false",
+                            "data-open": open ? "true" : "false",
+                            onClick: () => setMeeting(n),
+                        },
+                            React.createElement("span", { className: "zl-meeting-name" }, "מפגש " + n),
+                            React.createElement("span", { className: "zl-meeting-track" },
+                                React.createElement("span", { className: "zl-meeting-fill", style: {
+                                    width: pct + "%",
+                                    background: pct >= READY_PCT ? "var(--ok)" : "var(--focus)",
+                                } })),
+                            React.createElement("span", { className: "zl-meeting-pct" }, pct + "%"));
+                    })),
                 React.createElement("p", { style: { fontSize: "0.75rem", color: "var(--ink-muted)", lineHeight: 1.6, marginBottom: 8 } },
                     "התרגול נשען על החומר מכל המפגשים עד המפגש שבחרת, עם דגש על החדש."),
                 (function () {
