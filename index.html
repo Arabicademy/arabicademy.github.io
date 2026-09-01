@@ -132,7 +132,7 @@ try {
     throw new Error("React / ReactDOM לא נטענו מה-CDN (בדוק חיבור לאינטרנט או חסימת סקריפטים).");
   }
 "use strict";
-const APP_BUILD = "01.09 · 53";   // bump this every time the file is replaced
+const APP_BUILD = "01.09 · 54";   // bump this every time the file is replaced
 
 /* The institute logo, carried inline so the page stays a single file.
    LOGO_MARK is the emblem alone (header); LOGO_FULL includes the name
@@ -819,7 +819,7 @@ const DEFAULT_VOCAB = [
     { id: 145, front: "פֵין", back: "איפה / היכן", topic: "מילות שאלה", meeting: 2 },
     { id: 146, front: "גַ'מְבּ", back: "ליד", topic: "מילות יחס", meeting: 2 },
     { id: 147, front: "גַ'נְבּ", back: "ליד", topic: "מילות יחס", meeting: 2 },
-    { id: 148, front: "כַּמַאן", back: "גם / עוד", topic: "מילות קישור", meeting: 2 },
+    { id: 148, front: "כַּמַאן", back: "גם", topic: "מילות קישור", meeting: 2 },
     { id: 149, front: "אַעְטַא", back: "נתן", topic: "פעלים", meeting: 2 },
     { id: 150, front: "עַאפְיֶה", back: "בריאות", topic: "בריאות", meeting: 2 },
     { id: 151, front: "גְ'דִיד", back: "חדש", topic: "תארים", form: "יחיד", pair: [152, 153], meeting: 2, gender: "m", mate: 154 },
@@ -1102,7 +1102,7 @@ const ALPHABET = [
 const SENTENCES = [
     { id: 1, hebrew: "עמודי הספר.", arabic: "צַפְחַאת (א)לִכְּתַאבּ.", meeting: 1 },
     { id: 2, hebrew: "זאת הילדה וזה הילד.", arabic: "הַ(א)לְבִּנְת וְהַ(א)לְוַלַד.", meeting: 1 },
-    { id: 3, hebrew: "זה אמבטיית (בית שימוש) הבית, זה לא הבית.", arabic: "הַאד חַמַّאםִ (א)לְבֵּית, הַאד מֻשִ (א)לְבֵּית.", meeting: 1 },
+    { id: 3, hebrew: "זה אמבטיית (בית שימוש) הבית, זה לא הבית.", arabic: "הַאד חַמַّאמִ (א)לְבֵּית, הַאד מֻשִ (א)לְבֵּית.", meeting: 1 },
     { id: 4, hebrew: "זאת דלת בית הספר, זאת לא דלת המשרד הממשלתי.", arabic: "הַאדַא בַּאבִּ (א)לְמַדְרַסֵה, הַאדַא מֻש בַּאבִּ (א)לְוִזַארַה.", meeting: 1 },
     { id: 5, hebrew: "זאת החוברת וזה העט.", arabic: "הַאיִ (א)לְכֻּרַّאסֵה וְהַאדַא (א)לְקַלַם.", meeting: 1 },
     { id: 6, hebrew: "ההוא קיר בית הספר וההיא תיק המנהלת.", arabic: "הַדַאכּ חֵיטִ (א)לְמַדְרַסֵה וְהַדִיכּ שַנְטַתִ (א)לְמֻדִירֵה.", meeting: 1 },
@@ -1147,7 +1147,7 @@ const SENTENCES = [
     { id: 38, hebrew: "השולחן ההוא בכיתה ההיא.", arabic: "הַדִיכּ (אל)טַאוְלֵה בִּהַדַאכּ (אל)צַףّ.", meeting: 2 },
     { id: 39, hebrew: "(ב)פעם ההיא ראיתי את האישה הזאת.", arabic: "הַדִיכּ (א)לְמַרַّה שֻפֶת הַאדִי (א)לְמַרַה.", meeting: 2 },
     { id: 40, hebrew: "זה לא החדר! זאת המקלחת!", arabic: "הַאדִי מִש (א)לְעֻ'רְפֶה! הַאדַא (א)לְחַמַّאם!", meeting: 2 },
-    { id: 41, hebrew: "מחסן הבית על הגג.", arabic: "מַחְ'זֶןִ (אל)דַّאר עַ (אל)סַّטֶח.", meeting: 2 },
+    { id: 41, hebrew: "מחסן הבית על הגג.", arabic: "מַחְ'זַנִ (אל)דַّאר עַ (אל)סַّטֶח.", meeting: 2 },
     { id: 42, hebrew: "זה לא הבית זאת החנות.", arabic: "הַאדִי מִש (אל)דַّאר הַאדַא (אל)דֻכַּّאן.", meeting: 2 },
     { id: 43, hebrew: "זה שדה התעופה (של) המדינה.", arabic: "הַאדַא מַטַאִר (אל)דוֹלֶה.", meeting: 2 },
     { id: 44, hebrew: "העמוד הזה בספר ההוא.", arabic: "הַ(אל)צַّפְחַה פִי הַדַאכּ (א)לִכְּתַאבּ.", meeting: 2 },
