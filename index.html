@@ -132,7 +132,7 @@ try {
     throw new Error("React / ReactDOM לא נטענו מה-CDN (בדוק חיבור לאינטרנט או חסימת סקריפטים).");
   }
 "use strict";
-const APP_BUILD = "28.08 · 44";   // bump this every time the file is replaced
+const APP_BUILD = "01.09 · 50";   // bump this every time the file is replaced
 
 /* The institute logo, carried inline so the page stays a single file.
    LOGO_MARK is the emblem alone (header); LOGO_FULL includes the name
@@ -764,6 +764,278 @@ const DEFAULT_VOCAB = [
     { id: 121, front: "כַּאסַאת", back: "כוסות", topic: "אוכל והפסקה", form: "רבים", pair: [66], meeting: 1 },
     { id: 122, front: "כֻּבַּّאיַאת", back: "כוסות", topic: "אוכל והפסקה", form: "רבים", pair: [67], meeting: 1 },
     { id: 123, front: "חַמַّאמַאת", back: "אמבטיות / בתי שימוש", topic: "בית ומקומות", form: "רבים", pair: [68], meeting: 1 },
+
+    // ---- meeting 2 ----
+    { id: 124, front: "מַרַה", back: "אישה", topic: "אנשים ותפקידים", form: "יחיד", pair: [125], meeting: 2, gender: "f" },
+    { id: 125, front: "נִסְוַאן", back: "אישה", topic: "אנשים ותפקידים", form: "רבים", pair: [124], meeting: 2, gender: "f" },
+    { id: 126, front: "מַרַّה", back: "פעם", topic: "זמן", form: "יחיד", pair: [127], meeting: 2 },
+    { id: 127, front: "מַרַّאת", back: "פעם", topic: "זמן", form: "רבים", pair: [126], meeting: 2 },
+    { id: 128, front: "רַגֻ'ל", back: "גבר / איש", topic: "אנשים ותפקידים", form: "יחיד", pair: [129], meeting: 2, gender: "m" },
+    { id: 129, front: "רְגַ'אל", back: "גבר / איש", topic: "אנשים ותפקידים", form: "רבים", pair: [128], meeting: 2, gender: "m" },
+    { id: 130, front: "זַלַמֶה", back: "גבר / איש", topic: "אנשים ותפקידים", form: "יחיד", pair: [131], meeting: 2, gender: "m" },
+    { id: 131, front: "זְלַאם", back: "גבר / איש", topic: "אנשים ותפקידים", form: "רבים", pair: [130], meeting: 2, gender: "m" },
+    { id: 132, front: "אִנְסַאן", back: "איש / בן אדם", topic: "אנשים ותפקידים", form: "יחיד", pair: [133, 134, 135], meeting: 2 },
+    { id: 133, front: "אֻנַאס", back: "איש / בן אדם", topic: "אנשים ותפקידים", form: "רבים", pair: [132], meeting: 2 },
+    { id: 134, front: "אַנַאסִי", back: "איש / בן אדם", topic: "אנשים ותפקידים", form: "רבים", pair: [132], meeting: 2 },
+    { id: 135, front: "נַאס", back: "איש / בן אדם", topic: "אנשים ותפקידים", form: "רבים", pair: [132], meeting: 2 },
+    { id: 136, front: "אֻםّ", back: "אמא", topic: "משפחה", form: "יחיד", pair: [137], meeting: 2, gender: "f" },
+    { id: 137, front: "אֻמַהַאת", back: "אמא", topic: "משפחה", form: "רבים", pair: [136], meeting: 2, gender: "f" },
+    { id: 138, front: "אַב", back: "אבא", topic: "משפחה", form: "יחיד", pair: [139], meeting: 2, gender: "m" },
+    { id: 139, front: "אַאבַּאא", back: "אבא", topic: "משפחה", form: "רבים", pair: [138], meeting: 2, gender: "m" },
+    { id: 140, front: "עֵילֶה", back: "משפחה (גרעינית)", topic: "משפחה", form: "יחיד", pair: [141], meeting: 2 },
+    { id: 141, front: "עַאאִלַאת", back: "משפחה (גרעינית)", topic: "משפחה", form: "רבים", pair: [140], meeting: 2 },
+    { id: 142, front: "גֹ'וז", back: "בעל", topic: "משפחה", form: "יחיד", pair: [143], meeting: 2, gender: "m" },
+    { id: 143, front: "אַזְוַאג'", back: "בעל", topic: "משפחה", form: "רבים", pair: [142], meeting: 2, gender: "m" },
+    { id: 144, front: "וֵין", back: "איפה / היכן", topic: "מילות שאלה", meeting: 2 },
+    { id: 145, front: "פֵין", back: "איפה / היכן", topic: "מילות שאלה", meeting: 2 },
+    { id: 146, front: "גַ'מְבּ", back: "ליד", topic: "מילות יחס", meeting: 2 },
+    { id: 147, front: "גַ'נְבּ", back: "ליד", topic: "מילות יחס", meeting: 2 },
+    { id: 148, front: "כַּמַאן", back: "גם / עוד", topic: "מילות קישור", meeting: 2 },
+    { id: 149, front: "אַעְטַא", back: "נתן", topic: "פעלים", meeting: 2 },
+    { id: 150, front: "עַאפְיֶה", back: "בריאות", topic: "בריאות", meeting: 2 },
+    { id: 151, front: "גְ'דִיד", back: "חדש", topic: "תארים", form: "יחיד", pair: [152, 153], meeting: 2, gender: "m", mate: 154 },
+    { id: 152, front: "גְ'דַאד", back: "חדש", topic: "תארים", form: "רבים", pair: [151], meeting: 2, gender: "m" },
+    { id: 153, front: "גֻ'דֻד", back: "חדש", topic: "תארים", form: "רבים", pair: [151], meeting: 2, gender: "m" },
+    { id: 154, front: "גְ'דִידֶה", back: "חדשה", topic: "תארים", meeting: 2, gender: "f", mate: 151 },
+    { id: 155, front: "קַדִים", back: "ישן (זמן)", topic: "תארים", form: "יחיד", pair: [156], meeting: 2, gender: "m", mate: 157 },
+    { id: 156, front: "קֻדַמַאא", back: "ישן (זמן)", topic: "תארים", form: "רבים", pair: [155], meeting: 2, gender: "m" },
+    { id: 157, front: "קַדִימֶה", back: "ישנה (זמן)", topic: "תארים", meeting: 2, gender: "f", mate: 155 },
+    { id: 158, front: "כְּבִּיר", back: "גדול", topic: "תארים", form: "יחיד", pair: [159], meeting: 2, gender: "m", mate: 160 },
+    { id: 159, front: "כְּבַּאר", back: "גדול", topic: "תארים", form: "רבים", pair: [158], meeting: 2, gender: "m" },
+    { id: 160, front: "כְּבִּירֶה", back: "גדולה", topic: "תארים", meeting: 2, gender: "f", mate: 158 },
+    { id: 161, front: "זְעִ'יר", back: "קטן", topic: "תארים", form: "יחיד", pair: [162], meeting: 2, gender: "m", mate: 163 },
+    { id: 162, front: "זְעַ'אר", back: "קטן", topic: "תארים", form: "רבים", pair: [161], meeting: 2, gender: "m" },
+    { id: 163, front: "זְעִ'ירֶה", back: "קטנה", topic: "תארים", meeting: 2, gender: "f", mate: 161 },
+    { id: 164, front: "חַאסוּבּ", back: "מחשב", topic: "חפצים", form: "יחיד", pair: [165], meeting: 2 },
+    { id: 165, front: "חַוַאסִיבּ", back: "מחשב", topic: "חפצים", form: "רבים", pair: [164], meeting: 2 },
+    { id: 166, front: "כַּמְבְּיוּתֶר", back: "מחשב", topic: "חפצים", form: "יחיד", pair: [167], meeting: 2 },
+    { id: 167, front: "כַּמְבְּיוּתֶרַאת", back: "מחשב", topic: "חפצים", form: "רבים", pair: [166], meeting: 2 },
+    { id: 168, front: "חַארַה", back: "שכונה", topic: "מקומות", form: "יחיד", pair: [169], meeting: 2 },
+    { id: 169, front: "חַארַאת", back: "שכונה", topic: "מקומות", form: "רבים", pair: [168], meeting: 2 },
+    { id: 170, front: "חַיّ", back: "שכונה", topic: "מקומות", form: "יחיד", pair: [171], meeting: 2 },
+    { id: 171, front: "אַחְיַאא", back: "שכונה", topic: "מקומות", form: "רבים", pair: [170], meeting: 2 },
+    { id: 172, front: "מַסְגֵ'ד", back: "מסגד", topic: "מקומות", form: "יחיד", pair: [173], meeting: 2 },
+    { id: 173, front: "מַסַאגֵ'ד", back: "מסגד", topic: "מקומות", form: "רבים", pair: [172], meeting: 2 },
+    { id: 174, front: "גַ'אמֶע", back: "מסגד", topic: "מקומות", form: "יחיד", pair: [175], meeting: 2 },
+    { id: 175, front: "גַ'וַאמֶע", back: "מסגד", topic: "מקומות", form: "רבים", pair: [174], meeting: 2 },
+    { id: 176, front: "חַ'זַאנֶה", back: "ארון / כספת", topic: "חפצים", form: "יחיד", pair: [177], meeting: 2 },
+    { id: 177, front: "חַ'זַאאֶן", back: "ארון / כספת", topic: "חפצים", form: "רבים", pair: [176], meeting: 2 },
+    { id: 178, front: "מַחְ'זַן", back: "מחסן", topic: "מקומות", form: "יחיד", pair: [179], meeting: 2 },
+    { id: 179, front: "מַחַ'אזֵן", back: "מחסן", topic: "מקומות", form: "רבים", pair: [178], meeting: 2 },
+    { id: 180, front: "מַטְבַּח'", back: "מטבח", topic: "הבית", form: "יחיד", pair: [181], meeting: 2 },
+    { id: 181, front: "מַטַאבֶּח'", back: "מטבח", topic: "הבית", form: "רבים", pair: [180], meeting: 2 },
+    { id: 182, front: "עֻ'רְפֶה", back: "חדר", topic: "הבית", form: "יחיד", pair: [183], meeting: 2 },
+    { id: 183, front: "עֻ'רַף", back: "חדר", topic: "הבית", form: "רבים", pair: [182], meeting: 2 },
+    { id: 184, front: "אוֹצַ'ה", back: "חדר", topic: "הבית", form: "יחיד", pair: [185], meeting: 2 },
+    { id: 185, front: "אֻוַצ'", back: "חדר", topic: "הבית", form: "רבים", pair: [184], meeting: 2 },
+    { id: 186, front: "בַּלכּוֹנֶה", back: "מרפסת", topic: "הבית", form: "יחיד", pair: [187], meeting: 2 },
+    { id: 187, front: "בַּלכּוֹנַאת", back: "מרפסת", topic: "הבית", form: "רבים", pair: [186], meeting: 2 },
+    { id: 188, front: "בַּרַנְדַא", back: "מרפסת", topic: "הבית", form: "יחיד", pair: [189], meeting: 2 },
+    { id: 189, front: "בַּרַנְדַאת", back: "מרפסת", topic: "הבית", form: "רבים", pair: [188], meeting: 2 },
+    { id: 190, front: "דַרַגֶ'ה", back: "מדרגה", topic: "הבית", form: "יחיד", pair: [191], meeting: 2 },
+    { id: 191, front: "דַרַגַ'את", back: "מדרגה", topic: "הבית", form: "רבים", pair: [190], meeting: 2 },
+    { id: 192, front: "דַרַג'", back: "מדרגות (שם קיבוצי)", topic: "הבית", meeting: 2 },
+    { id: 193, front: "מַלְגַ'א", back: "מקלט / מחסה", topic: "מקומות", form: "יחיד", pair: [194], meeting: 2 },
+    { id: 194, front: "מַלַאגֵ'י", back: "מקלט / מחסה", topic: "מקומות", form: "רבים", pair: [193], meeting: 2 },
+    { id: 195, front: "סַטֶח", back: "גג", topic: "הבית", form: "יחיד", pair: [196], meeting: 2 },
+    { id: 196, front: "סְטוּח", back: "גג", topic: "הבית", form: "רבים", pair: [195], meeting: 2 },
+    { id: 197, front: "סַקֶף", back: "תקרה", topic: "הבית", form: "יחיד", pair: [198], meeting: 2 },
+    { id: 198, front: "סְקוּפ", back: "תקרה", topic: "הבית", form: "רבים", pair: [197], meeting: 2 },
+    { id: 199, front: "סֵיעַה", back: "שעה", topic: "זמן", form: "יחיד", pair: [200], meeting: 2 },
+    { id: 200, front: "סַאעַאת", back: "שעה", topic: "זמן", form: "רבים", pair: [199], meeting: 2 },
+    { id: 201, front: "דְקִיקַה", back: "דקה (זמן)", topic: "זמן", form: "יחיד", pair: [202], meeting: 2 },
+    { id: 202, front: "דַקַאיֶק", back: "דקה (זמן)", topic: "זמן", form: "רבים", pair: [201], meeting: 2 },
+    { id: 203, front: "תַאנְיֶה", back: "שנייה", topic: "זמן", form: "יחיד", pair: [204], meeting: 2 },
+    { id: 204, front: "תַוַאנִי", back: "שנייה", topic: "זמן", form: "רבים", pair: [203], meeting: 2 },
+    { id: 205, front: "לַחְטַ'ה", back: "רגע", topic: "זמן", form: "יחיד", pair: [206], meeting: 2 },
+    { id: 206, front: "לַחַט'את", back: "רגע", topic: "זמן", form: "רבים", pair: [205], meeting: 2 },
+    { id: 207, front: "מַכְּתַבּ", back: "משרד", topic: "מקומות", form: "יחיד", pair: [208], meeting: 2 },
+    { id: 208, front: "מַכַּאתֶבּ", back: "משרדים / ספריות", topic: "מקומות", form: "רבים", pair: [207, 209], meeting: 2 },
+    { id: 209, front: "מַכְּתַבֶּה", back: "ספרייה / חנות ספרים", topic: "מקומות", form: "יחיד", pair: [208, 210], meeting: 2 },
+    { id: 210, front: "מַכְּתַאבַּאת", back: "ספרייה / חנות ספרים", topic: "מקומות", form: "רבים", pair: [209], meeting: 2 },
+    { id: 211, front: "וַטִ'יפֶה", back: "משרה / מטלה / שיעורי בית", topic: "עבודה", form: "יחיד", pair: [212], meeting: 2 },
+    { id: 212, front: "וַטַ'אאֶף", back: "משרה / מטלה / שיעורי בית", topic: "עבודה", form: "רבים", pair: [211], meeting: 2 },
+    { id: 213, front: "שַהַאדֶה", back: "תעודה (מקצוע, הוכחה)", topic: "עבודה", form: "יחיד", pair: [214], meeting: 2 },
+    { id: 214, front: "שַהַאדַאת", back: "תעודה (מקצוע, הוכחה)", topic: "עבודה", form: "רבים", pair: [213], meeting: 2 },
+    { id: 215, front: "קַמִיץ", back: "חולצה מכופתרת", topic: "לבוש", form: "יחיד", pair: [216], meeting: 2 },
+    { id: 216, front: "קֻמְצַאן", back: "חולצה מכופתרת", topic: "לבוש", form: "רבים", pair: [215], meeting: 2 },
+    { id: 217, front: "בְּלוּזֶה", back: "חולצת טריקו", topic: "לבוש", form: "יחיד", pair: [218], meeting: 2 },
+    { id: 218, front: "בַּלַאיֶז", back: "חולצת טריקו", topic: "לבוש", form: "רבים", pair: [217], meeting: 2 },
+    { id: 219, front: "בַּנְטַלוֹן", back: "מכנסיים", topic: "לבוש", form: "יחיד", pair: [220, 221], meeting: 2 },
+    { id: 220, front: "בַּנַאטִיל", back: "מכנסיים", topic: "לבוש", form: "רבים", pair: [219], meeting: 2 },
+    { id: 221, front: "בַּנְטַלוֹנַאת", back: "מכנסיים", topic: "לבוש", form: "רבים", pair: [219], meeting: 2 },
+    { id: 222, front: "כֻּנְדַרַה", back: "נעל", topic: "לבוש", form: "יחיד", pair: [223], meeting: 2 },
+    { id: 223, front: "כַּנַאדֶר", back: "נעל", topic: "לבוש", form: "רבים", pair: [222], meeting: 2 },
+    { id: 224, front: "עַמַארַה", back: "בניין", topic: "מקומות", form: "יחיד", pair: [225], meeting: 2 },
+    { id: 225, front: "עַמַארַאת", back: "בניין", topic: "מקומות", form: "רבים", pair: [224], meeting: 2 },
+    { id: 226, front: "טַאבֵּק", back: "קומה", topic: "הבית", form: "יחיד", pair: [227], meeting: 2 },
+    { id: 227, front: "טַוַאבֵּק", back: "קומה", topic: "הבית", form: "רבים", pair: [226], meeting: 2 },
+    { id: 228, front: "גַ'אר", back: "שכן", topic: "אנשים ותפקידים", form: "יחיד", pair: [229], meeting: 2, gender: "m", mate: 230 },
+    { id: 229, front: "גִ'ירַאן", back: "שכן", topic: "אנשים ותפקידים", form: "רבים", pair: [228], meeting: 2, gender: "m" },
+    { id: 230, front: "גַ'ארַה", back: "שכנה", topic: "אנשים ותפקידים", form: "יחיד", pair: [231], meeting: 2, gender: "f", mate: 228 },
+    { id: 231, front: "גַ'ארַאת", back: "שכנה", topic: "אנשים ותפקידים", form: "רבים", pair: [230], meeting: 2, gender: "f" },
+    { id: 232, front: "דֻכַּّאן", back: "חנות", topic: "מקומות", form: "יחיד", pair: [233], meeting: 2 },
+    { id: 233, front: "דַכַּאכִּין", back: "חנות", topic: "מקומות", form: "רבים", pair: [232], meeting: 2 },
+    { id: 234, front: "מַחַלّ", back: "מקום", topic: "מקומות", form: "יחיד", pair: [235], meeting: 2 },
+    { id: 235, front: "מַחַלّאת", back: "מקום", topic: "מקומות", form: "רבים", pair: [234], meeting: 2 },
+    { id: 236, front: "סֻאַאל", back: "שאלה", topic: "לימודים", form: "יחיד", pair: [237, 238], meeting: 2 },
+    { id: 237, front: "אַסְאִלֶה", back: "שאלה", topic: "לימודים", form: "רבים", pair: [236], meeting: 2 },
+    { id: 238, front: "סֻאַאלַאת", back: "שאלה", topic: "לימודים", form: "רבים", pair: [236], meeting: 2 },
+    { id: 239, front: "גַ'וַאבּ", back: "תשובה", topic: "לימודים", form: "יחיד", pair: [240, 241], meeting: 2 },
+    { id: 240, front: "אַגְ'וִבֶּה", back: "תשובה", topic: "לימודים", form: "רבים", pair: [239], meeting: 2 },
+    { id: 241, front: "גַ'וַאבַּאת", back: "תשובה", topic: "לימודים", form: "רבים", pair: [239], meeting: 2 },
+    { id: 242, front: "מַטַאר", back: "שדה תעופה", topic: "מקומות", form: "יחיד", pair: [243], meeting: 2 },
+    { id: 243, front: "מַטַארַאת", back: "שדה תעופה", topic: "מקומות", form: "רבים", pair: [242], meeting: 2 },
+    { id: 244, front: "שֻעֻ'ל", back: "עבודה", topic: "עבודה", form: "יחיד", pair: [245], meeting: 2 },
+    { id: 245, front: "אַשְעַ'אל", back: "עבודה", topic: "עבודה", form: "רבים", pair: [244], meeting: 2 },
+    { id: 246, front: "בַּלַד", back: "יישוב", topic: "מקומות", form: "יחיד", pair: [247], meeting: 2 },
+    { id: 247, front: "בֻּלַדַאן", back: "יישוב", topic: "מקומות", form: "רבים", pair: [246], meeting: 2 },
+    { id: 248, front: "דוֹלֶה", back: "מדינה", topic: "מקומות", form: "יחיד", pair: [249], meeting: 2 },
+    { id: 249, front: "דֻוַל", back: "מדינה", topic: "מקומות", form: "רבים", pair: [248], meeting: 2 },
+    { id: 250, front: "מַדִינֶה", back: "עיר", topic: "מקומות", form: "יחיד", pair: [251], meeting: 2 },
+    { id: 251, front: "מֻדֻן", back: "עיר", topic: "מקומות", form: "רבים", pair: [250], meeting: 2 },
+    { id: 252, front: "קַרְיֶה", back: "כפר", topic: "מקומות", form: "יחיד", pair: [253], meeting: 2 },
+    { id: 253, front: "קֻרַא", back: "כפר", topic: "מקומות", form: "רבים", pair: [252], meeting: 2 },
+    { id: 254, front: "מִנְטַקַה", back: "אזור", topic: "מקומות", form: "יחיד", pair: [255], meeting: 2 },
+    { id: 255, front: "מַנַאטֶק", back: "אזור", topic: "מקומות", form: "רבים", pair: [254], meeting: 2 },
+    { id: 256, front: "שַארֶע", back: "רחוב", topic: "מקומות", form: "יחיד", pair: [257], meeting: 2 },
+    { id: 257, front: "שַוַארֶע", back: "רחוב", topic: "מקומות", form: "רבים", pair: [256], meeting: 2 },
+    { id: 258, front: "סַאכֵּן", back: "גר / שוכן", topic: "אנשים ותפקידים", form: "יחיד", pair: [259], meeting: 2, gender: "m", mate: 260 },
+    { id: 259, front: "סַאכְּנִין", back: "גר / שוכן", topic: "אנשים ותפקידים", form: "רבים", pair: [258], meeting: 2, gender: "m" },
+    { id: 260, front: "סַאכְּנֶה", back: "גרה / שוכנת", topic: "אנשים ותפקידים", form: "יחיד", pair: [261], meeting: 2, gender: "f", mate: 258 },
+    { id: 261, front: "סַאכְּנַאת", back: "גרה / שוכנת", topic: "אנשים ותפקידים", form: "רבים", pair: [260], meeting: 2, gender: "f" },
+    { id: 262, front: "סֻכַּّאן", back: "תושבים", topic: "אנשים ותפקידים", meeting: 2 },
+    { id: 263, front: "מֻשְכִּלֶה", back: "בעיה", topic: "כללי", form: "יחיד", pair: [264], meeting: 2 },
+    { id: 264, front: "מַשַאכֶּל", back: "בעיה", topic: "כללי", form: "רבים", pair: [263], meeting: 2 },
+    { id: 265, front: "הַוִיֶّה", back: "תעודת זהות", topic: "עבודה", form: "יחיד", pair: [266], meeting: 2 },
+    { id: 266, front: "הַוִיַّאת", back: "תעודת זהות", topic: "עבודה", form: "רבים", pair: [265], meeting: 2 },
+    { id: 267, front: "בַּיַّארַה", back: "פרדס", topic: "מקומות", form: "יחיד", pair: [268], meeting: 2 },
+    { id: 268, front: "בַּיַّארַאת", back: "פרדס", topic: "מקומות", form: "רבים", pair: [267], meeting: 2 },
+
+    // ---- meeting 3, page 46 ----
+    { id: 269, front: "לֻעְ'ה", back: "שפה", topic: "כללי", form: "יחיד", pair: [270], meeting: 3 },
+    { id: 270, front: "לֻעְ'את", back: "שפה", topic: "כללי", form: "רבים", pair: [269], meeting: 3 },
+    { id: 271, front: "קֻצַّה", back: "סיפור", topic: "כללי", form: "יחיד", pair: [272], meeting: 3 },
+    { id: 272, front: "קֻצַצ", back: "סיפור", topic: "כללי", form: "רבים", pair: [271], meeting: 3 },
+    { id: 273, front: "גַ'בְהַה", back: "חזית", topic: "כללי", form: "יחיד", pair: [274], meeting: 3 },
+    { id: 274, front: "גַ'בְהַאת", back: "חזית", topic: "כללי", form: "רבים", pair: [273], meeting: 3 },
+    { id: 275, front: "חַרַכֶּה", back: "תנועה", topic: "כללי", form: "יחיד", pair: [276], meeting: 3 },
+    { id: 276, front: "חַרַכַּאת", back: "תנועה", topic: "כללי", form: "רבים", pair: [275], meeting: 3 },
+    { id: 277, front: "מַחַטַّה", back: "תחנה", topic: "תחבורה", form: "יחיד", pair: [278], meeting: 3 },
+    { id: 278, front: "מַחַטַّאת", back: "תחנה", topic: "תחבורה", form: "רבים", pair: [277], meeting: 3 },
+    { id: 279, front: "רֻחְ'צַה", back: "רישיון", topic: "תחבורה", form: "יחיד", pair: [280], meeting: 3 },
+    { id: 280, front: "רֻחַ'צ", back: "רישיון", topic: "תחבורה", form: "רבים", pair: [279], meeting: 3 },
+    { id: 281, front: "סְוַאקַה", back: "נהיגה", topic: "תחבורה", meeting: 3 },
+    { id: 282, front: "סֵיר", back: "נסיעה / תחבורה", topic: "תחבורה", meeting: 3 },
+    { id: 283, front: "שוֹפֵיר", back: "נהג", topic: "תחבורה", form: "יחיד", pair: [284], meeting: 3 },
+    { id: 284, front: "שוֹפֵירִיֶّה", back: "נהג", topic: "תחבורה", form: "רבים", pair: [283], meeting: 3 },
+    { id: 285, front: "סַאאֶק", back: "נהג", topic: "תחבורה", form: "יחיד", pair: [286, 287], meeting: 3 },
+    { id: 286, front: "סַאאִקִין", back: "נהג", topic: "תחבורה", form: "רבים", pair: [285], meeting: 3 },
+    { id: 287, front: "סֻוַّאק", back: "נהג", topic: "תחבורה", form: "רבים", pair: [285], meeting: 3 },
+    { id: 288, front: "בַּאץ", back: "אוטובוס", topic: "תחבורה", form: "יחיד", pair: [289], meeting: 3 },
+    { id: 289, front: "בַּאצַאת", back: "אוטובוס", topic: "תחבורה", form: "רבים", pair: [288], meeting: 3 },
+    { id: 290, front: "סַנֶה", back: "שנה", topic: "זמן", form: "יחיד", pair: [291, 292], meeting: 3 },
+    { id: 291, front: "סְנִין", back: "שנה", topic: "זמן", form: "רבים", pair: [290], meeting: 3 },
+    { id: 292, front: "סַנַוַאת", back: "שנה", topic: "זמן", form: "רבים", pair: [290], meeting: 3 },
+    { id: 293, front: "עֻמוּלֶה", back: "עמלה", topic: "כללי", form: "יחיד", pair: [294], meeting: 3 },
+    { id: 294, front: "עֻמוּלַאת", back: "עמלה", topic: "כללי", form: "רבים", pair: [293], meeting: 3 },
+    { id: 295, front: "חֻכּוּמֶה", back: "ממשלה", topic: "כללי", form: "יחיד", pair: [296], meeting: 3 },
+    { id: 296, front: "חֻכּוּמַאת", back: "ממשלה", topic: "כללי", form: "רבים", pair: [295], meeting: 3 },
+    { id: 297, front: "בַּנְכּ", back: "בנק", topic: "מקומות", form: "יחיד", pair: [298], meeting: 3 },
+    { id: 298, front: "בְּנוּכּ", back: "בנק", topic: "מקומות", form: "רבים", pair: [297], meeting: 3 },
+    { id: 299, front: "לַזִיז", back: "טעים", topic: "תארים", meeting: 3, gender: "m", mate: 300 },
+    { id: 300, front: "לַזִיזֶה", back: "טעימה", topic: "תארים", meeting: 3, gender: "f", mate: 299 },
+    { id: 301, front: "קַנִّינֶה", back: "בקבוק", topic: "חפצים", form: "יחיד", pair: [302], meeting: 3 },
+    { id: 302, front: "קַנַאנִי", back: "בקבוק", topic: "חפצים", form: "רבים", pair: [301], meeting: 3 },
+    { id: 303, front: "עִלְבֶּה", back: "קופסה", topic: "חפצים", form: "יחיד", pair: [304], meeting: 3 },
+    { id: 304, front: "עֻלַבּ", back: "קופסה", topic: "חפצים", form: "רבים", pair: [303], meeting: 3 },
+    { id: 305, front: "אִבְּרֵה", back: "מחט / זריקה", topic: "חפצים", form: "יחיד", pair: [306], meeting: 3 },
+    { id: 306, front: "אִבַּר", back: "מחט / זריקה", topic: "חפצים", form: "רבים", pair: [305], meeting: 3 },
+    { id: 307, front: "אַחְ'צַ'ר", back: "ירוק", topic: "צבעים", form: "יחיד", pair: [308], meeting: 3, gender: "m", mate: 309 },
+    { id: 308, front: "חֻ'צֻ'ר", back: "ירוק / ירוקה", topic: "צבעים", form: "רבים", pair: [307, 309], meeting: 3, gender: "m" },
+    { id: 309, front: "חַ'צְ'רַה", back: "ירוקה", topic: "צבעים", form: "יחיד", pair: [308], meeting: 3, gender: "f", mate: 307 },
+    { id: 310, front: "שֵיח'", back: "שיח'", topic: "אנשים ותפקידים", form: "יחיד", pair: [311, 312], meeting: 3 },
+    { id: 311, front: "שְיוּח'", back: "שיח'", topic: "אנשים ותפקידים", form: "רבים", pair: [310], meeting: 3 },
+    { id: 312, front: "מַשַאיֵח'", back: "שיח'", topic: "אנשים ותפקידים", form: "רבים", pair: [310], meeting: 3 },
+    { id: 313, front: "שַקַّה", back: "דירה", topic: "מקומות", form: "יחיד", pair: [314], meeting: 3 },
+    { id: 314, front: "שֻקַק", back: "דירה", topic: "מקומות", form: "רבים", pair: [313], meeting: 3 },
+
+    // ---- meeting 3, page 47 ----
+    { id: 315, front: "טַרַף", back: "צד / חלק", topic: "כללי", form: "יחיד", pair: [316], meeting: 3 },
+    { id: 316, front: "אַטְרַאף", back: "צד / חלק", topic: "כללי", form: "רבים", pair: [315], meeting: 3 },
+    { id: 317, front: "גַ'נַבּ", back: "צד (פיזי)", topic: "כללי", form: "יחיד", pair: [318], meeting: 3 },
+    { id: 318, front: "אַגְ'נַאבּ", back: "צד (פיזי)", topic: "כללי", form: "רבים", pair: [317], meeting: 3 },
+    { id: 319, front: "חַאגֶ'ז", back: "מחסום", topic: "תחבורה", form: "יחיד", pair: [320], meeting: 3 },
+    { id: 320, front: "חַוַאגֶ'ז", back: "מחסום", topic: "תחבורה", form: "רבים", pair: [319], meeting: 3 },
+    { id: 321, front: "רַמְזוֹן", back: "רמזור", topic: "תחבורה", form: "יחיד", pair: [322], meeting: 3 },
+    { id: 322, front: "רַמְזוֹנַאת", back: "רמזור", topic: "תחבורה", form: "רבים", pair: [321], meeting: 3 },
+    { id: 323, front: "דַוַّאר", back: "כיכר", topic: "תחבורה", form: "יחיד", pair: [324, 325], meeting: 3 },
+    { id: 324, front: "דַוַאוִיר", back: "כיכר", topic: "תחבורה", form: "רבים", pair: [323], meeting: 3 },
+    { id: 325, front: "דֻّוַאר", back: "כיכר", topic: "תחבורה", form: "רבים", pair: [323], meeting: 3 },
+    { id: 326, front: "גַ'רִידֶה", back: "עיתון", topic: "כללי", form: "יחיד", pair: [327], meeting: 3 },
+    { id: 327, front: "גַ'רַאיֶד", back: "עיתון", topic: "כללי", form: "רבים", pair: [326], meeting: 3 },
+    { id: 328, front: "שַגַ'רַה", back: "עץ", topic: "טבע", form: "יחיד", pair: [329, 330], meeting: 3 },
+    { id: 329, front: "אַשְגַ'אר", back: "עץ", topic: "טבע", form: "רבים", pair: [328], meeting: 3 },
+    { id: 330, front: "שַגַ'רַאת", back: "עץ", topic: "טבע", form: "רבים", pair: [328], meeting: 3 },
+    { id: 331, front: "שַגַ'ר", back: "עצים (שם קיבוצי)", topic: "טבע", meeting: 3 },
+    { id: 332, front: "זֵיתוּן", back: "זיתים (שם קיבוצי)", topic: "טבע", meeting: 3 },
+    { id: 333, front: "זֵית", back: "שמן", topic: "אוכל", form: "יחיד", pair: [334], meeting: 3 },
+    { id: 334, front: "זְיוּת", back: "שמן", topic: "אוכל", form: "רבים", pair: [333], meeting: 3 },
+    { id: 335, front: "מִן", back: "מ...", topic: "מילות יחס", meeting: 3 },
+    { id: 336, front: "עַלַא", back: "על", topic: "מילות יחס", meeting: 3 },
+    { id: 337, front: "עַן", back: "אודות", topic: "מילות יחס", meeting: 3 },
+    { id: 338, front: "תַארִיח'", back: "תאריך / היסטוריה", topic: "זמן", form: "יחיד", pair: [339], meeting: 3 },
+    { id: 339, front: "תַוַארִיח'", back: "תאריך / היסטוריה", topic: "זמן", form: "רבים", pair: [338], meeting: 3 },
+    { id: 340, front: "דִין", back: "דת", topic: "כללי", form: "יחיד", pair: [341], meeting: 3 },
+    { id: 341, front: "אַדְיַאן", back: "דת", topic: "כללי", form: "רבים", pair: [340], meeting: 3 },
+    { id: 342, front: "אִסְלַאם", back: "אסלאם", topic: "כללי", meeting: 3 },
+    { id: 343, front: "מִסְלֶם", back: "מוסלמי", topic: "אנשים ותפקידים", form: "יחיד", pair: [344], meeting: 3, gender: "m", mate: 345 },
+    { id: 344, front: "מִסְלְמִין", back: "מוסלמי", topic: "אנשים ותפקידים", form: "רבים", pair: [343], meeting: 3, gender: "m" },
+    { id: 345, front: "מִסְלְמֶה", back: "מוסלמית", topic: "אנשים ותפקידים", form: "יחיד", pair: [346], meeting: 3, gender: "f", mate: 343 },
+    { id: 346, front: "מִסְלְמַאת", back: "מוסלמית", topic: "אנשים ותפקידים", form: "רבים", pair: [345], meeting: 3, gender: "f" },
+    { id: 347, front: "יַהוּדִי", back: "יהודי", topic: "אנשים ותפקידים", form: "יחיד", pair: [348], meeting: 3, gender: "m", mate: 349 },
+    { id: 348, front: "יַהוּד", back: "יהודי", topic: "אנשים ותפקידים", form: "רבים", pair: [347], meeting: 3, gender: "m" },
+    { id: 349, front: "יַהוּדִיֶّה", back: "יהודייה", topic: "אנשים ותפקידים", form: "יחיד", pair: [350], meeting: 3, gender: "f", mate: 347 },
+    { id: 350, front: "יַהוּדִיַّאת", back: "יהודייה", topic: "אנשים ותפקידים", form: "רבים", pair: [349], meeting: 3, gender: "f" },
+    { id: 351, front: "מַסִיחִי", back: "נוצרי", topic: "אנשים ותפקידים", form: "יחיד", pair: [352], meeting: 3, gender: "m", mate: 353 },
+    { id: 352, front: "מַסִיחִיוּן", back: "נוצרי", topic: "אנשים ותפקידים", form: "רבים", pair: [351], meeting: 3, gender: "m" },
+    { id: 353, front: "מַסִיחִיֶّה", back: "נוצרייה", topic: "אנשים ותפקידים", form: "יחיד", pair: [354], meeting: 3, gender: "f", mate: 351 },
+    { id: 354, front: "מַסִיחִיַّאת", back: "נוצרייה", topic: "אנשים ותפקידים", form: "רבים", pair: [353], meeting: 3, gender: "f" },
+    { id: 355, front: "תַכְּסִי", back: "מונית", topic: "תחבורה", form: "יחיד", pair: [356], meeting: 3 },
+    { id: 356, front: "תַכְּסִיַאת", back: "מונית", topic: "תחבורה", form: "רבים", pair: [355], meeting: 3 },
+
+    // ---- meeting 3, page 48 ----
+    { id: 357, front: "יַמִין", back: "ימין (צד)", topic: "כיוונים", meeting: 3 },
+    { id: 358, front: "שְמַאל", back: "שמאל (צד)", topic: "כיוונים", meeting: 3 },
+    { id: 359, front: "חַקّ", back: "זכות / צדק / מחיר", topic: "כללי", form: "יחיד", pair: [360], meeting: 3 },
+    { id: 360, front: "חֻקוּק", back: "זכויות / מחיר", topic: "כללי", form: "רבים", pair: [359], meeting: 3 },
+    { id: 361, front: "בַּסִיט", back: "פשוט", topic: "תארים", form: "יחיד", pair: [362], meeting: 3, gender: "m", mate: 363 },
+    { id: 362, front: "בְּסַטַאא", back: "פשוט", topic: "תארים", form: "רבים", pair: [361], meeting: 3, gender: "m" },
+    { id: 363, front: "בַּסִיטַה", back: "פשוטה / לא נורא", topic: "תארים", meeting: 3, gender: "f", mate: 361 },
+    { id: 364, front: "חַ'טّ", back: "קו", topic: "כללי", form: "יחיד", pair: [365], meeting: 3 },
+    { id: 365, front: "חְ'טוּט", back: "קו", topic: "כללי", form: "רבים", pair: [364], meeting: 3 },
+    { id: 366, front: "אַח'", back: "אח", topic: "משפחה", form: "יחיד", pair: [367], meeting: 3, gender: "m", mate: 368 },
+    { id: 367, front: "אִחְ'וֶה", back: "אח", topic: "משפחה", form: "רבים", pair: [366], meeting: 3, gender: "m" },
+    { id: 368, front: "אֻחְ'ת", back: "אחות", topic: "משפחה", form: "יחיד", pair: [369], meeting: 3, gender: "f", mate: 366 },
+    { id: 369, front: "חַ'וַאת", back: "אחות", topic: "משפחה", form: "רבים", pair: [368], meeting: 3, gender: "f" },
+    { id: 370, front: "מֻפְתַאח", back: "מפתח", topic: "חפצים", form: "יחיד", pair: [371], meeting: 3 },
+    { id: 371, front: "מַפַאתִיח", back: "מפתח", topic: "חפצים", form: "רבים", pair: [370], meeting: 3 },
+    { id: 372, front: "קִפֵל", back: "מנעול", topic: "חפצים", form: "יחיד", pair: [373], meeting: 3 },
+    { id: 373, front: "אַקְפַאל", back: "מנעול", topic: "חפצים", form: "רבים", pair: [372], meeting: 3 },
+    { id: 374, front: "שַאבّ", back: "בחור צעיר", topic: "אנשים ותפקידים", form: "יחיד", pair: [375], meeting: 3, gender: "m", mate: 376 },
+    { id: 375, front: "שַבַּאבּ", back: "בחור צעיר", topic: "אנשים ותפקידים", form: "רבים", pair: [374], meeting: 3, gender: "m" },
+    { id: 376, front: "שַאבֶּّה", back: "בחורה צעירה", topic: "אנשים ותפקידים", form: "יחיד", pair: [377], meeting: 3, gender: "f", mate: 374 },
+    { id: 377, front: "שַאבַּאת", back: "בחורה צעירה", topic: "אנשים ותפקידים", form: "רבים", pair: [376], meeting: 3, gender: "f" },
+    { id: 378, front: "צִ'דّ", back: "נגד", topic: "מילות יחס", meeting: 3 },
+    { id: 379, front: "כֻּלّ", back: "כל", topic: "כללי", meeting: 3 },
+    { id: 380, front: "אַו", back: "או", topic: "מילות קישור", meeting: 3 },
+    { id: 381, front: "וַלַّא", back: "או", topic: "מילות קישור", meeting: 3 },
+    { id: 382, front: "שַעַבּ", back: "עם", topic: "כללי", form: "יחיד", pair: [383], meeting: 3 },
+    { id: 383, front: "שֻעוּבּ", back: "עם", topic: "כללי", form: "רבים", pair: [382], meeting: 3 },
+    { id: 384, front: "רַסְמִי", back: "רשמי", topic: "תארים", form: "יחיד", pair: [385], meeting: 3, gender: "m", mate: 386 },
+    { id: 385, front: "רַסְמִיִّין", back: "רשמי", topic: "תארים", form: "רבים", pair: [384], meeting: 3, gender: "m" },
+    { id: 386, front: "רַסְמִיֶّה", back: "רשמית", topic: "תארים", form: "יחיד", pair: [387], meeting: 3, gender: "f", mate: 384 },
+    { id: 387, front: "רַאסְמִיַّאת", back: "רשמית", topic: "תארים", form: "רבים", pair: [386], meeting: 3, gender: "f" },
 ];
 
 const ALPHABET = [
@@ -814,6 +1086,81 @@ const SENTENCES = [
     { id: 13, hebrew: "זה כוס קפה וזה כוס תה וההוא סוכר.", arabic: "הַאדִי כַּאסֵת קַהְוֵה וְהַאדִי כַּאסֵת שַאיְ וְהַדַאכּ סֻכַּّר.", meeting: 1 },
     { id: 14, hebrew: "אחמד הוא בן דודי (מצד אבי) ונג'אח היא בת דודי (מצד אימי).", arabic: "אַחְמַד הֻוֵّ אִבֵּן עַמִّי וְנַגַ'אח הִיֵّ בִּנְת חַ'אלִי.", meeting: 1 },
     { id: 15, hebrew: "מזכירה בחברת עריכת דין.", arabic: "סֵכְּרֵתֵירַא פִי שִרְכֵּת מֻחַאמַאה.", meeting: 1 },
+
+    /* ---- meeting 2 ----
+       These are the booklet's pronoun drills, and they run to eight or twelve
+       words each. `readOnly` keeps them out of the tile-assembly exercise and
+       the full exam: a twelve-word sentence broken into tiles, plus decoys, is
+       unusable on a phone. They still appear in reading practice, in
+       fill-in-the-blank and in the flashcard decks. */
+    { id: 16, hebrew: "זה אבי וזאת אמי ואלו תעודותיהם!", arabic: "הַאדַא אַבּוּי וְהַאדִי אִמִّי וְהַדוֹל הַוִّיַאתְהֹם!", meeting: 2, readOnly: true },
+    { id: 17, hebrew: "זה רחובי וזאת מכוניתנו! זאת לא מכוניתכם!", arabic: "הַאדַא שַארְעִי וְהַאדִי סַיַّארִתְנַא! הַאדִי מֶש סַיַّארִתְכֹּם!", meeting: 2, readOnly: true },
+    { id: 18, hebrew: "זה תיקכם? לא זה לא תיקנו, זה תיקם, ההוא תיקנו!", arabic: "הַאדִי שַנְטַתְכֹּם? לַא, הַאדִי מֶש שַנְטַתְנַא, הַאדִי שַנְטַתְהֹם, הַדִיכּ שַנְטַתְנַא!", meeting: 2, readOnly: true },
+    { id: 19, hebrew: "זה חלונך? לא, זה לא חלוני, זה חלונה וההוא חלוני!", arabic: "הַאדַא שֻבַּّאכַּכּ? לַא, הַאדַא מֶש שֻבַּّאכִּי, הַאדַא שֻבַּّאכְּהַא וְהַדַאכּ שֻבַּّאכִּי!", meeting: 2, readOnly: true },
+    { id: 20, hebrew: "ההיא משפחתה? לא, ההיא לא משפחתה, ההיא משפחתו!", arabic: "הַדִיכּ עֵילִתְהַא? לַא, הַדִיכּ מֶש עֵילִתְהַא, הַדִיכּ עֵילִתוֹ!", meeting: 2, readOnly: true },
+    { id: 21, hebrew: "זאת שכונתנו וההיא שכונתם!", arabic: "הַאדִי חַארִתְנַא וַהַדִיכּ חַארִתְהֹם!", meeting: 2, readOnly: true },
+    { id: 22, hebrew: "ההוא משרדם? לא, ההוא לא משרדם, ההוא משרדנו!", arabic: "הַדַאכּ מַכְּתַבֹּם? לַא, הַדַאכּ מֶש מַכְּתַבְּהֹם, הַדַאכּ מַכְּתַבְּנַא", meeting: 2, readOnly: true },
+    { id: 23, hebrew: "זאת כיתתכם? לא, זאת לא כיתתנו, זאת כיתתם!", arabic: "הַאדַא צַפְּכֹּם? לַא, הַאדַא מֶש צַפְּנַא, הַאדַא צַפְּהֹם", meeting: 2, readOnly: true },
+    { id: 24, hebrew: "זה אחמד המורה שלך? לא, זה לא אחמד המורה שלי, זה בלאל!", arabic: "הַאדַא אַחְמַד מְעַלְמַכּ? לַא, הַאדַא מֶש אַחְמַד מְעַלְמִי הַאדַא בְּלִאל!", meeting: 2, readOnly: true },
+    { id: 25, hebrew: "זאת פאטמה אישתך? לא ואללה, זאת לא פאטמה אשתי, זאת נבילה!", arabic: "הַאדִי פַאטְמֶה מַרַתַכּ? לַא וַללַّה, הַאדִי מֶש פַאטְמֶה מַרַתִי, הַאדִי נַבִילֵה!", meeting: 2, readOnly: true },
+    { id: 26, hebrew: "אלה נביל וח'דיג'ה חבריהם? לא, אלה לא נביל וח'דיג'ה, אלה וסאם ומרים!", arabic: "הַדוֹל נַבִּיל וְחַ'דִיגֶ'ה אַצְחַאבְּהֹם? לַא, הַדוֹל מֶש נַבִּיל וְחַ'דִיגֶ'ה, הַדוֹל וִסַאם וּמַרְיַם!", meeting: 2, readOnly: true },
+    { id: 27, hebrew: "ההוא מחמד הבן שלה? לא, ההוא לא מחמד, ההוא מחמוד!", arabic: "הַדַאכּ מְחַמַّד אִבִּנְהַא? לַא, הַדַאכּ מֶש מְחַמַّד, הַדַאכּ מַחְמוּד!", meeting: 2, readOnly: true },
+    { id: 28, hebrew: "ההיא ודאד הבת שלו? לא, ההיא לא ודאד, ההיא פירוז!", arabic: "הַדִיכּ וִדַאד בִּנְתוֹ? לַא, הַדִיכּ מֶש וִדַאד, הַדִיכּ פַיְרוּז!", meeting: 2, readOnly: true },
+    { id: 29, hebrew: "ההם אברהים ועלאא שכנינו? לא ואללה, ההם לא אברהים ועלאא, ההם ראאד וחסן!", arabic: "הַדוֹלַאכּ אִבְּרַאהִים וְעַלַאא גֵ'ירַאנַّא? לַא וַללַّה, הַדוֹלַאכּ מֶש אִבְּרַאהִים וְעַלַאא, הַדוֹלַאכּ רַאאֶד וְחַסַן!", meeting: 2, readOnly: true },
+    { id: 30, hebrew: "זה ביתך? לא, זה לא ביתי, זה ביתה וההוא ביתנו!", arabic: "הַאדַא בֵּיתַכּ? לַא, הַאדַא מֶש בֵּיתִי, הַאד בֵּיתְהַא וְהַדַאכּ בֵּיתְנַא!", meeting: 2, readOnly: true },
+    { id: 31, hebrew: "זה בנייניכם? לא, זה לא בניינינו, הבניין ההוא!", arabic: "הַאדִי עַמַארִתְכֹּם? לַא, הַאדִי מֶש עַמַארִתְנַא, הַדִיכּ (א)לְעַמַארַה!", meeting: 2, readOnly: true },
+    { id: 32, hebrew: "אלו מכנסיך וחולצתך? לא, אלו לא מכנסיי וחולצתי, ההם מכנסיי וחולצתי!", arabic: "הַדוֹל בַּנְטַלוֹנַכּ וְקַמִיצַכּ? לַא, הַדוֹל מֶש בַּנְטַלוֹנִי וְקַמִיצִי, הַדוֹלַאכּ בַּנְטַלוֹנִי וְקַמִיצִי!", meeting: 2, readOnly: true },
+    { id: 33, hebrew: "זאת חברתכם? לא, זאת לא חברתנו, זאת חברתה!", arabic: "הַאדִי צַאחְבִּתְכֹּם? לַא, הַאדִי מֶש צַאחְבִּתְנַא, הַאדִי צַאחְבִּתְהַא!", meeting: 2, readOnly: true },
+    { id: 34, hebrew: "השעון הזה, חדש!", arabic: "הַאדִי (אל)סֵّיעַה, גְ'דִידֶה!", meeting: 2 },
+    { id: 35, hebrew: "הבית הזה והבניין הגדול הזה.", arabic: "אִ(ל)דַّאר הַאדִי וְ(א)לְעַמַארַה הַאדִי (א)לִכְּבִּירֶה.", meeting: 2 },
+    { id: 36, hebrew: "המזוודה הגדולה הזאת והמזוודות הקטנות ההן.", arabic: "הַאדִי (אל)שַנְטַה (א)לִכְּבִּירֶה וַהַדוֹלַאכּ (אל)שֻנַט (א)לִזְעַ'אר.", meeting: 2 },
+    { id: 37, hebrew: "המחברת והעט האלו חדשים.", arabic: "אִ(ל)דַّפְתַר וִ(א)לְקַלַם הַדוֹל, גְ'דַאד.", meeting: 2 },
+    { id: 38, hebrew: "השולחן ההוא בכיתה ההיא.", arabic: "הַדִיכּ (אל)טַאוְלֵה בִּהַדַאכּ (אל)צַףّ.", meeting: 2 },
+    { id: 39, hebrew: "(ב)פעם ההיא ראיתי את האישה הזאת.", arabic: "הַדִיכּ (א)לְמַרַّה שֻפֶת הַאדִי (א)לְמַרַה.", meeting: 2 },
+    { id: 40, hebrew: "זה לא החדר! זאת המקלחת!", arabic: "הַאדִי מִש (א)לְעֻ'רְפֶה! הַאדַא (א)לְחַמַّאם!", meeting: 2 },
+    { id: 41, hebrew: "מחסן הבית על הגג.", arabic: "מַחְ'זֶןִ (אל)דַّאר עַ (אל)סַّטֶח.", meeting: 2 },
+    { id: 42, hebrew: "זה לא הבית זאת החנות.", arabic: "הַאדִי מִש (אל)דַّאר הַאדַא (אל)דֻכַּّאן.", meeting: 2 },
+    { id: 43, hebrew: "זה שדה התעופה (של) המדינה.", arabic: "הַאדַא מַטַאִר (אל)דוֹלֶה.", meeting: 2 },
+    { id: 44, hebrew: "העמוד הזה בספר ההוא.", arabic: "הַ(אל)צַّפְחַה פִי הַדַאכּ (א)לִכְּתַאבּ.", meeting: 2 },
+    { id: 45, hebrew: "המחברות והחוברת בתיק.", arabic: "אִ(ל)דַّפַאתֶר וְ(א)לְכֻּרַّאסֶה פִי (אל)שַّנְטַה.", meeting: 2 },
+    { id: 46, hebrew: "זה התה וזה הסוכר.", arabic: "הַאדַא (אל)שַّאי וְהַאדַא (אל)סֻّכַּّר.", meeting: 2 },
+    { id: 47, hebrew: "המזכירה עם הסטודנטים באוניברסיטה.", arabic: "אִ(ל)סֶכְּרֵתֵירַא מִע (אל)טֻלַّאבּ בִּ(אל)גַ'אמְעַה.", meeting: 2 },
+    { id: 48, hebrew: "החלונות בכיתות.", arabic: "אִ(ל)שַّבַּאבִּיכּ פִי (א)לִצְפוּפ.", meeting: 2 },
+    { id: 49, hebrew: "לא הקומה הזאת, הקומה ההיא.", arabic: "מִש (אל)טַّאבֵּק הַאד, הַדַאכּ (אל)טַّאבֵּק.", meeting: 2 },
+
+    // ---- meeting 3, page 36: construct-state drills ----
+    { id: 50, hebrew: "זה מחסן המסגד.", arabic: "הַאדַא מַחְ'זַנִ (א)לְמַסְגִ'ד.", meeting: 3 },
+    { id: 51, hebrew: "ההוא מסגד השכונה.", arabic: "הַדַאכּ מַסְגִ'ד (א)לְחַארַה.", meeting: 3 },
+    { id: 52, hebrew: "זה מטבח הבית.", arabic: "הַאדַא מַטְבַּחִ' (אל)דַّאר.", meeting: 3 },
+    { id: 53, hebrew: "זה חדר הילד.", arabic: "הַאדִי עֻ'רְפִת (א)לְוַלַד.", meeting: 3 },
+    { id: 54, hebrew: "ההוא קיר המרפסת.", arabic: "הַדַאכּ חֵיטִ (א)לְבַּלכּוֹנֶה.", meeting: 3 },
+    { id: 55, hebrew: "השולחן והכסא האלו.", arabic: "אִ(ל)טַّאוְלֶה וִ(א)לְכֻּרְסִי הַדוֹל.", meeting: 3 },
+    { id: 56, hebrew: "זאת אשת דודי (אמא) וזאת אשת דודי (אבא).", arabic: "הַאדִי מַרַת חַ'אלִי וְהַאדִי מַרַת עַמִّי.", meeting: 3 },
+    { id: 57, hebrew: "ההוא שער השכונה.", arabic: "הַדַאכּ בַּאבִּ (א)לְחַארַה.", meeting: 3 },
+    { id: 58, hebrew: "זאת משפחת מנצור.", arabic: "הַאדִי עֵילֵת מַנְצוּר.", meeting: 3 },
+    { id: 59, hebrew: "זה ארון המקלחת.", arabic: "הַאדִי חַ'זַאנִת (א)לְחַמַّאם.", meeting: 3 },
+    { id: 60, hebrew: "זאת ספריית האוניברסיטה.", arabic: "הַאדִי מַכְּתַבִּת (אל)גַ'אמְעַה.", meeting: 3 },
+    { id: 61, hebrew: "ההיא עורכת דין המשרד (הממשלתי).", arabic: "הַדִיכּ מֻחַאמְיִת (א)לְוִזַארַה.", meeting: 3 },
+    { id: 62, hebrew: "זה בית ספר השכונה.", arabic: "הַאי מַדְרַסִת (א)לְחַארַה.", meeting: 3 },
+    { id: 63, hebrew: "שכונת המדרגות ליד פרדס שכני.", arabic: "חַארְתִ (אל)דַّרַג' גַ'מְבּ בַּיַّארַת גַ'ארִי.", meeting: 3 },
+    { id: 64, hebrew: "תעודת הקורס במרפסת.", arabic: "שַהַאדִת (אל)דַוְרַה בִּ(א)לְבַּרַנְדַא.", meeting: 3 },
+
+    // ---- meeting 3, page 40: preposition drills ----
+    { id: 65, hebrew: "הקורס הוא אודות ההיסטוריה האסלאמית.", arabic: "אִ(ל)דַّוְרַה הִיֶّ עַנִ (אל)תַّארִיח' אִ(ל)אִסְלַאמִי.", meeting: 3 },
+    { id: 66, hebrew: "תחנת המוניות בבניין על צד ימין.", arabic: "מַחַטִّת (אל)תַّכְּסִיַאת פִי (א)לְעַמַארַה עַלַא (א)לְיַמִין.", meeting: 3 },
+    { id: 67, hebrew: "השולחן והכיסאות על גג הבית.", arabic: "אִ(ל)טַّאוְלֶה וִ(א)לְכַּרַאסִי עַלַא סַטְחִ (א)לְבֵּית.", meeting: 3 },
+    { id: 68, hebrew: "האשמה לא עליך האשמה עלי.", arabic: "אִלְחַקّ מֶש עַלֵיכּ, אִלְחַקّ עַלַיّ.", meeting: 3 },
+    { id: 69, hebrew: "הוא כתב את הסיפור אודותיכם, לא אודותם.", arabic: "הֻוֶّ כַּתַבִּ (א)לְקֻצַّה עַנְכֹּם, מֶש עַנְהֹם.", meeting: 3 },
+    { id: 70, hebrew: "אלו ממני וממנו.", arabic: "הַדוֹל מִנִّי וּמִנّוֹ.", meeting: 3 },
+    { id: 71, hebrew: "הבן אדם משלנו.", arabic: "אִ(ל)זַّלַמֶה מִנַّא וּפִינַא.", meeting: 3 },
+    { id: 72, hebrew: "יום איתך ויום נגדך (עליך).", arabic: "יוֹם מַעַכּ וְיוֹם עַלֵיכּ.", meeting: 3 },
+    { id: 73, hebrew: "האשמה לא עליהם, האשמה עליכם.", arabic: "אִלְחַקّ מֶש עַלֵיהֹם, אִלְחַקّ עַלֵיכֹּם.", meeting: 3 },
+    { id: 74, hebrew: "הארון ההוא? התיקים עליו.", arabic: "הַ(א)לְחַ'זַאנֶה? אִ(ל)שֻّנַט עַלֵיהַא.", meeting: 3 },
+    { id: 75, hebrew: "הסיפור לא אודותיה ולא אודותיך, הסיפור אודותינו.", arabic: "אִלְקֻצַّה מֶש עַנְהַא וּמֶש עַנַכּ, אִלְקֻצַّה עַנַّא.", meeting: 3 },
+    { id: 76, hebrew: "התעודה הזאת ממנה וממך.", arabic: "אִ(ל)שַהַאדֶה הַאדִי מִנְהַא וּמִנַّכּ.", meeting: 3 },
+    { id: 77, hebrew: "התיק (יש) בו מכנסיים וחולצה.", arabic: "אִ(ל)שַّנְטַה, פִיהַא בַּנְטַלוֹן וּבְּלוּזֶה.", meeting: 3 },
+    { id: 78, hebrew: "הכיתה (יש) בה חלון.", arabic: "הַדַאכּ (אל)צַףّ פִיّוֹ שֻבַּّאכּ.", meeting: 3 },
+    { id: 79, hebrew: "המחברת והעט על השולחן במשרדי.", arabic: "אִ(ל)דַّפְתַר וִ(א)לְקַלַם עַ (אל)טַّאוְלֶה פִי מַכְּתַבִּי.", meeting: 3 },
 ];
 
 const IDIOMS = [
@@ -1677,7 +2024,7 @@ function ExamDetailSheet({ exam, index, onClose }) {
 
 function AccountSheet({ vocab, letters, sentences, idioms, checklist, exams, profile,
                         setVocab, setLetters, setSentences, setIdioms, setChecklist, setProfile, setExams,
-                        user, syncStatus, onClose, onLogout }) {
+                        user, syncStatus, onClose, onLogout, onMeetingUp }) {
     const [status, setStatus] = useState(null);
     const [name, setName] = useState((profile && profile.name) || "");
     const [meeting, setMeeting] = useState(profileMeeting(profile));
@@ -1697,10 +2044,14 @@ function AccountSheet({ vocab, letters, sentences, idioms, checklist, exams, pro
        it says so first, because adding new material on top of an unsteady
        foundation is the one mistake worth pausing over. */
     const commitMeeting = (value) => {
+        const climbing = value > profileMeeting(profile);
         setProfile((prev) => ({ ...(prev || {}), meeting: value }));
         setConfirmJump(null);
-        setMeetingSaved(true);
-        setTimeout(() => setMeetingSaved(false), 1800);
+        /* Moving up a meeting is the one moment of progress the course has,
+           so it gets the same full-screen treatment as arriving and leaving.
+           Moving back down is a correction, and passes quietly. */
+        if (climbing && onMeetingUp) onMeetingUp(value);
+        else { setMeetingSaved(true); setTimeout(() => setMeetingSaved(false), 1800); }
     };
 
     const saveMeeting = () => {
@@ -1905,6 +2256,14 @@ function AccountSheet({ vocab, letters, sentences, idioms, checklist, exams, pro
    the bank it came from so a single component can drill any mixture of
    them, and `applyResult` sends the score back to the right bank.
    ========================================================================= */
+/* Some sentences are for reading only. The booklet's pronoun drills run to a
+   dozen words, and breaking one into tiles — plus decoys — produces a wall of
+   buttons that is unusable on a phone. They stay in the flashcard and
+   fill-in-the-blank decks, where length costs nothing. */
+function isAssemblable(item) {
+    return !item.readOnly;
+}
+
 function tagDeck(list, name) {
     return (list || []).map((item) => ({ ...item, _deck: name, _key: name + ":" + item.id }));
 }
@@ -2428,7 +2787,7 @@ function SentenceTask({ item, dir, onResult, locked, result, pool }) {
 }
 
 function SentenceBuilderSession({ banks, applyResult, onBack, dir, setDir, onSessionDone }) {
-    const data = useMemo(() => buildDeck("sentences", banks), [banks]);
+    const data = useMemo(() => buildDeck("sentences", banks).filter(isAssemblable), [banks]);
     const total = Math.min(SESSION_SIZES.builder, data.length);
     const [order, setOrder] = useState(() => weightedOrder(data, banks.meeting).slice(0, total));
     const [pos, setPos] = useState(0);
@@ -3026,7 +3385,11 @@ function isTypeable(item) {
 function buildExamTasks(banks) {
     const tasks = [];
     EXAM_PLAN.forEach((part) => {
-        const deck = buildDeck(part.deck, banks);
+        /* The exam asks sentences by assembly, so it draws from the same
+           subset the assembly drill uses. */
+        const deck = part.kind === "sentence"
+            ? buildDeck(part.deck, banks).filter(isAssemblable)
+            : buildDeck(part.deck, banks);
         if (deck.length === 0) return;
         const picked = weightedOrder(deck, banks.meeting).slice(0, part.count).map((i) => deck[i]);
         picked.forEach((item, idx) => {
@@ -3225,7 +3588,8 @@ function FullExam({ banks, onBack, onExamStart, onExamFinish, applyResult }) {
             task.kind === "sentence"
                 ? React.createElement(SentenceTask, {
                     item: task.item, dir: task.dir, onResult: record,
-                    locked: !!result, result: result, pool: buildDeck("sentences", banks) })
+                    locked: !!result, result: result,
+                    pool: buildDeck("sentences", banks).filter(isAssemblable) })
                 : React.createElement(React.Fragment, null,
                     React.createElement("div", { style: { fontSize: "0.75rem", fontWeight: 700, color: "var(--accent)", marginBottom: 8 } },
                         task.open ? "שאלה פתוחה — הקלד את התרגום" : "בחר את התשובה הנכונה"),
@@ -3569,7 +3933,6 @@ function StatsTab({ vocab, letters, sentences, idioms, checklist, meeting }) {
     /* Statistics describe the material actually in play, so the numbers match
        what the practice queues are drawing from. */
     const openVocab = (vocab || []).filter((w) => isUnlocked(w, upTo));
-    const openSentences = (sentences || []).filter((s) => isUnlocked(s, upTo));
     const all = openVocab.concat(letters);
     const mastered = openVocab.filter(isMastered).length;
     const struggling = openVocab.filter(isStruggling).length;
@@ -3624,9 +3987,7 @@ function StatsTab({ vocab, letters, sentences, idioms, checklist, meeting }) {
             React.createElement(StatCell, { value: accuracy + "%", label: "אחוז הצלחה כללי" }),
             React.createElement(StatCell, { value: streak, label: "רצף ימי לימוד" }),
             React.createElement(StatCell, { value: fresh, label: "מילים שטרם תורגלו" }),
-            React.createElement(StatCell, { value: letters.filter(isMastered).length + "/" + letters.length, label: "אותיות בשליטה" }),
-            React.createElement(StatCell, { value: openSentences.filter(isMastered).length + "/" + openSentences.length, label: "משפטים בשליטה" }),
-            React.createElement(StatCell, { value: (idioms || []).filter(isMastered).length + "/" + (idioms || []).length, label: "ניבים בשליטה" })),
+            React.createElement(StatCell, { value: letters.filter(isMastered).length + "/" + letters.length, label: "אותיות בשליטה" })),
 
         React.createElement(Card, { style: { marginBottom: 14 } },
             React.createElement("h3", { className: "zl-display", style: { fontWeight: 700, fontSize: "1rem" } }, "עומס החזרות בשבוע הקרוב"),
@@ -3780,6 +4141,7 @@ function GreetingScreen({ headline, note }) {
 /* The farewell mirrors the welcome, so signing out closes the same door the
    session opened. The wording is the booklet's own parting line. */
 const FAREWELL_MS = 1800;
+const PROMOTED_MS = 2200;
 
 const SYNC_STAMP_KEY = "sync-updated-at";
 
@@ -3889,6 +4251,7 @@ function ArabicLearningApp() {
     const [greetElapsed, setGreetElapsed] = useState(false);
     const [greetTimedOut, setGreetTimedOut] = useState(false);
     const [leaving, setLeaving] = useState(false);
+    const [promoted, setPromoted] = useState(null);
     const [showGreeting, setShowGreeting] = useState(false);
     const [idleOut, setIdleOut] = useState(false);
     const [waitTimedOut, setWaitTimedOut] = useState(false);
@@ -3999,6 +4362,18 @@ function ArabicLearningApp() {
     /* Signing out shows the parting line first, then actually ends the
        session — the sign-out flips `user` to null, which lands on the login
        screen on its own. */
+    /* Shown after the personal area closes, so the congratulation lands on a
+       clear screen rather than over a half-open sheet. */
+    const celebrateMeeting = (n) => {
+        setAccountOpen(false);
+        setPromoted(n);
+    };
+    useEffect(() => {
+        if (promoted === null) return;
+        const t = setTimeout(() => setPromoted(null), PROMOTED_MS);
+        return () => clearTimeout(t);
+    }, [promoted]);
+
     const startLogout = () => {
         setAccountOpen(false);
         setLeaving(true);
@@ -4065,6 +4440,15 @@ function ArabicLearningApp() {
             })));
     }
 
+    if (promoted !== null) {
+        return (React.createElement("div", { className: "zl-root", "data-theme": theme },
+            React.createElement(GlobalStyle, null),
+            React.createElement(GreetingScreen, {
+                headline: "מַבְּרוּכּ! אתה מתקדם בקצב טוב",
+                note: "מפגש " + promoted + " נפתח — החומר החדש כבר בתרגול",
+            })));
+    }
+
     if (leaving) {
         return (React.createElement("div", { className: "zl-root", "data-theme": theme },
             React.createElement(GlobalStyle, null),
@@ -4100,6 +4484,7 @@ function ArabicLearningApp() {
             setIdioms: setIdioms, setChecklist: setChecklist, setProfile: setProfile, setExams: setExams,
             user: user, syncStatus: sync, onClose: () => setAccountOpen(false),
             onLogout: startLogout,
+            onMeetingUp: celebrateMeeting,
         }) : null,
         React.createElement("div", { style: { maxWidth: 1100, margin: "0 auto" } },
             React.createElement("header", { className: "zl-appbar" },
