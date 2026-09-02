@@ -132,7 +132,7 @@ try {
     throw new Error("React / ReactDOM לא נטענו מה-CDN (בדוק חיבור לאינטרנט או חסימת סקריפטים).");
   }
 "use strict";
-const APP_BUILD = "02.09 · 59";   // bump this every time the file is replaced
+const APP_BUILD = "02.09 · 60";   // bump this every time the file is replaced
 
 /* The institute logo, carried inline so the page stays a single file.
    LOGO_MARK is the emblem alone (header); LOGO_FULL includes the name
@@ -497,6 +497,10 @@ const GLOBAL_CSS = `
     /* ---- overlays ---- */
     .zl-overlay { position:fixed; inset:0; background:rgba(4,18,30,0.55); display:flex; align-items:center; justify-content:center; padding:16px; z-index:1000; backdrop-filter:blur(2px); }
     .zl-sheet { background:var(--surface); border-radius:var(--r-lg); padding:20px; width:100%; max-width:400px; box-shadow:var(--shadow-lg); max-height:88vh; overflow-y:auto; }
+    /* During the tour the card occupies the lower part of the screen, so
+       anything it is pointing at has to sit above it. */
+    .zl-root[data-tour="true"] .zl-overlay { align-items:flex-start; padding-top:14px; }
+    .zl-root[data-tour="true"] .zl-sheet { max-height:34vh; }
     .zl-sheet-row { display:flex; gap:10px; font-size:0.85rem; padding:8px 0; border-bottom:1px solid var(--line); }
     .zl-sheet-row:last-of-type { border-bottom:none; }
     .zl-sheet-key { flex:0 0 84px; color:var(--ink-muted); font-weight:600; }
@@ -523,18 +527,25 @@ const GLOBAL_CSS = `
     }
 
     /* ---- first-run guide ---- */
+    /* Anchored to the bottom rather than centred, and the backdrop only
+       darkens the lower half — the tab being described stays visible above
+       the card, which is the whole point of moving through the tabs. */
     .zl-guide-back {
-      position: fixed; inset: 0; z-index: 90;
-      background: rgba(8, 18, 30, 0.72);
-      display: flex; align-items: center; justify-content: center;
-      padding: 18px;
+      /* Above the personal-area sheet (1000), which the tour opens behind
+         itself when a slide is about it. */
+      position: fixed; inset: 0; z-index: 1200;
+      display: flex; align-items: flex-end; justify-content: center;
+      padding: 0 12px 12px;
+      background: linear-gradient(to bottom, rgba(8,18,30,0) 0%, rgba(8,18,30,0.28) 42%, rgba(8,18,30,0.62) 68%);
+      pointer-events: none;
     }
     .zl-guide {
-      position: relative; width: 100%; max-width: 400px;
+      position: relative; width: 100%; max-width: 420px;
       background: var(--surface); border: 1px solid var(--line);
       border-radius: var(--r-lg); box-shadow: var(--shadow-lg);
-      padding: 26px 22px 20px;
-      max-height: calc(100vh - 36px); overflow-y: auto;
+      padding: 18px 18px 14px;
+      max-height: 62vh; overflow-y: auto;
+      pointer-events: auto;
     }
     .zl-guide-skip {
       position: absolute; top: 12px; left: 14px;
@@ -544,20 +555,24 @@ const GLOBAL_CSS = `
     }
     .zl-guide-slide { animation: zl-rise 0.28s ease both; }
     .zl-guide-icon {
-      width: 46px; height: 46px; border-radius: 13px;
+      width: 38px; height: 38px; border-radius: 11px;
       display: flex; align-items: center; justify-content: center;
       background: var(--navy); color: var(--surface);
-      margin-bottom: 14px;
+      margin-bottom: 10px;
     }
-    .zl-guide-title { font-size: 1.25rem; font-weight: 800; margin-bottom: 8px; }
+    .zl-guide-title { font-size: 1.12rem; font-weight: 800; margin-bottom: 6px; }
     .zl-guide-lead {
-      font-size: 0.9rem; color: var(--ink-muted);
-      line-height: 1.7; margin-bottom: 14px;
+      font-size: 0.86rem; color: var(--ink-muted);
+      line-height: 1.65; margin-bottom: 10px;
+    }
+    .zl-guide-hint {
+      font-size: 0.68rem; color: var(--ink-muted); opacity: 0.7;
+      text-align: center; margin-top: 12px;
     }
     .zl-guide-list { list-style: none; padding: 0; margin: 0; }
     .zl-guide-list li {
-      position: relative; padding: 7px 20px 7px 0;
-      font-size: 0.87rem; line-height: 1.6;
+      position: relative; padding: 6px 18px 6px 0;
+      font-size: 0.83rem; line-height: 1.55;
       border-bottom: 1px solid var(--line);
     }
     .zl-guide-list li:last-child { border-bottom: none; }
@@ -568,7 +583,7 @@ const GLOBAL_CSS = `
     }
     .zl-guide-dots {
       display: flex; gap: 7px; justify-content: center;
-      margin: 18px 0 16px;
+      margin: 10px 0 12px;
     }
     .zl-guide-dot {
       width: 8px; height: 8px; border-radius: 50%; padding: 0;
@@ -2243,12 +2258,12 @@ function ExamDetailSheet({ exam, index, onClose }) {
 
 function AccountSheet({ vocab, letters, sentences, idioms, checklist, exams, profile,
                         setVocab, setLetters, setSentences, setIdioms, setChecklist, setProfile, setExams,
-                        user, syncStatus, onClose, onLogout, onMeetingUp, onShowGuide }) {
+                        user, syncStatus, onClose, onLogout, onMeetingUp, onShowGuide,
+                        pane, setPane }) {
     /* The sheet holds two unrelated kinds of thing: what the learner is —
        name, meeting, results — and how the app is set up. Splitting them
        keeps the meeting picker, which is the setting that actually matters,
        from being buried under backup buttons. */
-    const [pane, setPane] = useState("profile");
     const [status, setStatus] = useState(null);
     const [name, setName] = useState((profile && profile.name) || "");
     const [meeting, setMeeting] = useState(profileMeeting(profile));
@@ -3627,6 +3642,7 @@ function BlankGame({ banks, applyResult, onBack, dir, setDir, onSessionDone }) {
 const GUIDE_SLIDES = [
     {
         icon: BookOpen,
+        tab: "routine",
         title: "ברוכים הבאים",
         body: "כל הכבוד שלקחת את הצעד הראשון בלימוד השפה הערבית. הנה מה שמחכה לך.",
         points: [
@@ -3637,6 +3653,7 @@ const GUIDE_SLIDES = [
     },
     {
         icon: Calendar,
+        tab: "routine",
         title: "רוטינה יומית",
         body: "שלוש משימות קצרות ליום. עשרים דקות בסך הכל, ואפשר לפצל אותן.",
         points: [
@@ -3648,6 +3665,7 @@ const GUIDE_SLIDES = [
     },
     {
         icon: CheckCircle2,
+        tab: "practice",
         title: "שיטות תרגול",
         body: "כל מצבי התרגול פתוחים בכל רגע, גם מחוץ לשגרה היומית.",
         points: [
@@ -3659,6 +3677,7 @@ const GUIDE_SLIDES = [
     },
     {
         icon: BarChart,
+        tab: "stats",
         title: "סטטיסטיקה",
         body: "כאן רואים אם ההתמדה עובדת. שני מדדים נפרדים, ובכוונה.",
         points: [
@@ -3670,6 +3689,7 @@ const GUIDE_SLIDES = [
     },
     {
         icon: UserIcon,
+        tab: "routine", account: "profile",
         title: "האזור האישי · פרופיל",
         body: "האייקון בפינה העליונה. הלשונית הראשונה היא מי אתה ואיפה אתה בקורס.",
         points: [
@@ -3680,6 +3700,7 @@ const GUIDE_SLIDES = [
     },
     {
         icon: Calendar,
+        tab: "routine", account: "profile",
         title: "בחירת המפגש",
         body: "ההגדרה החשובה ביותר באתר: באיזה מפגש אתה נמצא כרגע בקורס.",
         points: [
@@ -3691,6 +3712,7 @@ const GUIDE_SLIDES = [
     },
     {
         icon: CheckCircle2,
+        tab: "routine",
         title: "צא לדרך",
         body: "צוות המדרשה לערבית וביטחון מאחל לך בהצלחה רבה!",
         points: [
@@ -3700,11 +3722,18 @@ const GUIDE_SLIDES = [
     },
 ];
 
-function GuideOverlay({ onClose }) {
+function GuideOverlay({ onClose, onGoTo }) {
     const [i, setI] = useState(0);
     const slide = GUIDE_SLIDES[i];
     const last = i === GUIDE_SLIDES.length - 1;
     const Icon = slide.icon;
+
+    /* Move the app behind the card to whatever the slide is describing, so
+       the explanation and the thing explained are on screen together. */
+    useEffect(() => {
+        if (onGoTo) onGoTo(slide.tab, slide.account);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [i]);
 
     return (React.createElement("div", { className: "zl-guide-back" },
         React.createElement("div", { className: "zl-guide" },
@@ -3720,6 +3749,8 @@ function GuideOverlay({ onClose }) {
                 React.createElement("p", { className: "zl-guide-lead" }, slide.body),
                 React.createElement("ul", { className: "zl-guide-list" },
                     slide.points.map((p, k) => React.createElement("li", { key: k }, p)))),
+
+            React.createElement("p", { className: "zl-guide-hint" }, "המסך שמאחור מציג את מה שהשקופית מתארת"),
 
             React.createElement("div", { className: "zl-guide-dots" },
                 GUIDE_SLIDES.map((_, k) => React.createElement("button", {
@@ -4834,6 +4865,9 @@ function ArabicLearningApp() {
        someone who has already seen it just because their data has not
        arrived yet. */
     const [guideOpen, setGuideOpen] = useState(false);
+    /* Which half of the personal area to show — set by the guide so a slide
+       can point at the pane it is describing. */
+    const [accountPane, setAccountPane] = useState("profile");
     const [greetElapsed, setGreetElapsed] = useState(false);
     const [greetTimedOut, setGreetTimedOut] = useState(false);
     const [leaving, setLeaving] = useState(false);
@@ -5093,10 +5127,24 @@ function ArabicLearningApp() {
             })));
     }
 
-    return (React.createElement("div", { className: "zl-root", "data-theme": theme, style: { padding: "16px 16px 60px" } },
+    return (React.createElement("div", {
+            className: "zl-root", "data-theme": theme,
+            /* Lets the stylesheet make room for the tour card. */
+            "data-tour": guideOpen ? "true" : "false",
+            style: { padding: "16px 16px 60px" },
+        },
         React.createElement(GlobalStyle, null),
         /* Above everything, so it is the first thing a new account meets. */
-        guideOpen ? React.createElement(GuideOverlay, { onClose: closeGuide }) : null,
+        guideOpen ? React.createElement(GuideOverlay, {
+            onClose: closeGuide,
+            /* Drives the app behind the card: switches tab, and opens or
+               closes the personal area when a slide is about it. */
+            onGoTo: (wantTab, wantAccount) => {
+                if (wantTab) setTab(wantTab);
+                setAccountOpen(!!wantAccount);
+                if (wantAccount) setAccountPane(wantAccount);
+            },
+        }) : null,
         accountOpen ? React.createElement(AccountSheet, {
             vocab: vocab, letters: letters, sentences: sentences, idioms: idioms,
             checklist: checklist, exams: exams, profile: profile,
@@ -5105,6 +5153,7 @@ function ArabicLearningApp() {
             user: user, syncStatus: sync, onClose: () => setAccountOpen(false),
             onLogout: startLogout,
             onMeetingUp: celebrateMeeting,
+            pane: accountPane, setPane: setAccountPane,
             onShowGuide: () => { setAccountOpen(false); setGuideOpen(true); },
         }) : null,
         React.createElement("div", { style: { maxWidth: 1100, margin: "0 auto" } },
