@@ -132,7 +132,7 @@ try {
     throw new Error("React / ReactDOM לא נטענו מה-CDN (בדוק חיבור לאינטרנט או חסימת סקריפטים).");
   }
 "use strict";
-const APP_BUILD = "02.09 · 57";   // bump this every time the file is replaced
+const APP_BUILD = "02.09 · 58";   // bump this every time the file is replaced
 
 /* The institute logo, carried inline so the page stays a single file.
    LOGO_MARK is the emblem alone (header); LOGO_FULL includes the name
@@ -503,6 +503,63 @@ const GLOBAL_CSS = `
     .zl-sheet-title { font-size:1.2rem; font-weight:800; color:var(--navy); margin:0; }
 
     .zl-mini { border:1px solid var(--line); background:var(--surface); color:var(--navy); border-radius:8px; padding:6px 12px; font:inherit; font-size:0.75rem; font-weight:700; cursor:pointer; }
+
+    /* ---- first-run guide ---- */
+    .zl-guide-back {
+      position: fixed; inset: 0; z-index: 90;
+      background: rgba(8, 18, 30, 0.72);
+      display: flex; align-items: center; justify-content: center;
+      padding: 18px;
+    }
+    .zl-guide {
+      position: relative; width: 100%; max-width: 400px;
+      background: var(--surface); border: 1px solid var(--line);
+      border-radius: var(--r-lg); box-shadow: var(--shadow-lg);
+      padding: 26px 22px 20px;
+      max-height: calc(100vh - 36px); overflow-y: auto;
+    }
+    .zl-guide-skip {
+      position: absolute; top: 12px; left: 14px;
+      background: none; border: none; font: inherit;
+      font-size: 0.78rem; color: var(--ink-muted);
+      cursor: pointer; padding: 4px 6px;
+    }
+    .zl-guide-slide { animation: zl-rise 0.28s ease both; }
+    .zl-guide-icon {
+      width: 46px; height: 46px; border-radius: 13px;
+      display: flex; align-items: center; justify-content: center;
+      background: var(--navy); color: var(--surface);
+      margin-bottom: 14px;
+    }
+    .zl-guide-title { font-size: 1.25rem; font-weight: 800; margin-bottom: 8px; }
+    .zl-guide-lead {
+      font-size: 0.9rem; color: var(--ink-muted);
+      line-height: 1.7; margin-bottom: 14px;
+    }
+    .zl-guide-list { list-style: none; padding: 0; margin: 0; }
+    .zl-guide-list li {
+      position: relative; padding: 7px 20px 7px 0;
+      font-size: 0.87rem; line-height: 1.6;
+      border-bottom: 1px solid var(--line);
+    }
+    .zl-guide-list li:last-child { border-bottom: none; }
+    .zl-guide-list li::before {
+      content: ""; position: absolute; right: 4px; top: 15px;
+      width: 6px; height: 6px; border-radius: 50%;
+      background: var(--accent);
+    }
+    .zl-guide-dots {
+      display: flex; gap: 7px; justify-content: center;
+      margin: 18px 0 16px;
+    }
+    .zl-guide-dot {
+      width: 8px; height: 8px; border-radius: 50%; padding: 0;
+      border: none; background: var(--line); cursor: pointer;
+      transition: background 0.2s, transform 0.2s;
+    }
+    .zl-guide-dot[data-on="true"] { background: var(--navy); transform: scale(1.35); }
+    .zl-guide-nav { display: flex; gap: 10px; }
+    .zl-guide-nav > * { flex: 1; justify-content: center; }
 
     /* ---- meeting picker ----
        Scrolls rather than growing to fifteen rows, so the rest of the
@@ -2168,7 +2225,7 @@ function ExamDetailSheet({ exam, index, onClose }) {
 
 function AccountSheet({ vocab, letters, sentences, idioms, checklist, exams, profile,
                         setVocab, setLetters, setSentences, setIdioms, setChecklist, setProfile, setExams,
-                        user, syncStatus, onClose, onLogout, onMeetingUp }) {
+                        user, syncStatus, onClose, onLogout, onMeetingUp, onShowGuide }) {
     const [status, setStatus] = useState(null);
     const [name, setName] = useState((profile && profile.name) || "");
     const [meeting, setMeeting] = useState(profileMeeting(profile));
@@ -2386,6 +2443,13 @@ function AccountSheet({ vocab, letters, sentences, idioms, checklist, exams, pro
                     React.createElement("input", { ref: fileRef, type: "file", accept: "application/json,.json", onChange: importBackup, style: { display: "none" } }),
                     status ? React.createElement("p", { className: "zl-anim", style: { marginTop: 8, fontSize: "0.78rem", fontWeight: 600,
                         color: status.kind === "ok" ? "var(--ok)" : "var(--bad)" } }, status.text) : null),
+
+                /* Someone who skipped the guide on their first sign-in has no
+                   other way back to it. */
+                React.createElement("button", {
+                    type: "button", className: "zl-mini", onClick: onShowGuide,
+                    style: { width: "100%", marginTop: 14, justifyContent: "center" },
+                }, "הצג שוב את המדריך"),
 
                 React.createElement("p", { style: { textAlign: "center", fontSize: "0.7rem", color: "var(--ink-muted)", marginTop: 14 } },
                     "גרסה " + APP_BUILD))),
@@ -3507,6 +3571,145 @@ function BlankGame({ banks, applyResult, onBack, dir, setDir, onSessionDone }) {
 }
 
 /* =========================================================================
+   FIRST-RUN GUIDE
+
+   Shown once on the first sign-in, and reachable afterwards from the personal
+   area — someone who skipped it has no other way back.
+
+   Slides rather than a guided tour of the live interface: a tour has to
+   survive every screen size and every state the app can be in, and breaks
+   quietly when either changes. Cards say the same thing and keep working.
+
+   That it has been seen is stored on the profile, so it syncs across devices
+   and does not reappear on the second one.
+   ========================================================================= */
+const GUIDE_SLIDES = [
+    {
+        icon: BookOpen,
+        title: "ברוכים הבאים",
+        body: "כל הכבוד שלקחת את הצעד הראשון בלימוד השפה הערבית. הנה מה שמחכה לך.",
+        points: [
+            "כל החומר של הקורס — מילים, משפטים, אותיות וניבים",
+            "האתר עוקב אחרי כל מילה בנפרד ומחשב מתי אתה עומד לשכוח אותה",
+            "אתה לא צריך להחליט מה לתרגל היום — התור מחליט",
+        ],
+    },
+    {
+        icon: Calendar,
+        title: "רוטינה יומית",
+        body: "שלוש משימות קצרות ליום. עשרים דקות בסך הכל, ואפשר לפצל אותן.",
+        points: [
+            "בוקר — 30 שאלות אוצר מילים, אמריקאיות והקלדה",
+            "צהריים — קריאת משפטים או שני משחקים, מתחלף מיום ליום",
+            "ערב — הרכבת משפטים מאריחים מעורבבים",
+            "למעלה: רצף הימים שלך והשבוע האחרון",
+        ],
+    },
+    {
+        icon: CheckCircle2,
+        title: "שיטות תרגול",
+        body: "כל מצבי התרגול פתוחים בכל רגע, גם מחוץ לשגרה היומית.",
+        points: [
+            "כרטיסיות ומבחן אמריקאי — מילים, אותיות או מעורבב",
+            "משחקים — צימוד, מרוץ נגד השעון, השלמת מילה חסרה",
+            "משפטים וקריאה — הרכבה, קריאה שוטפת וניבי לשון",
+            "מבחן מלא — 31 שאלות משוקללות עם ציון",
+        ],
+    },
+    {
+        icon: BarChart,
+        title: "סטטיסטיקה",
+        body: "כאן רואים אם ההתמדה עובדת. שני מדדים נפרדים, ובכוונה.",
+        points: [
+            "ידע — כמה אתה מכיר את החומר עכשיו; זז כבר אחרי ערב אחד",
+            "שליטה — מילים שנשמרות לטווח ארוך; נבנה לאורך שבועות",
+            "פילוח לפי מפגש, לפי נושא, ומה ממתין לחזרה היום",
+            "היסטוריית מבחנים עם פירוט היכן ירדו הנקודות",
+        ],
+    },
+    {
+        icon: UserIcon,
+        title: "האזור האישי · השם שלך",
+        body: "האייקון בפינה העליונה פותח את האזור האישי. הדבר הראשון שם הוא השם.",
+        points: [
+            "הקלד את שמך ולחץ על שמור שם",
+            "השם מופיע בברכה בכל כניסה לאתר",
+            "אפשר לשנות אותו מתי שתרצה",
+        ],
+    },
+    {
+        icon: UserIcon,
+        title: "האזור האישי · כללי",
+        body: "מה עוד נמצא שם, ולמה זה שימושי.",
+        points: [
+            "מעבר בין מצב יום למצב לילה",
+            "גיבוי ההתקדמות לקובץ, ושחזור ממנו",
+            "ההתקדמות נשמרת בענן — אפשר להתחיל במחשב ולהמשיך בטלפון",
+            "הצגה חוזרת של המדריך הזה בכל עת",
+        ],
+    },
+    {
+        icon: Calendar,
+        title: "האזור האישי · מפגשים",
+        body: "ההגדרה החשובה ביותר: באיזה מפגש אתה נמצא כרגע בקורס.",
+        points: [
+            "בחר את המפגש שלך — התרגול יישען על החומר עד אליו",
+            "המפגש הנוכחי מקבל את רוב התרגול, הקודמים חוזרים ברקע",
+            "ליד כל מפגש מוצג אחוז הידע שלך בו",
+            "אף מפגש לא נעול: אפשר להתקדם גם לפני שהאחוז גבוה",
+        ],
+    },
+    {
+        icon: CheckCircle2,
+        title: "צא לדרך",
+        body: "צוות המדרשה לערבית וביטחון מאחל לך בהצלחה רבה!",
+        points: [
+            "התחל מהאזור האישי: סמן את המפגש שלך",
+            "ואז פתח את הרוטינה היומית והתחל מהבוקר",
+        ],
+    },
+];
+
+function GuideOverlay({ onClose }) {
+    const [i, setI] = useState(0);
+    const slide = GUIDE_SLIDES[i];
+    const last = i === GUIDE_SLIDES.length - 1;
+    const Icon = slide.icon;
+
+    return (React.createElement("div", { className: "zl-guide-back" },
+        React.createElement("div", { className: "zl-guide" },
+            React.createElement("button", { type: "button", className: "zl-guide-skip", onClick: onClose },
+                last ? "סגור" : "דלג"),
+
+            /* Keyed on the slide index so React remounts it and the entrance
+               animation replays on every step. */
+            React.createElement("div", { className: "zl-guide-slide", key: i },
+                React.createElement("div", { className: "zl-guide-icon" },
+                    React.createElement(Icon, { size: 25 })),
+                React.createElement("h2", { className: "zl-display zl-guide-title" }, slide.title),
+                React.createElement("p", { className: "zl-guide-lead" }, slide.body),
+                React.createElement("ul", { className: "zl-guide-list" },
+                    slide.points.map((p, k) => React.createElement("li", { key: k }, p)))),
+
+            React.createElement("div", { className: "zl-guide-dots" },
+                GUIDE_SLIDES.map((_, k) => React.createElement("button", {
+                    key: k, type: "button", className: "zl-guide-dot",
+                    "data-on": k === i ? "true" : "false",
+                    "aria-label": "שקופית " + (k + 1),
+                    onClick: () => setI(k),
+                }))),
+
+            React.createElement("div", { className: "zl-guide-nav" },
+                React.createElement(PrimaryButton, {
+                    variant: "outline", disabled: i === 0,
+                    onClick: () => setI((n) => Math.max(0, n - 1)),
+                }, "הקודם"),
+                React.createElement(PrimaryButton, {
+                    onClick: () => (last ? onClose() : setI((n) => n + 1)),
+                }, last ? "יאללה נתחיל" : "הבא")))));
+}
+
+/* =========================================================================
    PRACTICE HUB
    ========================================================================= */
 const PRACTICE_METHODS = [
@@ -4597,6 +4800,10 @@ function ArabicLearningApp() {
     const [theme, setTheme] = usePersistedState("theme", "light");
     const [user, setUser] = useState(undefined);        // undefined = still checking
     const [accountOpen, setAccountOpen] = useState(false);
+    /* null while the profile is still loading, so the guide is not shown to
+       someone who has already seen it just because their data has not
+       arrived yet. */
+    const [guideOpen, setGuideOpen] = useState(false);
     const [greetElapsed, setGreetElapsed] = useState(false);
     const [greetTimedOut, setGreetTimedOut] = useState(false);
     const [leaving, setLeaving] = useState(false);
@@ -4626,6 +4833,24 @@ function ArabicLearningApp() {
             setUser(u);
         });
     }, []);
+
+    /* Offer the guide once the profile has actually arrived. Firing on
+       sign-in alone would show it to someone who dismissed it on another
+       device, because at that moment their profile has not loaded yet. */
+    useEffect(() => {
+        if (!user) return;
+        /* "error" counts too: if the cloud is unreachable the guide should
+           still appear rather than being withheld for ever. */
+        if (sync.status !== "synced" && sync.status !== "error") return;
+        if (profile && profile.guideSeen) return;
+        setGuideOpen(true);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [user, sync.status, profile && profile.guideSeen]);
+
+    const closeGuide = () => {
+        setGuideOpen(false);
+        setProfile((prev) => ({ ...(prev || {}), guideSeen: true }));
+    };
 
     /* The greeting holds for a beat, and for as long as the first sync is
        still running — but never past the ceiling, so a stalled network can
@@ -4840,6 +5065,8 @@ function ArabicLearningApp() {
 
     return (React.createElement("div", { className: "zl-root", "data-theme": theme, style: { padding: "16px 16px 60px" } },
         React.createElement(GlobalStyle, null),
+        /* Above everything, so it is the first thing a new account meets. */
+        guideOpen ? React.createElement(GuideOverlay, { onClose: closeGuide }) : null,
         accountOpen ? React.createElement(AccountSheet, {
             vocab: vocab, letters: letters, sentences: sentences, idioms: idioms,
             checklist: checklist, exams: exams, profile: profile,
@@ -4848,6 +5075,7 @@ function ArabicLearningApp() {
             user: user, syncStatus: sync, onClose: () => setAccountOpen(false),
             onLogout: startLogout,
             onMeetingUp: celebrateMeeting,
+            onShowGuide: () => { setAccountOpen(false); setGuideOpen(true); },
         }) : null,
         React.createElement("div", { style: { maxWidth: 1100, margin: "0 auto" } },
             React.createElement("header", { className: "zl-appbar" },
