@@ -132,7 +132,7 @@ try {
     throw new Error("React / ReactDOM לא נטענו מה-CDN (בדוק חיבור לאינטרנט או חסימת סקריפטים).");
   }
 "use strict";
-const APP_BUILD = "02.09 · 61";   // bump this every time the file is replaced
+const APP_BUILD = "02.09 · 62";   // bump this every time the file is replaced
 
 /* The institute logo, carried inline so the page stays a single file.
    LOGO_MARK is the emblem alone (header); LOGO_FULL includes the name
@@ -548,8 +548,24 @@ const GLOBAL_CSS = `
       background: var(--bg); border: 1px solid var(--line);
       border-radius: var(--r-md); padding: 11px 14px; margin-bottom: 14px;
     }
+    .zl-avg-note { flex: 1; }
     .zl-avg-num { font-size: 1.5rem; font-weight: 800; }
     .zl-avg-note { font-size: 0.79rem; color: var(--ink-muted); }
+
+    /* ---- name beside the guide ---- */
+    .zl-idrow { display: flex; gap: 10px; align-items: flex-start; margin-bottom: 16px; }
+    .zl-idrow-name { flex: 1; min-width: 0; }
+    .zl-guidecard {
+      flex: 0 0 104px; align-self: stretch;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      gap: 8px; padding: 12px 8px;
+      background: var(--bg); border: 1px solid var(--line);
+      border-radius: var(--r-md); cursor: pointer;
+      font: inherit; font-size: 0.78rem; font-weight: 700;
+      color: var(--navy); line-height: 1.4; text-align: center;
+      transition: background 0.18s, border-color 0.18s;
+    }
+    .zl-guidecard:hover { background: var(--surface); border-color: var(--navy); }
 
     /* ---- day/night switch ---- */
     .zl-toggle {
@@ -2447,17 +2463,26 @@ function AccountSheet({ vocab, letters, sentences, idioms, checklist, exams, pro
 
                 pane === "profile" ? React.createElement("div", { className: "zl-anim" },
 
-                /* --- display name --- */
-                React.createElement("label", { style: { display: "block", fontSize: "0.8rem", fontWeight: 700, marginBottom: 4 } }, "השם שלי",
-                    React.createElement("input", {
-                        className: "zl-search", style: { marginTop: 4, marginBottom: 8 },
-                        value: name, placeholder: "איך לפנות אליך?",
-                        onChange: (e) => setName(e.target.value),
-                        onKeyDown: (e) => { if (e.key === "Enter") { e.preventDefault(); saveName(); } },
-                    })),
-                React.createElement("div", { style: { display: "flex", alignItems: "center", gap: 10, marginBottom: 14 } },
-                    React.createElement(PrimaryButton, { onClick: saveName, disabled: name.trim() === ((profile && profile.name) || "") }, "שמור שם"),
-                    saved ? React.createElement("span", { className: "zl-anim", style: { fontSize: "0.8rem", fontWeight: 700, color: "var(--ok)" } }, "נשמר") : null),
+                /* --- name, with the guide beside it ---
+                   The name field only ever holds a few characters, so the
+                   space it was taking goes to the guide instead — which is
+                   otherwise easy to miss once the first run is over. */
+                React.createElement("div", { className: "zl-idrow" },
+                    React.createElement("div", { className: "zl-idrow-name" },
+                        React.createElement("span", { style: { display: "block", fontSize: "0.8rem", fontWeight: 700, marginBottom: 4 } }, "השם שלי"),
+                        React.createElement("input", {
+                            className: "zl-search", style: { marginBottom: 8 },
+                            value: name, placeholder: "איך לפנות אליך?",
+                            onChange: (e) => setName(e.target.value),
+                            onKeyDown: (e) => { if (e.key === "Enter") { e.preventDefault(); saveName(); } },
+                        }),
+                        React.createElement("div", { style: { display: "flex", alignItems: "center", gap: 10 } },
+                            React.createElement(PrimaryButton, { onClick: saveName, disabled: name.trim() === ((profile && profile.name) || "") }, "שמור שם"),
+                            saved ? React.createElement("span", { className: "zl-anim", style: { fontSize: "0.8rem", fontWeight: 700, color: "var(--ok)" } }, "נשמר") : null)),
+
+                    React.createElement("button", { type: "button", className: "zl-guidecard", onClick: onShowGuide },
+                        React.createElement(BookOpen, { size: 30 }),
+                        React.createElement("span", null, "המדריך", React.createElement("br", null), "למשתמש"))),
 
                 /* --- where you are in the course ---
 
@@ -2518,21 +2543,16 @@ function AccountSheet({ vocab, letters, sentences, idioms, checklist, exams, pro
                         React.createElement("span", { className: "zl-avg-num",
                             style: { color: avg >= 60 ? "var(--ok)" : "var(--bad)" } }, avg),
                         React.createElement("span", { className: "zl-avg-note" },
-                            "ממוצע " + done.length + (done.length === 1 ? " מבחן מלא" : " מבחנים מלאים")));
+                            "ממוצע " + done.length + (done.length === 1 ? " מבחן מלא" : " מבחנים מלאים")),
+                        React.createElement(ArrowButton, {
+                            title: "היסטוריית מבחנים", onClick: () => setShowExams(true),
+                        }));
                 })(),
 
                 /* --- exam history, behind a button --- */
-                React.createElement("button", {
-                    type: "button", className: "zl-mini",
-                    style: { width: "100%", justifyContent: "center", marginBottom: 10 },
-                    onClick: () => setShowExams(true),
-                }, history.length ? "היסטוריית מבחנים (" + history.length + ")" : "היסטוריית מבחנים"),
-
-                React.createElement("button", {
-                    type: "button", className: "zl-mini",
-                    style: { width: "100%", justifyContent: "center" },
-                    onClick: onShowGuide,
-                }, "המדריך למשתמש")
+                /* With no exams yet there is no average banner to hang the
+                   arrow on, so the list keeps a plain entry of its own. */
+                history.length === 0 ? null : null
 
                 ) : React.createElement("div", { className: "zl-anim" },
 
@@ -3886,7 +3906,7 @@ function GuideOverlay({ onClose, onGoTo }) {
                 }, "הקודם"),
                 React.createElement(PrimaryButton, {
                     onClick: () => (last ? onClose() : setI((n) => n + 1)),
-                }, last ? "יאללה נתחיל" : "הבא")))));
+                }, last ? "יאללה נְבַּלֶּש" : "הבא")))));
 }
 
 /* =========================================================================
