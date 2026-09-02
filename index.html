@@ -132,7 +132,7 @@ try {
     throw new Error("React / ReactDOM לא נטענו מה-CDN (בדוק חיבור לאינטרנט או חסימת סקריפטים).");
   }
 "use strict";
-const APP_BUILD = "01.09 · 56";   // bump this every time the file is replaced
+const APP_BUILD = "02.09 · 57";   // bump this every time the file is replaced
 
 /* The institute logo, carried inline so the page stays a single file.
    LOGO_MARK is the emblem alone (header); LOGO_FULL includes the name
@@ -221,6 +221,7 @@ const GLOBAL_CSS = `
       --accent-soft:#F6C9CA;
       --bad:#D31F21;           /* wrong / danger */
       --bad-bg:#FCEBEB;
+      --ok-bg:#E8F1F8;
       --ink:#0C1D2A;
       --ink-muted:#5C7183;
       --shadow-sm:0 1px 2px rgba(9,30,47,0.06), 0 2px 6px rgba(9,30,47,0.05);
@@ -259,6 +260,7 @@ const GLOBAL_CSS = `
       --accent-soft:#4A1E1F;
       --bad:#FF6B6B;
       --bad-bg:#3A1A1B;
+      --ok-bg:#16303F;
       --ink:#E8F1F8;
       --ink-muted:#8CA3B6;
       --shadow-sm:0 1px 2px rgba(0,0,0,0.35);
@@ -4390,6 +4392,29 @@ function LoginScreen({ theme, onToggleTheme, notice }) {
     const [password, setPassword] = useState("");
     const [busy, setBusy] = useState(false);
     const [error, setError] = useState(null);
+    const [sent, setSent] = useState(false);
+
+    /* Also the way a new account gets its first password.
+
+       An account is created with a random password that nobody keeps, and the
+       person sets their own from here — so no password is ever passed around
+       in a message, and anyone who forgets theirs has the same way back in.
+       Deliberately does NOT report whether the address exists: that would let
+       a stranger check who has an account. */
+    const resetPassword = () => {
+        const address = email.trim();
+        if (!address) { setError("הקלד את המייל שלך למעלה ואז לחץ כאן"); return; }
+        setBusy(true);
+        setError(null);
+        firebase.auth().sendPasswordResetEmail(address)
+            .then(() => { setSent(true); setBusy(false); })
+            .catch((err) => {
+                /* An unknown address is answered as though it worked. */
+                if (err && err.code === "auth/user-not-found") { setSent(true); setBusy(false); return; }
+                setError(authMessage(err));
+                setBusy(false);
+            });
+    };
 
     const submit = (e) => {
         if (e && e.preventDefault) e.preventDefault();
@@ -4427,8 +4452,22 @@ function LoginScreen({ theme, onToggleTheme, notice }) {
                             React.createElement("input", { type: "password", value: password, autoComplete: "current-password",
                                 onChange: (e) => setPassword(e.target.value), className: "zl-search", style: { marginTop: 4, marginBottom: 6 } })),
                         error ? React.createElement("p", { className: "zl-shake", style: { color: "var(--bad)", fontWeight: 600, fontSize: "0.82rem", margin: "6px 0 10px" } }, error) : null,
+                        sent ? React.createElement("p", { className: "zl-anim", style: {
+                            background: "var(--ok-bg)", color: "var(--ok)", fontWeight: 600,
+                            fontSize: "0.8rem", borderRadius: 9, padding: "9px 12px", margin: "6px 0 10px",
+                            textAlign: "center", lineHeight: 1.6,
+                        } }, "נשלח מייל לקביעת סיסמה. בדוק גם בתיקיית הספאם.") : null,
                         React.createElement(PrimaryButton, { type: "submit", disabled: busy, style: { width: "100%", justifyContent: "center", marginTop: 6 } },
-                            busy ? "מתחבר…" : "התחברות")))),
+                            busy ? "מתחבר…" : "התחברות"),
+                        React.createElement("button", {
+                            type: "button", onClick: resetPassword, disabled: busy,
+                            style: {
+                                display: "block", width: "100%", marginTop: 12, padding: 4,
+                                background: "none", border: "none", font: "inherit",
+                                fontSize: "0.8rem", color: "var(--ink-muted)",
+                                textDecoration: "underline", cursor: busy ? "default" : "pointer",
+                            },
+                        }, "התחברות ראשונה או שכחתי סיסמה")))),
             React.createElement("p", { style: { textAlign: "center", fontSize: "0.72rem", color: "var(--ink-muted)", marginTop: 14 } },
                 "משתמשים נוצרים על ידי מנהל האתר"),
             React.createElement("p", { style: { textAlign: "center", fontSize: "0.72rem", color: "var(--ink-muted)", marginTop: 4 } },
