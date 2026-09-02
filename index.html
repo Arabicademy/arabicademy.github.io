@@ -132,7 +132,7 @@ try {
     throw new Error("React / ReactDOM לא נטענו מה-CDN (בדוק חיבור לאינטרנט או חסימת סקריפטים).");
   }
 "use strict";
-const APP_BUILD = "02.09 · 58";   // bump this every time the file is replaced
+const APP_BUILD = "02.09 · 59";   // bump this every time the file is replaced
 
 /* The institute logo, carried inline so the page stays a single file.
    LOGO_MARK is the emblem alone (header); LOGO_FULL includes the name
@@ -503,6 +503,24 @@ const GLOBAL_CSS = `
     .zl-sheet-title { font-size:1.2rem; font-weight:800; color:var(--navy); margin:0; }
 
     .zl-mini { border:1px solid var(--line); background:var(--surface); color:var(--navy); border-radius:8px; padding:6px 12px; font:inherit; font-size:0.75rem; font-weight:700; cursor:pointer; }
+
+    /* ---- the two halves of the personal area ---- */
+    .zl-panes {
+      display: flex; gap: 8px; margin-bottom: 16px;
+      background: var(--bg); border: 1px solid var(--line);
+      border-radius: 11px; padding: 4px;
+    }
+    .zl-pane {
+      flex: 1; display: flex; align-items: center; justify-content: center; gap: 7px;
+      background: none; border: none; border-radius: 8px;
+      padding: 9px 6px; font: inherit; font-size: 0.86rem; font-weight: 700;
+      color: var(--ink-muted); cursor: pointer;
+      transition: background 0.18s, color 0.18s;
+    }
+    .zl-pane[data-on="true"] {
+      background: var(--surface); color: var(--navy);
+      box-shadow: var(--shadow-sm);
+    }
 
     /* ---- first-run guide ---- */
     .zl-guide-back {
@@ -2226,6 +2244,11 @@ function ExamDetailSheet({ exam, index, onClose }) {
 function AccountSheet({ vocab, letters, sentences, idioms, checklist, exams, profile,
                         setVocab, setLetters, setSentences, setIdioms, setChecklist, setProfile, setExams,
                         user, syncStatus, onClose, onLogout, onMeetingUp, onShowGuide }) {
+    /* The sheet holds two unrelated kinds of thing: what the learner is —
+       name, meeting, results — and how the app is set up. Splitting them
+       keeps the meeting picker, which is the setting that actually matters,
+       from being buried under backup buttons. */
+    const [pane, setPane] = useState("profile");
     const [status, setStatus] = useState(null);
     const [name, setName] = useState((profile && profile.name) || "");
     const [meeting, setMeeting] = useState(profileMeeting(profile));
@@ -2341,6 +2364,22 @@ function AccountSheet({ vocab, letters, sentences, idioms, checklist, exams, pro
 
                 React.createElement("p", { style: { fontSize: "0.85rem", color: "var(--ink-muted)", marginBottom: 12 } }, user && user.email),
 
+                React.createElement("div", { className: "zl-panes" },
+                    React.createElement("button", {
+                        type: "button", className: "zl-pane", "data-on": pane === "profile" ? "true" : "false",
+                        onClick: () => setPane("profile"),
+                    },
+                        React.createElement(UserIcon, { size: 18 }),
+                        React.createElement("span", null, "פרופיל")),
+                    React.createElement("button", {
+                        type: "button", className: "zl-pane", "data-on": pane === "system" ? "true" : "false",
+                        onClick: () => setPane("system"),
+                    },
+                        React.createElement(BookOpen, { size: 18 }),
+                        React.createElement("span", null, "מערכת"))),
+
+                pane === "profile" ? React.createElement("div", { className: "zl-anim" },
+
                 /* --- display name --- */
                 React.createElement("label", { style: { display: "block", fontSize: "0.8rem", fontWeight: 700, marginBottom: 4 } }, "השם שלי",
                     React.createElement("input", {
@@ -2404,16 +2443,6 @@ function AccountSheet({ vocab, letters, sentences, idioms, checklist, exams, pro
                     React.createElement(PrimaryButton, { onClick: saveMeeting, disabled: meeting === profileMeeting(profile) }, "שמור מפגש"),
                     meetingSaved ? React.createElement("span", { className: "zl-anim", style: { fontSize: "0.8rem", fontWeight: 700, color: "var(--ok)" } }, "נשמר") : null),
 
-                /* --- sync --- */
-                React.createElement("div", { style: { display: "flex", alignItems: "center", gap: 8, marginBottom: 4 } },
-                    React.createElement("span", { className: "zl-syncmark", "data-ok": synced ? "true" : "false" },
-                        React.createElement(synced ? Check : X, { size: 12 })),
-                    React.createElement("span", { style: { fontSize: "0.85rem", fontWeight: 600, color: synced ? "var(--ok)" : "var(--bad)" } },
-                        synced ? "מסונכרן עם החשבון" : (syncState === "loading" ? "מסתנכרן…" : "לא מסונכרן"))),
-                (!synced && syncStatus && syncStatus.detail)
-                    ? React.createElement("p", { style: { fontSize: "0.72rem", color: "var(--ink-muted)", direction: "ltr", textAlign: "right", marginBottom: 6 } }, syncStatus.detail)
-                    : null,
-
                 /* --- exam history --- */
                 React.createElement("div", { style: { borderTop: "1px solid var(--line)", marginTop: 16, paddingTop: 14 } },
                     React.createElement("h4", { className: "zl-display", style: { fontSize: "0.95rem", fontWeight: 800, marginBottom: 8 } }, "מבחנים מלאים"),
@@ -2430,10 +2459,20 @@ function AccountSheet({ vocab, letters, sentences, idioms, checklist, exams, pro
                                     "מבחן מלא מס' " + (history.length - i) + (ex.aborted ? " · נכשל" : "")),
                                 React.createElement("span", { className: "zl-exam-date", style: { display: "block" } }, examDateLabel(ex.at))),
                             React.createElement("span", { className: "zl-option-chev" },
-                                React.createElement(ChevronLeft, { size: 16 }))))),
+                                React.createElement(ChevronLeft, { size: 16 })))))
+
+                ) : React.createElement("div", { className: "zl-anim" },
 
                 /* --- account actions --- */
-                React.createElement("div", { style: { borderTop: "1px solid var(--line)", marginTop: 16, paddingTop: 14 } },
+                React.createElement("div", null,
+                    React.createElement("div", { style: { display: "flex", alignItems: "center", gap: 8, marginBottom: 14 } },
+                        React.createElement("span", { className: "zl-syncmark", "data-ok": synced ? "true" : "false" },
+                            React.createElement(synced ? Check : X, { size: 12 })),
+                        React.createElement("span", { style: { fontSize: "0.85rem", fontWeight: 600, color: synced ? "var(--ok)" : "var(--bad)" } },
+                            synced ? "מסונכרן עם החשבון" : (syncState === "loading" ? "מסתנכרן…" : "לא מסונכרן"))),
+                    (!synced && syncStatus && syncStatus.detail)
+                        ? React.createElement("p", { style: { fontSize: "0.72rem", color: "var(--ink-muted)", direction: "ltr", textAlign: "right", marginBottom: 10 } }, syncStatus.detail)
+                        : null,
                     React.createElement(PrimaryButton, { variant: "danger", onClick: () => setConfirmOut(true), style: { width: "100%", justifyContent: "center" } }, "התנתקות"),
                     React.createElement("p", { style: { fontSize: "0.75rem", color: "var(--ink-muted)", lineHeight: 1.6, margin: "12px 0 8px" } },
                         "ההתקדמות נשמרת בחשבון אוטומטית. קובץ גיבוי נחוץ רק כדי לשחזר מחיקה בטעות."),
@@ -2449,7 +2488,9 @@ function AccountSheet({ vocab, letters, sentences, idioms, checklist, exams, pro
                 React.createElement("button", {
                     type: "button", className: "zl-mini", onClick: onShowGuide,
                     style: { width: "100%", marginTop: 14, justifyContent: "center" },
-                }, "הצג שוב את המדריך"),
+                }, "הצג שוב את המדריך")
+
+                ),
 
                 React.createElement("p", { style: { textAlign: "center", fontSize: "0.7rem", color: "var(--ink-muted)", marginTop: 14 } },
                     "גרסה " + APP_BUILD))),
@@ -3629,29 +3670,18 @@ const GUIDE_SLIDES = [
     },
     {
         icon: UserIcon,
-        title: "האזור האישי · השם שלך",
-        body: "האייקון בפינה העליונה פותח את האזור האישי. הדבר הראשון שם הוא השם.",
+        title: "האזור האישי · פרופיל",
+        body: "האייקון בפינה העליונה. הלשונית הראשונה היא מי אתה ואיפה אתה בקורס.",
         points: [
-            "הקלד את שמך ולחץ על שמור שם",
-            "השם מופיע בברכה בכל כניסה לאתר",
-            "אפשר לשנות אותו מתי שתרצה",
-        ],
-    },
-    {
-        icon: UserIcon,
-        title: "האזור האישי · כללי",
-        body: "מה עוד נמצא שם, ולמה זה שימושי.",
-        points: [
-            "מעבר בין מצב יום למצב לילה",
-            "גיבוי ההתקדמות לקובץ, ושחזור ממנו",
-            "ההתקדמות נשמרת בענן — אפשר להתחיל במחשב ולהמשיך בטלפון",
-            "הצגה חוזרת של המדריך הזה בכל עת",
+            "השם שלך — מופיע בברכה בכל כניסה",
+            "המפגש שאתה נמצא בו כרגע",
+            "היסטוריית המבחנים המלאים שעשית",
         ],
     },
     {
         icon: Calendar,
-        title: "האזור האישי · מפגשים",
-        body: "ההגדרה החשובה ביותר: באיזה מפגש אתה נמצא כרגע בקורס.",
+        title: "בחירת המפגש",
+        body: "ההגדרה החשובה ביותר באתר: באיזה מפגש אתה נמצא כרגע בקורס.",
         points: [
             "בחר את המפגש שלך — התרגול יישען על החומר עד אליו",
             "המפגש הנוכחי מקבל את רוב התרגול, הקודמים חוזרים ברקע",
