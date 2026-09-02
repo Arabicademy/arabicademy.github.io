@@ -132,7 +132,7 @@ try {
     throw new Error("React / ReactDOM לא נטענו מה-CDN (בדוק חיבור לאינטרנט או חסימת סקריפטים).");
   }
 "use strict";
-const APP_BUILD = "02.09 · 60";   // bump this every time the file is replaced
+const APP_BUILD = "02.09 · 61";   // bump this every time the file is replaced
 
 /* The institute logo, carried inline so the page stays a single file.
    LOGO_MARK is the emblem alone (header); LOGO_FULL includes the name
@@ -525,6 +525,56 @@ const GLOBAL_CSS = `
       background: var(--surface); color: var(--navy);
       box-shadow: var(--shadow-sm);
     }
+
+    /* ---- the meeting you are on ---- */
+    .zl-meet-now {
+      background: var(--bg); border: 1px solid var(--line);
+      border-radius: var(--r-md); padding: 13px 14px;
+    }
+    .zl-meet-now-top {
+      display: flex; align-items: baseline; justify-content: space-between;
+      margin-bottom: 9px;
+    }
+    .zl-meet-now-name { font-size: 1.02rem; font-weight: 800; color: var(--navy); }
+    .zl-meet-now-pct { font-size: 1.35rem; font-weight: 800; }
+    .zl-meet-now-note {
+      font-size: 0.74rem; color: var(--ink-muted);
+      margin: 9px 0 0; line-height: 1.5;
+    }
+
+    /* ---- exam average ---- */
+    .zl-avg {
+      display: flex; align-items: center; gap: 11px;
+      background: var(--bg); border: 1px solid var(--line);
+      border-radius: var(--r-md); padding: 11px 14px; margin-bottom: 14px;
+    }
+    .zl-avg-num { font-size: 1.5rem; font-weight: 800; }
+    .zl-avg-note { font-size: 0.79rem; color: var(--ink-muted); }
+
+    /* ---- day/night switch ---- */
+    .zl-toggle {
+      display: flex; align-items: center; justify-content: space-between;
+      width: 100%; background: var(--bg); border: 1px solid var(--line);
+      border-radius: var(--r-md); padding: 11px 14px;
+      font: inherit; color: var(--ink); cursor: pointer;
+    }
+    .zl-toggle-label {
+      display: flex; align-items: center; gap: 9px;
+      font-size: 0.87rem; font-weight: 600;
+    }
+    .zl-toggle-track {
+      position: relative; width: 42px; height: 24px; flex: 0 0 42px;
+      border-radius: 12px; background: var(--line);
+      transition: background 0.2s;
+    }
+    .zl-toggle-track[data-on="true"] { background: var(--navy); }
+    .zl-toggle-knob {
+      position: absolute; top: 3px; right: 3px;
+      width: 18px; height: 18px; border-radius: 50%;
+      background: var(--surface); box-shadow: var(--shadow-sm);
+      transition: transform 0.2s;
+    }
+    .zl-toggle-track[data-on="true"] .zl-toggle-knob { transform: translateX(-18px); }
 
     /* ---- first-run guide ---- */
     /* Anchored to the bottom rather than centred, and the backdrop only
@@ -2259,7 +2309,7 @@ function ExamDetailSheet({ exam, index, onClose }) {
 function AccountSheet({ vocab, letters, sentences, idioms, checklist, exams, profile,
                         setVocab, setLetters, setSentences, setIdioms, setChecklist, setProfile, setExams,
                         user, syncStatus, onClose, onLogout, onMeetingUp, onShowGuide,
-                        pane, setPane }) {
+                        pane, setPane, theme, onToggleTheme }) {
     /* The sheet holds two unrelated kinds of thing: what the learner is —
        name, meeting, results — and how the app is set up. Splitting them
        keeps the meeting picker, which is the setting that actually matters,
@@ -2268,6 +2318,8 @@ function AccountSheet({ vocab, letters, sentences, idioms, checklist, exams, pro
     const [name, setName] = useState((profile && profile.name) || "");
     const [meeting, setMeeting] = useState(profileMeeting(profile));
     const [meetingSaved, setMeetingSaved] = useState(false);
+    const [pickMeeting, setPickMeeting] = useState(false);
+    const [showExams, setShowExams] = useState(false);
     const [confirmJump, setConfirmJump] = useState(null);
     const [saved, setSaved] = useState(false);
     const [openExam, setOpenExam] = useState(null);
@@ -2407,80 +2459,97 @@ function AccountSheet({ vocab, letters, sentences, idioms, checklist, exams, pro
                     React.createElement(PrimaryButton, { onClick: saveName, disabled: name.trim() === ((profile && profile.name) || "") }, "שמור שם"),
                     saved ? React.createElement("span", { className: "zl-anim", style: { fontSize: "0.8rem", fontWeight: 700, color: "var(--ok)" } }, "נשמר") : null),
 
-                /* --- how far along the course --- */
-                /* A list of our own rather than a <select>: the native picker
-                   on iOS opens as a white system sheet that cannot be styled,
-                   and there is nowhere in it to show how well each meeting is
-                   known. */
-                React.createElement("span", { style: { display: "block", fontSize: "0.8rem", fontWeight: 700, marginBottom: 6 } }, "אני במפגש"),
-                React.createElement("div", { className: "zl-meetings zl-scrollbar" },
-                    Array.from({ length: TOTAL_MEETINGS }, (_, i) => i + 1).map((n) => {
-                        const r = meetingReadiness(vocab, sentences, n);
-                        /* A meeting still ahead reads 0%: its words exist but
-                           have never been in play, so any other number would
-                           be describing practice that never happened. */
-                        const open = n <= profileMeeting(profile);
-                        const pct = open ? Math.round(r.pct * 100) : 0;
-                        const chosen = n === meeting;
-                        return React.createElement("button", {
-                            key: n, type: "button", className: "zl-meeting",
-                            "data-on": chosen ? "true" : "false",
-                            "data-open": open ? "true" : "false",
-                            onClick: () => setMeeting(n),
-                        },
-                            React.createElement("span", { className: "zl-meeting-name" }, "מפגש " + n),
-                            React.createElement("span", { className: "zl-meeting-track" },
-                                React.createElement("span", { className: "zl-meeting-fill", style: {
-                                    width: pct + "%",
-                                    background: pct >= READY_PCT ? "var(--ok)" : "var(--focus)",
-                                } })),
-                            React.createElement("span", { className: "zl-meeting-pct" }, pct + "%"));
-                    })),
-                React.createElement("p", { style: { fontSize: "0.75rem", color: "var(--ink-muted)", lineHeight: 1.6, marginBottom: 8 } },
-                    "התרגול נשען על החומר מכל המפגשים עד המפגש שבחרת, עם דגש על החדש."),
+                /* --- where you are in the course ---
+
+                   The current meeting is stated plainly with its percentage,
+                   and the ones already behind you follow as history. Choosing
+                   a different meeting happens in a sheet of its own: it is a
+                   deliberate act, not something to stumble into while reading
+                   your own progress. */
                 (function () {
                     const now = profileMeeting(profile);
                     const r = meetingReadiness(vocab, sentences, now);
-                    if (!r.total) return null;
                     const pct = Math.round(r.pct * 100);
-                    return React.createElement("div", { style: {
-                            display: "flex", alignItems: "center", gap: 10, marginBottom: 10,
-                            background: "var(--bg)", border: "1px solid var(--line)",
-                            borderRadius: 10, padding: "10px 12px",
-                        } },
-                        React.createElement("span", { style: { fontSize: "1.3rem", fontWeight: 800, color: r.ready ? "var(--ok)" : "var(--accent)" } }, pct + "%"),
-                        React.createElement("span", { style: { fontSize: "0.76rem", color: "var(--ink-muted)", lineHeight: 1.5 } },
-                            r.ready
-                                ? "ידע במפגש " + now + " — מעל הסף למעבר (" + READY_PCT + "%)"
-                                : "ידע במפגש " + now + " — הסף המומלץ למעבר הוא " + READY_PCT + "%"));
-                })(),
-                React.createElement("div", { style: { display: "flex", alignItems: "center", gap: 10, marginBottom: 14 } },
-                    React.createElement(PrimaryButton, { onClick: saveMeeting, disabled: meeting === profileMeeting(profile) }, "שמור מפגש"),
-                    meetingSaved ? React.createElement("span", { className: "zl-anim", style: { fontSize: "0.8rem", fontWeight: 700, color: "var(--ok)" } }, "נשמר") : null),
+                    const past = [];
+                    for (let m = 1; m < now; m++) {
+                        const past_r = meetingReadiness(vocab, sentences, m);
+                        if (past_r.total > 0) past.push({ m: m, pct: Math.round(past_r.pct * 100) });
+                    }
+                    return React.createElement("div", { style: { marginBottom: 16 } },
+                        React.createElement("span", { style: { display: "block", fontSize: "0.8rem", fontWeight: 700, marginBottom: 8 } }, "המפגש שלי"),
 
-                /* --- exam history --- */
-                React.createElement("div", { style: { borderTop: "1px solid var(--line)", marginTop: 16, paddingTop: 14 } },
-                    React.createElement("h4", { className: "zl-display", style: { fontSize: "0.95rem", fontWeight: 800, marginBottom: 8 } }, "מבחנים מלאים"),
-                    history.length === 0
-                        ? React.createElement("p", { style: { fontSize: "0.82rem", color: "var(--ink-muted)" } }, "עוד לא נלקח מבחן מלא.")
-                        : history.map((ex, i) => React.createElement("button", {
-                            key: ex.id, type: "button", className: "zl-exam-row",
-                            onClick: () => setOpenExam({ exam: ex, index: history.length - i }),
-                        },
-                            React.createElement("span", { className: "zl-exam-badge", "data-fail": (ex.aborted || ex.score < 60) ? "true" : "false" },
-                                ex.aborted ? "—" : ex.score),
-                            React.createElement("span", { className: "zl-exam-meta" },
-                                React.createElement("span", { className: "zl-exam-name", style: { display: "block" } },
-                                    "מבחן מלא מס' " + (history.length - i) + (ex.aborted ? " · נכשל" : "")),
-                                React.createElement("span", { className: "zl-exam-date", style: { display: "block" } }, examDateLabel(ex.at))),
-                            React.createElement("span", { className: "zl-option-chev" },
-                                React.createElement(ChevronLeft, { size: 16 })))))
+                        React.createElement("div", { className: "zl-meet-now" },
+                            React.createElement("div", { className: "zl-meet-now-top" },
+                                React.createElement("span", { className: "zl-meet-now-name" }, "מפגש " + now),
+                                React.createElement("span", { className: "zl-meet-now-pct",
+                                    style: { color: r.ready ? "var(--ok)" : "var(--accent)" } }, pct + "%")),
+                            React.createElement("span", { className: "zl-meeting-track" },
+                                React.createElement("span", { className: "zl-meeting-fill", style: {
+                                    width: pct + "%", background: pct >= READY_PCT ? "var(--ok)" : "var(--focus)",
+                                } })),
+                            React.createElement("p", { className: "zl-meet-now-note" },
+                                r.ready
+                                    ? "מעל הסף המומלץ למעבר (" + READY_PCT + "%)"
+                                    : "הסף המומלץ למעבר הוא " + READY_PCT + "%")),
+
+                        React.createElement("button", {
+                            type: "button", className: "zl-mini",
+                            style: { width: "100%", marginTop: 10, justifyContent: "center" },
+                            onClick: () => { setMeeting(now); setPickMeeting(true); },
+                        }, "בחירת מפגש"),
+
+                        past.length > 0 ? React.createElement("div", { style: { marginTop: 14 } },
+                            React.createElement("span", { style: { display: "block", fontSize: "0.76rem", fontWeight: 700, color: "var(--ink-muted)", marginBottom: 6 } }, "מפגשים קודמים"),
+                            past.map((p) => React.createElement("div", { key: p.m, className: "zl-meeting", "data-on": "false", "data-open": "true", style: { cursor: "default" } },
+                                React.createElement("span", { className: "zl-meeting-name" }, "מפגש " + p.m),
+                                React.createElement("span", { className: "zl-meeting-track" },
+                                    React.createElement("span", { className: "zl-meeting-fill", style: {
+                                        width: p.pct + "%", background: p.pct >= READY_PCT ? "var(--ok)" : "var(--focus)",
+                                    } })),
+                                React.createElement("span", { className: "zl-meeting-pct" }, p.pct + "%")))) : null);
+                })(),
+
+                /* --- exam average, only once there is something to average --- */
+                (function () {
+                    const done = history.filter((ex) => !ex.aborted);
+                    if (done.length === 0) return null;
+                    const avg = Math.round(done.reduce((n, ex) => n + ex.score, 0) / done.length);
+                    return React.createElement("div", { className: "zl-avg" },
+                        React.createElement("span", { className: "zl-avg-num",
+                            style: { color: avg >= 60 ? "var(--ok)" : "var(--bad)" } }, avg),
+                        React.createElement("span", { className: "zl-avg-note" },
+                            "ממוצע " + done.length + (done.length === 1 ? " מבחן מלא" : " מבחנים מלאים")));
+                })(),
+
+                /* --- exam history, behind a button --- */
+                React.createElement("button", {
+                    type: "button", className: "zl-mini",
+                    style: { width: "100%", justifyContent: "center", marginBottom: 10 },
+                    onClick: () => setShowExams(true),
+                }, history.length ? "היסטוריית מבחנים (" + history.length + ")" : "היסטוריית מבחנים"),
+
+                React.createElement("button", {
+                    type: "button", className: "zl-mini",
+                    style: { width: "100%", justifyContent: "center" },
+                    onClick: onShowGuide,
+                }, "המדריך למשתמש")
 
                 ) : React.createElement("div", { className: "zl-anim" },
 
                 /* --- account actions --- */
                 React.createElement("div", null,
-                    React.createElement("div", { style: { display: "flex", alignItems: "center", gap: 8, marginBottom: 14 } },
+                    /* Also in the corner of every screen; here as well because
+                       this is where someone looks for a setting. */
+                    React.createElement("button", {
+                        type: "button", className: "zl-toggle", onClick: onToggleTheme,
+                    },
+                        React.createElement("span", { className: "zl-toggle-label" },
+                            React.createElement(theme === "dark" ? Moon : Sun, { size: 17 }),
+                            React.createElement("span", null, theme === "dark" ? "מצב לילה" : "מצב יום")),
+                        React.createElement("span", { className: "zl-toggle-track", "data-on": theme === "dark" ? "true" : "false" },
+                            React.createElement("span", { className: "zl-toggle-knob" }))),
+
+                    React.createElement("div", { style: { display: "flex", alignItems: "center", gap: 8, marginBottom: 14, marginTop: 14 } },
                         React.createElement("span", { className: "zl-syncmark", "data-ok": synced ? "true" : "false" },
                             React.createElement(synced ? Check : X, { size: 12 })),
                         React.createElement("span", { style: { fontSize: "0.85rem", fontWeight: 600, color: synced ? "var(--ok)" : "var(--bad)" } },
@@ -2498,17 +2567,67 @@ function AccountSheet({ vocab, letters, sentences, idioms, checklist, exams, pro
                     status ? React.createElement("p", { className: "zl-anim", style: { marginTop: 8, fontSize: "0.78rem", fontWeight: 600,
                         color: status.kind === "ok" ? "var(--ok)" : "var(--bad)" } }, status.text) : null),
 
-                /* Someone who skipped the guide on their first sign-in has no
-                   other way back to it. */
-                React.createElement("button", {
-                    type: "button", className: "zl-mini", onClick: onShowGuide,
-                    style: { width: "100%", marginTop: 14, justifyContent: "center" },
-                }, "הצג שוב את המדריך")
-
                 ),
 
                 React.createElement("p", { style: { textAlign: "center", fontSize: "0.7rem", color: "var(--ink-muted)", marginTop: 14 } },
                     "גרסה " + APP_BUILD))),
+        /* --- choosing a different meeting --- */
+        pickMeeting ? React.createElement("div", { className: "zl-overlay", onClick: () => setPickMeeting(false) },
+            React.createElement("div", { className: "zl-sheet zl-anim", style: { maxWidth: 380 }, onClick: (e) => e.stopPropagation() },
+                React.createElement("h3", { className: "zl-sheet-title", style: { marginBottom: 6 } }, "בחירת מפגש"),
+                React.createElement("p", { style: { fontSize: "0.8rem", color: "var(--ink-muted)", lineHeight: 1.6, marginBottom: 12 } },
+                    "התרגול יישען על החומר עד המפגש שתבחר, עם דגש על החדש."),
+                React.createElement("div", { className: "zl-meetings zl-scrollbar" },
+                    Array.from({ length: TOTAL_MEETINGS }, (_, i) => i + 1).map((n) => {
+                        const r = meetingReadiness(vocab, sentences, n);
+                        const open = n <= profileMeeting(profile);
+                        const pct = open ? Math.round(r.pct * 100) : 0;
+                        return React.createElement("button", {
+                            key: n, type: "button", className: "zl-meeting",
+                            "data-on": n === meeting ? "true" : "false",
+                            "data-open": open ? "true" : "false",
+                            onClick: () => setMeeting(n),
+                        },
+                            React.createElement("span", { className: "zl-meeting-name" }, "מפגש " + n),
+                            React.createElement("span", { className: "zl-meeting-track" },
+                                React.createElement("span", { className: "zl-meeting-fill", style: {
+                                    width: pct + "%",
+                                    background: pct >= READY_PCT ? "var(--ok)" : "var(--focus)",
+                                } })),
+                            React.createElement("span", { className: "zl-meeting-pct" }, pct + "%"));
+                    })),
+                React.createElement("div", { style: { display: "flex", gap: 10, marginTop: 14 } },
+                    React.createElement(PrimaryButton, { variant: "outline",
+                        onClick: () => { setMeeting(profileMeeting(profile)); setPickMeeting(false); },
+                        style: { flex: 1, justifyContent: "center" } }, "ביטול"),
+                    React.createElement(PrimaryButton, {
+                        onClick: () => { setPickMeeting(false); saveMeeting(); },
+                        disabled: meeting === profileMeeting(profile),
+                        style: { flex: 1, justifyContent: "center" } }, "אישור")))) : null,
+
+        /* --- the exam list --- */
+        showExams ? React.createElement("div", { className: "zl-overlay", onClick: () => setShowExams(false) },
+            React.createElement("div", { className: "zl-sheet zl-anim", style: { maxWidth: 400 }, onClick: (e) => e.stopPropagation() },
+                React.createElement("div", { style: { display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 12 } },
+                    React.createElement("h3", { className: "zl-sheet-title" }, "היסטוריית מבחנים"),
+                    React.createElement("button", { type: "button", onClick: () => setShowExams(false), "aria-label": "סגור",
+                        style: { background: "none", border: "none", cursor: "pointer", padding: 4, color: "var(--ink)" } },
+                        React.createElement(X, { size: 18 }))),
+                history.length === 0
+                    ? React.createElement("p", { style: { fontSize: "0.85rem", color: "var(--ink-muted)" } }, "עוד לא נלקח מבחן מלא.")
+                    : history.map((ex, i) => React.createElement("button", {
+                        key: ex.id, type: "button", className: "zl-exam-row",
+                        onClick: () => { setShowExams(false); setOpenExam({ exam: ex, index: history.length - i }); },
+                    },
+                        React.createElement("span", { className: "zl-exam-badge", "data-fail": (ex.aborted || ex.score < 60) ? "true" : "false" },
+                            ex.aborted ? "—" : ex.score),
+                        React.createElement("span", { className: "zl-exam-meta" },
+                            React.createElement("span", { className: "zl-exam-name", style: { display: "block" } },
+                                "מבחן מלא מס' " + (history.length - i) + (ex.aborted ? " · נכשל" : "")),
+                            React.createElement("span", { className: "zl-exam-date", style: { display: "block" } }, examDateLabel(ex.at))),
+                        React.createElement("span", { className: "zl-option-chev" },
+                            React.createElement(ChevronLeft, { size: 16 })))))) : null,
+
         openExam ? React.createElement(ExamDetailSheet, {
             exam: openExam.exam, index: openExam.index, onClose: () => setOpenExam(null),
         }) : null,
@@ -5154,6 +5273,7 @@ function ArabicLearningApp() {
             onLogout: startLogout,
             onMeetingUp: celebrateMeeting,
             pane: accountPane, setPane: setAccountPane,
+            theme: theme, onToggleTheme: toggleTheme,
             onShowGuide: () => { setAccountOpen(false); setGuideOpen(true); },
         }) : null,
         React.createElement("div", { style: { maxWidth: 1100, margin: "0 auto" } },
