@@ -132,7 +132,7 @@ try {
     throw new Error("React / ReactDOM לא נטענו מה-CDN (בדוק חיבור לאינטרנט או חסימת סקריפטים).");
   }
 "use strict";
-const APP_BUILD = "02.09 · 62";   // bump this every time the file is replaced
+const APP_BUILD = "02.09 · 63";   // bump this every time the file is replaced
 
 /* The institute logo, carried inline so the page stays a single file.
    LOGO_MARK is the emblem alone (header); LOGO_FULL includes the name
@@ -174,8 +174,12 @@ const Calendar = (p) => React.createElement("svg", { ...iconBase(p) },
 const CheckCircle2 = (p) => React.createElement("svg", { ...iconBase(p) },
     React.createElement("circle", { cx: "12", cy: "12", r: "10" }),
     React.createElement("path", { d: "M9 12l2 2 4-4" }));
+/* An open book: two pages falling away from a spine in the middle. The
+   earlier shape was two squared panels, which read as a split screen. */
 const BookOpen = (p) => React.createElement("svg", { ...iconBase(p) },
-    React.createElement("path", { d: "M2 5.5A2.5 2.5 0 0 1 4.5 3H12v18H4.5A2.5 2.5 0 0 1 2 18.5v-13zM22 5.5A2.5 2.5 0 0 0 19.5 3H12v18h7.5a2.5 2.5 0 0 0 2.5-2.5v-13z" }));
+    React.createElement("path", { d: "M12 7C10 5.5 6.5 4.6 4 4.8 3.4 4.85 3 5.3 3 5.9v11.3c0 .6.45 1.05 1.05 1C6.6 18.05 10 18.9 12 20.4" }),
+    React.createElement("path", { d: "M12 7c2-1.5 5.5-2.4 8-2.2.6.05 1 .5 1 1.1v11.3c0 .6-.45 1.05-1.05 1-2.55-.15-5.95.7-7.95 2.2" }),
+    React.createElement("path", { d: "M12 7v13.4" }));
 const UserIcon = (p) => React.createElement("svg", { ...iconBase(p) },
     React.createElement("path", { d: "M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" }),
     React.createElement("circle", { cx: "12", cy: "7", r: "4" }));
@@ -1307,7 +1311,7 @@ const SENTENCES = [
     { id: 40, hebrew: "זה לא החדר! זאת המקלחת!", arabic: "הַאדִי מִש (א)לְעֻ'רְפֶה! הַאדַא (א)לְחַמַّאם!", meeting: 2 },
     { id: 41, hebrew: "מחסן הבית על הגג.", arabic: "מַחְ'זַנִ (אל)דַّאר עַ (אל)סַّטֶח.", meeting: 2 },
     { id: 42, hebrew: "זה לא הבית זאת החנות.", arabic: "הַאדִי מִש (אל)דַّאר הַאדַא (אל)דֻכַּّאן.", meeting: 2 },
-    { id: 43, hebrew: "זה שדה התעופה (של) המדינה.", arabic: "הַאדַא מַטַאִר (אל)דוֹלֶה.", meeting: 2 },
+    { id: 43, hebrew: "זה שדה התעופה (של) המדינה.", arabic: "הַאדַא מַטַארִ (אל)דוֹלֶה.", meeting: 2 },
     { id: 44, hebrew: "העמוד הזה בספר ההוא.", arabic: "הַ(אל)צַّפְחַה פִי הַדַאכּ (א)לִכְּתַאבּ.", meeting: 2 },
     { id: 45, hebrew: "המחברות והחוברת בתיק.", arabic: "אִ(ל)דַّפַאתֶר וְ(א)לְכֻּרַّאסֶה פִי (אל)שַّנְטַה.", meeting: 2 },
     { id: 46, hebrew: "זה התה וזה הסוכר.", arabic: "הַאדַא (אל)שַّאי וְהַאדַא (אל)סֻّכַּّר.", meeting: 2 },
@@ -2644,7 +2648,11 @@ function AccountSheet({ vocab, letters, sentences, idioms, checklist, exams, pro
                         React.createElement("span", { className: "zl-exam-meta" },
                             React.createElement("span", { className: "zl-exam-name", style: { display: "block" } },
                                 "מבחן מלא מס' " + (history.length - i) + (ex.aborted ? " · נכשל" : "")),
-                            React.createElement("span", { className: "zl-exam-date", style: { display: "block" } }, examDateLabel(ex.at))),
+                            React.createElement("span", { className: "zl-exam-date", style: { display: "block" } },
+                                examDateLabel(ex.at)
+                                /* Older entries predate this and simply say nothing. */
+                                + (ex.meeting ? "  ·  מפגש " + ex.meeting : "")
+                                + (ex.questions ? "  ·  " + ex.questions + " שאלות" : ""))),
                         React.createElement("span", { className: "zl-option-chev" },
                             React.createElement(ChevronLeft, { size: 16 })))))) : null,
 
@@ -3115,10 +3123,17 @@ function buildMorningTasks(deck, meeting) {
                                typeable.length);
     const typedKeys = new Set(shuffle(typeable).slice(0, wantTyped).map((it) => it._key));
 
+    /* A typed question is always Arabic to Hebrew.
+
+       The other direction would ask for a pointed transliteration, and a
+       phone keyboard cannot produce one — the letters can be right and the
+       answer still marked wrong for want of a vowel that cannot be typed.
+       Producing pointed text is not a skill the course teaches, so that
+       direction stays multiple choice. */
     return shuffle(picked.map((item) => ({
         item: item,
         open: typedKeys.has(item._key),
-        dir: resolveDir("mix"),
+        dir: typedKeys.has(item._key) ? "ar2he" : resolveDir("mix"),
     })));
 }
 
@@ -4076,6 +4091,27 @@ function PracticeTab({ screen, setScreen, banks, applyResult, onSessionDone, onE
    The exam only measures. It deliberately does not touch the review
    schedule, so sitting an exam cannot disturb the spacing of your practice.
    ========================================================================= */
+/* How long the exam runs.
+
+   A single meeting is thirty-one questions, about ten minutes. Each meeting
+   opened adds material, so the exam lengthens — but the growth tapers, or by
+   meeting fifteen it would be an afternoon's work. The ceiling is set so the
+   longest exam stays inside half an hour at the twenty seconds a question
+   this one actually takes.
+
+   The mix between meetings is the same halving used everywhere else: the
+   current meeting carries most of the paper, the one before it half of that,
+   and so on. */
+const EXAM_MIN = 31;
+const EXAM_MAX = 90;
+
+function examLength(openMeetings) {
+    if (openMeetings <= 1) return EXAM_MIN;
+    /* Square-root growth: doubling the course does not double the exam. */
+    const grown = Math.round(EXAM_MIN * Math.sqrt(openMeetings));
+    return Math.min(EXAM_MAX, grown);
+}
+
 const EXAM_PLAN = [
     { kind: "vocab", deck: "vocab", count: 15, weight: 50, label: "אוצר מילים" },
     { kind: "sentence", deck: "sentences", count: 5, weight: 30, label: "הרכבת משפטים" },
@@ -4099,6 +4135,9 @@ function isTypeable(item) {
 
 function buildExamTasks(banks) {
     const tasks = [];
+    /* Every category scales together, so the weighting between them is
+       unchanged however long the paper gets. */
+    const grow = examLength(banks.meeting || 1) / EXAM_TOTAL;
     EXAM_PLAN.forEach((part) => {
         /* The exam asks sentences by assembly, so it draws from the same
            subset the assembly drill uses. */
@@ -4106,7 +4145,12 @@ function buildExamTasks(banks) {
             ? buildDeck(part.deck, banks).filter(isAssemblable)
             : buildDeck(part.deck, banks);
         if (deck.length === 0) return;
-        const picked = weightedOrder(deck, banks.meeting).slice(0, part.count).map((i) => deck[i]);
+        /* Never ask for more than the deck holds — the idioms and letters do
+           not grow with the course, so they cap themselves. */
+        const want = Math.min(Math.round(part.count * grow), deck.length);
+        /* Composed rather than merely weighted, so the current meeting fills
+           most of the paper just as it fills most of the practice. */
+        const picked = composeSession(deck, banks.meeting, want).map((i) => deck[i]);
         picked.forEach((item, idx) => {
             const dir = resolveDir("mix");
             if (part.kind === "sentence") {
@@ -4244,7 +4288,7 @@ function FullExam({ banks, onBack, onExamStart, onExamFinish, applyResult }) {
         });
         const score = Math.round(earned);
         settledRef.current = true;
-        onExamFinish(examIdRef.current, { score: score, cats: finalCats, aborted: false });
+        onExamFinish(examIdRef.current, { score: score, cats: finalCats, aborted: false, questions: tasks.length });
         setFinished(true);
     };
 
@@ -5133,13 +5177,19 @@ function ArabicLearningApp() {
        or by closing the app — simply leaves the failure in place. */
     const startExam = () => {
         const id = "ex-" + Date.now() + "-" + Math.floor(Math.random() * 1000);
-        setExams((prev) => [{ id: id, at: Date.now(), score: 0, aborted: true, cats: {} }]
-            .concat(prev || []).slice(0, EXAM_HISTORY_LIMIT));
+        /* The meeting is recorded with the result: an 80 covering three
+           meetings is not the same achievement as an 80 covering one, and
+           without this the score cannot be read years later. */
+        setExams((prev) => [{
+            id: id, at: Date.now(), score: 0, aborted: true, cats: {},
+            meeting: profileMeeting(profile),
+        }].concat(prev || []).slice(0, EXAM_HISTORY_LIMIT));
         return id;
     };
     const finishExam = (id, payload) => {
         setExams((prev) => (prev || []).map((ex) => (ex.id === id
-            ? { ...ex, score: payload.score, cats: payload.cats, aborted: false, notes: examNotes(payload.cats) }
+            ? { ...ex, score: payload.score, cats: payload.cats, aborted: false,
+                questions: payload.questions, notes: examNotes(payload.cats) }
             : ex)));
     };
 
