@@ -132,7 +132,7 @@ try {
     throw new Error("React / ReactDOM לא נטענו מה-CDN (בדוק חיבור לאינטרנט או חסימת סקריפטים).");
   }
 "use strict";
-const APP_BUILD = "02.09 · 63";   // bump this every time the file is replaced
+const APP_BUILD = "02.09 · 64";   // bump this every time the file is replaced
 
 /* The institute logo, carried inline so the page stays a single file.
    LOGO_MARK is the emblem alone (header); LOGO_FULL includes the name
@@ -1448,6 +1448,9 @@ const DECK_LABELS = {
    asking for the word to be produced from memory. Declared here with the
    other session sizes because the daily routine's description reads it. */
 const MORNING_PLAN = { choice: 20, typed: 10 };
+/* The same drill with nothing but typed questions — the hardest way to be
+   asked, and the closest to producing the word in conversation. */
+const TYPED_PLAN = { choice: 0, typed: 15 };
 
 const SESSION_SIZES = {
     flashcards: 20,
@@ -2797,13 +2800,19 @@ function SessionSummary({ title, total, right, wrong, onRestart, onBack, restart
    ========================================================================= */
 function FlashcardPractice({ deckKind, banks, applyResult, onBack, dir, setDir, size, daily, onSessionDone }) {
     const data = useMemo(() => buildDeck(deckKind, banks), [deckKind, banks]);
-    const dueNow = data.filter(isDue).length;
+    const dueItems = useMemo(() => data.filter(isDue), [data]);
+    const dueNow = dueItems.length;
     /* The daily session tracks the queue: as many cards as are actually due,
        never fewer than a short sitting and never past the ceiling. Sessions
        opened from the practice list keep their own fixed length. */
     const sessionSize = daily
         ? (dueNow > 0 ? Math.max(SESSION_MIN, Math.min(SESSION_CAP, dueNow)) : SESSION_MIN)
         : (size || SESSION_SIZES.flashcards);
+    /* And it draws from those same items. Counting the due cards but then
+       choosing from the whole deck meant the number on the card promised
+       something the session did not deliver. Anything short of a full sitting
+       is topped up from the rest, so a light day is not a two-card session. */
+    const pool = daily && dueNow > 0 ? dueItems : data;
     const noneDue = !!daily && dueNow === 0;
 
     const [cardDir, setCardDir] = useState("ar2he");
@@ -2811,7 +2820,10 @@ function FlashcardPractice({ deckKind, banks, applyResult, onBack, dir, setDir, 
     const [sense, setSense] = useState("");
     const [pending, setPending] = useState(false);
     const [revealed, setRevealed] = useState(false);
-    const [order, setOrder] = useState(() => composeSession(data, banks.meeting, sessionSize));
+    /* Positions are kept against `data`, since that is what the card render
+       indexes into; the choice is made within the pool and mapped back. */
+    const [order, setOrder] = useState(() =>
+        composeSession(pool, banks.meeting, sessionSize).map((i) => data.indexOf(pool[i])));
     const [pos, setPos] = useState(0);
     const [tally, setTally] = useState({ right: 0, wrong: 0 });
     const [flipped, setFlipped] = useState(false);
@@ -2819,7 +2831,7 @@ function FlashcardPractice({ deckKind, banks, applyResult, onBack, dir, setDir, 
     const timerRef = useRef(null);
 
     const startSession = (count) => {
-        setOrder(composeSession(data, banks.meeting, count));
+        setOrder(composeSession(pool, banks.meeting, count).map((i) => data.indexOf(pool[i])));
         setPos(0);
         setTally({ right: 0, wrong: 0 });
         setFinished(false);
@@ -3110,16 +3122,19 @@ function AmericanQuiz({ deckKind, banks, applyResult, onBack, dir, setDir }) {
    stripped — "ב...", "מ..." — cannot be typed at all, so they are always
    asked as multiple choice however the mix falls.
    ========================================================================= */
-function buildMorningTasks(deck, meeting) {
-    const size = MORNING_PLAN.choice + MORNING_PLAN.typed;
+function buildMorningTasks(deck, meeting, plan) {
+    const mix = plan || MORNING_PLAN;
+    const size = mix.choice + mix.typed;
     const picked = composeSession(deck, meeting, size).map((i) => deck[i]);
     if (picked.length === 0) return [];
 
     /* Decide which questions are typed before shuffling, so the mix is right
-       even when the session is short of cards. */
+       even when the session is short of cards. A word with no typeable answer
+       — "ב...", "מ..." — falls back to multiple choice even in a typed-only
+       session, since there is nothing there to type. */
     const typeable = picked.filter(isTypeable);
-    const wantTyped = Math.min(MORNING_PLAN.typed,
-                               Math.round(picked.length * (MORNING_PLAN.typed / size)),
+    const wantTyped = Math.min(mix.typed,
+                               Math.round(picked.length * (mix.typed / size)),
                                typeable.length);
     const typedKeys = new Set(shuffle(typeable).slice(0, wantTyped).map((it) => it._key));
 
@@ -3137,9 +3152,9 @@ function buildMorningTasks(deck, meeting) {
     })));
 }
 
-function MorningDrill({ banks, applyResult, onBack, onSessionDone }) {
+function MorningDrill({ banks, applyResult, onBack, onSessionDone, plan, title }) {
     const deck = useMemo(() => buildDeck("vocab", banks), [banks]);
-    const [tasks, setTasks] = useState(() => buildMorningTasks(deck, banks.meeting));
+    const [tasks, setTasks] = useState(() => buildMorningTasks(deck, banks.meeting, plan));
     const [pos, setPos] = useState(0);
     const [question, setQuestion] = useState(null);
     const [selected, setSelected] = useState(null);
@@ -3150,7 +3165,7 @@ function MorningDrill({ banks, applyResult, onBack, onSessionDone }) {
     const timerRef = useRef(null);
 
     const restart = () => {
-        setTasks(buildMorningTasks(deck, banks.meeting));
+        setTasks(buildMorningTasks(deck, banks.meeting, plan));
         setPos(0); setSelected(null); setTyped(""); setResult(null);
         setScore({ correct: 0, total: 0 }); setFinished(false);
     };
@@ -3174,7 +3189,7 @@ function MorningDrill({ banks, applyResult, onBack, onSessionDone }) {
     }
     if (finished) {
         return React.createElement(SessionSummary, {
-            title: "סיימת את תרגול הבוקר",
+            title: "סיימת · " + (title || "תרגול בוקר"),
             total: score.total, right: score.correct, wrong: score.total - score.correct,
             restartLabel: "סבב נוסף", onRestart: restart, onBack: onBack,
         });
@@ -3212,6 +3227,15 @@ function MorningDrill({ banks, applyResult, onBack, onSessionDone }) {
         advance(1400);
     };
 
+    /* Admitting you do not know beats typing a guess to see the answer: it
+       records the same wrong answer, but without the pretence, and it moves
+       on at once. */
+    const giveUp = () => {
+        if (result) return;
+        record(false, "typed");
+        advance(1600);
+    };
+
     const faces = cardFaces(task.item, task.dir === "he2ar");
     const prompt = task.open ? faces.front : (question && question.prompt);
 
@@ -3219,7 +3243,7 @@ function MorningDrill({ banks, applyResult, onBack, onSessionDone }) {
         React.createElement(BackLink, { onClick: onBack }, "חזרה לשיטות תרגול"),
         React.createElement(Card, null,
             React.createElement("h2", { className: "zl-display", style: { fontSize: "1.15rem", fontWeight: 800, marginBottom: 12 } },
-                "תרגול בוקר · אוצר מילים"),
+                title || "תרגול בוקר · אוצר מילים"),
             React.createElement(SessionBar, { pos: pos + 1, total: tasks.length }),
             React.createElement("p", { style: { color: "var(--ink-muted)", fontSize: "0.85rem", marginBottom: 10 } },
                 task.open ? "כתוב את התרגום:" : "בחר את התרגום:"),
@@ -3239,7 +3263,9 @@ function MorningDrill({ banks, applyResult, onBack, onSessionDone }) {
                                 marginBottom: 4,
                             } },
                             result === "correct" ? "נכון" : "התשובה: " + faces.back)
-                        : React.createElement(PrimaryButton, { onClick: submitTyped, disabled: !typed.trim() }, "בדוק"))
+                        : React.createElement("div", { style: { display: "flex", gap: 8 } },
+                            React.createElement(PrimaryButton, { onClick: submitTyped, disabled: !typed.trim() }, "בדוק"),
+                            React.createElement(PrimaryButton, { variant: "outline", onClick: giveUp }, "לא יודע")))
                 : (question ? React.createElement(ChoiceGrid, {
                     question: question, chosen: selected, locked: !!selected, onChoose: choose,
                 }) : null))));
@@ -3951,6 +3977,15 @@ const PRACTICE_METHODS = [
         ],
     },
     {
+        id: "typed",
+        title: "הקלדה מהזיכרון",
+        desc: "שליפה מלאה — בלי אפשרויות לבחור מהן.",
+        Icon: TypeIcon,
+        options: [
+            { key: "typed", title: "אוצר מילים", desc: TYPED_PLAN.typed + " מילים להקלדה חופשית.", target: { screen: "typed" } },
+        ],
+    },
+    {
         id: "exam",
         title: "מבחן מלא",
         desc: "מילים, משפטים, ניבים ואותיות — עם ציון סופי.",
@@ -4032,6 +4067,14 @@ function PracticeTab({ screen, setScreen, banks, applyResult, onSessionDone, onE
         return React.createElement(SentenceBuilderSession, {
             banks: banks, applyResult: applyResult, onBack: backToList("sentences"),
             dir: dir, setDir: setDir, onSessionDone: () => onSessionDone("evening"),
+        });
+    }
+    if (screen && screen.screen === "typed") {
+        return React.createElement(MorningDrill, {
+            banks: banks, applyResult: applyResult,
+            plan: TYPED_PLAN, title: "הקלדה מהזיכרון",
+            onBack: backToList("typed"),
+            onSessionDone: () => onSessionDone("morning"),
         });
     }
     if (screen && screen.screen === "morning") {
@@ -4273,6 +4316,8 @@ function FullExam({ banks, onBack, onExamStart, onExamFinish, applyResult }) {
         setResult(correct ? "correct" : "wrong");
     };
 
+    const giveUp = () => { if (!result) record(false); };
+
     const submitTyped = () => {
         if (result || !typed.trim()) return;
         const accepted = new Set();
@@ -4366,7 +4411,7 @@ function FullExam({ banks, onBack, onExamStart, onExamFinish, applyResult }) {
                             }),
                             !result ? React.createElement("div", { style: { display: "flex", gap: 8 } },
                                 React.createElement(PrimaryButton, { onClick: submitTyped, disabled: !typed.trim() }, "בדוק"),
-                                React.createElement(PrimaryButton, { variant: "danger", onClick: () => record(false) }, "לא יודע")) : null)
+                                React.createElement(PrimaryButton, { variant: "outline", onClick: giveUp }, "לא יודע")) : null)
                         : React.createElement(ChoiceGrid, {
                             question: task.question, chosen: typed, locked: !!result,
                             onChoose: (opt) => { setTyped(opt); record(opt === task.question.correctAnswer); } })),
@@ -4402,11 +4447,13 @@ function ExamBreakdown({ cats }) {
 /* =========================================================================
    VOCAB TAB
    ========================================================================= */
-function VocabTab({ vocab, setVocab }) {
+function VocabTab({ vocab, setVocab, meeting }) {
     const [modalOpen, setModalOpen] = useState(false);
     const [form, setForm] = useState({ front: "", back: "", notes: "", topic: "" });
     const [query, setQuery] = useState("");
     const [picked, setPicked] = useState([]);      // several topics can be shown at once
+    const [pickedMeetings, setPickedMeetings] = useState([]);
+    const [sortBy, setSortBy] = useState("topic");   // topic | meeting
     const [sortOpen, setSortOpen] = useState(false);
     const [openWord, setOpenWord] = useState(null);
     const [editingId, setEditingId] = useState(null);
@@ -4422,8 +4469,23 @@ function VocabTab({ vocab, setVocab }) {
     const bare = (text) => String(text || "").replace(/[\u0591-\u05C7\u0610-\u065F]/g, "");
     const needle = bare(query).trim();
     const toggleTopic = (t) => setPicked((prev) => (prev.indexOf(t) === -1 ? prev.concat([t]) : prev.filter((x) => x !== t)));
+    const toggleMeeting = (m) => setPickedMeetings((prev) => (prev.indexOf(m) === -1 ? prev.concat([m]) : prev.filter((x) => x !== m)));
+
+    /* Only the meetings the learner has opened: offering to filter by
+       material they have not reached would list empty boxes. */
+    const openMeetings = useMemo(() => {
+        const upTo = meeting || TOTAL_MEETINGS;
+        const seen = [];
+        vocab.forEach((w) => {
+            const m = itemMeeting(w);
+            if (m && m <= upTo && seen.indexOf(m) === -1) seen.push(m);
+        });
+        return seen.sort((a, b) => a - b);
+    }, [vocab, meeting]);
+
     const visible = vocab.filter((w) => {
         if (picked.length > 0 && picked.indexOf(w.topic) === -1) return false;
+        if (pickedMeetings.length > 0 && pickedMeetings.indexOf(itemMeeting(w)) === -1) return false;
         if (!needle) return true;
         return bare(w.front).indexOf(needle) !== -1
             || bare(w.back).indexOf(needle) !== -1
@@ -4485,7 +4547,7 @@ function VocabTab({ vocab, setVocab }) {
             React.createElement("button", {
                 type: "button",
                 className: "zl-sortbtn",
-                "data-active": (sortOpen || picked.length > 0) ? "true" : "false",
+                "data-active": (sortOpen || picked.length > 0 || pickedMeetings.length > 0) ? "true" : "false",
                 "aria-expanded": sortOpen,
                 onClick: () => setSortOpen((v) => !v),
             },
@@ -4500,7 +4562,23 @@ function VocabTab({ vocab, setVocab }) {
                     ? "\u05DE\u05E6\u05D9\u05D2 \u05D0\u05EA \u05DB\u05DC " + vocab.length + " \u05D4\u05DE\u05D9\u05DC\u05D9\u05DD"
                     : visible.length + " \u05DE\u05EA\u05D5\u05DA " + vocab.length + " \u05DE\u05D9\u05DC\u05D9\u05DD")),
         sortOpen ? React.createElement("div", { className: "zl-sortpanel zl-anim" },
-            topics.map((t) => {
+            React.createElement("div", { className: "zl-panes", style: { marginBottom: 10 } },
+                React.createElement("button", {
+                    type: "button", className: "zl-pane", "data-on": sortBy === "topic" ? "true" : "false",
+                    onClick: () => setSortBy("topic"),
+                }, "לפי נושא"),
+                React.createElement("button", {
+                    type: "button", className: "zl-pane", "data-on": sortBy === "meeting" ? "true" : "false",
+                    onClick: () => setSortBy("meeting"),
+                }, "לפי מפגש")),
+
+            sortBy === "meeting" ? openMeetings.map((m) => {
+                const on = pickedMeetings.indexOf(m) !== -1;
+                return React.createElement("button", { key: m, type: "button", className: "zl-sortrow", "data-on": on ? "true" : "false", onClick: () => toggleMeeting(m) },
+                    React.createElement("span", { className: "zl-sortbox" }, on ? React.createElement(Check, { size: 12 }) : null),
+                    React.createElement("span", { style: { flex: 1, fontWeight: on ? 700 : 500 } }, "מפגש " + m),
+                    React.createElement("span", { className: "zl-sortcount" }, vocab.filter((w) => itemMeeting(w) === m).length));
+            }) : topics.map((t) => {
                 const on = picked.indexOf(t) !== -1;
                 return React.createElement("button", { key: t, type: "button", className: "zl-sortrow", "data-on": on ? "true" : "false", onClick: () => toggleTopic(t) },
                     React.createElement("span", { className: "zl-sortbox" }, on ? React.createElement(Check, { size: 12 }) : null),
@@ -4508,8 +4586,10 @@ function VocabTab({ vocab, setVocab }) {
                     React.createElement("span", { className: "zl-sortcount" }, vocab.filter((w) => w.topic === t).length));
             }),
             React.createElement("div", { className: "zl-sortactions" },
-                React.createElement(PrimaryButton, { variant: "outline", onClick: () => setPicked(topics.slice()) }, "\u05D1\u05D7\u05E8 \u05D4\u05DB\u05DC"),
-                React.createElement(PrimaryButton, { variant: "outline", onClick: () => setPicked([]) }, "\u05E0\u05E7\u05D4"))) : null,
+                React.createElement(PrimaryButton, { variant: "outline",
+                    onClick: () => (sortBy === "meeting" ? setPickedMeetings(openMeetings.slice()) : setPicked(topics.slice())) }, "בחר הכל"),
+                React.createElement(PrimaryButton, { variant: "outline",
+                    onClick: () => { setPicked([]); setPickedMeetings([]); } }, "נקה"))) : null,
         React.createElement("div", { style: { display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(200px, 1fr))", gap: 10 } },
             visible.map((item) => {
                 const pct = progressPct(item);
@@ -5381,7 +5461,7 @@ function ArabicLearningApp() {
                 onSessionDone: markRoutineDone,
                 onExamStart: startExam, onExamFinish: finishExam,
             })),
-            tab === "vocab" && React.createElement(VocabTab, { vocab: vocab, setVocab: setVocab }),
+            tab === "vocab" && React.createElement(VocabTab, { vocab: vocab, setVocab: setVocab, meeting: profileMeeting(profile) }),
             tab === "alphabet" && React.createElement(AlphabetTab, { letters: letters }),
             tab === "stats" && React.createElement(StatsTab, { vocab: vocab, letters: letters, sentences: sentences, idioms: idioms, checklist: checklist, meeting: meeting }))));
 }
