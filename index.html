@@ -132,7 +132,7 @@ try {
     throw new Error("React / ReactDOM לא נטענו מה-CDN (בדוק חיבור לאינטרנט או חסימת סקריפטים).");
   }
 "use strict";
-const APP_BUILD = "02.09 · 64";   // bump this every time the file is replaced
+const APP_BUILD = "03.09 · 65";   // bump this every time the file is replaced
 
 /* The institute logo, carried inline so the page stays a single file.
    LOGO_MARK is the emblem alone (header); LOGO_FULL includes the name
@@ -190,8 +190,15 @@ const Sun = (p) => React.createElement("svg", { ...iconBase(p) },
     React.createElement("path", { d: "M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4" }));
 const BarChart = (p) => React.createElement("svg", { ...iconBase(p) },
     React.createElement("path", { d: "M3 21h18M7 21V10M12 21V4M17 21v-7" }));
-const TypeIcon = (p) => React.createElement("svg", { ...iconBase(p) },
-    React.createElement("path", { d: "M4 7V4h16v3M9 20h6M12 4v16" }));
+/* ض, the letter Arabic is named for — "the language of the daad". A Latin T
+   sat oddly on a tab about the Arabic alphabet. */
+const TypeIcon = (p) => React.createElement("svg", {
+    ...iconBase(p), viewBox: "0 0 24 24", fill: "currentColor", stroke: "none",
+},
+    React.createElement("text", {
+        x: 12, y: 18, textAnchor: "middle",
+        fontSize: 17, fontFamily: "inherit", fontWeight: 600,
+    }, "ض"));
 const GameIcon = (p) => React.createElement("svg", { ...iconBase(p) },
     React.createElement("rect", { x: "2", y: "6", width: "20", height: "12", rx: "4" }),
     React.createElement("path", { d: "M7 12h3M8.5 10.5v3M15 11h.01M17.5 13.5h.01" }));
@@ -432,12 +439,6 @@ const GLOBAL_CSS = `
     .zl-dir { display:inline-flex; background:var(--bg); border:1px solid var(--line); border-radius:10px; padding:3px; gap:3px; }
     .zl-dir-btn { border:none; background:none; font:inherit; font-size:0.78rem; font-weight:600; color:var(--ink-muted); padding:6px 12px; border-radius:8px; cursor:pointer; white-space:nowrap; }
     .zl-dir-btn[data-active="true"] { background:var(--navy); color:var(--surface); }
-    .zl-dirbar {
-      display:flex; align-items:center; justify-content:space-between; gap:10px; flex-wrap:wrap;
-      background:var(--surface); border:1px solid var(--line); border-radius:var(--r-md);
-      padding:11px 14px; margin:14px 0 18px; box-shadow:var(--shadow-sm);
-    }
-    .zl-dirbar-label { font-size:0.8rem; font-weight:700; color:var(--ink-muted); }
 
     .zl-search { width:100%; padding:11px 14px; border:1px solid var(--line); border-radius:10px; font:inherit; font-size:0.9rem; margin-bottom:10px; outline:none; background:var(--surface); color:var(--ink); }
 
@@ -529,6 +530,44 @@ const GLOBAL_CSS = `
       background: var(--surface); color: var(--navy);
       box-shadow: var(--shadow-sm);
     }
+
+    /* ---- how you practise ---- */
+    .zl-usestat {
+      display: flex; align-items: baseline; gap: 8px;
+      padding: 9px 0; border-bottom: 1px solid var(--line);
+    }
+    .zl-usestat:last-of-type { border-bottom: none; }
+    .zl-usestat-label { flex: 1; font-size: 0.85rem; color: var(--ink-muted); }
+    .zl-usestat-value { font-size: 0.92rem; font-weight: 700; color: var(--navy); }
+    .zl-usestat-note { font-size: 0.76rem; color: var(--ink-muted); }
+
+    /* ---- pairing tiles ----
+       A fixed height on both columns: the words differ in length, and a
+       ragged right-hand column made the pairing look lopsided. */
+    .zl-pairtile {
+      display: flex; align-items: center; justify-content: center;
+      width: 100%; height: 56px; margin-bottom: 8px; padding: 6px 8px;
+      font: inherit; font-size: 0.95rem; font-weight: 700; text-align: center;
+      border: 1px solid var(--line); border-radius: 10px;
+      background: var(--surface); color: var(--ink);
+      box-shadow: var(--shadow-sm); cursor: pointer;
+      transition: border-color 0.15s, background 0.15s;
+    }
+    .zl-pairtile[data-on="true"] { border-color: var(--navy); }
+    .zl-pairtile[data-done="true"] {
+      background: var(--ok); border-color: var(--ok); color: #fff;
+      opacity: 0.55; box-shadow: none; cursor: default;
+    }
+
+    /* ---- which language is on the card ---- */
+    .zl-lang {
+      position: absolute; top: 9px; left: 11px;
+      font-family: inherit; font-size: 0.66rem; font-weight: 700;
+      letter-spacing: 0.02em; padding: 2px 8px; border-radius: 999px;
+      background: var(--line); color: var(--ink-muted);
+      line-height: 1.7;
+    }
+    .zl-lang[data-ar="true"] { background: var(--navy); color: var(--surface); opacity: 0.85; }
 
     /* ---- the meeting you are on ---- */
     .zl-meet-now {
@@ -1201,7 +1240,7 @@ const DEFAULT_VOCAB = [
     { id: 359, front: "חַקّ", back: "זכות / צדק / מחיר", topic: "כללי", form: "יחיד", pair: [360], meeting: 3 },
     { id: 360, front: "חֻקוּק", back: "זכויות / מחיר", topic: "כללי", form: "רבים", pair: [359], meeting: 3 },
     { id: 361, front: "בַּסִיט", back: "פשוט", topic: "תארים", form: "יחיד", pair: [362], meeting: 3, gender: "m", mate: 363 },
-    { id: 362, front: "בְּסַטַאא", back: "פשוטים", topic: "תארים", form: "רבים", pair: [361], meeting: 3, gender: "m" },
+    { id: 362, front: "בֻּסַטַאא", back: "פשוטים", topic: "תארים", form: "רבים", pair: [361], meeting: 3, gender: "m" },
     { id: 363, front: "בַּסִיטַה", back: "פשוטה / לא נורא", topic: "תארים", meeting: 3, gender: "f", mate: 361 },
     { id: 364, front: "חַ'טّ", back: "קו", topic: "כללי", form: "יחיד", pair: [365], meeting: 3 },
     { id: 365, front: "חְ'טוּט", back: "קווים", topic: "כללי", form: "רבים", pair: [364], meeting: 3 },
@@ -1847,8 +1886,10 @@ function initialVocab() {
 /* =========================================================================
    SHARED UI ATOMS
    ========================================================================= */
-const SectionHeader = ({ title, subtitle }) => (React.createElement("div", { style: { marginBottom: 12 } },
-    React.createElement("h2", { className: "zl-display", style: { fontSize: "1.15rem", fontWeight: 700, color: "var(--ink)" } }, title),
+const SectionHeader = ({ title, subtitle, aside }) => (React.createElement("div", { style: { marginBottom: 12 } },
+    React.createElement("div", { style: { display: "flex", alignItems: "center", justifyContent: "space-between", gap: 12, flexWrap: "wrap" } },
+        React.createElement("h2", { className: "zl-display", style: { fontSize: "1.15rem", fontWeight: 700, color: "var(--ink)" } }, title),
+        aside || null),
     subtitle && (React.createElement("p", { style: { color: "var(--ink-muted)", fontSize: "0.85rem", marginTop: 4 } }, subtitle))));
 
 /* The surah is rendered as one justified block. Both edges are flush on every
@@ -2274,6 +2315,35 @@ const BACKUP_VERSION = 2;
 const EXAM_HISTORY_LIMIT = 20;
 
 /* Where the learner has marked themselves; meeting 1 until told otherwise. */
+/* A running tally per practice mode, kept on the profile so it syncs.
+
+   Only what cannot be recomputed: the per-item counters already record what
+   is known, but not which mode taught it, nor a best score in a game that
+   leaves no trace on the words themselves. */
+function recordUse(profile, mode, right, total) {
+    const stats = { ...((profile && profile.modeStats) || {}) };
+    const cur = stats[mode] || { runs: 0, right: 0, asked: 0, best: 0 };
+    stats[mode] = {
+        runs: cur.runs + 1,
+        right: cur.right + right,
+        asked: cur.asked + total,
+        best: Math.max(cur.best || 0, right),
+    };
+    return stats;
+}
+
+const MODE_LABELS = {
+    flashcards: "כרטיסיות",
+    quiz: "מבחן אמריקאי",
+    typed: "הקלדה מהזיכרון",
+    morning: "תרגול בוקר",
+    builder: "הרכבת משפטים",
+    blank: "השלמת משפט",
+    clock: "נגד השעון",
+    pairs: "צימוד",
+    reading: "קריאה",
+};
+
 function profileMeeting(profile) {
     const n = profile && profile.meeting;
     return (typeof n === "number" && n >= 1 && n <= TOTAL_MEETINGS) ? n : 1;
@@ -2452,8 +2522,6 @@ function AccountSheet({ vocab, letters, sentences, idioms, checklist, exams, pro
                     React.createElement("button", { type: "button", onClick: onClose, "aria-label": "סגור", style: { background: "none", border: "none", cursor: "pointer", padding: 4, color: "var(--ink)" } },
                         React.createElement(X, { size: 18 }))),
 
-                React.createElement("p", { style: { fontSize: "0.85rem", color: "var(--ink-muted)", marginBottom: 12 } }, user && user.email),
-
                 React.createElement("div", { className: "zl-panes" },
                     React.createElement("button", {
                         type: "button", className: "zl-pane", "data-on": pane === "profile" ? "true" : "false",
@@ -2485,7 +2553,10 @@ function AccountSheet({ vocab, letters, sentences, idioms, checklist, exams, pro
                         }),
                         React.createElement("div", { style: { display: "flex", alignItems: "center", gap: 10 } },
                             React.createElement(PrimaryButton, { onClick: saveName, disabled: name.trim() === ((profile && profile.name) || "") }, "שמור שם"),
-                            saved ? React.createElement("span", { className: "zl-anim", style: { fontSize: "0.8rem", fontWeight: 700, color: "var(--ok)" } }, "נשמר") : null)),
+                            saved ? React.createElement("span", { className: "zl-anim", style: { fontSize: "0.8rem", fontWeight: 700, color: "var(--ok)" } }, "נשמר") : null),
+                        /* Beneath the name it belongs to, rather than floating
+                           above the tabs as a header of its own. */
+                        React.createElement("p", { style: { fontSize: "0.76rem", color: "var(--ink-muted)", marginTop: 10, direction: "ltr", textAlign: "right", wordBreak: "break-all" } }, user && user.email)),
 
                     React.createElement("button", { type: "button", className: "zl-guidecard", onClick: onShowGuide },
                         React.createElement(BookOpen, { size: 30 }),
@@ -2857,7 +2928,7 @@ function FlashcardPractice({ deckKind, banks, applyResult, onBack, dir, setDir, 
     }, [pos, dir, order]);
 
     useEffect(() => {
-        if (finished && onSessionDone) onSessionDone();
+        if (finished && onSessionDone) onSessionDone({ mode: "flashcards", right: tally.right, total: tally.right + tally.wrong });
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [finished]);
 
@@ -2934,8 +3005,11 @@ function FlashcardPractice({ deckKind, banks, applyResult, onBack, dir, setDir, 
                         justifyContent: "center",
                         textAlign: "center",
                         padding: 24,
+                        position: "relative",
                         boxShadow: "var(--shadow-sm)",
-                    } }, !flipped
+                    } },
+                    React.createElement(LangMark, { text: flipped ? face.back : face.front }),
+                    !flipped
                     ? React.createElement(React.Fragment, null,
                         React.createElement("div", { className: face.frontArabic ? "zl-arabic" : "zl-display", style: { fontSize: faceSize(face.front, face.frontArabic), fontWeight: 700, marginBottom: 8, lineHeight: 1.55 } }, face.front),
                         React.createElement("div", { style: { fontSize: "0.8rem", opacity: 0.65 } }, "(לחץ להפיכה)"))
@@ -3020,8 +3094,26 @@ function ChoiceGrid({ question, chosen, locked, onChoose }) {
         })));
 }
 
+/* Which language is on the card.
+
+   Without it the transliteration and the Hebrew look alike at a glance —
+   both are Hebrew letters — and it is easy to answer in the wrong direction
+   before realising which way round the question is. */
+function langTag(text) {
+    /* A transliteration always carries vowel points or a shadda; a plain
+       Hebrew gloss never does. */
+    return /[\u05B0-\u05BC\u05C1\u05C2\u0651]/.test(String(text || "")) ? "ar" : "he";
+}
+
+function LangMark({ text }) {
+    const ar = langTag(text) === "ar";
+    return React.createElement("span", { className: "zl-lang", "data-ar": ar ? "true" : "false" },
+        ar ? "عربي" : "עברית");
+}
+
 function PromptBox({ text, isLetter }) {
     return React.createElement("div", { className: isLetter ? "zl-arabic" : "zl-display", style: {
+            position: "relative",
             textAlign: "center",
             fontSize: isLetter ? "3.5rem" : faceSize(text, false),
             fontWeight: 700,
@@ -3031,7 +3123,9 @@ function PromptBox({ text, isLetter }) {
             borderRadius: "var(--r-md)",
             marginBottom: 18,
             border: "1px solid var(--line)",
-        } }, text);
+        } },
+        isLetter ? null : React.createElement(LangMark, { text: text }),
+        text);
 }
 
 function AmericanQuiz({ deckKind, banks, applyResult, onBack, dir, setDir }) {
@@ -3179,7 +3273,7 @@ function MorningDrill({ banks, applyResult, onBack, onSessionDone, plan, title }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [pos, tasks]);
 
-    useEffect(() => { if (finished && onSessionDone) onSessionDone(); /* eslint-disable-next-line */ }, [finished]);
+    useEffect(() => { if (finished && onSessionDone) onSessionDone({ mode: plan ? "typed" : "morning", right: score.correct, total: score.total }); /* eslint-disable-next-line */ }, [finished]);
     useEffect(() => () => { if (timerRef.current) clearTimeout(timerRef.current); }, []);
 
     if (deck.length < 4) {
@@ -3408,7 +3502,7 @@ function SentenceBuilderSession({ banks, applyResult, onBack, dir, setDir, onSes
 
     useEffect(() => { startSession(); /* eslint-disable-next-line */ }, [data.length]);
     useEffect(() => { setTaskDir(resolveDir(dir)); setResult(null); /* eslint-disable-next-line */ }, [pos, dir, order]);
-    useEffect(() => { if (finished && onSessionDone) onSessionDone(); /* eslint-disable-next-line */ }, [finished]);
+    useEffect(() => { if (finished && onSessionDone) onSessionDone({ mode: "builder", right: tally.right, total: tally.right + tally.wrong }); /* eslint-disable-next-line */ }, [finished]);
 
     if (data.length === 0) {
         return (React.createElement("div", { className: "zl-anim" },
@@ -3454,7 +3548,10 @@ function SentenceBuilderSession({ banks, applyResult, onBack, dir, setDir, onSes
    tiles is easier than producing the word, so each correct answer is worth
    the same as a multiple-choice answer rather than a typed one.
    ========================================================================= */
-const GAME_SIZES = { pairs: 4, clock: 60, blank: 5 };
+/* Six pairs rather than four: even meeting 1 offers twenty gender pairs and
+   fifty singular/plural ones, so there is no risk of the same tiles coming
+   round again within a sitting. */
+const GAME_SIZES = { pairs: 6, clock: 60, blank: 5 };
 
 /* ---- pairing ------------------------------------------------------------
    Two columns of tiles; tap one on each side to join them. The pairs come
@@ -3508,7 +3605,7 @@ function PairGame({ kind, banks, applyResult, onBack, onSessionDone }) {
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [done, rounds.length]);
-    useEffect(() => { if (finished && onSessionDone) onSessionDone(); /* eslint-disable-next-line */ }, [finished]);
+    useEffect(() => { if (finished && onSessionDone) onSessionDone({ mode: "pairs", right: tally.right, total: tally.right + tally.wrong }); /* eslint-disable-next-line */ }, [finished]);
     useEffect(() => () => { if (timerRef.current) clearTimeout(timerRef.current); }, []);
 
     if (rounds.length < 2) {
@@ -3539,21 +3636,16 @@ function PairGame({ kind, banks, applyResult, onBack, onSessionDone }) {
         }
     };
 
-    const tile = (text, sub, active, cleared, wrong, onClick) => React.createElement("button", {
+    /* No translation on the tile: with it, the pairing could be solved by
+       matching the Hebrew and the Arabic forms never read. Both columns use
+       one fixed height so the grid stays square however long a word is. */
+    const tile = (text, active, cleared, wrong, onClick) => React.createElement("button", {
         type: "button", onClick: onClick, disabled: cleared,
-        className: wrong ? "zl-shake" : (cleared ? "zl-pop" : ""),
-        style: {
-            width: "100%", textAlign: "right", font: "inherit", cursor: cleared ? "default" : "pointer",
-            border: "1px solid " + (cleared ? "var(--ok)" : active ? "var(--navy)" : "var(--line)"),
-            background: cleared ? "var(--ok)" : "var(--surface)",
-            color: cleared ? "#fff" : "var(--ink)",
-            opacity: cleared ? 0.55 : 1,
-            borderRadius: 10, padding: "11px 12px", marginBottom: 8,
-            boxShadow: cleared ? "none" : "var(--shadow-sm)",
-        },
-    },
-        React.createElement("span", { style: { display: "block", fontWeight: 700, fontSize: "0.95rem" } }, text),
-        sub ? React.createElement("span", { style: { display: "block", fontSize: "0.72rem", opacity: 0.7, marginTop: 2 } }, sub) : null);
+        className: "zl-pairtile" + (wrong ? " zl-shake" : (cleared ? " zl-pop" : "")),
+        "data-on": active ? "true" : "false",
+        "data-done": cleared ? "true" : "false",
+        onClickCapture: undefined,
+    }, text);
 
     return (React.createElement("div", { className: "zl-anim" },
         React.createElement(BackLink, { onClick: onBack }, "חזרה לשיטות תרגול"),
@@ -3566,11 +3658,11 @@ function PairGame({ kind, banks, applyResult, onBack, onSessionDone }) {
             React.createElement("div", { style: { display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 } },
                 React.createElement("div", null, rounds.map((r, i) =>
                     React.createElement("div", { key: "l" + i },
-                        tile(r.left.front, r.left.back, leftPick === i, !!done[i], false,
+                        tile(r.left.front, leftPick === i, !!done[i], false,
                              () => setLeftPick(leftPick === i ? null : i))))),
                 React.createElement("div", null, rightOrder.map((idx) =>
                     React.createElement("div", { key: "r" + idx },
-                        tile(rounds[idx].right.front, null, false, !!done[idx], missed === idx,
+                        tile(rounds[idx].right.front, false, !!done[idx], missed === idx,
                              () => answer(idx))))))),
         React.createElement("p", { style: { textAlign: "center", fontSize: "0.8rem", color: "var(--ink-muted)", marginTop: 12 } },
             tally.right + " נכון · " + tally.wrong + " טעויות")));
@@ -3615,7 +3707,7 @@ function ClockGame({ banks, applyResult, onBack, dir, setDir, onSessionDone }) {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [pos, order, running]);
 
-    useEffect(() => { if (finished && onSessionDone) onSessionDone(); /* eslint-disable-next-line */ }, [finished]);
+    useEffect(() => { if (finished && onSessionDone) onSessionDone({ mode: "clock", right: score.correct, total: score.total }); /* eslint-disable-next-line */ }, [finished]);
     useEffect(() => () => { if (stepRef.current) clearTimeout(stepRef.current); }, []);
 
     if (deck.length < 4) {
@@ -3736,7 +3828,7 @@ function BlankGame({ banks, applyResult, onBack, dir, setDir, onSessionDone }) {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [pos, order, dir]);
 
-    useEffect(() => { if (finished && onSessionDone) onSessionDone(); /* eslint-disable-next-line */ }, [finished]);
+    useEffect(() => { if (finished && onSessionDone) onSessionDone({ mode: "blank", right: tally.right, total: tally.right + tally.wrong }); /* eslint-disable-next-line */ }, [finished]);
 
     if (deck.length === 0) {
         return (React.createElement("div", { className: "zl-anim" },
@@ -4054,7 +4146,7 @@ function PracticeTab({ screen, setScreen, banks, applyResult, onSessionDone, onE
             deckKind: deck, banks: banks, applyResult: applyResult,
             onBack: backToList(method), dir: dir, setDir: setDir,
             size: screen.size, daily: screen.limit === "daily",
-            onSessionDone: () => onSessionDone((deck === "sentences" || deck === "idioms") ? "noon" : "morning"),
+            onSessionDone: (info) => onSessionDone((deck === "sentences" || deck === "idioms") ? "noon" : "morning", info),
         });
     }
     if (screen && screen.screen === "quiz") {
@@ -4066,7 +4158,7 @@ function PracticeTab({ screen, setScreen, banks, applyResult, onSessionDone, onE
     if (screen && screen.screen === "builder") {
         return React.createElement(SentenceBuilderSession, {
             banks: banks, applyResult: applyResult, onBack: backToList("sentences"),
-            dir: dir, setDir: setDir, onSessionDone: () => onSessionDone("evening"),
+            dir: dir, setDir: setDir, onSessionDone: (info) => onSessionDone("evening", info),
         });
     }
     if (screen && screen.screen === "typed") {
@@ -4074,32 +4166,32 @@ function PracticeTab({ screen, setScreen, banks, applyResult, onSessionDone, onE
             banks: banks, applyResult: applyResult,
             plan: TYPED_PLAN, title: "הקלדה מהזיכרון",
             onBack: backToList("typed"),
-            onSessionDone: () => onSessionDone("morning"),
+            onSessionDone: (info) => onSessionDone("morning", info),
         });
     }
     if (screen && screen.screen === "morning") {
         return React.createElement(MorningDrill, {
             banks: banks, applyResult: applyResult,
             onBack: backToList("flashcards"),
-            onSessionDone: () => onSessionDone("morning"),
+            onSessionDone: (info) => onSessionDone("morning", info),
         });
     }
     if (screen && screen.screen === "pairs") {
         return React.createElement(PairGame, {
             kind: screen.kind || "number", banks: banks, applyResult: applyResult,
-            onBack: backToList("games"), onSessionDone: () => onSessionDone("noon"),
+            onBack: backToList("games"), onSessionDone: (info) => onSessionDone("noon", info),
         });
     }
     if (screen && screen.screen === "clock") {
         return React.createElement(ClockGame, {
             banks: banks, applyResult: applyResult, onBack: backToList("games"),
-            dir: dir, setDir: setDir, onSessionDone: () => onSessionDone("noon"),
+            dir: dir, setDir: setDir, onSessionDone: (info) => onSessionDone("noon", info),
         });
     }
     if (screen && screen.screen === "blank") {
         return React.createElement(BlankGame, {
             banks: banks, applyResult: applyResult, onBack: backToList("games"),
-            dir: dir, setDir: setDir, onSessionDone: () => onSessionDone("noon"),
+            dir: dir, setDir: setDir, onSessionDone: (info) => onSessionDone("noon", info),
         });
     }
     if (screen && screen.screen === "exam") {
@@ -4111,10 +4203,14 @@ function PracticeTab({ screen, setScreen, banks, applyResult, onSessionDone, onE
     }
 
     return (React.createElement("div", { className: "zl-anim" },
-        React.createElement(SectionHeader, { title: "שיטות תרגול", subtitle: "כל התרגולים בסדר אקראי, עם דגש על מה שפחות זכרת" }),
-        React.createElement("div", { className: "zl-dirbar" },
-            React.createElement("span", { className: "zl-dirbar-label" }, "כיוון התרגול"),
-            React.createElement(DirectionToggle, { value: dir, onChange: setDir })),
+        React.createElement(SectionHeader, {
+            title: "שיטות תרגול",
+            subtitle: "כל התרגולים בסדר אקראי, עם דגש על מה שפחות זכרת",
+            /* On the heading line rather than in a bar of its own: the space
+               beside the title was empty, and the row it used to occupy was
+               pushing the methods themselves down the page. */
+            aside: React.createElement(DirectionToggle, { value: dir, onChange: setDir }),
+        }),
         PRACTICE_METHODS.map((m) => (React.createElement(MethodRow, {
             key: m.id,
             method: m,
@@ -4767,7 +4863,7 @@ function TopicRow({ name, counts, total }) {
         React.createElement("span", { className: "zl-trow-val" }, counts.mastered + "/" + total)));
 }
 
-function StatsTab({ vocab, letters, sentences, idioms, checklist, meeting }) {
+function StatsTab({ vocab, letters, sentences, idioms, checklist, meeting, profile }) {
     const upTo = meeting || 1;
     /* Statistics describe the material actually in play, so the numbers match
        what the practice queues are drawing from. */
@@ -4889,6 +4985,49 @@ function StatsTab({ vocab, letters, sentences, idioms, checklist, meeting }) {
                     React.createElement("span", { style: { fontWeight: 700, fontSize: "0.9rem" } }, w.front),
                     React.createElement("span", { style: { fontSize: "0.82rem", color: "var(--ink-muted)" } }, w.back),
                     React.createElement("span", { style: { fontSize: "0.78rem", color: "var(--bad)", fontWeight: 700 } }, "נכשלת " + w.wrongCount))))),
+
+        /* --- how you practise ---
+           Not what you know but how you go about learning it: which mode
+           serves you best, which you never open, and the one score in the
+           app that is worth beating. */
+        (function () {
+            const stats = (profile && profile.modeStats) || {};
+            const used = Object.keys(stats).filter((k) => stats[k].asked > 0);
+            if (used.length === 0) return null;
+
+            const rate = (k) => stats[k].right / stats[k].asked;
+            const best = used.slice().sort((a, b) => rate(b) - rate(a))[0];
+            const runs = used.slice().sort((a, b) => stats[a].runs - stats[b].runs)[0];
+            const clock = stats.clock;
+            const totalRuns = used.reduce((n, k) => n + stats[k].runs, 0);
+            const totalAsked = used.reduce((n, k) => n + stats[k].asked, 0);
+            const untouched = Object.keys(MODE_LABELS).filter((k) => !stats[k] || stats[k].asked === 0);
+
+            const line = (label, value, note) => React.createElement("div", { className: "zl-usestat" },
+                React.createElement("span", { className: "zl-usestat-label" }, label),
+                React.createElement("span", { className: "zl-usestat-value" }, value),
+                note ? React.createElement("span", { className: "zl-usestat-note" }, note) : null);
+
+            return React.createElement(Card, { style: { marginTop: 14 } },
+                React.createElement("h3", { className: "zl-display", style: { fontWeight: 700, fontSize: "1rem", marginBottom: 4 } }, "איך אתה מתרגל"),
+                React.createElement("p", { style: { fontSize: "0.8rem", color: "var(--ink-muted)", marginBottom: 10 } },
+                    totalRuns + " סשנים, " + totalAsked + " שאלות בסך הכל"),
+
+                line("השיטה שהכי עובדת לך", MODE_LABELS[best] || best,
+                     Math.round(rate(best) * 100) + "% נכון"),
+                used.length > 1
+                    ? line("הכי פחות בשימוש", MODE_LABELS[runs] || runs,
+                           stats[runs].runs + (stats[runs].runs === 1 ? " סשן" : " סשנים"))
+                    : null,
+                clock && clock.best > 0
+                    ? line("שיא בנגד השעון", clock.best + " נכון", "בדקה אחת")
+                    : null,
+                untouched.length > 0
+                    ? React.createElement("p", { style: { fontSize: "0.78rem", color: "var(--ink-muted)", marginTop: 10, lineHeight: 1.6 } },
+                        "עוד לא ניסית: " + untouched.map((k) => MODE_LABELS[k]).join(" · "))
+                    : null);
+        })(),
+
         React.createElement("div", { style: { height: 10 } })));
 }
 
@@ -5235,7 +5374,12 @@ function ArabicLearningApp() {
        count is kept under its own key so the tick itself stays a plain
        boolean, which is what the week strip and the older stored days
        expect. */
-    const markRoutineDone = (key) => {
+    const markRoutineDone = (key, info) => {
+        /* Alongside ticking the routine, keep a tally of which mode was used
+           and how it went — nothing else records that. */
+        if (info && info.mode && info.total > 0) {
+            setProfile((prev) => ({ ...(prev || {}), modeStats: recordUse(prev, info.mode, info.right, info.total) }));
+        }
         const day = localDateKey();
         setChecklist((prev) => {
             const today = prev[day] || {};
@@ -5463,7 +5607,7 @@ function ArabicLearningApp() {
             })),
             tab === "vocab" && React.createElement(VocabTab, { vocab: vocab, setVocab: setVocab, meeting: profileMeeting(profile) }),
             tab === "alphabet" && React.createElement(AlphabetTab, { letters: letters }),
-            tab === "stats" && React.createElement(StatsTab, { vocab: vocab, letters: letters, sentences: sentences, idioms: idioms, checklist: checklist, meeting: meeting }))));
+            tab === "stats" && React.createElement(StatsTab, { vocab: vocab, letters: letters, sentences: sentences, idioms: idioms, checklist: checklist, meeting: meeting, profile: profile }))));
 }
 
 ReactDOM.createRoot(document.getElementById("root")).render(React.createElement(ArabicLearningApp, null));
