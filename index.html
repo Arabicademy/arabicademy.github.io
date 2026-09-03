@@ -132,7 +132,7 @@ try {
     throw new Error("React / ReactDOM לא נטענו מה-CDN (בדוק חיבור לאינטרנט או חסימת סקריפטים).");
   }
 "use strict";
-const APP_BUILD = "03.09 · 67";   // bump this every time the file is replaced
+const APP_BUILD = "03.09 · 68";   // bump this every time the file is replaced
 
 /* The institute logo, carried inline so the page stays a single file.
    LOGO_MARK is the emblem alone (header); LOGO_FULL includes the name
@@ -4674,11 +4674,21 @@ function VocabTab({ vocab, setVocab, meeting }) {
     const [editingId, setEditingId] = useState(null);
     const [confirmDelete, setConfirmDelete] = useState(null);
 
+    /* Only the material the learner has actually opened.
+
+       The tab used to be handed the whole store while practice drew from the
+       unlocked subset, so the count here claimed words that no exercise would
+       ever ask — 487 while the sessions were working from 387. Everything
+       below counts from this, not from the raw store. */
+    const inPlay = useMemo(
+        () => vocab.filter((w) => isUnlocked(w, meeting || TOTAL_MEETINGS)),
+        [vocab, meeting]);
+
     const topics = useMemo(() => {
         const seen = [];
-        vocab.forEach((w) => { if (w.topic && seen.indexOf(w.topic) === -1) seen.push(w.topic); });
+        inPlay.forEach((w) => { if (w.topic && seen.indexOf(w.topic) === -1) seen.push(w.topic); });
         return seen;
-    }, [vocab]);
+    }, [inPlay]);
 
     // search strips vowel points, so "כתאב" finds "כְּתַאבּ" without typing nikud
     const bare = (text) => String(text || "").replace(/[\u0591-\u05C7\u0610-\u065F]/g, "");
@@ -4686,19 +4696,16 @@ function VocabTab({ vocab, setVocab, meeting }) {
     const toggleTopic = (t) => setPicked((prev) => (prev.indexOf(t) === -1 ? prev.concat([t]) : prev.filter((x) => x !== t)));
     const toggleMeeting = (m) => setPickedMeetings((prev) => (prev.indexOf(m) === -1 ? prev.concat([m]) : prev.filter((x) => x !== m)));
 
-    /* Only the meetings the learner has opened: offering to filter by
-       material they have not reached would list empty boxes. */
     const openMeetings = useMemo(() => {
-        const upTo = meeting || TOTAL_MEETINGS;
         const seen = [];
-        vocab.forEach((w) => {
+        inPlay.forEach((w) => {
             const m = itemMeeting(w);
-            if (m && m <= upTo && seen.indexOf(m) === -1) seen.push(m);
+            if (m && seen.indexOf(m) === -1) seen.push(m);
         });
         return seen.sort((a, b) => a - b);
-    }, [vocab, meeting]);
+    }, [inPlay]);
 
-    const visible = vocab.filter((w) => {
+    const visible = inPlay.filter((w) => {
         if (picked.length > 0 && picked.indexOf(w.topic) === -1) return false;
         if (pickedMeetings.length > 0 && pickedMeetings.indexOf(itemMeeting(w)) === -1) return false;
         if (!needle) return true;
@@ -4792,13 +4799,13 @@ function VocabTab({ vocab, setVocab, meeting }) {
                 return React.createElement("button", { key: m, type: "button", className: "zl-sortrow", "data-on": on ? "true" : "false", onClick: () => toggleMeeting(m) },
                     React.createElement("span", { className: "zl-sortbox" }, on ? React.createElement(Check, { size: 12 }) : null),
                     React.createElement("span", { style: { flex: 1, fontWeight: on ? 700 : 500 } }, "מפגש " + m),
-                    React.createElement("span", { className: "zl-sortcount" }, vocab.filter((w) => itemMeeting(w) === m).length));
+                    React.createElement("span", { className: "zl-sortcount" }, inPlay.filter((w) => itemMeeting(w) === m).length));
             }) : topics.map((t) => {
                 const on = picked.indexOf(t) !== -1;
                 return React.createElement("button", { key: t, type: "button", className: "zl-sortrow", "data-on": on ? "true" : "false", onClick: () => toggleTopic(t) },
                     React.createElement("span", { className: "zl-sortbox" }, on ? React.createElement(Check, { size: 12 }) : null),
                     React.createElement("span", { style: { flex: 1, fontWeight: on ? 700 : 500 } }, t),
-                    React.createElement("span", { className: "zl-sortcount" }, vocab.filter((w) => w.topic === t).length));
+                    React.createElement("span", { className: "zl-sortcount" }, inPlay.filter((w) => w.topic === t).length));
             }),
             React.createElement("div", { className: "zl-sortactions" },
                 React.createElement(PrimaryButton, { variant: "outline",
