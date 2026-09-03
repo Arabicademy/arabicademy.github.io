@@ -132,7 +132,7 @@ try {
     throw new Error("React / ReactDOM לא נטענו מה-CDN (בדוק חיבור לאינטרנט או חסימת סקריפטים).");
   }
 "use strict";
-const APP_BUILD = "03.09 · 68";   // bump this every time the file is replaced
+const APP_BUILD = "03.09 · 69";   // bump this every time the file is replaced
 
 /* The institute logo, carried inline so the page stays a single file.
    LOGO_MARK is the emblem alone (header); LOGO_FULL includes the name
@@ -4780,9 +4780,10 @@ function VocabTab({ vocab, setVocab, meeting }) {
                 React.createElement(Plus, { size: 15 }),
                 "\u05D4\u05D5\u05E1\u05E3 \u05DE\u05D9\u05DC\u05D4"),
             React.createElement("span", { style: { fontSize: "0.82rem", color: "var(--ink-muted)" } },
-                picked.length === 0
-                    ? "\u05DE\u05E6\u05D9\u05D2 \u05D0\u05EA \u05DB\u05DC " + vocab.length + " \u05D4\u05DE\u05D9\u05DC\u05D9\u05DD"
-                    : visible.length + " \u05DE\u05EA\u05D5\u05DA " + vocab.length + " \u05DE\u05D9\u05DC\u05D9\u05DD")),
+                /* Counts the unlocked material, matching the list beneath it. */
+                (picked.length === 0 && pickedMeetings.length === 0 && !needle)
+                    ? "\u05DE\u05E6\u05D9\u05D2 \u05D0\u05EA \u05DB\u05DC " + inPlay.length + " \u05D4\u05DE\u05D9\u05DC\u05D9\u05DD"
+                    : visible.length + " \u05DE\u05EA\u05D5\u05DA " + inPlay.length + " \u05DE\u05D9\u05DC\u05D9\u05DD")),
         sortOpen ? React.createElement("div", { className: "zl-sortpanel zl-anim" },
             React.createElement("div", { className: "zl-panes", style: { marginBottom: 10 } },
                 React.createElement("button", {
