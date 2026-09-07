@@ -132,7 +132,7 @@ try {
     throw new Error("React / ReactDOM לא נטענו מה-CDN (בדוק חיבור לאינטרנט או חסימת סקריפטים).");
   }
 "use strict";
-const APP_BUILD = "03.09 · 71";   // bump this every time the file is replaced
+const APP_BUILD = "07.09 · 73";   // bump this every time the file is replaced
 
 /* The institute logo, carried inline so the page stays a single file.
    LOGO_MARK is the emblem alone (header); LOGO_FULL includes the name
@@ -529,6 +529,22 @@ const GLOBAL_CSS = `
     .zl-pane[data-on="true"] {
       background: var(--surface); color: var(--navy);
       box-shadow: var(--shadow-sm);
+    }
+
+    /* ---- the routine tick ----
+       Round, in the app's own navy, and quiet when unticked: the platform
+       checkbox drew a blue square that belonged to no other element here. */
+    .zl-tick {
+      flex: 0 0 24px; width: 24px; height: 24px; padding: 0;
+      display: flex; align-items: center; justify-content: center;
+      border: 1.6px solid var(--line); border-radius: 50%;
+      background: var(--surface); color: var(--surface);
+      cursor: pointer; transition: background 0.18s, border-color 0.18s, transform 0.12s;
+    }
+    .zl-tick:hover { border-color: var(--navy); }
+    .zl-tick:active { transform: scale(0.9); }
+    .zl-tick[data-on="true"] {
+      background: var(--navy); border-color: var(--navy);
     }
 
     /* ---- how you practise ---- */
@@ -1571,7 +1587,7 @@ const SENTENCES = [
 
     // ---- meeting 3, page 36: construct-state drills ----
     { id: 50, hebrew: "זה מחסן המסגד.", arabic: "הַאדַא מַחְ'זַנִ (א)לְמַסְגִ'ד.", meeting: 3 },
-    { id: 51, hebrew: "ההוא מסגד השכונה.", arabic: "הַדַאכּ מַסְגִ'ד (א)לְחַארַה.", meeting: 3 },
+    { id: 51, hebrew: "ההוא מסגד השכונה.", arabic: "הַדַאכּ מַסְג'דִ (א)לְחַארַה.", meeting: 3 },
     { id: 52, hebrew: "זה מטבח הבית.", arabic: "הַאדַא מַטְבַּחִ' (אל)דַّאר.", meeting: 3 },
     { id: 53, hebrew: "זה חדר הילד.", arabic: "הַאדִי עֻ'רְפִת (א)לְוַלַד.", meeting: 3 },
     { id: 54, hebrew: "ההוא קיר המרפסת.", arabic: "הַדַאכּ חֵיטִ (א)לְבַּלכּוֹנֶה.", meeting: 3 },
@@ -1626,7 +1642,7 @@ const SENTENCES = [
     { id: 97, hebrew: "יש אצלכם בית ספר בכפר? אין לנו בית ספר בכפר, יש אצלנו רק גן ילדים.", arabic: "עִנְדְכֹּם מַדְרַסֶה פִי (א)לְבַּלַד? מַעִנַّאש מַדְרַסֶה בְּ(א)לְבַּלַד! עִנַّא בַּסّ רוֹצַ'ה.", meeting: 5, readOnly: true },
     { id: 98, hebrew: "אולי אחמד נמצא אצלם? לא, הוא לא אצלם, הוא נמצא אצלי בבית.", arabic: "מֻמְכֶּן אַחְמַד מַוְגּ'וד עִנְדְהֹם? לַא! הֻוֶّ מֶש עִנְדְהֹם! מַוְגּ'וד עִנְדִי פִי (אל)דַّאר.", meeting: 5, readOnly: true },
     { id: 99, hebrew: "יש לך חשבון פה בבנק? אין לי חשבון אצלכם, חשבוני בבנק אחר.", arabic: "עִנְדַכּ חְסַאבּ הוֹן בִּ(א)לְבַּנְכּ? לַא! מַעִנְדִיש חְסַאבּ עִנְדְכֹּם! חְסַאבִּי פִי בַּנְכּ תַאנִי.", meeting: 5, readOnly: true },
-    { id: 100, hebrew: "מפתחות המכונית עמך? המפתחות לא עימי, המפתחות במשרד.", arabic: "מַפַאתִיח (אל)סַיַّארַה מַעַכּ? אלְמַפַאתִיח מֶש מַעִי, (א)לְמַפַאתִיח עִנְדִי בִּ(א)לְמַכְּתַבּ.", meeting: 5, readOnly: true },
+    { id: 100, hebrew: "מפתחות המכונית עמך? המפתחות לא עימי, המפתחות במשרד.", arabic: "מַפַאתִיחִ (אל)סַיַّארַה מַעַכּ? אלְמַפַאתִיח מֶש מַעִי, (א)לְמַפַאתִיח עִנְדִי בִּ(א)לְמַכְּתַבּ.", meeting: 5, readOnly: true },
     { id: 101, hebrew: "הארנק החדש עמך? הארנק לא עימי, נמצא במכונית.", arabic: "אִ(ל)גֻ'ّזְדַאן (א)לִגְ'דִיד מַעַכּ? אִ(ל)גֻ'ّזְדַאן מֶש מַעִי, מַוְגּ'וד עִנְדִי בִּ(אל)סַיַّארַה.", meeting: 5, readOnly: true },
     { id: 102, hebrew: "יש לכם טלוויזיה בבית? אין לנו טלוויזיה בבית, רק בבית אבי.", arabic: "אִנְתוּ אִלְכֹּם תֵלֵפִזְיוֹן בִּ(אל)דַّאר? מַלְנַאש תֵלֵפִזְיוֹן בִּ(אל)דַّאר, בַּסّ פִי בֵּית אַבּוּי.", meeting: 5, readOnly: true },
     { id: 103, hebrew: "יש לנו חברים באוניברסיטה, הם סטודנטים חדשים.", arabic: "אִלְנַא אַצְחַאבּ פִי (אל)גַ'אמְעַה, הֵמّ טֻלַّאבּ גְ'דַאד.", meeting: 5 },
@@ -1700,11 +1716,19 @@ const SESSION_CAP = 30;
 const SESSION_MIN = 10;
 
 /* Knowing the material well enough to build on it, which is what marking the
-   next meeting really asks. A full week of the daily routine earns about 46%,
-   so this sits just under that: reachable by keeping at it, not by turning up
-   once. Distinct from mastery, which asks whether you will still know it in a
+   next meeting really asks.
+
+   Set against what the routine actually earns. A full week of it now runs to
+   about 74 credit a day — the morning drill and the games were added after
+   this number was first chosen — which reaches roughly 62% of an average
+   meeting, and 48% of the largest one. Fifty per cent therefore means: keep
+   the routine and you are nearly there; a little practice of your own closes
+   the gap. Forty-five had become a bar that a week of routine cleared in
+   every meeting without trying.
+
+   Distinct from mastery, which asks whether you will still know it in a
    month and takes two to three weeks per meeting. */
-const READY_PCT = 45;
+const READY_PCT = 50;
 
 /* The book runs to fifteen meetings. Words and practice sentences belong to
    the meeting that introduced them; letters and idioms carry no meeting at
@@ -1741,6 +1765,10 @@ const MORNING_PLAN = { choice: 20, typed: 10 };
 /* The same drill with nothing but typed questions — the hardest way to be
    asked, and the closest to producing the word in conversation. */
 const TYPED_PLAN = { choice: 0, typed: 15 };
+/* The daily review of what has come due. Three question types over the same
+   words: a word met the same way every time is remembered in that one shape
+   and nowhere else. `card` questions are the flashcard, self-marked. */
+const REVIEW_PLAN = { choice: 0.4, typed: 0.3, card: 0.3 };
 
 const SESSION_SIZES = {
     flashcards: 20,
@@ -2517,7 +2545,9 @@ function RoutineTab({ checklist, setChecklist, navigateTo, vocab, letters }) {
                 React.createElement("div", { className: "zl-due-line" },
                     React.createElement("span", null,
                         due === 0 ? "אין מילים לחזרה היום" : due + " מילים ממתינות לחזרה היום"),
-                    React.createElement(ArrowButton, { title: "התחל חזרה", onClick: () => navigateTo({ screen: "flashcards", deck: "vocab", limit: "daily" }) })));
+                    /* Mixed rather than flashcards only: a word met the same
+                       way every time is remembered in that one shape. */
+                    React.createElement(ArrowButton, { title: "התחל חזרה", onClick: () => navigateTo({ screen: "due" }) })));
         })(),
         React.createElement(SectionHeader, { title: "\u05DE\u05E9\u05D9\u05DE\u05D5\u05EA \u05D4\u05D9\u05D5\u05DD", subtitle: "\u05E1\u05DE\u05DF \u05DB\u05DC \u05D7\u05DC\u05E7 \u05E2\u05DD \u05E1\u05D9\u05D5\u05DE\u05D5, \u05D0\u05D5 \u05DC\u05D7\u05E5 \u05E2\u05DC \u05D4\u05D7\u05E5 \u05DC\u05DE\u05E2\u05D1\u05E8 \u05D9\u05E9\u05D9\u05E8 \u05DC\u05EA\u05E8\u05D2\u05D5\u05DC" }),
         React.createElement(Card, null, ROUTINE_ITEMS.map((item, idx) => {
@@ -2539,7 +2569,15 @@ function RoutineTab({ checklist, setChecklist, navigateTo, vocab, letters }) {
                 borderBottom: idx < ROUTINE_ITEMS.length - 1 ? "1px solid var(--line)" : "none",
             } },
             React.createElement("label", { style: { display: "flex", alignItems: "center", gap: 14, cursor: "pointer" } },
-                React.createElement("input", { type: "checkbox", checked: !!todayState[item.key], onChange: () => toggle(item.key), style: { width: 20, height: 20, accentColor: "var(--ok)", cursor: "pointer" } }),
+                /* A mark of our own rather than the platform checkbox, which
+                   renders differently on every device and matched nothing
+                   else on the page. */
+                React.createElement("button", {
+                    type: "button", className: "zl-tick",
+                    "data-on": todayState[item.key] ? "true" : "false",
+                    onClick: (e) => { e.preventDefault(); toggle(item.key); },
+                    "aria-label": item.label,
+                }, todayState[item.key] ? React.createElement(Check, { size: 13 }) : null),
                 React.createElement("div", null,
                     React.createElement("div", { style: { fontWeight: 700 } }, item.label),
                     React.createElement("div", { style: { fontSize: "0.85rem", color: "var(--ink-muted)" } },
@@ -3467,6 +3505,30 @@ function AmericanQuiz({ deckKind, banks, applyResult, onBack, dir, setDir }) {
    stripped — "ב...", "מ..." — cannot be typed at all, so they are always
    asked as multiple choice however the mix falls.
    ========================================================================= */
+/* The due-word review: the same words asked three ways.
+
+   Built separately from the morning drill because it draws from a pool the
+   caller has already narrowed — whatever is actually due — rather than
+   composing a session from the whole deck. */
+function buildReviewTasks(pool, meeting, size) {
+    const picked = composeSession(pool, meeting, Math.min(size, pool.length)).map((i) => pool[i]);
+    if (picked.length === 0) return [];
+
+    const typeable = picked.filter(isTypeable);
+    const wantTyped = Math.min(Math.round(picked.length * REVIEW_PLAN.typed), typeable.length);
+    const typedKeys = new Set(shuffle(typeable).slice(0, wantTyped).map((it) => it._key));
+
+    const rest = picked.filter((it) => !typedKeys.has(it._key));
+    const wantCard = Math.round(picked.length * REVIEW_PLAN.card);
+    const cardKeys = new Set(shuffle(rest).slice(0, wantCard).map((it) => it._key));
+
+    return shuffle(picked.map((item) => {
+        if (typedKeys.has(item._key)) return { item: item, mode: "typed", dir: "ar2he" };
+        if (cardKeys.has(item._key)) return { item: item, mode: "card", dir: resolveDir("mix") };
+        return { item: item, mode: "choice", dir: resolveDir("mix") };
+    }));
+}
+
 function buildMorningTasks(deck, meeting, plan) {
     const mix = plan || MORNING_PLAN;
     const size = mix.choice + mix.typed;
@@ -3614,6 +3676,151 @@ function MorningDrill({ banks, applyResult, onBack, onSessionDone, plan, title }
                 : (question ? React.createElement(ChoiceGrid, {
                     question: question, chosen: selected, locked: !!selected, onChoose: choose,
                 }) : null))));
+}
+
+/* =========================================================================
+   DAILY REVIEW
+
+   What has come due today, asked three ways over the same words: multiple
+   choice, typed from memory, and the plain flashcard. Meeting a word in only
+   one shape teaches it in that shape alone — you can recognise it in a list
+   and still not produce it.
+   ========================================================================= */
+function DailyReview({ banks, applyResult, onBack, onSessionDone }) {
+    const deck = useMemo(() => buildDeck("vocab", banks), [banks]);
+    const dueItems = useMemo(() => deck.filter(isDue), [deck]);
+    const pool = dueItems.length > 0 ? dueItems : deck;
+    const size = dueItems.length > 0
+        ? Math.max(SESSION_MIN, Math.min(SESSION_CAP, dueItems.length))
+        : SESSION_MIN;
+
+    const [tasks, setTasks] = useState(() => buildReviewTasks(pool, banks.meeting, size));
+    const [pos, setPos] = useState(0);
+    const [question, setQuestion] = useState(null);
+    const [selected, setSelected] = useState(null);
+    const [typed, setTyped] = useState("");
+    const [flipped, setFlipped] = useState(false);
+    const [result, setResult] = useState(null);
+    const [score, setScore] = useState({ correct: 0, total: 0 });
+    const [finished, setFinished] = useState(false);
+    const timerRef = useRef(null);
+
+    const restart = () => {
+        setTasks(buildReviewTasks(pool, banks.meeting, size));
+        setPos(0); setSelected(null); setTyped(""); setFlipped(false);
+        setResult(null); setScore({ correct: 0, total: 0 }); setFinished(false);
+    };
+    useEffect(() => { restart(); /* eslint-disable-next-line */ }, [deck.length]);
+
+    useEffect(() => {
+        if (!tasks.length || pos >= tasks.length) return;
+        const t = tasks[pos];
+        setQuestion(t.mode === "choice" ? buildQuestion(deck, t.item, t.dir) : null);
+        setSelected(null); setTyped(""); setFlipped(false); setResult(null);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [pos, tasks]);
+
+    useEffect(() => {
+        if (finished && onSessionDone) onSessionDone({ mode: "flashcards", right: score.correct, total: score.total });
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [finished]);
+    useEffect(() => () => { if (timerRef.current) clearTimeout(timerRef.current); }, []);
+
+    if (deck.length < 4) {
+        return (React.createElement("div", { className: "zl-anim" },
+            React.createElement(BackLink, { onClick: onBack }, "חזרה לרוטינה"),
+            React.createElement(Card, null, "צריך לפחות 4 מילים במאגר הפתוח.")));
+    }
+    if (finished) {
+        return React.createElement(SessionSummary, {
+            title: "סיימת את החזרה היומית",
+            total: score.total, right: score.correct, wrong: score.total - score.correct,
+            restartLabel: "סבב נוסף", onRestart: restart, onBack: onBack,
+        });
+    }
+    if (!tasks.length) return null;
+    const task = tasks[pos];
+    if (!task) return null;
+
+    const advance = (delay) => {
+        if (timerRef.current) clearTimeout(timerRef.current);
+        timerRef.current = setTimeout(() => {
+            if (pos + 1 >= tasks.length) setFinished(true);
+            else setPos(pos + 1);
+        }, delay);
+    };
+    const record = (correct, kind) => {
+        setScore((s) => ({ correct: s.correct + (correct ? 1 : 0), total: s.total + 1 }));
+        applyResult(task.item, correct, kind);
+        setResult(correct ? "correct" : "wrong");
+    };
+
+    const choose = (opt) => {
+        if (selected) return;
+        setSelected(opt);
+        record(opt === question.correctAnswer, "choice");
+        advance(750);
+    };
+    const submitTyped = () => {
+        if (result || !typed.trim()) return;
+        const accepted = new Set();
+        allMeanings(task.item).forEach((sense) => acceptableAnswers(sense).forEach((k) => accepted.add(k)));
+        record(accepted.has(normAnswer(typed)), "typed");
+        advance(1400);
+    };
+    const giveUp = () => { if (!result) { record(false, "typed"); advance(1600); } };
+    const markCard = (knew) => { if (!result) { record(knew, "card"); advance(500); } };
+
+    const faces = cardFaces(task.item, task.dir === "he2ar");
+    const label = task.mode === "typed" ? "כתוב את התרגום:"
+        : task.mode === "card" ? "האם ידעת?" : "בחר את התרגום:";
+
+    return (React.createElement("div", { className: "zl-anim" },
+        React.createElement(BackLink, { onClick: onBack }, "חזרה לרוטינה"),
+        React.createElement(Card, null,
+            React.createElement("h2", { className: "zl-display", style: { fontSize: "1.15rem", fontWeight: 800, marginBottom: 12 } },
+                "חזרה יומית"),
+            React.createElement(SessionBar, { pos: pos + 1, total: tasks.length }),
+            React.createElement("p", { style: { color: "var(--ink-muted)", fontSize: "0.85rem", marginBottom: 10 } }, label),
+
+            React.createElement(PromptBox, {
+                text: (task.mode === "card" && flipped) ? faces.back : faces.front,
+                isLetter: false,
+            }),
+
+            task.mode === "typed"
+                ? React.createElement("div", null,
+                    React.createElement("input", {
+                        className: "zl-search", value: typed, disabled: !!result,
+                        placeholder: "התשובה שלך…", autoComplete: "off",
+                        onChange: (e) => setTyped(e.target.value),
+                        onKeyDown: (e) => { if (e.key === "Enter") submitTyped(); },
+                        style: { marginBottom: 10 },
+                    }),
+                    result
+                        ? React.createElement("p", { className: "zl-anim", style: {
+                            fontWeight: 700, color: result === "correct" ? "var(--ok)" : "var(--bad)" } },
+                            result === "correct" ? "נכון" : "התשובה: " + faces.back)
+                        : React.createElement("div", { style: { display: "flex", gap: 8 } },
+                            React.createElement(PrimaryButton, { onClick: submitTyped, disabled: !typed.trim() }, "בדוק"),
+                            React.createElement(PrimaryButton, { variant: "outline", onClick: giveUp }, "לא יודע")))
+
+                : task.mode === "card"
+                    ? React.createElement("div", null,
+                        !flipped
+                            ? React.createElement(PrimaryButton, {
+                                onClick: () => setFlipped(true),
+                                style: { width: "100%", justifyContent: "center" },
+                            }, "הצג תשובה")
+                            : React.createElement("div", { style: { display: "flex", gap: 8 } },
+                                React.createElement(PrimaryButton, { onClick: () => markCard(true),
+                                    style: { flex: 1, justifyContent: "center" } }, "ידעתי"),
+                                React.createElement(PrimaryButton, { variant: "danger", onClick: () => markCard(false),
+                                    style: { flex: 1, justifyContent: "center" } }, "לא ידעתי")))
+
+                    : (question ? React.createElement(ChoiceGrid, {
+                        question: question, chosen: selected, locked: !!selected, onChoose: choose,
+                    }) : null))));
 }
 
 /* =========================================================================
@@ -4410,6 +4617,13 @@ function PracticeTab({ screen, setScreen, banks, applyResult, onSessionDone, onE
         return React.createElement(SentenceBuilderSession, {
             banks: banks, applyResult: applyResult, onBack: backToList("sentences"),
             dir: dir, setDir: setDir, onSessionDone: (info) => onSessionDone("evening", info),
+        });
+    }
+    if (screen && screen.screen === "due") {
+        return React.createElement(DailyReview, {
+            banks: banks, applyResult: applyResult,
+            onBack: () => setScreen(null),
+            onSessionDone: (info) => onSessionDone("morning", info),
         });
     }
     if (screen && screen.screen === "typed") {
@@ -5244,6 +5458,58 @@ function StatsTab({ vocab, letters, sentences, idioms, checklist, meeting, profi
                     React.createElement("span", { style: { fontWeight: 700, fontSize: "0.9rem" } }, w.front),
                     React.createElement("span", { style: { fontSize: "0.82rem", color: "var(--ink-muted)" } }, w.back),
                     React.createElement("span", { style: { fontSize: "0.78rem", color: "var(--bad)", fontWeight: 700 } }, "נכשלת " + w.wrongCount))))),
+
+        /* --- where the mistakes are coming from ---
+
+           The question this answers is whether to go back. Raw error counts
+           cannot answer it: the current meeting always has more mistakes
+           simply because it is newer and larger. So each meeting is measured
+           against its own size — mistakes per word — and the meeting that is
+           costing the most is named. */
+        (function () {
+            const rows = [];
+            openVocab.forEach((w) => {
+                const m = itemMeeting(w);
+                if (!m) return;
+                let row = rows.find((r) => r.m === m);
+                if (!row) { row = { m: m, words: 0, wrong: 0, touched: 0 }; rows.push(row); }
+                row.words++;
+                row.wrong += (w.wrongCount || 0);
+                if ((w.correctCount || 0) + (w.wrongCount || 0) > 0) row.touched++;
+            });
+            const seen = rows.filter((r) => r.touched > 0);
+            if (seen.length < 2) return null;
+            seen.sort((a, b) => a.m - b.m);
+
+            /* Per practised word, so a meeting is not penalised for its size. */
+            seen.forEach((r) => { r.rate = r.wrong / r.touched; });
+            const worst = seen.slice().sort((a, b) => b.rate - a.rate)[0];
+            const now = meeting || 1;
+            const peak = Math.max.apply(null, seen.map((r) => r.rate)) || 1;
+            const totalWrong = seen.reduce((n, r) => n + r.wrong, 0);
+
+            return React.createElement(Card, { style: { marginBottom: 14 } },
+                React.createElement("h3", { className: "zl-display", style: { fontWeight: 700, fontSize: "1rem", marginBottom: 4 } }, "מאיפה הטעויות"),
+                React.createElement("p", { style: { fontSize: "0.8rem", color: "var(--ink-muted)", marginBottom: 10, lineHeight: 1.6 } },
+                    "טעויות לכל מילה שתרגלת, כדי שמפגש גדול לא ייראה גרוע רק כי יש בו יותר מילים."),
+
+                seen.map((r) => React.createElement("div", { key: r.m, className: "zl-catrow" },
+                    React.createElement("span", { className: "zl-catrow-name" },
+                        "מפגש " + r.m + (r.m === now ? " · נוכחי" : "")),
+                    React.createElement("span", { className: "zl-catrow-track" },
+                        React.createElement("span", { className: "zl-catrow-fill", style: {
+                            width: Math.round((r.rate / peak) * 100) + "%",
+                            background: r.m === worst.m ? "var(--bad)" : "var(--focus)",
+                        } })),
+                    React.createElement("span", { className: "zl-catrow-val" }, r.rate.toFixed(1)))),
+
+                React.createElement("p", { style: { fontSize: "0.82rem", lineHeight: 1.7, marginTop: 10 } },
+                    totalWrong === 0
+                        ? "עוד לא טעית באף מילה."
+                        : (worst.m === now
+                            ? "רוב הטעויות במפגש הנוכחי — זה תקין, החומר עוד טרי."
+                            : "רוב הטעויות במפגש " + worst.m + ", לא במפגש הנוכחי. שווה לחזור עליו לפני שממשיכים.")));
+        })(),
 
         /* --- how you practise ---
            Not what you know but how you go about learning it: which mode
