@@ -132,7 +132,7 @@ try {
     throw new Error("React / ReactDOM לא נטענו מה-CDN (בדוק חיבור לאינטרנט או חסימת סקריפטים).");
   }
 "use strict";
-const APP_BUILD = "07.09 · 73";   // bump this every time the file is replaced
+const APP_BUILD = "07.09 · 75";   // bump this every time the file is replaced
 
 /* The institute logo, carried inline so the page stays a single file.
    LOGO_MARK is the emblem alone (header); LOGO_FULL includes the name
@@ -1313,39 +1313,39 @@ const DEFAULT_VOCAB = [
     { id: 414, front: "עִדֵّת", back: "מספר / מניין (של פריטים)", topic: "כללי", meeting: 4 },
     { id: 415, front: "עַדַד", back: "מספר / מניין (של פריטים)", topic: "כללי", meeting: 4 },
     { id: 416, front: "מַדְחַ'ל", back: "כניסה / פתח", topic: "מקומות", form: "יחיד", pair: [417], meeting: 4 },
-    { id: 417, front: "מַדַאחֵ'ל", back: "כניסה / פתח", topic: "מקומות", form: "רבים", pair: [416], meeting: 4 },
+    { id: 417, front: "מַדַאחֵ'ל", back: "כניסות / פתחים", topic: "מקומות", form: "רבים", pair: [416], meeting: 4 },
     { id: 418, front: "פֻתְחַה", back: "כניסה / פתח", topic: "מקומות", form: "יחיד", pair: [419], meeting: 4 },
-    { id: 419, front: "פֻתְחַאת", back: "כניסה / פתח", topic: "מקומות", form: "רבים", pair: [418], meeting: 4 },
+    { id: 419, front: "פֻתְחַאת", back: "כניסות / פתחים", topic: "מקומות", form: "רבים", pair: [418], meeting: 4 },
     { id: 420, front: "רַוְצַ'ה", back: "גן (ילדים)", topic: "מקומות", form: "יחיד", pair: [421], meeting: 4 },
-    { id: 421, front: "רַוְצַ'את", back: "גן (ילדים)", topic: "מקומות", form: "רבים", pair: [420], meeting: 4 },
+    { id: 421, front: "רַוְצַ'את", back: "גני ילדים", topic: "מקומות", form: "רבים", pair: [420], meeting: 4 },
     { id: 422, front: "רַוְצַ'ת אַטְפַאל", back: "גן ילדים", topic: "מקומות", meeting: 4 },
     { id: 423, front: "טִפֶל", back: "תינוק / פעוט", topic: "אנשים ותפקידים", form: "יחיד", pair: [424], meeting: 4 },
-    { id: 424, front: "אַטְפַאל", back: "תינוק / פעוט", topic: "אנשים ותפקידים", form: "רבים", pair: [423], meeting: 4 },
+    { id: 424, front: "אַטְפַאל", back: "תינוקות / פעוטות", topic: "אנשים ותפקידים", form: "רבים", pair: [423], meeting: 4 },
     { id: 425, front: "שַאחְנֶה", back: "משאית", topic: "תחבורה", form: "יחיד", pair: [426], meeting: 4 },
-    { id: 426, front: "שַאחְנַאת", back: "משאית", topic: "תחבורה", form: "רבים", pair: [425], meeting: 4 },
+    { id: 426, front: "שַאחְנַאת", back: "משאיות", topic: "תחבורה", form: "רבים", pair: [425], meeting: 4 },
     { id: 427, front: "תַרַכّ", back: "משאית", topic: "תחבורה", form: "יחיד", pair: [428], meeting: 4 },
-    { id: 428, front: "תַרַאכַּّאת", back: "משאית", topic: "תחבורה", form: "רבים", pair: [427], meeting: 4 },
+    { id: 428, front: "תַרַאכַּّאת", back: "משאיות", topic: "תחבורה", form: "רבים", pair: [427], meeting: 4 },
     { id: 429, front: "נַקֶל", back: "תחבורה / תעבורה / העברה / העתקה", topic: "תחבורה", meeting: 4 },
     { id: 430, front: "נַקְלֶה", back: "הובלה", topic: "תחבורה", form: "יחיד", pair: [431], meeting: 4 },
-    { id: 431, front: "נַקְלַאת", back: "הובלה", topic: "תחבורה", form: "רבים", pair: [430], meeting: 4 },
+    { id: 431, front: "נַקְלַאת", back: "הובלות", topic: "תחבורה", form: "רבים", pair: [430], meeting: 4 },
     { id: 432, front: "שוֹכֶּה", back: "מזלג", topic: "חפצים", form: "יחיד", pair: [433], meeting: 4 },
-    { id: 433, front: "שְוַכּ", back: "מזלג", topic: "חפצים", form: "רבים", pair: [432], meeting: 4 },
+    { id: 433, front: "שְוַכּ", back: "מזלגות", topic: "חפצים", form: "רבים", pair: [432], meeting: 4 },
     { id: 434, front: "טַרִיק", back: "כביש / דרך", topic: "מקומות", form: "יחיד", pair: [435], meeting: 4 },
-    { id: 435, front: "טֻרֻק", back: "כביש / דרך", topic: "מקומות", form: "רבים", pair: [434], meeting: 4 },
+    { id: 435, front: "טֻרֻק", back: "כבישים / דרכים", topic: "מקומות", form: "רבים", pair: [434], meeting: 4 },
     { id: 436, front: "נֻצّ", back: "חצי", topic: "כללי", form: "יחיד", pair: [437], meeting: 4 },
-    { id: 437, front: "נְצַאצ", back: "חצי", topic: "כללי", form: "רבים", pair: [436], meeting: 4 },
+    { id: 437, front: "נְצַאצ", back: "חצאים", topic: "כללי", form: "רבים", pair: [436], meeting: 4 },
     { id: 438, front: "מַוְגּ'וד", back: "נמצא", topic: "כללי", form: "יחיד", pair: [439], meeting: 4, gender: "m", mate: 440 },
-    { id: 439, front: "מַוְגּ'וּדִין", back: "נמצא", topic: "כללי", form: "רבים", pair: [438], meeting: 4, gender: "m", mate: 441 },
+    { id: 439, front: "מַוְגּ'וּדִין", back: "נמצאים", topic: "כללי", form: "רבים", pair: [438], meeting: 4, gender: "m", mate: 441 },
     { id: 440, front: "מַוְגּ'וּדֶה", back: "נמצאת", topic: "כללי", form: "יחיד", pair: [441], meeting: 4, gender: "f", mate: 438 },
-    { id: 441, front: "מַוְגּ'וּדַאת", back: "נמצאת", topic: "כללי", form: "רבים", pair: [440], meeting: 4, gender: "f", mate: 439 },
+    { id: 441, front: "מַוְגּ'וּדַאת", back: "נמצאות", topic: "כללי", form: "רבים", pair: [440], meeting: 4, gender: "f", mate: 439 },
     { id: 442, front: "טַאלֶע", back: "עולה / יוצא", topic: "כללי", form: "יחיד", pair: [443], meeting: 4, gender: "m", mate: 444 },
-    { id: 443, front: "טַאלְעִין", back: "עולה / יוצא", topic: "כללי", form: "רבים", pair: [442], meeting: 4, gender: "m", mate: 445 },
+    { id: 443, front: "טַאלְעִין", back: "עולים / יוצאים", topic: "כללי", form: "רבים", pair: [442], meeting: 4, gender: "m", mate: 445 },
     { id: 444, front: "טַאלְעַה", back: "עולה / יוצאת", topic: "כללי", form: "יחיד", pair: [445], meeting: 4, gender: "f", mate: 442 },
-    { id: 445, front: "טַאלְעַאת", back: "עולה / יוצאת", topic: "כללי", form: "רבים", pair: [444], meeting: 4, gender: "f", mate: 443 },
+    { id: 445, front: "טַאלְעַאת", back: "עולות / יוצאות", topic: "כללי", form: "רבים", pair: [444], meeting: 4, gender: "f", mate: 443 },
     { id: 446, front: "נַאזֶל", back: "יורד", topic: "כללי", form: "יחיד", pair: [447], meeting: 4, gender: "m", mate: 448 },
-    { id: 447, front: "נַאזְלִין", back: "יורד", topic: "כללי", form: "רבים", pair: [446], meeting: 4, gender: "m", mate: 449 },
+    { id: 447, front: "נַאזְלִין", back: "יורדים", topic: "כללי", form: "רבים", pair: [446], meeting: 4, gender: "m", mate: 449 },
     { id: 448, front: "נַאזְלֶה", back: "יורדת", topic: "כללי", form: "יחיד", pair: [449], meeting: 4, gender: "f", mate: 446 },
-    { id: 449, front: "נַאזְלַאת", back: "יורדת", topic: "כללי", form: "רבים", pair: [448], meeting: 4, gender: "f", mate: 447 },
+    { id: 449, front: "נַאזְלַאת", back: "יורדות", topic: "כללי", form: "רבים", pair: [448], meeting: 4, gender: "f", mate: 447 },
     { id: 450, front: "פַגֶ'ר", back: "שחר / עלות השחר", topic: "זמן", meeting: 4 },
     { id: 451, front: "צֻבֶּח", back: "בוקר", topic: "זמן", meeting: 4 },
     { id: 452, front: "צֻ'הֶר", back: "צהריים", topic: "זמן", meeting: 4 },
@@ -1354,9 +1354,9 @@ const DEFAULT_VOCAB = [
     { id: 455, front: "מַסַא", back: "ערב", topic: "זמן", meeting: 4 },
     { id: 456, front: "לֵיל", back: "לילה", topic: "זמן", meeting: 4 },
     { id: 457, front: "צַלַאה", back: "תפילה", topic: "כללי", form: "יחיד", pair: [458], meeting: 4 },
-    { id: 458, front: "צַלַוַאת", back: "תפילה", topic: "כללי", form: "רבים", pair: [457], meeting: 4 },
+    { id: 458, front: "צַלַוַאת", back: "תפילות", topic: "כללי", form: "רבים", pair: [457], meeting: 4 },
     { id: 459, front: "צַ'וְ", back: "אור", topic: "כללי", form: "יחיד", pair: [460], meeting: 4 },
-    { id: 460, front: "אַצְ'וַאא", back: "אור", topic: "כללי", form: "רבים", pair: [459], meeting: 4 },
+    { id: 460, front: "אַצְ'וַאא", back: "אורות", topic: "כללי", form: "רבים", pair: [459], meeting: 4 },
     { id: 461, front: "עַתְמֶה", back: "חושך / אפילה", topic: "כללי", meeting: 4 },
     { id: 462, front: "מַלַאן", back: "מלא", topic: "תארים", meeting: 4, gender: "m", mate: 463 },
     { id: 463, front: "מַלַאנֶה", back: "מלאה", topic: "תארים", meeting: 4, gender: "f", mate: 462 },
@@ -1365,24 +1365,24 @@ const DEFAULT_VOCAB = [
     { id: 466, front: "בִּ(א)לְמַרַّה", back: "לגמרי / בכלל", topic: "כללי", meeting: 4 },
     { id: 467, front: "אַצֶל", back: "מקור", topic: "כללי", meeting: 4 },
     { id: 468, front: "אַצְלִי", back: "מקורי", topic: "תארים", form: "יחיד", pair: [469], meeting: 4, gender: "m", mate: 470 },
-    { id: 469, front: "אַצְלִיִّין", back: "מקורי", topic: "תארים", form: "רבים", pair: [468], meeting: 4, gender: "m", mate: 471 },
+    { id: 469, front: "אַצְלִיִّין", back: "מקוריים", topic: "תארים", form: "רבים", pair: [468], meeting: 4, gender: "m", mate: 471 },
     { id: 470, front: "אַצְלִיֶّה", back: "מקורית", topic: "תארים", form: "יחיד", pair: [471], meeting: 4, gender: "f", mate: 468 },
-    { id: 471, front: "אַצְלִיַّאת", back: "מקורית", topic: "תארים", form: "רבים", pair: [470], meeting: 4, gender: "f", mate: 469 },
+    { id: 471, front: "אַצְלִיַّאת", back: "מקוריות", topic: "תארים", form: "רבים", pair: [470], meeting: 4, gender: "f", mate: 469 },
     { id: 472, front: "מוֹקֶפ", back: "חנייה", topic: "תחבורה", form: "יחיד", pair: [473], meeting: 4 },
-    { id: 473, front: "מַוַאקֶפ", back: "חנייה", topic: "תחבורה", form: "רבים", pair: [472], meeting: 4 },
+    { id: 473, front: "מַוַאקֶפ", back: "חניות", topic: "תחבורה", form: "רבים", pair: [472], meeting: 4 },
     { id: 474, front: "דַאיְמַן", back: "תמיד", topic: "זמן", meeting: 4 },
     { id: 475, front: "עַאמוּד", back: "עמוד", topic: "חפצים", form: "יחיד", pair: [476], meeting: 4 },
-    { id: 476, front: "עֻמְדַאן", back: "עמוד", topic: "חפצים", form: "רבים", pair: [475], meeting: 4 },
+    { id: 476, front: "עֻמְדַאן", back: "עמודים", topic: "חפצים", form: "רבים", pair: [475], meeting: 4 },
     { id: 477, front: "לַחֶם", back: "בשר", topic: "אוכל", form: "יחיד", pair: [478], meeting: 4 },
-    { id: 478, front: "לְחוּם", back: "בשר", topic: "אוכל", form: "רבים", pair: [477], meeting: 4 },
+    { id: 478, front: "לְחוּם", back: "בשרים", topic: "אוכל", form: "רבים", pair: [477], meeting: 4 },
     { id: 479, front: "מַלְחַמֶה", back: "אטליז / בית מטבחיים", topic: "מקומות", form: "יחיד", pair: [480], meeting: 4 },
-    { id: 480, front: "מַלַאחֶם", back: "אטליז / בית מטבחיים", topic: "מקומות", form: "רבים", pair: [479], meeting: 4 },
+    { id: 480, front: "מַלַאחֶם", back: "אטליזים / בתי מטבחיים", topic: "מקומות", form: "רבים", pair: [479], meeting: 4 },
     { id: 481, front: "חֻ'בֶּז", back: "לחם", topic: "אוכל", meeting: 4 },
     { id: 482, front: "מַחְ'בַּז", back: "מאפייה", topic: "מקומות", form: "יחיד", pair: [483], meeting: 4 },
-    { id: 483, front: "מַחַ'אבֶּז", back: "מאפייה", topic: "מקומות", form: "רבים", pair: [482, 484], meeting: 4 },
+    { id: 483, front: "מַחַ'אבֶּז", back: "מאפיות", topic: "מקומות", form: "רבים", pair: [482, 484], meeting: 4 },
     { id: 484, front: "מַחְ'בַּזֶה", back: "מאפייה", topic: "מקומות", form: "יחיד", pair: [483], meeting: 4 },
     { id: 485, front: "מַטְעַם", back: "מסעדה", topic: "מקומות", form: "יחיד", pair: [486], meeting: 4 },
-    { id: 486, front: "מַטַאעֶם", back: "מסעדה", topic: "מקומות", form: "רבים", pair: [485], meeting: 4 },
+    { id: 486, front: "מַטַאעֶם", back: "מסעדות", topic: "מקומות", form: "רבים", pair: [485], meeting: 4 },
     { id: 487, front: "כַּהְרַבַּא", back: "חשמל", topic: "כללי", meeting: 4 },
 
     // ---- meeting 5 ----
@@ -1392,107 +1392,107 @@ const DEFAULT_VOCAB = [
     { id: 491, front: "נַצַّארַאת", back: "משקפיים", topic: "חפצים", meeting: 5 },
     { id: 492, front: "נַצַّארַה", back: "משקפת", topic: "חפצים", meeting: 5 },
     { id: 493, front: "מַעְלַקַה", back: "כף", topic: "חפצים", form: "יחיד", pair: [494], meeting: 5 },
-    { id: 494, front: "מַעַאלֶק", back: "כף", topic: "חפצים", form: "רבים", pair: [493], meeting: 5 },
+    { id: 494, front: "מַעַאלֶק", back: "כפות", topic: "חפצים", form: "רבים", pair: [493], meeting: 5 },
     { id: 495, front: "מַעְלַקַה זְעִ'ירֶה", back: "כפית", topic: "חפצים", meeting: 5 },
     { id: 496, front: "סַכִּّינֶה", back: "סכין", topic: "חפצים", form: "יחיד", pair: [497], meeting: 5 },
-    { id: 497, front: "סַכַּאכִּין", back: "סכין", topic: "חפצים", form: "רבים", pair: [496], meeting: 5 },
+    { id: 497, front: "סַכַּאכִּין", back: "סכינים", topic: "חפצים", form: "רבים", pair: [496], meeting: 5 },
     { id: 498, front: "טַנְגַ'רַה", back: "סיר", topic: "חפצים", form: "יחיד", pair: [499], meeting: 5 },
-    { id: 499, front: "טַנַאגֶ'ר", back: "סיר", topic: "חפצים", form: "רבים", pair: [498], meeting: 5 },
+    { id: 499, front: "טַנַאגֶ'ר", back: "סירים", topic: "חפצים", form: "רבים", pair: [498], meeting: 5 },
     { id: 500, front: "שַוַארֶבּ", back: "שפם", topic: "כללי", meeting: 5 },
     { id: 501, front: "צוּרַה", back: "תמונה", topic: "חפצים", form: "יחיד", pair: [502], meeting: 5 },
-    { id: 502, front: "צֻוַר", back: "תמונה", topic: "חפצים", form: "רבים", pair: [501], meeting: 5 },
+    { id: 502, front: "צֻוַר", back: "תמונות", topic: "חפצים", form: "רבים", pair: [501], meeting: 5 },
     { id: 503, front: "צַחֶן", back: "צלחת", topic: "חפצים", form: "יחיד", pair: [504], meeting: 5 },
-    { id: 504, front: "צְחוּן", back: "צלחת", topic: "חפצים", form: "רבים", pair: [503], meeting: 5 },
+    { id: 504, front: "צְחוּן", back: "צלחות", topic: "חפצים", form: "רבים", pair: [503], meeting: 5 },
     { id: 505, front: "צַנְדוּק", back: "תיבה / קופה", topic: "חפצים", form: "יחיד", pair: [506], meeting: 5 },
-    { id: 506, front: "צַנַאדִיק", back: "תיבה / קופה", topic: "חפצים", form: "רבים", pair: [505], meeting: 5 },
+    { id: 506, front: "צַנַאדִיק", back: "תיבות / קופות", topic: "חפצים", form: "רבים", pair: [505], meeting: 5 },
     { id: 507, front: "בַּלְפוֹן", back: "פלאפון", topic: "חפצים", form: "יחיד", pair: [508], meeting: 5 },
-    { id: 508, front: "בַּלְפוֹנַאת", back: "פלאפון", topic: "חפצים", form: "רבים", pair: [507], meeting: 5 },
+    { id: 508, front: "בַּלְפוֹנַאת", back: "פלאפונים", topic: "חפצים", form: "רבים", pair: [507], meeting: 5 },
     { id: 509, front: "לִיסְתַה", back: "רשימה", topic: "חפצים", form: "יחיד", pair: [510], meeting: 5 },
-    { id: 510, front: "לִיסְתַאת", back: "רשימה", topic: "חפצים", form: "רבים", pair: [509], meeting: 5 },
+    { id: 510, front: "לִיסְתַאת", back: "רשימות", topic: "חפצים", form: "רבים", pair: [509], meeting: 5 },
     { id: 511, front: "טַאקִיֶّה", back: "כובע", topic: "לבוש", form: "יחיד", pair: [512], meeting: 5 },
-    { id: 512, front: "טַוַאקִי", back: "כובע", topic: "לבוש", form: "רבים", pair: [511], meeting: 5 },
+    { id: 512, front: "טַוַאקִי", back: "כובעים", topic: "לבוש", form: "רבים", pair: [511], meeting: 5 },
     { id: 513, front: "אַרְצ'", back: "אדמה", topic: "מקומות", form: "יחיד", pair: [514], meeting: 5 },
-    { id: 514, front: "אַרַאצִ'י", back: "אדמה", topic: "מקומות", form: "רבים", pair: [513], meeting: 5 },
+    { id: 514, front: "אַרַאצִ'י", back: "אדמות", topic: "מקומות", form: "רבים", pair: [513], meeting: 5 },
     { id: 515, front: "קַרִיבּ", back: "קרוב משפחה / קרוב (במרחק)", topic: "אנשים ותפקידים", form: "יחיד", pair: [516], meeting: 5 },
-    { id: 516, front: "קַרַאיֶבּ", back: "קרוב משפחה / קרוב (במרחק)", topic: "אנשים ותפקידים", form: "רבים", pair: [515], meeting: 5 },
+    { id: 516, front: "קַרַאיֶבּ", back: "קרובי משפחה / קרובים", topic: "אנשים ותפקידים", form: "רבים", pair: [515], meeting: 5 },
     { id: 517, front: "מֻמְכֶּן", back: "אולי / אפשרי", topic: "כללי", meeting: 5 },
     { id: 518, front: "יִמְכֶּן", back: "אולי / אפשרי", topic: "כללי", meeting: 5 },
     { id: 519, front: "בִּיגוּז", back: "אולי / אפשרי", topic: "כללי", meeting: 5 },
     { id: 520, front: "בַּלְכִּי", back: "אולי / אפשרי", topic: "כללי", meeting: 5 },
     { id: 521, front: "מַסְכִּין", back: "מסכן", topic: "אנשים ותפקידים", form: "יחיד", pair: [522], meeting: 5 },
-    { id: 522, front: "מַסַאכִּין", back: "מסכן", topic: "אנשים ותפקידים", form: "רבים", pair: [521], meeting: 5 },
+    { id: 522, front: "מַסַאכִּין", back: "מסכנים", topic: "אנשים ותפקידים", form: "רבים", pair: [521], meeting: 5 },
     { id: 523, front: "בַּסّ", back: "רק", topic: "כללי", meeting: 5 },
     { id: 524, front: "פַקַט", back: "רק", topic: "כללי", meeting: 5 },
     { id: 525, front: "אִלַّא", back: "רק", topic: "כללי", meeting: 5 },
     { id: 526, front: "יַתִים", back: "יתום", topic: "אנשים ותפקידים", form: "יחיד", pair: [527], meeting: 5 },
-    { id: 527, front: "אַיְתַאם", back: "יתום", topic: "אנשים ותפקידים", form: "רבים", pair: [526], meeting: 5 },
+    { id: 527, front: "אַיְתַאם", back: "יתומים", topic: "אנשים ותפקידים", form: "רבים", pair: [526], meeting: 5 },
     { id: 528, front: "חְסַאבּ", back: "חשבון", topic: "כללי", form: "יחיד", pair: [529], meeting: 5 },
-    { id: 529, front: "חְסַאבַּאת", back: "חשבון", topic: "כללי", form: "רבים", pair: [528], meeting: 5 },
+    { id: 529, front: "חְסַאבַּאת", back: "חשבונות", topic: "כללי", form: "רבים", pair: [528], meeting: 5 },
     { id: 532, front: "מֻקַאבַּלֶה", back: "פגישה", topic: "כללי", form: "יחיד", pair: [533], meeting: 5 },
-    { id: 533, front: "מֻקַאבַּלַאת", back: "פגישה", topic: "כללי", form: "רבים", pair: [532], meeting: 5 },
+    { id: 533, front: "מֻקַאבַּלַאת", back: "פגישות", topic: "כללי", form: "רבים", pair: [532], meeting: 5 },
     { id: 534, front: "לְקַא", back: "פגישה", topic: "כללי", form: "יחיד", pair: [535], meeting: 5 },
-    { id: 535, front: "לְקַאאת", back: "פגישה", topic: "כללי", form: "רבים", pair: [534], meeting: 5 },
+    { id: 535, front: "לְקַאאת", back: "פגישות", topic: "כללי", form: "רבים", pair: [534], meeting: 5 },
     { id: 536, front: "גֻ'זְדַאן", back: "ארנק", topic: "חפצים", form: "יחיד", pair: [537], meeting: 5 },
-    { id: 537, front: "גַ'זַאדִין", back: "ארנק", topic: "חפצים", form: "רבים", pair: [536], meeting: 5 },
+    { id: 537, front: "גַ'זַאדִין", back: "ארנקים", topic: "חפצים", form: "רבים", pair: [536], meeting: 5 },
     { id: 538, front: "מַרְכַּז", back: "מרכז", topic: "מקומות", form: "יחיד", pair: [539], meeting: 5 },
-    { id: 539, front: "מַרַאכֶּז", back: "מרכז", topic: "מקומות", form: "רבים", pair: [538], meeting: 5 },
+    { id: 539, front: "מַרַאכֶּז", back: "מרכזים", topic: "מקומות", form: "רבים", pair: [538], meeting: 5 },
     { id: 540, front: "קַלְבּ", back: "לב", topic: "כללי", form: "יחיד", pair: [541], meeting: 5 },
-    { id: 541, front: "קְלוּבּ", back: "לב", topic: "כללי", form: "רבים", pair: [540], meeting: 5 },
+    { id: 541, front: "קְלוּבּ", back: "לבבות", topic: "כללי", form: "רבים", pair: [540], meeting: 5 },
     { id: 542, front: "נַפְס", back: "נפש / רצון / נשמה / חשק", topic: "כללי", form: "יחיד", pair: [543], meeting: 5 },
-    { id: 543, front: "נְפוּס", back: "נפש / רצון / נשמה / חשק", topic: "כללי", form: "רבים", pair: [542], meeting: 5 },
+    { id: 543, front: "נְפוּס", back: "נפשות / רצונות / נשמות / חשקים", topic: "כללי", form: "רבים", pair: [542], meeting: 5 },
     { id: 544, front: "אִשִי", back: "דבר מה / משהו / חפץ / עניין", topic: "כללי", form: "יחיד", pair: [545], meeting: 5 },
-    { id: 545, front: "אַשְיַאא", back: "דבר מה / משהו / חפץ / עניין", topic: "כללי", form: "רבים", pair: [544], meeting: 5 },
+    { id: 545, front: "אַשְיַאא", back: "דברים / חפצים / עניינים", topic: "כללי", form: "רבים", pair: [544], meeting: 5 },
     { id: 546, front: "תַאנִי", back: "שני / אחר", topic: "כללי", meeting: 5 },
     { id: 547, front: "תַאנְיֶה", back: "שנייה / אחרת (סדר)", topic: "כללי", meeting: 5 },
     { id: 548, front: "וַאחַד", back: "אחד", topic: "מספרים", meeting: 5 },
     { id: 549, front: "לַאבֶּס", back: "לובש", topic: "לבוש", form: "יחיד", pair: [550], meeting: 5, gender: "m", mate: 551 },
-    { id: 550, front: "לַאבְּסִין", back: "לובש", topic: "לבוש", form: "רבים", pair: [549], meeting: 5, gender: "m", mate: 552 },
+    { id: 550, front: "לַאבְּסִין", back: "לובשים", topic: "לבוש", form: "רבים", pair: [549], meeting: 5, gender: "m", mate: 552 },
     { id: 551, front: "לַאבְּסֶה", back: "לובשת", topic: "לבוש", form: "יחיד", pair: [552], meeting: 5, gender: "f", mate: 549 },
-    { id: 552, front: "לַאבְּסַאת", back: "לובשת", topic: "לבוש", form: "רבים", pair: [551], meeting: 5, gender: "f", mate: 550 },
+    { id: 552, front: "לַאבְּסַאת", back: "לובשות", topic: "לבוש", form: "רבים", pair: [551], meeting: 5, gender: "f", mate: 550 },
     { id: 553, front: "רַאס", back: "ראש", topic: "כללי", form: "יחיד", pair: [554], meeting: 5 },
-    { id: 554, front: "רוּס", back: "ראש", topic: "כללי", form: "רבים", pair: [553], meeting: 5 },
+    { id: 554, front: "רוּס", back: "ראשים", topic: "כללי", form: "רבים", pair: [553], meeting: 5 },
     { id: 555, front: "מֻהִם", back: "חשוב / משמעותי", topic: "תארים", meeting: 5, gender: "m", mate: 556 },
     { id: 556, front: "מֻהִמֶّה", back: "חשובה / משמעותית", topic: "תארים", meeting: 5, gender: "f", mate: 555 },
     { id: 557, front: "הַםّ", back: "דאגה / צער", topic: "כללי", form: "יחיד", pair: [558], meeting: 5 },
-    { id: 558, front: "הֻמוּם", back: "דאגה / צער", topic: "כללי", form: "רבים", pair: [557], meeting: 5 },
+    { id: 558, front: "הֻמוּם", back: "דאגות / צערים", topic: "כללי", form: "רבים", pair: [557], meeting: 5 },
     { id: 559, front: "כִּלְמֶה", back: "מילה", topic: "כללי", form: "יחיד", pair: [560], meeting: 5 },
-    { id: 560, front: "כַּלְמַאת", back: "מילה", topic: "כללי", form: "רבים", pair: [559], meeting: 5 },
+    { id: 560, front: "כַּלְמַאת", back: "מילים", topic: "כללי", form: "רבים", pair: [559], meeting: 5 },
     { id: 561, front: "כַּלַאם", back: "דיבורים (שם קיבוצי)", topic: "כללי", meeting: 5 },
     { id: 562, front: "מֻכַּאלַמֶה", back: "שיחה", topic: "כללי", form: "יחיד", pair: [563], meeting: 5 },
-    { id: 563, front: "מֻכַּאלַמַאת", back: "שיחה", topic: "כללי", form: "רבים", pair: [562], meeting: 5 },
+    { id: 563, front: "מֻכַּאלַמַאת", back: "שיחות", topic: "כללי", form: "רבים", pair: [562], meeting: 5 },
     { id: 564, front: "עַארֶף", back: "יודע", topic: "כללי", form: "יחיד", pair: [565], meeting: 5, gender: "m", mate: 566 },
-    { id: 565, front: "עַארְפִין", back: "יודע", topic: "כללי", form: "רבים", pair: [564], meeting: 5, gender: "m", mate: 567 },
+    { id: 565, front: "עַארְפִין", back: "יודעים", topic: "כללי", form: "רבים", pair: [564], meeting: 5, gender: "m", mate: 567 },
     { id: 566, front: "עַארְפֶה", back: "יודעת", topic: "כללי", form: "יחיד", pair: [567], meeting: 5, gender: "f", mate: 564 },
-    { id: 567, front: "עַארְפַאת", back: "יודעת", topic: "כללי", form: "רבים", pair: [566], meeting: 5, gender: "f", mate: 565 },
+    { id: 567, front: "עַארְפַאת", back: "יודעות", topic: "כללי", form: "רבים", pair: [566], meeting: 5, gender: "f", mate: 565 },
     { id: 568, front: "שַאיֶף", back: "רואה", topic: "כללי", form: "יחיד", pair: [569], meeting: 5, gender: "m", mate: 570 },
-    { id: 569, front: "שַאיְפִין", back: "רואה", topic: "כללי", form: "רבים", pair: [568], meeting: 5, gender: "m", mate: 571 },
+    { id: 569, front: "שַאיְפִין", back: "רואים", topic: "כללי", form: "רבים", pair: [568], meeting: 5, gender: "m", mate: 571 },
     { id: 570, front: "שַאיְפֶה", back: "רואה", topic: "כללי", form: "יחיד", pair: [571], meeting: 5, gender: "f", mate: 568 },
-    { id: 571, front: "שַאיְפַאת", back: "רואה", topic: "כללי", form: "רבים", pair: [570], meeting: 5, gender: "f", mate: 569 },
+    { id: 571, front: "שַאיְפַאת", back: "רואים", topic: "כללי", form: "רבים", pair: [570], meeting: 5, gender: "f", mate: 569 },
     { id: 572, front: "רַקַם", back: "מספר", topic: "כללי", form: "יחיד", pair: [573], meeting: 5 },
-    { id: 573, front: "אַרְקַאם", back: "מספר", topic: "כללי", form: "רבים", pair: [572], meeting: 5 },
+    { id: 573, front: "אַרְקַאם", back: "מספרים", topic: "כללי", form: "רבים", pair: [572], meeting: 5 },
     { id: 574, front: "מַוְצ'וּע", back: "נושא", topic: "כללי", form: "יחיד", pair: [575], meeting: 5 },
-    { id: 575, front: "מַוַאצִ'יע", back: "נושא", topic: "כללי", form: "רבים", pair: [574], meeting: 5 },
+    { id: 575, front: "מַוַאצִ'יע", back: "נושאים", topic: "כללי", form: "רבים", pair: [574], meeting: 5 },
     { id: 576, front: "וַצֵ'ע", back: "מצב", topic: "כללי", form: "יחיד", pair: [577], meeting: 5 },
-    { id: 577, front: "אַוְצַ'אע", back: "מצב", topic: "כללי", form: "רבים", pair: [576], meeting: 5 },
+    { id: 577, front: "אַוְצַ'אע", back: "מצבים", topic: "כללי", form: "רבים", pair: [576], meeting: 5 },
     { id: 578, front: "מְנִיח", back: "טוב", topic: "תארים", form: "יחיד", pair: [579], meeting: 5, gender: "m", mate: 580 },
-    { id: 579, front: "מְנַאח", back: "טוב", topic: "תארים", form: "רבים", pair: [578], meeting: 5, gender: "m" },
+    { id: 579, front: "מְנַאח", back: "טובים", topic: "תארים", form: "רבים", pair: [578], meeting: 5, gender: "m" },
     { id: 580, front: "מְנִיחַה", back: "טובה", topic: "תארים", meeting: 5, gender: "f", mate: 578 },
     { id: 581, front: "חַאל", back: "מצב / מקרה", topic: "כללי", form: "יחיד", pair: [582], meeting: 5 },
-    { id: 582, front: "אַחְוַאל", back: "מצב / מקרה", topic: "כללי", form: "רבים", pair: [581], meeting: 5 },
+    { id: 582, front: "אַחְוַאל", back: "מצבים / מקרים", topic: "כללי", form: "רבים", pair: [581], meeting: 5 },
     { id: 583, front: "כִּיפ", back: "איך", topic: "מילות שאלה", meeting: 5 },
     { id: 584, front: "כֵּיפ", back: "הנאה / תענוג", topic: "כללי", meeting: 5 },
     { id: 585, front: "מַאשִי", back: "הולך", topic: "כללי", form: "יחיד", pair: [586], meeting: 5, gender: "m", mate: 587 },
-    { id: 586, front: "מַאשְיִין", back: "הולך", topic: "כללי", form: "רבים", pair: [585], meeting: 5, gender: "m", mate: 588 },
+    { id: 586, front: "מַאשְיִין", back: "הולכים", topic: "כללי", form: "רבים", pair: [585], meeting: 5, gender: "m", mate: 588 },
     { id: 587, front: "מַאשְיֶה", back: "הולכת", topic: "כללי", form: "יחיד", pair: [588], meeting: 5, gender: "f", mate: 585 },
-    { id: 588, front: "מַאשְיַאת", back: "הולכת", topic: "כללי", form: "רבים", pair: [587], meeting: 5, gender: "f", mate: 586 },
+    { id: 588, front: "מַאשְיַאת", back: "הולכות", topic: "כללי", form: "רבים", pair: [587], meeting: 5, gender: "f", mate: 586 },
     { id: 589, front: "צַרַאחַה", back: "כנות / גילוי לב", topic: "כללי", meeting: 5 },
     { id: 590, front: "טַיֶّבּ", back: "טוב / בסדר", topic: "כללי", meeting: 5 },
     { id: 591, front: "תַמַאם", back: "מושלם / שלם / בדיוק", topic: "כללי", meeting: 5 },
     { id: 592, front: "וַלַא..", back: "שום / אף אחד / ולא", topic: "כללי", meeting: 5 },
     { id: 593, front: "מַט'בּוט", back: "מדויק / נכון", topic: "תארים", form: "יחיד", pair: [594], meeting: 5, gender: "m", mate: 595 },
-    { id: 594, front: "מַט'בּוטִין", back: "מדויק / נכון", topic: "תארים", form: "רבים", pair: [593], meeting: 5, gender: "m", mate: 596 },
+    { id: 594, front: "מַט'בּוטִין", back: "מדויקים / נכונים", topic: "תארים", form: "רבים", pair: [593], meeting: 5, gender: "m", mate: 596 },
     { id: 595, front: "מַט'בּוטַה", back: "מדויקת / נכונה", topic: "תארים", form: "יחיד", pair: [596], meeting: 5, gender: "f", mate: 593 },
-    { id: 596, front: "מַט'בּוטַאת", back: "מדויקת / נכונה", topic: "תארים", form: "רבים", pair: [595], meeting: 5, gender: "f", mate: 594 },
+    { id: 596, front: "מַט'בּוטַאת", back: "מדויקות / נכונות", topic: "תארים", form: "רבים", pair: [595], meeting: 5, gender: "f", mate: 594 },
 ];
 
 const ALPHABET = [
@@ -3158,7 +3158,7 @@ function SessionSummary({ title, total, right, wrong, onRestart, onBack, restart
 /* =========================================================================
    FLASHCARD PRACTICE (any deck)
    ========================================================================= */
-function FlashcardPractice({ deckKind, banks, applyResult, onBack, dir, setDir, size, daily, onSessionDone }) {
+function FlashcardPractice({ deckKind, banks, applyResult, onBack, dir, setDir, size, daily, onSessionDone, mode }) {
     const data = useMemo(() => buildDeck(deckKind, banks), [deckKind, banks]);
     const dueItems = useMemo(() => data.filter(isDue), [data]);
     const dueNow = dueItems.length;
@@ -3217,7 +3217,10 @@ function FlashcardPractice({ deckKind, banks, applyResult, onBack, dir, setDir, 
     }, [pos, dir, order]);
 
     useEffect(() => {
-        if (finished && onSessionDone) onSessionDone({ mode: "flashcards", right: tally.right, total: tally.right + tally.wrong });
+        /* Reading runs on this same component, so the caller says which of
+           the two it is; without that, reading was filed as flashcards and
+           looked as though it had never happened. */
+        if (finished && onSessionDone) onSessionDone({ mode: mode || "flashcards", right: tally.right, total: tally.right + tally.wrong });
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [finished]);
 
@@ -3417,7 +3420,7 @@ function PromptBox({ text, isLetter }) {
         text);
 }
 
-function AmericanQuiz({ deckKind, banks, applyResult, onBack, dir, setDir }) {
+function AmericanQuiz({ deckKind, banks, applyResult, onBack, dir, setDir, onSessionDone }) {
     const data = useMemo(() => buildDeck(deckKind, banks), [deckKind, banks]);
     const total = SESSION_SIZES.quiz;
     const [order, setOrder] = useState(() => composeSession(data, banks.meeting, total));
@@ -3427,6 +3430,13 @@ function AmericanQuiz({ deckKind, banks, applyResult, onBack, dir, setDir }) {
     const [score, setScore] = useState({ correct: 0, total: 0 });
     const [finished, setFinished] = useState(false);
     const timerRef = useRef(null);
+
+    /* The quiz reported nothing at all, so however many sessions were run it
+       still showed as never tried in the statistics. */
+    useEffect(() => {
+        if (finished && onSessionDone) onSessionDone({ mode: "quiz", right: score.correct, total: score.total });
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [finished]);
 
     const startSession = () => {
         setOrder(composeSession(data, banks.meeting, total));
@@ -3837,11 +3847,45 @@ function normAnswer(text) {
         .trim();
 }
 
+/* Spellings that mean the same thing in Hebrew.
+
+   Marking someone wrong for writing קופסא instead of קופסה tests their
+   orthography, not their Arabic. The same for words with an accepted
+   synonym in the gloss — נער against בחור. Applied to both the stored
+   answer and what was typed, so either spelling matches either way. */
+const SPELLING_VARIANTS = [
+    ["קופסא", "קופסה"],
+    ["נער", "בחור"],
+    ["נערה", "בחורה"],
+    ["טלויזיה", "טלוויזיה"],
+    ["פלאפון", "פלפון"],
+    ["מזוודה", "מזודה"],
+];
+
+function spellingVariants(text) {
+    let out = [String(text || "")];
+    SPELLING_VARIANTS.forEach(([a, b]) => {
+        const next = [];
+        out.forEach((t) => {
+            next.push(t);
+            if (t.indexOf(a) !== -1) next.push(t.split(a).join(b));
+            if (t.indexOf(b) !== -1) next.push(t.split(b).join(a));
+        });
+        out = next;
+    });
+    return out;
+}
+
 /* A word with several meanings counts as correct on any one of them:
    "דלת / שער" accepts דלת, or שער, or the whole string. */
 function acceptableAnswers(text) {
     const out = new Set();
-    const add = (t) => { const k = normAnswer(t); if (k) out.add(k); };
+    const add = (t) => {
+        spellingVariants(t).forEach((v) => {
+            const k = normAnswer(v);
+            if (k) out.add(k);
+        });
+    };
     add(text);
     const withoutBrackets = String(text || "").replace(/\([^)]*\)/g, " ");
     add(withoutBrackets);
@@ -4231,27 +4275,85 @@ function ClockGame({ banks, applyResult, onBack, dir, setDir, onSessionDone }) {
 /* ---- fill in the blank --------------------------------------------------
    A sentence from the booklet with one word removed. Meaning in context,
    rather than a word standing on its own. */
+/* Splits a word into what stays in the sentence and what has to be supplied.
+
+   Two things must not travel with the answer into the option list. A definite
+   article written as "(א)ל" belongs to the sentence, not to the noun — leaving
+   it on the tile both looks wrong and narrows the choice. And a full stop
+   marks the end of the sentence, so an option carrying one announces itself as
+   the last word. Both stay behind; the option is the bare word. */
+function splitBlank(word) {
+    let lead = "", tail = "", core = word;
+    /* Only a bracketed article is split off. A bare "אל" is not reliably an
+       article — it is the start of אלה, and in the transliteration it runs
+       into the noun with a vowel of its own (אלְבֵּית), so cutting there
+       leaves a fragment rather than a word. */
+    const article = core.match(/^(\(א\)ל|\(אל\))/);
+    if (article && core.length > article[0].length) {
+        lead = article[0];
+        core = core.slice(article[0].length);
+    }
+    const punct = core.match(/[.,!?]+$/);
+    if (punct && core.length > punct[0].length) {
+        tail = punct[0];
+        core = core.slice(0, core.length - punct[0].length);
+    }
+    return { lead: lead, core: core, tail: tail };
+}
+
+/* Which words may be blanked out.
+
+   Never one inside a parenthetical. A bracketed phrase is an aside for the
+   reader — "(מצד האב)", "(של) המדינה" — so blanking a word in it offers
+   options like "האב)" that are not words at all, and the surviving bracket
+   gives the answer away. The aside stays whole and the gap falls on the
+   sentence proper.
+
+   A bracketed article is a different thing: there the brackets are part of
+   the transliteration of a single word, and splitBlank handles it. */
+function blankableIndexes(words) {
+    let depth = 0;
+    const out = [];
+    words.forEach((w, i) => {
+        const opensAside = /\((?!א\)|אל\))/.test(w);   // "(" that is not the article
+        const inside = depth > 0 || opensAside;
+        if (i > 0 && !inside) out.push(i);
+        depth += (w.match(/\((?!א\)|אל\))/g) || []).length;
+        depth -= (w.match(/\)/g) || []).length - (w.match(/\(א\)|\(אל\)/g) || []).length;
+        if (depth < 0) depth = 0;
+    });
+    return out;
+}
+
 function buildBlankTask(deck, item, dir) {
     const reversed = dir === "he2ar";
     const text = reversed ? item.arabic : item.hebrew;
     const words = text.split(" ").filter(Boolean);
     if (words.length < 3) return null;
-    const at = 1 + Math.floor(Math.random() * (words.length - 1));
-    const answer = words[at];
+    const choices = blankableIndexes(words);
+    if (choices.length === 0) return null;
+    const at = choices[Math.floor(Math.random() * choices.length)];
+    const split = splitBlank(words[at]);
+    const answer = split.core;
+    if (!answer) return null;
 
+    /* Distractors are bare in the same way, or they would give themselves
+       away by carrying punctuation the answer does not. */
     const taken = new Set([answer]);
     const options = [];
     shuffle(deck).forEach((other) => {
         if (other._key === item._key || options.length >= 3) return;
         const pool = (reversed ? other.arabic : other.hebrew).split(" ").filter(Boolean);
-        const word = pool[Math.floor(Math.random() * pool.length)];
+        const pick = pool[Math.floor(Math.random() * pool.length)];
+        if (!pick) return;
+        const word = splitBlank(pick).core;
         if (!word || taken.has(word)) return;
         taken.add(word); options.push(word);
     });
     if (options.length < 2) return null;
     return {
-        before: words.slice(0, at).join(" "),
-        after: words.slice(at + 1).join(" "),
+        before: words.slice(0, at).concat(split.lead ? [split.lead] : []).join(" ").trim(),
+        after: (split.tail + " " + words.slice(at + 1).join(" ")).trim(),
         prompt: reversed ? item.hebrew : item.arabic,
         answer: answer,
         options: shuffle([answer].concat(options)),
@@ -4327,13 +4429,15 @@ function BlankGame({ banks, applyResult, onBack, dir, setDir, onSessionDone }) {
                     background: "var(--bg)", border: "1px solid var(--line)", borderRadius: "var(--r-md)",
                     padding: "18px 16px", marginBottom: 12, fontWeight: 700, fontSize: "1.1rem", lineHeight: 1.9, textAlign: "center",
                 } },
-                task.before,
+                task.before ? task.before + " " : "",
                 React.createElement("span", { style: {
-                    display: "inline-block", minWidth: 74, margin: "0 6px", padding: "1px 10px",
+                    display: "inline-block", minWidth: 74, margin: "0 2px", padding: "1px 10px",
                     borderBottom: "2px solid " + (chosen ? (chosen === task.answer ? "var(--ok)" : "var(--bad)") : "var(--accent)"),
                     color: chosen ? (chosen === task.answer ? "var(--ok)" : "var(--bad)") : "transparent",
                 } }, chosen || "___"),
-                task.after),
+                /* Punctuation hugs the blank; the rest of the sentence keeps
+                   its space. */
+                /^[.,!?]/.test(task.after) ? task.after : (task.after ? " " + task.after : "")),
             React.createElement("p", { style: { fontSize: "0.82rem", color: "var(--ink-muted)", marginBottom: 14, textAlign: "center" } }, task.prompt),
             React.createElement("div", { style: { display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10 } },
                 task.options.map((opt, i) => {
@@ -4604,6 +4708,7 @@ function PracticeTab({ screen, setScreen, banks, applyResult, onSessionDone, onE
             deckKind: deck, banks: banks, applyResult: applyResult,
             onBack: backToList(method), dir: dir, setDir: setDir,
             size: screen.size, daily: screen.limit === "daily",
+            mode: (deck === "sentences" || deck === "idioms") ? "reading" : "flashcards",
             onSessionDone: (info) => onSessionDone((deck === "sentences" || deck === "idioms") ? "noon" : "morning", info),
         });
     }
@@ -4611,6 +4716,7 @@ function PracticeTab({ screen, setScreen, banks, applyResult, onSessionDone, onE
         return React.createElement(AmericanQuiz, {
             deckKind: screen.deck || "vocab", banks: banks, applyResult: applyResult,
             onBack: backToList("quiz"), dir: dir, setDir: setDir,
+            onSessionDone: (info) => onSessionDone("morning", info),
         });
     }
     if (screen && screen.screen === "builder") {
