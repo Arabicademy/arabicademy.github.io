@@ -40,7 +40,14 @@ const re = /screen\.screen === "(\w+)"/g;
 let m;
 while ((m = re.exec(html)) !== null) routed.add(m[1]);
 console.log('  offered: ' + [...targets].sort().join(', '));
-const unrouted = [...targets].filter((t) => !routed.has(t));
+/* The number drills share a single prefixed route, so they are matched by
+   prefix rather than by an exact string. */
+const prefixRouted = /indexOf\("num-"\) === 0/.test(html);
+const unrouted = [...targets].filter((t) => {
+  if (routed.has(t)) return false;
+  if (prefixRouted && t.indexOf('num-') === 0) return false;
+  return true;
+});
 check('no screen is offered without a route', unrouted.length === 0, unrouted.join(', '));
 
 console.log('\n=== no session can come back empty');
