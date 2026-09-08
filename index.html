@@ -132,7 +132,7 @@ try {
     throw new Error("React / ReactDOM לא נטענו מה-CDN (בדוק חיבור לאינטרנט או חסימת סקריפטים).");
   }
 "use strict";
-const APP_BUILD = "07.09 · 75";   // bump this every time the file is replaced
+const APP_BUILD = "08.09 · 76";   // bump this every time the file is replaced
 
 /* The institute logo, carried inline so the page stays a single file.
    LOGO_MARK is the emblem alone (header); LOGO_FULL includes the name
@@ -180,6 +180,15 @@ const BookOpen = (p) => React.createElement("svg", { ...iconBase(p) },
     React.createElement("path", { d: "M12 7C10 5.5 6.5 4.6 4 4.8 3.4 4.85 3 5.3 3 5.9v11.3c0 .6.45 1.05 1.05 1C6.6 18.05 10 18.9 12 20.4" }),
     React.createElement("path", { d: "M12 7c2-1.5 5.5-2.4 8-2.2.6.05 1 .5 1 1.1v11.3c0 .6-.45 1.05-1.05 1-2.55-.15-5.95.7-7.95 2.2" }),
     React.createElement("path", { d: "M12 7v13.4" }));
+/* ٣ — the Arabic-Indic digit three, for the numbers drills. */
+const NumberIcon = (p) => React.createElement("svg", {
+    ...iconBase(p), viewBox: "0 0 24 24", fill: "currentColor", stroke: "none",
+},
+    React.createElement("text", {
+        x: 12, y: 18, textAnchor: "middle",
+        fontSize: 17, fontFamily: "inherit", fontWeight: 600,
+    }, "٣"));
+
 const UserIcon = (p) => React.createElement("svg", { ...iconBase(p) },
     React.createElement("path", { d: "M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" }),
     React.createElement("circle", { cx: "12", cy: "7", r: "4" }));
@@ -529,6 +538,24 @@ const GLOBAL_CSS = `
     .zl-pane[data-on="true"] {
       background: var(--surface); color: var(--navy);
       box-shadow: var(--shadow-sm);
+    }
+
+    /* ---- picking a meeting when adding a word ---- */
+    .zl-meetpick {
+      display: flex; gap: 6px; overflow-x: auto;
+      padding: 6px; margin-bottom: 12px;
+      background: var(--bg); border: 1px solid var(--line); border-radius: 10px;
+    }
+    .zl-meetpick-item {
+      flex: 0 0 auto; min-width: 36px; height: 34px; padding: 0 10px;
+      border: 1px solid var(--line); border-radius: 8px;
+      background: var(--surface); color: var(--ink);
+      font: inherit; font-size: 0.85rem; font-weight: 700; cursor: pointer;
+      transition: background 0.15s, border-color 0.15s, color 0.15s;
+    }
+    .zl-meetpick-item:hover { border-color: var(--navy); }
+    .zl-meetpick-item[data-on="true"] {
+      background: var(--navy); border-color: var(--navy); color: var(--surface);
     }
 
     /* ---- the routine tick ----
@@ -3689,6 +3716,87 @@ function MorningDrill({ banks, applyResult, onBack, onSessionDone, plan, title }
 }
 
 /* =========================================================================
+   NUMBERS — three drills, waiting on the book
+
+   The rules for spelling and ordering Arabic numerals are specific enough
+   that inventing them would teach a form the course does not use, so these
+   screens say what they will be and stop there. Each keeps its own route and
+   its own entry in the practice list, so wiring the real exercise later is a
+   matter of filling one function.
+
+   What each one will do:
+
+     num-digits   The number is shown in transliteration — תְנֵין וּתְלַאתִין —
+                  and the learner types its value: 32. Marked against the
+                  numeral, so spelling of the transliteration never matters.
+
+     num-order    Six numbers in transliteration, to be dragged into order,
+                  largest to smallest or the reverse. Tests reading at speed
+                  rather than recall.
+
+     num-ordinal  A cardinal is given and the matching ordinal has to be
+                  chosen — the pattern that changes with gender and with
+                  position, which is where the mistakes are.
+   ========================================================================= */
+const NUMBER_DRILLS = {
+    "num-digits": {
+        title: "הקלד את הספרה",
+        lead: "המספר יוצג בתעתיק, ואתה תקליד את ערכו.",
+        example: "תְנֵין וּתְלַאתִין  →  32",
+        points: [
+            "הבדיקה מול הספרה עצמה, כך שאיות התעתיק לא נחשב",
+            "טעות מחזירה את המספר מוקדם יותר, כמו כל תרגול אחר",
+        ],
+    },
+    "num-order": {
+        title: "גדול או קטן",
+        lead: "שישה מספרים בתעתיק, לסידור לפי גודל.",
+        example: "מהגדול לקטן, או מהקטן לגדול",
+        points: [
+            "בודק קריאה מהירה ולא שליפה מהזיכרון",
+            "הסדר מוגרל בכל סבב",
+        ],
+    },
+    "num-ordinal": {
+        title: "מספר סודר",
+        lead: "מספר רגיל מוצג, ואתה בוחר את צורת הסודר שלו.",
+        example: "תַלַאתֶה  →  תַאלֶת",
+        points: [
+            "הצורה משתנה לפי מין ולפי מיקום",
+            "שם רוב הטעויות, ולכן זה תרגיל בפני עצמו",
+        ],
+    },
+};
+
+function NumberDrillStub({ kind, onBack }) {
+    const drill = NUMBER_DRILLS[kind];
+    if (!drill) return null;
+    return (React.createElement("div", { className: "zl-anim" },
+        React.createElement(BackLink, { onClick: onBack }, "חזרה לשיטות תרגול"),
+        React.createElement(Card, null,
+            React.createElement("div", { className: "zl-guide-icon", style: { marginBottom: 12 } },
+                React.createElement(NumberIcon, { size: 22 })),
+            React.createElement("h2", { className: "zl-display", style: { fontSize: "1.15rem", fontWeight: 800, marginBottom: 6 } },
+                drill.title),
+            React.createElement("p", { style: { color: "var(--ink-muted)", fontSize: "0.88rem", lineHeight: 1.7, marginBottom: 12 } },
+                drill.lead),
+            React.createElement("div", { style: {
+                background: "var(--bg)", border: "1px solid var(--line)", borderRadius: "var(--r-md)",
+                padding: "14px 16px", textAlign: "center", marginBottom: 14,
+            } },
+                React.createElement("span", { className: "zl-display", style: { fontSize: "1.05rem", fontWeight: 700 } },
+                    drill.example)),
+            React.createElement("ul", { className: "zl-guide-list", style: { marginBottom: 14 } },
+                drill.points.map((p, i) => React.createElement("li", { key: i }, p))),
+            React.createElement("p", { style: {
+                fontSize: "0.82rem", color: "var(--ink-muted)", lineHeight: 1.7,
+                background: "var(--bg)", border: "1px dashed var(--line)",
+                borderRadius: "var(--r-md)", padding: "12px 14px",
+            } },
+                "התרגול הזה עדיין לא פעיל. הוא ממתין לחוקיות המספרים מהספר, כדי שהתשובות יהיו בדיוק לפי מה שנלמד בכיתה."))));
+}
+
+/* =========================================================================
    DAILY REVIEW
 
    What has come due today, asked three ways over the same words: multiple
@@ -4640,6 +4748,20 @@ const PRACTICE_METHODS = [
         ],
     },
     {
+        /* The numbers drills. The screens are stubs until the rules for
+           spelling numbers arrive from the book — guessing at them would
+           teach a form the course does not use. */
+        id: "numbers",
+        title: "המספר",
+        desc: "קריאת מספרים, סדר גודל וצורת הסודר.",
+        Icon: NumberIcon,
+        options: [
+            { key: "digits", title: "הקלד את הספרה", desc: "המספר בתעתיק — הקלד את ערכו.", target: { screen: "num-digits" } },
+            { key: "order", title: "גדול או קטן", desc: "סדר שישה מספרים לפי גודלם.", target: { screen: "num-order" } },
+            { key: "ordinal", title: "מספר סודר", desc: "צרף את צורת הסודר הנכונה.", target: { screen: "num-ordinal" } },
+        ],
+    },
+    {
         id: "exam",
         title: "מבחן מלא",
         desc: "מילים, משפטים, ניבים ואותיות — עם ציון סופי.",
@@ -4723,6 +4845,11 @@ function PracticeTab({ screen, setScreen, banks, applyResult, onSessionDone, onE
         return React.createElement(SentenceBuilderSession, {
             banks: banks, applyResult: applyResult, onBack: backToList("sentences"),
             dir: dir, setDir: setDir, onSessionDone: (info) => onSessionDone("evening", info),
+        });
+    }
+    if (screen && String(screen.screen || "").indexOf("num-") === 0) {
+        return React.createElement(NumberDrillStub, {
+            kind: screen.screen, onBack: backToList("numbers"),
         });
     }
     if (screen && screen.screen === "due") {
@@ -4822,11 +4949,19 @@ function examLength(openMeetings) {
     return Math.min(EXAM_MAX, grown);
 }
 
+/* `grows` decides whether a category scales with the course.
+
+   The alphabet and the idioms do not: they were fixed at the start and stay
+   the same size however far the course runs. Letting them grow meant that by
+   meeting five they filled more than a third of the paper and squeezed the
+   current meeting down to a third — the opposite of what an exam should
+   weight. Idioms are marginal enough to be a single question, and often
+   none. */
 const EXAM_PLAN = [
-    { kind: "vocab", deck: "vocab", count: 15, weight: 50, label: "אוצר מילים" },
-    { kind: "sentence", deck: "sentences", count: 5, weight: 30, label: "הרכבת משפטים" },
-    { kind: "idiom", deck: "idioms", count: 3, weight: 12, label: "ניבי לשון" },
-    { kind: "letter", deck: "letters", count: 8, weight: 8, label: "אלף-בית" },
+    { kind: "vocab", deck: "vocab", count: 15, weight: 50, label: "אוצר מילים", grows: true },
+    { kind: "sentence", deck: "sentences", count: 5, weight: 30, label: "הרכבת משפטים", grows: true },
+    { kind: "idiom", deck: "idioms", count: 1, weight: 12, label: "ניבי לשון", grows: false, sometimes: true },
+    { kind: "letter", deck: "letters", count: 8, weight: 8, label: "אלף-בית", grows: false },
 ];
 const EXAM_TOTAL = 31;
 
@@ -4847,7 +4982,13 @@ function buildExamTasks(banks) {
     const tasks = [];
     /* Every category scales together, so the weighting between them is
        unchanged however long the paper gets. */
-    const grow = examLength(banks.meeting || 1) / EXAM_TOTAL;
+    /* The fixed categories keep their original size, so the whole of the
+       growth belongs to vocabulary and sentences. Scaling everything by the
+       same factor would both shorten the paper and leave the alphabet taking
+       a third of it. */
+    const fixed = EXAM_PLAN.filter((p) => !p.grows).reduce((n, p) => n + p.count, 0);
+    const growing = EXAM_TOTAL - fixed;
+    const grow = (examLength(banks.meeting || 1) - fixed) / growing;
     EXAM_PLAN.forEach((part) => {
         /* The exam asks sentences by assembly, so it draws from the same
            subset the assembly drill uses. */
@@ -4855,9 +4996,13 @@ function buildExamTasks(banks) {
             ? buildDeck(part.deck, banks).filter(isAssemblable)
             : buildDeck(part.deck, banks);
         if (deck.length === 0) return;
-        /* Never ask for more than the deck holds — the idioms and letters do
-           not grow with the course, so they cap themselves. */
-        const want = Math.min(Math.round(part.count * grow), deck.length);
+        /* Only the growing categories take the multiplier; the fixed ones
+           keep their original size so the added questions all go to the
+           material actually being studied. An idiom appears about half the
+           time — one question either way is noise. */
+        if (part.sometimes && Math.random() < 0.5) return;
+        const scale = part.grows ? grow : 1;
+        const want = Math.min(Math.round(part.count * scale), deck.length);
         /* Composed rather than merely weighted, so the current meeting fills
            most of the paper just as it fills most of the practice. */
         const picked = composeSession(deck, banks.meeting, want).map((i) => deck[i]);
@@ -5167,7 +5312,7 @@ function VocabTab({ vocab, setVocab, meeting }) {
     });
 
     const closeModal = () => {
-        setForm({ front: "", back: "", notes: "", topic: "" });
+        setForm({ front: "", back: "", notes: "", topic: "", meeting: meeting || 1 });
         setEditingId(null);
         setModalOpen(false);
     };
@@ -5191,7 +5336,7 @@ function VocabTab({ vocab, setVocab, meeting }) {
             return;
         if (editingId !== null) {
             setVocab((prev) => prev.map((w) => (w.id === editingId
-                ? { ...w, front: form.front.trim(), back: form.back.trim(), notes: form.notes.trim(), topic: form.topic.trim() || w.topic }
+                ? { ...w, front: form.front.trim(), back: form.back.trim(), notes: form.notes.trim(), topic: form.topic.trim() || w.topic, meeting: form.meeting || w.meeting }
                 : w)));
             closeModal();
             return;
@@ -5203,7 +5348,9 @@ function VocabTab({ vocab, setVocab, meeting }) {
         const nextId = vocab.reduce((max, item) => Math.max(max, item.id || 0), 0) + 1;
         setVocab((prev) => [
             ...prev,
-            { id: nextId, front: form.front.trim(), back: form.back.trim(), notes: form.notes.trim(), topic: form.topic.trim() || "מילים שלי", correctCount: 0, wrongCount: 0 },
+            { id: nextId, front: form.front.trim(), back: form.back.trim(), notes: form.notes.trim(),
+              topic: form.topic.trim() || "מילים שלי", meeting: form.meeting || meeting || 1,
+              correctCount: 0, wrongCount: 0 },
         ]);
         closeModal();
     };
@@ -5228,7 +5375,7 @@ function VocabTab({ vocab, setVocab, meeting }) {
                 "\u05DE\u05D9\u05D9\u05DF",
                 picked.length > 0 ? " (" + picked.length + ")" : "",
                 React.createElement(ChevronLeft, { size: 15, style: { transform: sortOpen ? "rotate(-90deg)" : "none" } })),
-            React.createElement(PrimaryButton, { onClick: () => { setEditingId(null); setForm({ front: "", back: "", notes: "", topic: "" }); setModalOpen(true); }, style: { padding: "9px 14px" } },
+            React.createElement(PrimaryButton, { onClick: () => { setEditingId(null); setForm({ front: "", back: "", notes: "", topic: "", meeting: meeting || 1 }); setModalOpen(true); }, style: { padding: "9px 14px" } },
                 React.createElement(Plus, { size: 15 }),
                 "\u05D4\u05D5\u05E1\u05E3 \u05DE\u05D9\u05DC\u05D4"),
             React.createElement("span", { style: { fontSize: "0.82rem", color: "var(--ink-muted)" } },
@@ -5326,6 +5473,11 @@ function VocabTab({ vocab, setVocab, meeting }) {
                     item.topic ? React.createElement("div", { className: "zl-sheet-row" },
                         React.createElement("span", { className: "zl-sheet-key" }, "נושא"),
                         React.createElement("span", null, item.topic)) : null,
+                    /* Which meeting it came from — the answer to "should I be
+                       going back over this?" that the topic alone cannot give. */
+                    itemMeeting(item) ? React.createElement("div", { className: "zl-sheet-row" },
+                        React.createElement("span", { className: "zl-sheet-key" }, "מפגש"),
+                        React.createElement("span", null, "מפגש " + itemMeeting(item))) : null,
                     React.createElement("div", { className: "zl-sheet-row" },
                         React.createElement("span", { className: "zl-sheet-key" }, "חזרה הבאה"),
                         React.createElement("span", null, dueLabel(item))),
@@ -5355,6 +5507,19 @@ function VocabTab({ vocab, setVocab, meeting }) {
                     React.createElement(FormField, { label: "\u05EA\u05E8\u05D2\u05D5\u05DD", value: form.back, onChange: (v) => setForm((f) => ({ ...f, back: v })), placeholder: "\u05DC\u05DE\u05E9\u05DC: \u05E1\u05E4\u05E8", required: true }),
                     React.createElement(FormField, { label: "\u05D4\u05E2\u05E8\u05D5\u05EA (\u05E8\u05E9\u05D5\u05EA)", value: form.notes, onChange: (v) => setForm((f) => ({ ...f, notes: v })), placeholder: "\u05DC\u05DE\u05E9\u05DC: \u05E8' \u05DB\u05BB\u05BC\u05EA\u05BB\u05D1\u05BC" }),
                     React.createElement(FormField, { label: "\u05E0\u05D5\u05E9\u05D0 (\u05E8\u05E9\u05D5\u05EA)", value: form.topic, onChange: (v) => setForm((f) => ({ ...f, topic: v })), placeholder: topics[0] || "\u05DC\u05DE\u05E9\u05DC: \u05DE\u05E9\u05E4\u05D7\u05D4" }),
+
+                    /* Which meeting the word belongs to. A word added by hand
+                       is not necessarily from the book — it may simply sit at
+                       the level of a particular meeting — so this is a choice,
+                       not a fact, and it starts on the meeting being studied. */
+                    React.createElement("label", { style: { display: "block", fontSize: "0.8rem", fontWeight: 700, marginBottom: 4 } }, "מפגש"),
+                    React.createElement("div", { className: "zl-meetpick zl-scrollbar" },
+                        Array.from({ length: TOTAL_MEETINGS }, (_, i) => i + 1).map((n) =>
+                            React.createElement("button", {
+                                key: n, type: "button", className: "zl-meetpick-item",
+                                "data-on": (form.meeting || meeting || 1) === n ? "true" : "false",
+                                onClick: () => setForm((f) => ({ ...f, meeting: n })),
+                            }, n))),
                     React.createElement("div", { style: { display: "flex", gap: 8, justifyContent: "flex-end", marginTop: 16 } },
                         React.createElement(PrimaryButton, { variant: "outline", type: "button", onClick: closeModal }, "\u05D1\u05D9\u05D8\u05D5\u05DC"),
                         React.createElement(PrimaryButton, { type: "submit" }, editingId !== null ? "שמור שינויים" : "הוסף למאגר"))))))));
