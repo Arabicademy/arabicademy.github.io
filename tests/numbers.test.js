@@ -89,5 +89,79 @@ check('no repeated number within a session, and all in range', dupes === 0);
 check('the ordering round is six numbers', g.NUM_SESSION.order === 6);
 check('percentages use the fixed suffix', /בִּ\(א\)לְמִיֶ/.test(g.NUM_PERCENT), g.NUM_PERCENT);
 
+
+/* ---- tracking, and where numbers sit in the day ---- */
+const { api: h } = loadApp(
+  'numberBand, NUM_BANDS, creditBand, bandScore, numbersKnowledge, numberShare, ' +
+  'buildNumberExamTasks, buildExamTasks, withProgressFields, DEFAULT_VOCAB, ' +
+  'ALPHABET, SENTENCES, IDIOMS, ROUTINE_ITEMS, EVENING_NUMBERS, eveningNumberFor, ' +
+  'NOON_GAMES, examCategoryMeta');
+
+console.log('\n=== every number falls in exactly one band');
+let unbanded = 0;
+for (let n = 1; n <= 999; n++) {
+  const band = h.numberBand(n);
+  if (!h.NUM_BANDS.some((b) => b.key === band)) unbanded++;
+}
+check('all 999 are classified', unbanded === 0);
+console.log('   ' + [3, 15, 40, 700, 47].map((n) => n + '→' + h.numberBand(n)).join('  '));
+
+console.log('\n=== a band is credited the way a word is');
+let prof = null;
+for (let i = 0; i < 6; i++) prof = { numberStats: h.creditBand(prof, 'ones', true) };
+check('six right answers make a band known', h.bandScore(prof.numberStats, 'ones') === 100);
+prof = { numberStats: h.creditBand(prof, 'ones', false) };
+check('a wrong answer sets it back', h.bandScore(prof.numberStats, 'ones') < 100,
+      h.bandScore(prof.numberStats, 'ones') + '%');
+check('an untouched band reads zero', h.bandScore(prof.numberStats, 'hundreds') === 0);
+
+console.log('\n=== the exam gives numbers less room as they are learned');
+let expert = null;
+['ones','teens','tens','hundreds','composed','ordinals'].forEach((b) => {
+  for (let i = 0; i < 8; i++) expert = { numberStats: h.creditBand(expert, b, true) };
+});
+const noviceShare = Math.round(h.numberShare(null) * 100);
+const expertShare = Math.round(h.numberShare(expert) * 100);
+console.log('   knowing none: ' + noviceShare + '%   knowing all: ' + expertShare + '%');
+check('a beginner sees about a tenth', noviceShare === 10);
+check('someone who knows them sees far less', expertShare <= 4);
+check('the share only ever falls', noviceShare > expertShare);
+
+const banksFive = {
+  vocab: h.withProgressFields(h.DEFAULT_VOCAB), letters: h.withProgressFields(h.ALPHABET),
+  sentences: h.withProgressFields(h.SENTENCES), idioms: h.withProgressFields(h.IDIOMS), meeting: 5,
+};
+let nq = 0, tot = 0, malformed = 0;
+for (let t = 0; t < 40; t++) {
+  const ts = h.buildExamTasks(banksFive, null);
+  tot += ts.length;
+  ts.filter((x) => x.kind === 'number').forEach((x) => {
+    nq++;
+    if (x.numberKind === 'ordinal') {
+      if (!x.task || x.task.options.indexOf(x.task.answer) < 0) malformed++;
+    } else if (!x.value || x.value < 1 || x.value > 999) malformed++;
+    if (!x.band) malformed++;
+  });
+}
+check('number questions in the exam are well formed', malformed === 0);
+check('and they are about a tenth of the paper', Math.abs(nq / tot * 100 - 10) < 3,
+      (nq / tot * 100).toFixed(0) + '%');
+check('the category has a label', h.examCategoryMeta('number').label === 'מספרים');
+
+console.log('\n=== numbers in the evening');
+const evening = h.ROUTINE_ITEMS.find((r) => r.key === 'evening');
+check('the evening still starts with sentence assembly', evening.target.screen === 'builder');
+check('and carries a second part', !!evening.second);
+check('the second part is drawn from the number drills', h.EVENING_NUMBERS.length === 3);
+check('ordering is not among them — it is a game now',
+      !h.EVENING_NUMBERS.some((x) => x.screen === 'num-order') &&
+      h.NOON_GAMES.some((x) => x.screen === 'num-order'));
+const day = '2026-09-10';
+check('the evening draw is fixed for the day',
+      JSON.stringify(h.eveningNumberFor(day)) === JSON.stringify(h.eveningNumberFor(day)));
+const seen = new Set();
+for (let d = 1; d <= 60; d++) seen.add(h.eveningNumberFor('2026-09-' + String(d % 28 + 1).padStart(2, '0')).label);
+check('all three come up over two months', seen.size === 3, Array.from(seen).join(', '));
+
 console.log(bad ? '\n' + bad + ' CHECK(S) FAILED' : '\nALL NUMBER CHECKS PASSED');
 process.exit(bad ? 1 : 0);
