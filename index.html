@@ -132,7 +132,7 @@ try {
     throw new Error("React / ReactDOM לא נטענו מה-CDN (בדוק חיבור לאינטרנט או חסימת סקריפטים).");
   }
 "use strict";
-const APP_BUILD = "09.09 · 79";   // bump this every time the file is replaced
+const APP_BUILD = "10.09 · 80";   // bump this every time the file is replaced
 
 /* The institute logo, carried inline so the page stays a single file.
    LOGO_MARK is the emblem alone (header); LOGO_FULL includes the name
@@ -1660,7 +1660,7 @@ const SENTENCES = [
 
     // ---- meeting 3, page 40: preposition drills ----
     { id: 65, hebrew: "הקורס הוא אודות ההיסטוריה האסלאמית.", arabic: "אִ(ל)דַّוְרַה הִיֶّ עַנִ (אל)תַّארִיח' אִ(ל)אִסְלַאמִי.", meeting: 3 },
-    { id: 66, hebrew: "תחנת המוניות בבניין על צד ימין.", arabic: "מַחַטִّת (אל)תַّכְּסִיַאת פִי (א)לְעַמַארַה עַלַא (א)לְיַמִין.", meeting: 3 },
+    { id: 66, hebrew: "תחנת המוניות בבניין על צד ימין.", arabic: "מַחַטִّת (אל)תַّכְּסִיַאת פִי (א)לְעַמַארַה עַלַא (א)לְיַמִין.", meeting: 3 },
     { id: 67, hebrew: "השולחן והכיסאות על גג הבית.", arabic: "אִ(ל)טַّאוְלֶה וִ(א)לְכַּרַאסִי עַלַא סַטְחִ (א)לְבֵּית.", meeting: 3 },
     { id: 68, hebrew: "האשמה לא עליך האשמה עלי.", arabic: "אִלְחַקّ מֶש עַלֵיכּ, אִלְחַקّ עַלַיّ.", meeting: 3 },
     { id: 69, hebrew: "הוא כתב את הסיפור אודותיכם, לא אודותם.", arabic: "הֻוֶّ כַּתַבִּ (א)לְקֻצַّה עַנְכֹּם, מֶש עַנְהֹם.", meeting: 3 },
@@ -1702,7 +1702,7 @@ const SENTENCES = [
     { id: 101, hebrew: "הארנק החדש עמך? הארנק לא עימי, נמצא במכונית.", arabic: "אִ(ל)גֻ'ّזְדַאן (א)לִגְ'דִיד מַעַכּ? אִ(ל)גֻ'ّזְדַאן מֶש מַעִי, מַוְגּ'וד עִנְדִי בִּ(אל)סַיַّארַה.", meeting: 5, readOnly: true },
     { id: 102, hebrew: "יש לכם טלוויזיה בבית? אין לנו טלוויזיה בבית, רק בבית אבי.", arabic: "אִנְתוּ אִלְכֹּם תֵלֵפִזְיוֹן בִּ(אל)דַّאר? מַלְנַאש תֵלֵפִזְיוֹן בִּ(אל)דַّאר, בַּסّ פִי בֵּית אַבּוּי.", meeting: 5, readOnly: true },
     { id: 103, hebrew: "יש לנו חברים באוניברסיטה, הם סטודנטים חדשים.", arabic: "אִלְנַא אַצְחַאבּ פִי (אל)גַ'אמְעַה, הֵמّ טֻלַّאבּ גְ'דַאד.", meeting: 5 },
-    { id: 104, hebrew: "יש להם קרובים אצלנו ביישוב, אנשים טובים.", arabic: "אִלְהֹם קַרַאיֶבּ עִנַّא פִי (א)לְבַּלַד, נַאס טַיְّבִּין.", meeting: 5 },
+    { id: 104, hebrew: "יש להם קרובים אצלנו ביישוב, אנשים טובים.", arabic: "אִלְהֹם קַרַאיֶבּ עִנַّא פִי (א)לְבַּלַד, נַאס טַיְّבִּין.", meeting: 5 },
     { id: 105, hebrew: "יש להם רק 20 שקל, בסדר?", arabic: "(הֻםّ) מַעְהֹם בַּסّ עִשְרִין שֵיכֶּל, מַאשִי?", meeting: 5 },
     { id: 106, hebrew: "אחיך לא אצלנו, הלך לפני שעתיים, הכל בסדר?", arabic: "אַחְ'וּכִּי מֶש עִנַّא, רַאח קַבֶּל סַאעְתֵין, כֻּלّ שִי תַמַאם?", meeting: 5, readOnly: true },
     { id: 107, hebrew: "אחרי השיחה, יש להם דאגה גדולה.", arabic: "בַּעִד (א)לְמֻכַּאלַמֶה, אִלְהֹם הַםّ כְּבִּיר.", meeting: 5 },
@@ -2471,6 +2471,22 @@ function TopNav({ active, onChange }) {
    task changed under your hands between opening the app in the morning and
    coming back after lunch. The date is the seed, so the same day always
    yields the same plan. */
+/* The numbers drill that follows the evening assembly, drawn for the day the
+   same way the midday games are. Ordering is not among them — it lives with
+   the games now. */
+const EVENING_NUMBERS = [
+    { screen: "num-digits",  label: "הקלד את הספרה" },
+    { screen: "num-ordinal", label: "מספר סודר" },
+    { screen: "num-percent", label: "אחוזים" },
+];
+
+function eveningNumberFor(dateKey) {
+    const order = EVENING_NUMBERS
+        .map((g, i) => ({ g: g, r: dayNoise(dateKey, "evening" + i) }))
+        .sort((a, b) => a.r - b.r);
+    return order[0].g;
+}
+
 const NOON_GAMES = [
     { screen: "pairs", kind: "number", label: "יחיד ורבים" },
     { screen: "pairs", kind: "gender", label: "זכר ונקבה" },
@@ -2503,7 +2519,12 @@ function noonPlanFor(dateKey) {
 const ROUTINE_ITEMS = [
     { key: "morning", label: "בוקר", desc: MORNING_PLAN.choice + " שאלות אמריקאיות ו-" + MORNING_PLAN.typed + " פתוחות", target: { screen: "morning" } },
     { key: "noon", label: "צהריים", desc: "תרגול הבנה: קריאה או משחקים", target: { screen: "flashcards", deck: "sentences", size: SESSION_SIZES.reading } },
-    { key: "evening", label: "ערב", desc: "קריאה והרכבת משפטים", target: { screen: "builder" } },
+    /* Two parts: the sentence assembly, which is the day's heaviest exercise
+       and the only one worth double credit, and a short numbers drill after
+       it. Drawing between them would mean no sentences at all on half the
+       days, which is too high a price for the variety. */
+    { key: "evening", label: "ערב", desc: "הרכבת משפטים, ואחריה מספרים", target: { screen: "builder" },
+      second: { label: "מספרים", pick: true } },
 ];
 
 /* FIX #5: the date key used toISOString(), which is UTC. Between 00:00 and
@@ -2613,10 +2634,17 @@ function RoutineTab({ checklist, setChecklist, navigateTo, vocab, letters }) {
                it is, with a button per game so both can be started. */
             const noon = item.key === "noon" ? noonPlanFor(today) : null;
             const games = noon && noon.mode === "games" ? noon.games : null;
+            /* The evening runs the assembly and then a numbers drill, drawn
+               for the day. Two buttons, like a games afternoon. */
+            const numbers = item.second ? eveningNumberFor(today) : null;
             const desc = games
                 ? "שני משחקים: " + games.map((g) => g.label).join(" · ")
-                : item.desc;
-            const done = games ? (todayState.noonCount || 0) : 0;
+                : (numbers ? "הרכבת משפטים, ואחריה " + numbers.label : item.desc);
+            const done = games ? (todayState.noonCount || 0)
+                : (numbers ? (todayState.eveningCount || 0) : 0);
+            const parts = games || (numbers
+                ? [{ screen: "builder", label: "משפטים" }, { screen: numbers.screen, label: numbers.label }]
+                : null);
             return React.createElement("div", { key: item.key, style: {
                 display: "flex",
                 alignItems: "center",
@@ -2638,10 +2666,10 @@ function RoutineTab({ checklist, setChecklist, navigateTo, vocab, letters }) {
                 React.createElement("div", null,
                     React.createElement("div", { style: { fontWeight: 700 } }, item.label),
                     React.createElement("div", { style: { fontSize: "0.85rem", color: "var(--ink-muted)" } },
-                        desc + (games && done > 0 && !todayState.noon ? "  (" + done + "/" + games.length + ")" : "")))),
-            games
+                        desc + (parts && done > 0 && !todayState[item.key] ? "  (" + done + "/" + parts.length + ")" : "")))),
+            parts
                 ? React.createElement("div", { style: { display: "flex", gap: 6 } },
-                    games.map((gme, i) => React.createElement("button", {
+                    parts.map((gme, i) => React.createElement("button", {
                         key: i, type: "button", className: "zl-iconbtn",
                         title: gme.label, style: { width: "auto", padding: "0 12px", fontSize: "0.78rem", fontWeight: 700 },
                         onClick: () => navigateTo({ screen: gme.screen, kind: gme.kind }),
@@ -3873,6 +3901,56 @@ function spellNumber(n, gender) {
    ========================================================================= */
 const NUM_SESSION = { digits: 15, order: 6, ordinal: 12, percent: 12 };
 
+/* How well the numbers are known.
+
+   A number is not an item the way a word is: it is composed on the spot,
+   answered, and gone, so there is nothing to attach a counter to. What can be
+   tracked is the band it came from — the six groups that are learned
+   separately and forgotten separately. A band is credited exactly as a word
+   is, so its progress reads on the same scale.
+
+   Kept on the profile rather than in a bank, because it belongs to no meeting
+   and must not distort "how much of meeting 3 do I know". */
+const NUM_BANDS = [
+    { key: "ones",     label: "1 עד 10",     test: (n) => n <= 10 },
+    { key: "teens",    label: "11 עד 19",    test: (n) => n >= 11 && n <= 19 },
+    { key: "tens",     label: "עשרות",       test: (n) => n < 100 && n % 10 === 0 },
+    { key: "hundreds", label: "מאות",        test: (n) => n >= 100 && n % 100 === 0 },
+    { key: "composed", label: "מספרים מורכבים", test: (n) => n > 20 && n % 10 !== 0 },
+    { key: "ordinals", label: "סודרים",      test: null },   // set by the drill, not the value
+];
+
+function numberBand(n) {
+    const band = NUM_BANDS.find((b) => b.test && b.test(n));
+    return band ? band.key : "composed";
+}
+
+/* One right answer is worth one point, as a recognition answer is; the band
+   is "known" at the same MASTERY_TARGET a word is. */
+function creditBand(profile, band, correct) {
+    const stats = { ...((profile && profile.numberStats) || {}) };
+    const cur = stats[band] || { right: 0, wrong: 0 };
+    stats[band] = correct
+        ? { right: cur.right + 1, wrong: cur.wrong }
+        : { right: cur.right, wrong: cur.wrong + 1 };
+    return stats;
+}
+
+function bandScore(stats, band) {
+    const s = (stats || {})[band];
+    if (!s) return 0;
+    const net = Math.max(0, s.right - s.wrong * 2);
+    return Math.min(100, Math.round((net / MASTERY_TARGET) * 100));
+}
+
+/* The single figure shown in the statistics, and the one the exam consults
+   when deciding how much room to give numbers. */
+function numbersKnowledge(profile) {
+    const stats = (profile && profile.numberStats) || {};
+    const scores = NUM_BANDS.map((b) => bandScore(stats, b.key));
+    return Math.round(scores.reduce((a, c) => a + c, 0) / NUM_BANDS.length);
+}
+
 /* Which numbers a drill may draw. Kept away from the very large ones for the
    ordering drill, where six long strings would not fit a phone. */
 function randomNumber(max) {
@@ -3894,7 +3972,7 @@ function numberQuestions(count, max) {
 }
 
 /* ---------- 1. read the number, type the digits ---------- */
-function NumberDigits({ onBack, onSessionDone }) {
+function NumberDigits({ onBack, onSessionDone, onNumberResult }) {
     const [queue, setQueue] = useState(() => numberQuestions(NUM_SESSION.digits, 999));
     const [pos, setPos] = useState(0);
     const [typed, setTyped] = useState("");
@@ -3935,12 +4013,14 @@ function NumberDigits({ onBack, onSessionDone }) {
         if (result || !typed.trim()) return;
         const ok = parseInt(typed.trim(), 10) === n;
         setScore((s) => ({ correct: s.correct + (ok ? 1 : 0), total: s.total + 1 }));
+        if (onNumberResult) onNumberResult(numberBand(n), ok);
         setResult(ok ? "correct" : "wrong");
         advance();
     };
     const giveUp = () => {
         if (result) return;
         setScore((s) => ({ correct: s.correct, total: s.total + 1 }));
+        if (onNumberResult) onNumberResult(numberBand(n), false);
         setResult("wrong");
         advance();
     };
@@ -3971,7 +4051,7 @@ function NumberDigits({ onBack, onSessionDone }) {
 }
 
 /* ---------- 2. order six numbers by size ---------- */
-function NumberOrder({ onBack, onSessionDone }) {
+function NumberOrder({ onBack, onSessionDone, onNumberResult }) {
     const makeRound = () => {
         const nums = numberQuestions(NUM_SESSION.order, 200);
         return { nums: nums, ascending: Math.random() < 0.5 };
@@ -4007,6 +4087,11 @@ function NumberOrder({ onBack, onSessionDone }) {
         const want = round.nums.slice().sort((a, b) => (round.ascending ? a - b : b - a));
         const ok = picked.join(",") === want.join(",");
         setScore((s) => ({ correct: s.correct + (ok ? 1 : 0), total: s.total + 1 }));
+        /* Ordering exercises whichever bands the six numbers came from. */
+        if (onNumberResult) {
+            const bands = new Set(round.nums.map(numberBand));
+            bands.forEach((b) => onNumberResult(b, ok));
+        }
         setResult(ok ? "correct" : "wrong");
         setTimeout(() => {
             if (done + 1 >= ROUNDS) setFinished(true);
@@ -4106,7 +4191,7 @@ function buildOrdinalTask() {
     };
 }
 
-function NumberOrdinal({ onBack, onSessionDone }) {
+function NumberOrdinal({ onBack, onSessionDone, onNumberResult }) {
     const [task, setTask] = useState(buildOrdinalTask);
     const [chosen, setChosen] = useState(null);
     const [score, setScore] = useState({ correct: 0, total: 0 });
@@ -4137,6 +4222,7 @@ function NumberOrdinal({ onBack, onSessionDone }) {
         if (chosen) return;
         setChosen(opt);
         setScore((s) => ({ correct: s.correct + (opt === task.answer ? 1 : 0), total: s.total + 1 }));
+        if (onNumberResult) onNumberResult("ordinals", opt === task.answer);
         if (timerRef.current) clearTimeout(timerRef.current);
         timerRef.current = setTimeout(() => {
             if (pos + 1 >= NUM_SESSION.ordinal) setFinished(true);
@@ -4164,7 +4250,7 @@ function NumberOrdinal({ onBack, onSessionDone }) {
 }
 
 /* ---------- 4. percentages ---------- */
-function NumberPercent({ onBack, onSessionDone }) {
+function NumberPercent({ onBack, onSessionDone, onNumberResult }) {
     const [queue, setQueue] = useState(() => numberQuestions(NUM_SESSION.percent, 999));
     const [pos, setPos] = useState(0);
     const [typed, setTyped] = useState("");
@@ -4205,12 +4291,14 @@ function NumberPercent({ onBack, onSessionDone }) {
         if (result || !typed.trim()) return;
         const ok = parseInt(typed.trim(), 10) === n;
         setScore((s) => ({ correct: s.correct + (ok ? 1 : 0), total: s.total + 1 }));
+        if (onNumberResult) onNumberResult(numberBand(n), ok);
         setResult(ok ? "correct" : "wrong");
         advance();
     };
     const giveUp = () => {
         if (result) return;
         setScore((s) => ({ correct: s.correct, total: s.total + 1 }));
+        if (onNumberResult) onNumberResult(numberBand(n), false);
         setResult("wrong");
         advance();
     };
@@ -5260,7 +5348,7 @@ function MethodRow({ method, open, onToggle, onPick }) {
                 React.createElement(ChevronLeft, { size: 16 })))))))));
 }
 
-function PracticeTab({ screen, setScreen, banks, applyResult, onSessionDone, onExamStart, onExamFinish }) {
+function PracticeTab({ screen, setScreen, banks, profile, applyResult, onSessionDone, onExamStart, onExamFinish, onNumberResult }) {
     const [openMethod, setOpenMethod] = useState(null);
     /* One direction setting for every mode, reset to "ערבוב" on each visit. */
     const [dir, setDir] = useState("mix");
@@ -5297,25 +5385,29 @@ function PracticeTab({ screen, setScreen, banks, applyResult, onSessionDone, onE
     if (screen && screen.screen === "num-digits") {
         return React.createElement(NumberDigits, {
             onBack: backToList("numbers"),
-            onSessionDone: (info) => onSessionDone("morning", info),
+            onSessionDone: (info) => onSessionDone("evening", info),
+            onNumberResult: onNumberResult,
         });
     }
     if (screen && screen.screen === "num-order") {
         return React.createElement(NumberOrder, {
             onBack: backToList("numbers"),
-            onSessionDone: (info) => onSessionDone("morning", info),
+            onSessionDone: (info) => onSessionDone("noon", info),
+            onNumberResult: onNumberResult,
         });
     }
     if (screen && screen.screen === "num-ordinal") {
         return React.createElement(NumberOrdinal, {
             onBack: backToList("numbers"),
-            onSessionDone: (info) => onSessionDone("morning", info),
+            onSessionDone: (info) => onSessionDone("evening", info),
+            onNumberResult: onNumberResult,
         });
     }
     if (screen && screen.screen === "num-percent") {
         return React.createElement(NumberPercent, {
             onBack: backToList("numbers"),
-            onSessionDone: (info) => onSessionDone("morning", info),
+            onSessionDone: (info) => onSessionDone("evening", info),
+            onNumberResult: onNumberResult,
         });
     }
     if (screen && screen.screen === "due") {
@@ -5360,9 +5452,9 @@ function PracticeTab({ screen, setScreen, banks, applyResult, onSessionDone, onE
     }
     if (screen && screen.screen === "exam") {
         return React.createElement(FullExam, {
-            banks: banks, onBack: backToList("exam"),
+            banks: banks, profile: profile, onBack: backToList("exam"),
             onExamStart: onExamStart, onExamFinish: onExamFinish,
-            applyResult: applyResult,
+            applyResult: applyResult, onNumberResult: onNumberResult,
         });
     }
 
@@ -5431,7 +5523,12 @@ const EXAM_PLAN = [
 ];
 const EXAM_TOTAL = 31;
 
+/* Numbers are not in EXAM_PLAN — their share is worked out from how well the
+   bands are known, not fixed in advance — so their label is supplied here. */
+const EXAM_NUMBER_META = { kind: "number", label: "מספרים", weight: 10, count: 1 };
+
 function examCategoryMeta(kind) {
+    if (kind === "number") return EXAM_NUMBER_META;
     return EXAM_PLAN.filter((p) => p.kind === kind)[0] || { label: kind, weight: 0, count: 1 };
 }
 
@@ -5444,7 +5541,43 @@ function isTypeable(item) {
     return allMeanings(item).some((m) => normAnswer(m).length >= 2);
 }
 
-function buildExamTasks(banks) {
+/* How much of the exam goes to numbers.
+
+   They belong to no meeting, so they cannot ride the meeting split. A tenth
+   of the paper while they are still being learned, tapering to almost
+   nothing once the bands are solid — there is no reason to keep testing what
+   is known, and every question spent there is one not spent on the meeting. */
+function numberShare(profile) {
+    const known = numbersKnowledge(profile) / 100;
+    return 0.10 - (0.07 * known);      // 10% down to 3%
+}
+
+function buildNumberExamTasks(count, profile) {
+    const out = [];
+    /* Weighted towards the bands that are least known, so the exam asks about
+       what is shaky rather than sampling evenly. */
+    const stats = (profile && profile.numberStats) || {};
+    const weakest = NUM_BANDS.slice()
+        .sort((a, b) => bandScore(stats, a.key) - bandScore(stats, b.key));
+    for (let i = 0; i < count; i++) {
+        const band = weakest[Math.min(i % 3, weakest.length - 1)];
+        if (band.key === "ordinals") {
+            const task = buildOrdinalTask();
+            out.push({ kind: "number", numberKind: "ordinal", task: task, band: "ordinals" });
+        } else {
+            const pool = { ones: 10, teens: 19, tens: 90, hundreds: 900, composed: 999 }[band.key] || 999;
+            let n = 1 + Math.floor(Math.random() * pool);
+            if (band.key === "teens") n = 11 + Math.floor(Math.random() * 9);
+            if (band.key === "tens") n = (2 + Math.floor(Math.random() * 8)) * 10;
+            if (band.key === "hundreds") n = (1 + Math.floor(Math.random() * 9)) * 100;
+            if (band.key === "composed") { n = 21 + Math.floor(Math.random() * 978); if (n % 10 === 0) n += 1; }
+            out.push({ kind: "number", numberKind: "digits", value: n, band: numberBand(n) });
+        }
+    }
+    return out;
+}
+
+function buildExamTasks(banks, profile) {
     const tasks = [];
     /* Every category scales together, so the weighting between them is
        unchanged however long the paper gets. */
@@ -5452,9 +5585,14 @@ function buildExamTasks(banks) {
        growth belongs to vocabulary and sentences. Scaling everything by the
        same factor would both shorten the paper and leave the alphabet taking
        a third of it. */
+    /* Numbers take their share of the paper rather than lengthening it: the
+       exam is already pitched at half an hour, and adding to it would push
+       past that every time the share rose. */
+    const length = examLength(banks.meeting || 1);
+    const numberCount = Math.round(length * numberShare(profile));
     const fixed = EXAM_PLAN.filter((p) => !p.grows).reduce((n, p) => n + p.count, 0);
     const growing = EXAM_TOTAL - fixed;
-    const grow = (examLength(banks.meeting || 1) - fixed) / growing;
+    const grow = (length - numberCount - fixed) / growing;
     EXAM_PLAN.forEach((part) => {
         /* The exam asks sentences by assembly, so it draws from the same
            subset the assembly drill uses. */
@@ -5487,6 +5625,11 @@ function buildExamTasks(banks) {
             }
         });
     });
+    /* The numbers go in last, so their count is not reduced by a category
+       that ran short of cards. */
+    if (numberCount > 0) {
+        buildNumberExamTasks(numberCount, profile).forEach((t) => tasks.push(t));
+    }
     return shuffle(tasks);
 }
 
@@ -5556,8 +5699,8 @@ function examNotes(cats) {
     return parts.filter(Boolean).join(" ");
 }
 
-function FullExam({ banks, onBack, onExamStart, onExamFinish, applyResult }) {
-    const [tasks, setTasks] = useState(() => buildExamTasks(banks));
+function FullExam({ banks, profile, onBack, onExamStart, onExamFinish, applyResult, onNumberResult }) {
+    const [tasks, setTasks] = useState(() => buildExamTasks(banks, profile));
     const [pos, setPos] = useState(0);
     const [typed, setTyped] = useState("");
     const [result, setResult] = useState(null);          // null | "correct" | "wrong"
@@ -5589,8 +5732,13 @@ function FullExam({ banks, onBack, onExamStart, onExamFinish, applyResult }) {
         /* The exam counts towards what you know — answering here is real
            evidence — but it passes schedule=false so the review dates stay
            exactly where the practice sessions left them. */
-        const answerKind = task.kind === "sentence" ? "sentence" : (task.open ? "typed" : "choice");
-        applyResult(task.item, correct, answerKind, false);
+        if (task.kind === "number") {
+            /* No item to schedule — the band takes the credit instead. */
+            if (onNumberResult) onNumberResult(task.band, correct);
+        } else {
+            const answerKind = task.kind === "sentence" ? "sentence" : (task.open ? "typed" : "choice");
+            applyResult(task.item, correct, answerKind, false);
+        }
         setResult(correct ? "correct" : "wrong");
     };
 
@@ -5598,6 +5746,10 @@ function FullExam({ banks, onBack, onExamStart, onExamFinish, applyResult }) {
 
     const submitTyped = () => {
         if (result || !typed.trim()) return;
+        if (task.kind === "number") {
+            record(parseInt(typed.trim(), 10) === task.value);
+            return;
+        }
         const accepted = new Set();
         allMeanings(task.item).forEach((sense) => acceptableAnswers(sense).forEach((k) => accepted.add(k)));
         record(accepted.has(normAnswer(typed)));
@@ -5626,7 +5778,7 @@ function FullExam({ banks, onBack, onExamStart, onExamFinish, applyResult }) {
     };
 
     const restart = () => {
-        setTasks(buildExamTasks(banks));
+        setTasks(buildExamTasks(banks, profile));
         setPos(0); setTyped(""); setResult(null); setCats({}); setFinished(false);
         examIdRef.current = onExamStart();
         settledRef.current = false;
@@ -5667,7 +5819,32 @@ function FullExam({ banks, onBack, onExamStart, onExamFinish, applyResult }) {
                 React.createElement("span", { className: "zl-examtag" }, meta.label)),
             React.createElement(SessionBar, { pos: pos + 1, total: tasks.length }),
 
-            task.kind === "sentence"
+            task.kind === "number"
+                ? React.createElement(React.Fragment, null,
+                    React.createElement("div", { style: { fontSize: "0.75rem", fontWeight: 700, color: "var(--accent)", marginBottom: 8 } },
+                        task.numberKind === "ordinal" ? "בחר את צורת הסודר" : "הקלד את ערכו של המספר"),
+                    task.numberKind === "ordinal"
+                        ? React.createElement(React.Fragment, null,
+                            React.createElement("p", { style: { color: "var(--ink-muted)", fontSize: "0.82rem", marginBottom: 8 } },
+                                task.task.hebrew + (task.task.definite ? "  ·  השם מיודע" : "  ·  השם אינו מיודע")),
+                            React.createElement(PromptBox, { text: task.task.prompt, isLetter: false }),
+                            React.createElement(ChoiceGrid, {
+                                question: { options: task.task.options, correctAnswer: task.task.answer },
+                                chosen: typed, locked: !!result,
+                                onChoose: (opt) => { setTyped(opt); record(opt === task.task.answer); } }))
+                        : React.createElement(React.Fragment, null,
+                            React.createElement(PromptBox, { text: spellNumber(task.value), isLetter: false }),
+                            React.createElement("input", {
+                                className: "zl-search", value: typed, disabled: !!result,
+                                inputMode: "numeric", placeholder: "ספרות בלבד", autoComplete: "off",
+                                onChange: (e) => setTyped(e.target.value.replace(/[^0-9]/g, "")),
+                                onKeyDown: (e) => { if (e.key === "Enter") { e.preventDefault(); if (result) next(); else submitTyped(); } },
+                                style: { marginBottom: 10, direction: "ltr", textAlign: "center", fontSize: "1.2rem" },
+                            }),
+                            !result ? React.createElement("div", { style: { display: "flex", gap: 8 } },
+                                React.createElement(PrimaryButton, { onClick: submitTyped, disabled: !typed.trim() }, "בדוק"),
+                                React.createElement(PrimaryButton, { variant: "outline", onClick: giveUp }, "לא יודע")) : null))
+            : task.kind === "sentence"
                 ? React.createElement(SentenceTask, {
                     item: task.item, dir: task.dir, onResult: record,
                     locked: !!result, result: result,
@@ -6196,6 +6373,35 @@ function StatsTab({ vocab, letters, sentences, idioms, checklist, meeting, profi
                     React.createElement("span", { style: { fontSize: "0.82rem", color: "var(--ink-muted)" } }, w.back),
                     React.createElement("span", { style: { fontSize: "0.78rem", color: "var(--bad)", fontWeight: 700 } }, "נכשלת " + w.wrongCount))))),
 
+        /* --- the numbers ---
+           Their own card, and deliberately not part of the meeting bar: they
+           belong to no meeting, and folding them in would distort "how much
+           of meeting 3 do I know". */
+        (function () {
+            const stats = (profile && profile.numberStats) || {};
+            const touched = NUM_BANDS.filter((b) => stats[b.key]);
+            if (touched.length === 0) return null;
+            const overall = numbersKnowledge(profile);
+            return React.createElement(Card, { style: { marginBottom: 14 } },
+                React.createElement("div", { style: { display: "flex", alignItems: "baseline", justifyContent: "space-between", marginBottom: 4 } },
+                    React.createElement("h3", { className: "zl-display", style: { fontWeight: 700, fontSize: "1rem" } }, "המספרים"),
+                    React.createElement("span", { style: { fontSize: "1.3rem", fontWeight: 800,
+                        color: overall >= READY_PCT ? "var(--ok)" : "var(--accent)" } }, overall + "%")),
+                React.createElement("p", { style: { fontSize: "0.8rem", color: "var(--ink-muted)", marginBottom: 10, lineHeight: 1.6 } },
+                    "נמדד בנפרד מהמפגשים, לפי שש קבוצות שנלמדות ונשכחות בנפרד."),
+                NUM_BANDS.map((b) => {
+                    const pct = bandScore(stats, b.key);
+                    return React.createElement("div", { key: b.key, className: "zl-catrow" },
+                        React.createElement("span", { className: "zl-catrow-name" }, b.label),
+                        React.createElement("span", { className: "zl-catrow-track" },
+                            React.createElement("span", { className: "zl-catrow-fill", style: {
+                                width: pct + "%",
+                                background: pct >= READY_PCT ? "var(--ok)" : "var(--focus)",
+                            } })),
+                        React.createElement("span", { className: "zl-catrow-val" }, pct + "%"));
+                }));
+        })(),
+
         /* --- where the mistakes are coming from ---
 
            The question this answers is whether to go back. Raw error counts
@@ -6636,6 +6842,12 @@ function ArabicLearningApp() {
        count is kept under its own key so the tick itself stays a plain
        boolean, which is what the week strip and the older stored days
        expect. */
+    /* Numbers belong to no meeting, so they are credited on the profile
+       rather than against any bank — see NUM_BANDS. */
+    const recordNumber = (band, correct) => {
+        setProfile((prev) => ({ ...(prev || {}), numberStats: creditBand(prev, band, correct) }));
+    };
+
     const markRoutineDone = (key, info) => {
         /* Alongside ticking the routine, keep a tally of which mode was used
            and how it went — nothing else records that. */
@@ -6653,6 +6865,14 @@ function ArabicLearningApp() {
                 return { ...prev, [day]: done >= need
                     ? { ...today, noonCount: done, noon: true }
                     : { ...today, noonCount: done } };
+            }
+            /* The evening is the assembly and then a numbers drill, so it
+               ticks on the second finish rather than the first. */
+            if (key === "evening") {
+                const done = (today.eveningCount || 0) + 1;
+                return { ...prev, [day]: done >= 2
+                    ? { ...today, eveningCount: done, evening: true }
+                    : { ...today, eveningCount: done } };
             }
             return { ...prev, [day]: { ...today, [key]: true } };
         });
@@ -6864,7 +7084,9 @@ function ArabicLearningApp() {
             tab === "practice" && (React.createElement(PracticeTab, {
                 screen: practiceScreen, setScreen: setPracticeScreen,
                 banks: banks, applyResult: applyResult,
+                profile: profile,
                 onSessionDone: markRoutineDone,
+                onNumberResult: recordNumber,
                 onExamStart: startExam, onExamFinish: finishExam,
             })),
             tab === "vocab" && React.createElement(VocabTab, { vocab: vocab, setVocab: setVocab, meeting: profileMeeting(profile) }),
