@@ -132,7 +132,7 @@ try {
     throw new Error("React / ReactDOM לא נטענו מה-CDN (בדוק חיבור לאינטרנט או חסימת סקריפטים).");
   }
 "use strict";
-const APP_BUILD = "10.09 · 80";   // bump this every time the file is replaced
+const APP_BUILD = "10.09 · 81";   // bump this every time the file is replaced
 
 /* The institute logo, carried inline so the page stays a single file.
    LOGO_MARK is the emblem alone (header); LOGO_FULL includes the name
@@ -2475,9 +2475,8 @@ function TopNav({ active, onChange }) {
    same way the midday games are. Ordering is not among them — it lives with
    the games now. */
 const EVENING_NUMBERS = [
-    { screen: "num-digits",  label: "הקלד את הספרה" },
+    { screen: "num-digits",  label: "מספרים ואחוזים" },
     { screen: "num-ordinal", label: "מספר סודר" },
-    { screen: "num-percent", label: "אחוזים" },
 ];
 
 function eveningNumberFor(dateKey) {
@@ -3899,7 +3898,11 @@ function spellNumber(n, gender) {
    digits, or picks a form — never spells one out — because a phone keyboard
    cannot produce pointed text, and the course does not ask anyone to.
    ========================================================================= */
-const NUM_SESSION = { digits: 15, order: 6, ordinal: 12, percent: 12 };
+/* Reading a number and reading a percentage are the same act — the
+   percentage is the number plus a fixed phrase — so they are one drill,
+   mixed, rather than two asking the same thing. */
+const NUM_SESSION = { digits: 18, order: 6, ordinal: 12 };
+const PERCENT_RATIO = 0.35;
 
 /* How well the numbers are known.
 
@@ -3972,8 +3975,16 @@ function numberQuestions(count, max) {
 }
 
 /* ---------- 1. read the number, type the digits ---------- */
+/* Each question carries its value and whether it is asked as a percentage. */
+function buildDigitQueue() {
+    const values = numberQuestions(NUM_SESSION.digits, 999);
+    const wantPct = Math.round(values.length * PERCENT_RATIO);
+    const pctSet = new Set(shuffle(values.slice()).slice(0, wantPct));
+    return values.map((n) => ({ value: n, percent: pctSet.has(n) }));
+}
+
 function NumberDigits({ onBack, onSessionDone, onNumberResult }) {
-    const [queue, setQueue] = useState(() => numberQuestions(NUM_SESSION.digits, 999));
+    const [queue, setQueue] = useState(buildDigitQueue);
     const [pos, setPos] = useState(0);
     const [typed, setTyped] = useState("");
     const [result, setResult] = useState(null);
@@ -3988,20 +3999,21 @@ function NumberDigits({ onBack, onSessionDone, onNumberResult }) {
     useEffect(() => () => { if (timerRef.current) clearTimeout(timerRef.current); }, []);
 
     const restart = () => {
-        setQueue(numberQuestions(NUM_SESSION.digits, 999));
+        setQueue(buildDigitQueue());
         setPos(0); setTyped(""); setResult(null);
         setScore({ correct: 0, total: 0 }); setFinished(false);
     };
 
     if (finished) {
         return React.createElement(SessionSummary, {
-            title: "סיימת · הקלד את הספרה",
+            title: "סיימת · מספרים ואחוזים",
             total: score.total, right: score.correct, wrong: score.total - score.correct,
             restartLabel: "סבב נוסף", onRestart: restart, onBack: onBack,
         });
     }
 
-    const n = queue[pos];
+    const item = queue[pos];
+    const n = item.value;
     const advance = () => {
         if (timerRef.current) clearTimeout(timerRef.current);
         timerRef.current = setTimeout(() => {
@@ -4029,11 +4041,13 @@ function NumberDigits({ onBack, onSessionDone, onNumberResult }) {
         React.createElement(BackLink, { onClick: onBack }, "חזרה לשיטות תרגול"),
         React.createElement(Card, null,
             React.createElement("h2", { className: "zl-display", style: { fontSize: "1.15rem", fontWeight: 800, marginBottom: 12 } },
-                "הקלד את הספרה"),
+                "מספרים ואחוזים"),
             React.createElement(SessionBar, { pos: pos + 1, total: queue.length }),
             React.createElement("p", { style: { color: "var(--ink-muted)", fontSize: "0.85rem", marginBottom: 10 } },
-                "מה ערכו של המספר הזה?"),
-            React.createElement(PromptBox, { text: spellNumber(n), isLetter: false }),
+                item.percent ? "כמה אחוזים?" : "מה ערכו של המספר הזה?"),
+            React.createElement(PromptBox, {
+                text: item.percent ? spellNumber(n) + " " + NUM_PERCENT : spellNumber(n),
+                isLetter: false }),
             React.createElement("input", {
                 className: "zl-search", value: typed, disabled: !!result,
                 inputMode: "numeric", placeholder: "ספרות בלבד", autoComplete: "off",
@@ -4044,7 +4058,7 @@ function NumberDigits({ onBack, onSessionDone, onNumberResult }) {
             result
                 ? React.createElement("p", { className: "zl-anim", style: {
                     fontWeight: 700, color: result === "correct" ? "var(--ok)" : "var(--bad)" } },
-                    result === "correct" ? "נכון" : "התשובה: " + n)
+                    result === "correct" ? "נכון" : "התשובה: " + n + (item.percent ? "%" : ""))
                 : React.createElement("div", { style: { display: "flex", gap: 8 } },
                     React.createElement(PrimaryButton, { onClick: submit, disabled: !typed.trim() }, "בדוק"),
                     React.createElement(PrimaryButton, { variant: "outline", onClick: giveUp }, "לא יודע")))));
@@ -4247,85 +4261,6 @@ function NumberOrdinal({ onBack, onSessionDone, onNumberResult }) {
                 question: { options: task.options, correctAnswer: task.answer },
                 chosen: chosen, locked: !!chosen, onChoose: choose,
             }))));
-}
-
-/* ---------- 4. percentages ---------- */
-function NumberPercent({ onBack, onSessionDone, onNumberResult }) {
-    const [queue, setQueue] = useState(() => numberQuestions(NUM_SESSION.percent, 999));
-    const [pos, setPos] = useState(0);
-    const [typed, setTyped] = useState("");
-    const [result, setResult] = useState(null);
-    const [score, setScore] = useState({ correct: 0, total: 0 });
-    const [finished, setFinished] = useState(false);
-    const timerRef = useRef(null);
-
-    useEffect(() => {
-        if (finished && onSessionDone) onSessionDone({ mode: "numbers", right: score.correct, total: score.total });
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [finished]);
-    useEffect(() => () => { if (timerRef.current) clearTimeout(timerRef.current); }, []);
-
-    const restart = () => {
-        setQueue(numberQuestions(NUM_SESSION.percent, 999));
-        setPos(0); setTyped(""); setResult(null);
-        setScore({ correct: 0, total: 0 }); setFinished(false);
-    };
-
-    if (finished) {
-        return React.createElement(SessionSummary, {
-            title: "סיימת · אחוזים",
-            total: score.total, right: score.correct, wrong: score.total - score.correct,
-            restartLabel: "סבב נוסף", onRestart: restart, onBack: onBack,
-        });
-    }
-
-    const n = queue[pos];
-    const advance = () => {
-        if (timerRef.current) clearTimeout(timerRef.current);
-        timerRef.current = setTimeout(() => {
-            if (pos + 1 >= queue.length) setFinished(true);
-            else { setPos(pos + 1); setTyped(""); setResult(null); }
-        }, 1200);
-    };
-    const submit = () => {
-        if (result || !typed.trim()) return;
-        const ok = parseInt(typed.trim(), 10) === n;
-        setScore((s) => ({ correct: s.correct + (ok ? 1 : 0), total: s.total + 1 }));
-        if (onNumberResult) onNumberResult(numberBand(n), ok);
-        setResult(ok ? "correct" : "wrong");
-        advance();
-    };
-    const giveUp = () => {
-        if (result) return;
-        setScore((s) => ({ correct: s.correct, total: s.total + 1 }));
-        if (onNumberResult) onNumberResult(numberBand(n), false);
-        setResult("wrong");
-        advance();
-    };
-
-    return (React.createElement("div", { className: "zl-anim" },
-        React.createElement(BackLink, { onClick: onBack }, "חזרה לשיטות תרגול"),
-        React.createElement(Card, null,
-            React.createElement("h2", { className: "zl-display", style: { fontSize: "1.15rem", fontWeight: 800, marginBottom: 12 } },
-                "אחוזים"),
-            React.createElement(SessionBar, { pos: pos + 1, total: queue.length }),
-            React.createElement("p", { style: { color: "var(--ink-muted)", fontSize: "0.85rem", marginBottom: 10 } },
-                "כמה אחוזים?"),
-            React.createElement(PromptBox, { text: spellNumber(n) + " " + NUM_PERCENT, isLetter: false }),
-            React.createElement("input", {
-                className: "zl-search", value: typed, disabled: !!result,
-                inputMode: "numeric", placeholder: "ספרות בלבד", autoComplete: "off",
-                onChange: (e) => setTyped(e.target.value.replace(/[^0-9]/g, "")),
-                onKeyDown: (e) => { if (e.key === "Enter") submit(); },
-                style: { marginBottom: 10, direction: "ltr", textAlign: "center", fontSize: "1.2rem" },
-            }),
-            result
-                ? React.createElement("p", { className: "zl-anim", style: {
-                    fontWeight: 700, color: result === "correct" ? "var(--ok)" : "var(--bad)" } },
-                    result === "correct" ? "נכון" : "התשובה: " + n + "%")
-                : React.createElement("div", { style: { display: "flex", gap: 8 } },
-                    React.createElement(PrimaryButton, { onClick: submit, disabled: !typed.trim() }, "בדוק"),
-                    React.createElement(PrimaryButton, { variant: "outline", onClick: giveUp }, "לא יודע")))));
 }
 
 /* =========================================================================
@@ -5285,12 +5220,11 @@ const PRACTICE_METHODS = [
            teach a form the course does not use. */
         id: "numbers",
         title: "המספר",
-        desc: "קריאת מספרים, צורת הסודר ואחוזים.",
+        desc: "קריאת מספרים ואחוזים, וצורת הסודר.",
         Icon: NumberIcon,
         options: [
-            { key: "digits", title: "הקלד את הספרה", desc: "המספר בתעתיק — הקלד את ערכו.", target: { screen: "num-digits" } },
+            { key: "digits", title: "מספרים ואחוזים", desc: "המספר בתעתיק — הקלד את ערכו.", target: { screen: "num-digits" } },
             { key: "ordinal", title: "מספר סודר", desc: "צרף את צורת הסודר הנכונה.", target: { screen: "num-ordinal" } },
-            { key: "percent", title: "אחוזים", desc: "המספר בתעתיק — הקלד את האחוז.", target: { screen: "num-percent" } },
         ],
     },
     {
@@ -5398,13 +5332,6 @@ function PracticeTab({ screen, setScreen, banks, profile, applyResult, onSession
     }
     if (screen && screen.screen === "num-ordinal") {
         return React.createElement(NumberOrdinal, {
-            onBack: backToList("numbers"),
-            onSessionDone: (info) => onSessionDone("evening", info),
-            onNumberResult: onNumberResult,
-        });
-    }
-    if (screen && screen.screen === "num-percent") {
-        return React.createElement(NumberPercent, {
             onBack: backToList("numbers"),
             onSessionDone: (info) => onSessionDone("evening", info),
             onNumberResult: onNumberResult,
