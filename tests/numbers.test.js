@@ -89,6 +89,24 @@ check('no repeated number within a session, and all in range', dupes === 0);
 check('the ordering round is six numbers', g.NUM_SESSION.order === 6);
 check('percentages use the fixed suffix', /בִּ\(א\)לְמִיֶ/.test(g.NUM_PERCENT), g.NUM_PERCENT);
 
+/* Percentages are mixed into the number-reading drill rather than sitting in
+   one of their own — the percentage is the number plus a fixed phrase. */
+const { api: mix } = loadApp('buildDigitQueue, PERCENT_RATIO, NUM_SESSION');
+let asPct = 0, asked = 0, badQueue = 0;
+for (let t = 0; t < 200; t++) {
+  const q = mix.buildDigitQueue();
+  asked += q.length;
+  asPct += q.filter((x) => x.percent).length;
+  if (q.length !== mix.NUM_SESSION.digits) badQueue++;
+  if (q.some((x) => !x.value || x.value < 1 || x.value > 999)) badQueue++;
+  if (new Set(q.map((x) => x.value)).size !== q.length) badQueue++;
+}
+check('the merged drill is well formed', badQueue === 0);
+check('about a third are asked as percentages',
+      Math.abs(asPct / asked - mix.PERCENT_RATIO) < 0.06,
+      Math.round(asPct / asked * 100) + '%');
+check('and some are asked plainly', asPct < asked);
+
 
 /* ---- tracking, and where numbers sit in the day ---- */
 const { api: h } = loadApp(
@@ -152,7 +170,7 @@ console.log('\n=== numbers in the evening');
 const evening = h.ROUTINE_ITEMS.find((r) => r.key === 'evening');
 check('the evening still starts with sentence assembly', evening.target.screen === 'builder');
 check('and carries a second part', !!evening.second);
-check('the second part is drawn from the number drills', h.EVENING_NUMBERS.length === 3);
+check('the second part is drawn from the number drills', h.EVENING_NUMBERS.length === 2);
 check('ordering is not among them — it is a game now',
       !h.EVENING_NUMBERS.some((x) => x.screen === 'num-order') &&
       h.NOON_GAMES.some((x) => x.screen === 'num-order'));
@@ -161,7 +179,7 @@ check('the evening draw is fixed for the day',
       JSON.stringify(h.eveningNumberFor(day)) === JSON.stringify(h.eveningNumberFor(day)));
 const seen = new Set();
 for (let d = 1; d <= 60; d++) seen.add(h.eveningNumberFor('2026-09-' + String(d % 28 + 1).padStart(2, '0')).label);
-check('all three come up over two months', seen.size === 3, Array.from(seen).join(', '));
+check('both come up over two months', seen.size === 2, Array.from(seen).join(', '));
 
 console.log(bad ? '\n' + bad + ' CHECK(S) FAILED' : '\nALL NUMBER CHECKS PASSED');
 process.exit(bad ? 1 : 0);
