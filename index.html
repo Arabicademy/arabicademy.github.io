@@ -132,7 +132,7 @@ try {
     throw new Error("React / ReactDOM לא נטענו מה-CDN (בדוק חיבור לאינטרנט או חסימת סקריפטים).");
   }
 "use strict";
-const APP_BUILD = "08.09 · 76";   // bump this every time the file is replaced
+const APP_BUILD = "09.09 · 79";   // bump this every time the file is replaced
 
 /* The institute logo, carried inline so the page stays a single file.
    LOGO_MARK is the emblem alone (header); LOGO_FULL includes the name
@@ -180,14 +180,17 @@ const BookOpen = (p) => React.createElement("svg", { ...iconBase(p) },
     React.createElement("path", { d: "M12 7C10 5.5 6.5 4.6 4 4.8 3.4 4.85 3 5.3 3 5.9v11.3c0 .6.45 1.05 1.05 1C6.6 18.05 10 18.9 12 20.4" }),
     React.createElement("path", { d: "M12 7c2-1.5 5.5-2.4 8-2.2.6.05 1 .5 1 1.1v11.3c0 .6-.45 1.05-1.05 1-2.55-.15-5.95.7-7.95 2.2" }),
     React.createElement("path", { d: "M12 7v13.4" }));
-/* ٣ — the Arabic-Indic digit three, for the numbers drills. */
-const NumberIcon = (p) => React.createElement("svg", {
-    ...iconBase(p), viewBox: "0 0 24 24", fill: "currentColor", stroke: "none",
-},
-    React.createElement("text", {
-        x: 12, y: 18, textAnchor: "middle",
-        fontSize: 17, fontFamily: "inherit", fontWeight: 600,
-    }, "٣"));
+/* 1 2 3, drawn rather than typeset: a single glyph sat oddly beside the
+   line-drawn icons around it, and ٣ alone read as decoration rather than as
+   "numbers". Three strokes at three heights, in the same weight as the rest. */
+const NumberIcon = (p) => React.createElement("svg", { ...iconBase(p) },
+    /* 1 */
+    React.createElement("path", { d: "M3.6 9.4L5.4 8v8" }),
+    React.createElement("path", { d: "M3.9 16h3" }),
+    /* 2 */
+    React.createElement("path", { d: "M9.7 9.2a2.1 2.1 0 013.5 1.5c0 1.9-3.5 3.4-3.5 5.3h3.9" }),
+    /* 3 */
+    React.createElement("path", { d: "M16.6 8.6h3.8l-2.2 3a2.4 2.4 0 11-1.5 4.2" }));
 
 const UserIcon = (p) => React.createElement("svg", { ...iconBase(p) },
     React.createElement("path", { d: "M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" }),
@@ -539,6 +542,32 @@ const GLOBAL_CSS = `
       background: var(--surface); color: var(--navy);
       box-shadow: var(--shadow-sm);
     }
+
+    /* ---- ordering numbers by size ---- */
+    .zl-numslots {
+      display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 14px;
+      padding: 10px; min-height: 56px;
+      background: var(--bg); border: 1px dashed var(--line); border-radius: var(--r-md);
+    }
+    .zl-numslot {
+      flex: 1 1 30%; min-width: 92px; min-height: 38px;
+      display: flex; align-items: center; justify-content: center;
+      border: 1px solid var(--line); border-radius: 9px;
+      background: var(--surface); color: var(--ink-muted);
+      font-size: 0.86rem; font-weight: 700; padding: 4px 8px; text-align: center;
+    }
+    .zl-numslot[data-filled="true"] { color: var(--navy); border-color: var(--navy); }
+    .zl-numbank { display: flex; flex-wrap: wrap; gap: 8px; }
+    .zl-numtile {
+      flex: 0 1 auto; min-height: 38px; padding: 6px 12px;
+      border: 1px solid var(--line); border-radius: 9px;
+      background: var(--surface); color: var(--ink);
+      font: inherit; font-size: 0.86rem; font-weight: 700;
+      cursor: pointer; box-shadow: var(--shadow-sm);
+      transition: border-color 0.15s, background 0.15s;
+    }
+    .zl-numtile:hover { border-color: var(--navy); }
+    .zl-numtile:disabled { opacity: 0.5; cursor: default; }
 
     /* ---- picking a meeting when adding a word ---- */
     .zl-meetpick {
@@ -1631,7 +1660,7 @@ const SENTENCES = [
 
     // ---- meeting 3, page 40: preposition drills ----
     { id: 65, hebrew: "הקורס הוא אודות ההיסטוריה האסלאמית.", arabic: "אִ(ל)דַّוְרַה הִיֶّ עַנִ (אל)תַّארִיח' אִ(ל)אִסְלַאמִי.", meeting: 3 },
-    { id: 66, hebrew: "תחנת המוניות בבניין על צד ימין.", arabic: "מַחַטִّת (אל)תַّכְּסִיַאת פִי (א)לְעַמַארַה עַלַא (א)לְיַמִין.", meeting: 3 },
+    { id: 66, hebrew: "תחנת המוניות בבניין על צד ימין.", arabic: "מַחַטִّת (אל)תַّכְּסִיַאת פִי (א)לְעַמַארַה עַלַא (א)לְיַמִין.", meeting: 3 },
     { id: 67, hebrew: "השולחן והכיסאות על גג הבית.", arabic: "אִ(ל)טַّאוְלֶה וִ(א)לְכַּרַאסִי עַלַא סַטְחִ (א)לְבֵּית.", meeting: 3 },
     { id: 68, hebrew: "האשמה לא עליך האשמה עלי.", arabic: "אִלְחַקّ מֶש עַלֵיכּ, אִלְחַקّ עַלַיّ.", meeting: 3 },
     { id: 69, hebrew: "הוא כתב את הסיפור אודותיכם, לא אודותם.", arabic: "הֻוֶّ כַּתַבִּ (א)לְקֻצַّה עַנְכֹּם, מֶש עַנְהֹם.", meeting: 3 },
@@ -1673,7 +1702,7 @@ const SENTENCES = [
     { id: 101, hebrew: "הארנק החדש עמך? הארנק לא עימי, נמצא במכונית.", arabic: "אִ(ל)גֻ'ّזְדַאן (א)לִגְ'דִיד מַעַכּ? אִ(ל)גֻ'ّזְדַאן מֶש מַעִי, מַוְגּ'וד עִנְדִי בִּ(אל)סַיַّארַה.", meeting: 5, readOnly: true },
     { id: 102, hebrew: "יש לכם טלוויזיה בבית? אין לנו טלוויזיה בבית, רק בבית אבי.", arabic: "אִנְתוּ אִלְכֹּם תֵלֵפִזְיוֹן בִּ(אל)דַّאר? מַלְנַאש תֵלֵפִזְיוֹן בִּ(אל)דַّאר, בַּסّ פִי בֵּית אַבּוּי.", meeting: 5, readOnly: true },
     { id: 103, hebrew: "יש לנו חברים באוניברסיטה, הם סטודנטים חדשים.", arabic: "אִלְנַא אַצְחַאבּ פִי (אל)גַ'אמְעַה, הֵמّ טֻלַّאבּ גְ'דַאד.", meeting: 5 },
-    { id: 104, hebrew: "יש להם קרובים אצלנו ביישוב, אנשים טובים.", arabic: "אִלְהֹם קַרַאיֶבּ עִנַّא פִי (א)לְבַּלַד, נַאס טַיְّבִּין.", meeting: 5 },
+    { id: 104, hebrew: "יש להם קרובים אצלנו ביישוב, אנשים טובים.", arabic: "אִלְהֹם קַרַאיֶבּ עִנַّא פִי (א)לְבַּלַד, נַאס טַיְّבִּין.", meeting: 5 },
     { id: 105, hebrew: "יש להם רק 20 שקל, בסדר?", arabic: "(הֻםّ) מַעְהֹם בַּסّ עִשְרִין שֵיכֶּל, מַאשִי?", meeting: 5 },
     { id: 106, hebrew: "אחיך לא אצלנו, הלך לפני שעתיים, הכל בסדר?", arabic: "אַחְ'וּכִּי מֶש עִנַّא, רַאח קַבֶּל סַאעְתֵין, כֻּלّ שִי תַמַאם?", meeting: 5, readOnly: true },
     { id: 107, hebrew: "אחרי השיחה, יש להם דאגה גדולה.", arabic: "בַּעִד (א)לְמֻכַּאלַמֶה, אִלְהֹם הַםّ כְּבִּיר.", meeting: 5 },
@@ -2447,6 +2476,7 @@ const NOON_GAMES = [
     { screen: "pairs", kind: "gender", label: "זכר ונקבה" },
     { screen: "clock", label: "נגד השעון" },
     { screen: "blank", label: "השלמת משפט" },
+    { screen: "num-order", label: "גדול או קטן" },
 ];
 
 function dayNoise(key, salt) {
@@ -2656,6 +2686,7 @@ const MODE_LABELS = {
     builder: "הרכבת משפטים",
     blank: "השלמת משפט",
     clock: "נגד השעון",
+    numbers: "המספר",
     pairs: "צימוד",
     reading: "קריאה",
 };
@@ -3716,84 +3747,497 @@ function MorningDrill({ banks, applyResult, onBack, onSessionDone, plan, title }
 }
 
 /* =========================================================================
-   NUMBERS — three drills, waiting on the book
+   THE NUMBERS
 
-   The rules for spelling and ordering Arabic numerals are specific enough
-   that inventing them would teach a form the course does not use, so these
-   screens say what they will be and stop there. Each keeps its own route and
-   its own entry in the practice list, so wiring the real exercise later is a
-   matter of filling one function.
+   Read off the booklet and confirmed form by form, including the places
+   where it is deliberately irregular: 14 and 17 end in אש where their
+   neighbours end in עְש, and 12 is written with a tet although 2 is
+   written with a tav.
 
-   What each one will do:
-
-     num-digits   The number is shown in transliteration — תְנֵין וּתְלַאתִין —
-                  and the learner types its value: 32. Marked against the
-                  numeral, so spelling of the transliteration never matters.
-
-     num-order    Six numbers in transliteration, to be dragged into order,
-                  largest to smallest or the reverse. Tests reading at speed
-                  rather than recall.
-
-     num-ordinal  A cardinal is given and the matching ordinal has to be
-                  chosen — the pattern that changes with gender and with
-                  position, which is where the mistakes are.
+   Composed numbers are assembled by the rule the book states — units
+   before tens, וְ between every part — and that rule reproduces the three
+   composed numbers the book writes out, which is how it was checked.
    ========================================================================= */
-const NUMBER_DRILLS = {
-    "num-digits": {
-        title: "הקלד את הספרה",
-        lead: "המספר יוצג בתעתיק, ואתה תקליד את ערכו.",
-        example: "תְנֵין וּתְלַאתִין  →  32",
-        points: [
-            "הבדיקה מול הספרה עצמה, כך שאיות התעתיק לא נחשב",
-            "טעות מחזירה את המספר מוקדם יותר, כמו כל תרגול אחר",
-        ],
-    },
-    "num-order": {
-        title: "גדול או קטן",
-        lead: "שישה מספרים בתעתיק, לסידור לפי גודל.",
-        example: "מהגדול לקטן, או מהקטן לגדול",
-        points: [
-            "בודק קריאה מהירה ולא שליפה מהזיכרון",
-            "הסדר מוגרל בכל סבב",
-        ],
-    },
-    "num-ordinal": {
-        title: "מספר סודר",
-        lead: "מספר רגיל מוצג, ואתה בוחר את צורת הסודר שלו.",
-        example: "תַלַאתֶה  →  תַאלֶת",
-        points: [
-            "הצורה משתנה לפי מין ולפי מיקום",
-            "שם רוב הטעויות, ולכן זה תרגיל בפני עצמו",
-        ],
-    },
+const NUM_ONE_TWO = {
+    1: { m: "וַאחַד", f: "וַחְדֶה" },
+    2: { m: "תְנֵין", f: "תִנְתֵין" }
 };
 
-function NumberDrillStub({ kind, onBack }) {
-    const drill = NUMBER_DRILLS[kind];
-    if (!drill) return null;
+/* The short form is for construct, before a plural noun. A drill that
+   shows a number with no noun beside it always shows the long one. */
+const NUM_3_10 = {
+    3: { long: "תַלַאתֶה", short: "תַלַת" },
+    4: { long: "אַרְבְּעַה", short: "אַרְבַּע" },
+    5: { long: "חַ'מְסֶה", short: "חַ'מַס" },
+    6: { long: "סִתֶّה", short: "סִתّ" },
+    7: { long: "סַבְּעַה", short: "סַבַּע" },
+    8: { long: "תַמַאנְיֶה", short: "תַמַן" },
+    9: { long: "תִסְעַה", short: "תִסַע" },
+    10: { long: "עַשַרַה", short: "עַשַר" }
+};
+
+/* "alone" stands by itself; "before" precedes a singular noun. */
+const NUM_11_19 = {
+    11: { alone: "חִדַעְש", before: "חִדַעְשַר" },
+    12: { alone: "טְנַעְש", before: "טְנַעְשַר" },
+    13: { alone: "תַלַטّעְש", before: "תַלַטّעְשַר" },
+    14: { alone: "אַרְבַּעְטַאש", before: "אַרְבַּעְטַעְשַר" },
+    15: { alone: "חַ'מִסְטַّאעְש", before: "חַ'מְסְטַעְשַר" },
+    16: { alone: "סִטّעְש", before: "סִטّעְשַר" },
+    17: { alone: "סַבַּעְטַאש", before: "סַבַּעְטַעְשַר" },
+    18: { alone: "תַמַנְטّעְש", before: "תַמַנְטّעְשַר" },
+    19: { alone: "תִסַעְטّעְש", before: "תִסַעְטّעְשַר" }
+};
+
+const NUM_TENS = {
+    20: "עִשְרִין",
+    30: "תַלַתִין",
+    40: "אַרְבְּעִין",
+    50: "חַ'מְסִין",
+    60: "סִתّין",
+    70: "סַבְּעִין",
+    80: "תַמַנִין",
+    90: "תִסְעִין"
+};
+const NUM_HUNDREDS = {
+    100: "מִיֶّה",
+    200: "מִיתֵין",
+    300: "תַלַתְמִיֶّה",
+    400: "אַרְבַּעְמִיֶّה",
+    500: "חַ'מְסְמִיֶّה",
+    600: "סִתְّמִיֶّה",
+    700: "סַבַּעְמִיֶّה",
+    800: "תַמַנְמִיֶّה",
+    900: "תִסַעְמִיֶّה"
+};
+
+/* The book gives no ordinal above ten. */
+const NUM_ORDINALS = {
+    1: { m: "אַוّל", f: "אוּלַא" },
+    2: { m: "תַאנִי", f: "תַאנְיֶה" },
+    3: { m: "תַאלֶת", f: "תַאלְתַה" },
+    4: { m: "רַאבֶּע", f: "רַאבְּעַה" },
+    5: { m: "חַ'אמֶס", f: "חַ'אמְסֶה" },
+    6: { m: "סַאדֶס", f: "סַאדְסֶה" },
+    7: { m: "סַאבֶּע", f: "סַאבְּעַה" },
+    8: { m: "תַאמֶן", f: "תַאמְנֶה" },
+    9: { m: "תַאסֶע", f: "תַאסְעַה" },
+    10: { m: "עַאשֶר", f: "עַאשְרַה" }
+};
+
+/* Written out in the book, and used to verify the rule above. */
+const NUM_BOOK_COMPOSED = {
+    140: "מִיֶّה וְאַרְבְּעִין",
+    153: "מִיֶّה וְתַלַאתֶה וְחַ'מְסִין",
+    296: "מִיתֵין וְסִתֶّה וְתִסְעִין"
+};
+
+const NUM_PERCENT = "בִּ(א)לְמִיֶّה";
+
+function spellNumber(n, gender) {
+    const g = gender || "m";
+    if (NUM_BOOK_COMPOSED[n]) return NUM_BOOK_COMPOSED[n];
+    if (n === 1 || n === 2) return NUM_ONE_TWO[n][g];
+    if (n >= 3 && n <= 10) return NUM_3_10[n].long;
+    if (n >= 11 && n <= 19) return NUM_11_19[n].alone;
+    if (NUM_TENS[n]) return NUM_TENS[n];
+    if (NUM_HUNDREDS[n]) return NUM_HUNDREDS[n];
+
+    const parts = [];
+    const hundreds = Math.floor(n / 100) * 100;
+    const rest = n % 100;
+    if (hundreds) parts.push(NUM_HUNDREDS[hundreds]);
+    if (rest) {
+        if (NUM_TENS[rest] || rest <= 19) {
+            parts.push(spellNumber(rest, g));
+        } else {
+            /* Units before tens — the order the book gives. */
+            parts.push(spellNumber(rest % 10, g));
+            parts.push(NUM_TENS[Math.floor(rest / 10) * 10]);
+        }
+    }
+    return parts.length > 1 ? parts.join(" \u05D5\u05B0") : parts[0];
+}
+
+/* =========================================================================
+   NUMBER DRILLS
+
+   Four exercises over the same data. They are separate because they test
+   different things: reading a number, comparing several at speed, choosing
+   the ordinal form the sentence structure calls for, and reading a
+   percentage.
+
+   Nothing is marked against the transliteration itself. The learner types
+   digits, or picks a form — never spells one out — because a phone keyboard
+   cannot produce pointed text, and the course does not ask anyone to.
+   ========================================================================= */
+const NUM_SESSION = { digits: 15, order: 6, ordinal: 12, percent: 12 };
+
+/* Which numbers a drill may draw. Kept away from the very large ones for the
+   ordering drill, where six long strings would not fit a phone. */
+function randomNumber(max) {
+    return 1 + Math.floor(Math.random() * max);
+}
+
+function numberQuestions(count, max) {
+    const seen = new Set();
+    const out = [];
+    let guard = 0;
+    while (out.length < count && guard < count * 40) {
+        guard++;
+        const n = randomNumber(max);
+        if (seen.has(n)) continue;
+        seen.add(n);
+        out.push(n);
+    }
+    return out;
+}
+
+/* ---------- 1. read the number, type the digits ---------- */
+function NumberDigits({ onBack, onSessionDone }) {
+    const [queue, setQueue] = useState(() => numberQuestions(NUM_SESSION.digits, 999));
+    const [pos, setPos] = useState(0);
+    const [typed, setTyped] = useState("");
+    const [result, setResult] = useState(null);
+    const [score, setScore] = useState({ correct: 0, total: 0 });
+    const [finished, setFinished] = useState(false);
+    const timerRef = useRef(null);
+
+    useEffect(() => {
+        if (finished && onSessionDone) onSessionDone({ mode: "numbers", right: score.correct, total: score.total });
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [finished]);
+    useEffect(() => () => { if (timerRef.current) clearTimeout(timerRef.current); }, []);
+
+    const restart = () => {
+        setQueue(numberQuestions(NUM_SESSION.digits, 999));
+        setPos(0); setTyped(""); setResult(null);
+        setScore({ correct: 0, total: 0 }); setFinished(false);
+    };
+
+    if (finished) {
+        return React.createElement(SessionSummary, {
+            title: "סיימת · הקלד את הספרה",
+            total: score.total, right: score.correct, wrong: score.total - score.correct,
+            restartLabel: "סבב נוסף", onRestart: restart, onBack: onBack,
+        });
+    }
+
+    const n = queue[pos];
+    const advance = () => {
+        if (timerRef.current) clearTimeout(timerRef.current);
+        timerRef.current = setTimeout(() => {
+            if (pos + 1 >= queue.length) setFinished(true);
+            else { setPos(pos + 1); setTyped(""); setResult(null); }
+        }, 1200);
+    };
+    const submit = () => {
+        if (result || !typed.trim()) return;
+        const ok = parseInt(typed.trim(), 10) === n;
+        setScore((s) => ({ correct: s.correct + (ok ? 1 : 0), total: s.total + 1 }));
+        setResult(ok ? "correct" : "wrong");
+        advance();
+    };
+    const giveUp = () => {
+        if (result) return;
+        setScore((s) => ({ correct: s.correct, total: s.total + 1 }));
+        setResult("wrong");
+        advance();
+    };
+
     return (React.createElement("div", { className: "zl-anim" },
         React.createElement(BackLink, { onClick: onBack }, "חזרה לשיטות תרגול"),
         React.createElement(Card, null,
-            React.createElement("div", { className: "zl-guide-icon", style: { marginBottom: 12 } },
-                React.createElement(NumberIcon, { size: 22 })),
-            React.createElement("h2", { className: "zl-display", style: { fontSize: "1.15rem", fontWeight: 800, marginBottom: 6 } },
-                drill.title),
-            React.createElement("p", { style: { color: "var(--ink-muted)", fontSize: "0.88rem", lineHeight: 1.7, marginBottom: 12 } },
-                drill.lead),
-            React.createElement("div", { style: {
-                background: "var(--bg)", border: "1px solid var(--line)", borderRadius: "var(--r-md)",
-                padding: "14px 16px", textAlign: "center", marginBottom: 14,
-            } },
-                React.createElement("span", { className: "zl-display", style: { fontSize: "1.05rem", fontWeight: 700 } },
-                    drill.example)),
-            React.createElement("ul", { className: "zl-guide-list", style: { marginBottom: 14 } },
-                drill.points.map((p, i) => React.createElement("li", { key: i }, p))),
-            React.createElement("p", { style: {
-                fontSize: "0.82rem", color: "var(--ink-muted)", lineHeight: 1.7,
-                background: "var(--bg)", border: "1px dashed var(--line)",
-                borderRadius: "var(--r-md)", padding: "12px 14px",
-            } },
-                "התרגול הזה עדיין לא פעיל. הוא ממתין לחוקיות המספרים מהספר, כדי שהתשובות יהיו בדיוק לפי מה שנלמד בכיתה."))));
+            React.createElement("h2", { className: "zl-display", style: { fontSize: "1.15rem", fontWeight: 800, marginBottom: 12 } },
+                "הקלד את הספרה"),
+            React.createElement(SessionBar, { pos: pos + 1, total: queue.length }),
+            React.createElement("p", { style: { color: "var(--ink-muted)", fontSize: "0.85rem", marginBottom: 10 } },
+                "מה ערכו של המספר הזה?"),
+            React.createElement(PromptBox, { text: spellNumber(n), isLetter: false }),
+            React.createElement("input", {
+                className: "zl-search", value: typed, disabled: !!result,
+                inputMode: "numeric", placeholder: "ספרות בלבד", autoComplete: "off",
+                onChange: (e) => setTyped(e.target.value.replace(/[^0-9]/g, "")),
+                onKeyDown: (e) => { if (e.key === "Enter") submit(); },
+                style: { marginBottom: 10, direction: "ltr", textAlign: "center", fontSize: "1.2rem" },
+            }),
+            result
+                ? React.createElement("p", { className: "zl-anim", style: {
+                    fontWeight: 700, color: result === "correct" ? "var(--ok)" : "var(--bad)" } },
+                    result === "correct" ? "נכון" : "התשובה: " + n)
+                : React.createElement("div", { style: { display: "flex", gap: 8 } },
+                    React.createElement(PrimaryButton, { onClick: submit, disabled: !typed.trim() }, "בדוק"),
+                    React.createElement(PrimaryButton, { variant: "outline", onClick: giveUp }, "לא יודע")))));
+}
+
+/* ---------- 2. order six numbers by size ---------- */
+function NumberOrder({ onBack, onSessionDone }) {
+    const makeRound = () => {
+        const nums = numberQuestions(NUM_SESSION.order, 200);
+        return { nums: nums, ascending: Math.random() < 0.5 };
+    };
+    const [round, setRound] = useState(makeRound);
+    const [picked, setPicked] = useState([]);
+    const [result, setResult] = useState(null);
+    const [score, setScore] = useState({ correct: 0, total: 0 });
+    const [done, setDone] = useState(0);
+    const [finished, setFinished] = useState(false);
+
+    useEffect(() => {
+        if (finished && onSessionDone) onSessionDone({ mode: "numbers", right: score.correct, total: score.total });
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [finished]);
+
+    const ROUNDS = 5;
+    const restart = () => {
+        setRound(makeRound()); setPicked([]); setResult(null);
+        setScore({ correct: 0, total: 0 }); setDone(0); setFinished(false);
+    };
+
+    if (finished) {
+        return React.createElement(SessionSummary, {
+            title: "סיימת · גדול או קטן",
+            total: score.total, right: score.correct, wrong: score.total - score.correct,
+            restartLabel: "סבב נוסף", onRestart: restart, onBack: onBack,
+        });
+    }
+
+    const remaining = round.nums.filter((n) => picked.indexOf(n) === -1);
+    const check = () => {
+        const want = round.nums.slice().sort((a, b) => (round.ascending ? a - b : b - a));
+        const ok = picked.join(",") === want.join(",");
+        setScore((s) => ({ correct: s.correct + (ok ? 1 : 0), total: s.total + 1 }));
+        setResult(ok ? "correct" : "wrong");
+        setTimeout(() => {
+            if (done + 1 >= ROUNDS) setFinished(true);
+            else { setDone(done + 1); setRound(makeRound()); setPicked([]); setResult(null); }
+        }, ok ? 900 : 2200);
+    };
+
+    return (React.createElement("div", { className: "zl-anim" },
+        React.createElement(BackLink, { onClick: onBack }, "חזרה לשיטות תרגול"),
+        React.createElement(Card, null,
+            React.createElement("h2", { className: "zl-display", style: { fontSize: "1.15rem", fontWeight: 800, marginBottom: 12 } },
+                "גדול או קטן"),
+            React.createElement(SessionBar, { pos: done + 1, total: ROUNDS }),
+            React.createElement("p", { style: { color: "var(--ink-muted)", fontSize: "0.85rem", marginBottom: 12 } },
+                round.ascending ? "לחץ על המספרים מהקטן לגדול" : "לחץ על המספרים מהגדול לקטן"),
+
+            React.createElement("div", { className: "zl-numslots" },
+                round.nums.map((_, i) => {
+                    const n = picked[i];
+                    return React.createElement("span", {
+                        key: i, className: "zl-numslot", "data-filled": n !== undefined ? "true" : "false",
+                    }, n !== undefined ? spellNumber(n) : "");
+                })),
+
+            React.createElement("div", { className: "zl-numbank" },
+                remaining.map((n) => React.createElement("button", {
+                    key: n, type: "button", className: "zl-numtile",
+                    disabled: !!result,
+                    onClick: () => setPicked(picked.concat([n])),
+                }, spellNumber(n)))),
+
+            result
+                ? React.createElement("p", { className: "zl-anim", style: {
+                    fontWeight: 700, marginTop: 12,
+                    color: result === "correct" ? "var(--ok)" : "var(--bad)" } },
+                    result === "correct" ? "נכון" : "הסדר הנכון: " +
+                        round.nums.slice().sort((a, b) => (round.ascending ? a - b : b - a)).join(" · "))
+                : React.createElement("div", { style: { display: "flex", gap: 8, marginTop: 12 } },
+                    React.createElement(PrimaryButton, { onClick: check, disabled: picked.length < round.nums.length }, "בדוק"),
+                    React.createElement(PrimaryButton, { variant: "outline", onClick: () => setPicked([]) }, "איפוס")))));
+}
+
+/* ---------- 3. the ordinal, in the structure the sentence calls for ----------
+
+   The choice is not only masculine against feminine. Where the counted noun
+   carries the article the ordinal follows it and takes the article too —
+   אִ(ל)סַיַّארַה (אל)רַאבְּעַה. Where it does not, the ordinal comes first and
+   stands in construct — רַאבֶּע סַיַّארַה. Same meaning, different shape, and
+   the shape is what this drills. */
+/* `gender` is the Arabic gender, which decides the answer. `heGender` is the
+   Hebrew one, which decides only how the prompt reads — עַמַארַה is feminine
+   in Arabic while בניין is masculine in Hebrew, and a prompt that ignored
+   that would read "הבניין התשיעית". */
+const ORDINAL_NOUNS = [
+    { bare: "סַיַ\u0651ארַה", def: "אִ(ל)סַיַ\u0651ארַה", defForm: "(אל)", gender: "f", he: "מכונית", heGender: "f" },
+    { bare: "בֵּית", def: "אִ(ל)בֵּית", defForm: "(אל)", gender: "m", he: "בית", heGender: "m" },
+    { bare: "וַלַד", def: "אִ(ל)וַלַד", defForm: "(אל)", gender: "m", he: "ילד", heGender: "m" },
+    { bare: "עַמַארַה", def: "אִ(ל)עַמַארַה", defForm: "(אל)", gender: "f", he: "עמארה", heGender: "f" },
+    { bare: "כְּתַאבּ", def: "אִ(ל)כְּתַאבּ", defForm: "(אל)", gender: "m", he: "ספר", heGender: "m" },
+    { bare: "מַדְרַסֶה", def: "אִ(ל)מַדְרַסֶה", defForm: "(אל)", gender: "f", he: "מדרסה", heGender: "f" },
+    { bare: "שַקַ\u0651ה", def: "אִ(ל)שַקַ\u0651ה", defForm: "(אל)", gender: "f", he: "דירה", heGender: "f" },
+    { bare: "טַאבֶּק", def: "אִ(ל)טַאבֶּק", defForm: "(אל)", gender: "m", he: "קומה", heGender: "f" },
+];
+
+function buildOrdinalTask() {
+    const noun = ORDINAL_NOUNS[Math.floor(Math.random() * ORDINAL_NOUNS.length)];
+    const n = 1 + Math.floor(Math.random() * 10);
+    const definite = Math.random() < 0.5;
+    const ord = NUM_ORDINALS[n];
+
+    /* The right answer, and three that are each right in some other context:
+       the other gender, the plain number, and the form that belongs to the
+       opposite structure. */
+    const answer = definite ? noun.defForm + ord[noun.gender] : ord[noun.gender];
+    const wrong = new Set();
+    wrong.add(ord[noun.gender === "m" ? "f" : "m"]);
+    wrong.add(spellNumber(n, noun.gender));
+    wrong.add(definite ? ord[noun.gender] : noun.defForm + ord[noun.gender]);
+    wrong.delete(answer);
+
+    const options = shuffle([answer].concat(Array.from(wrong).slice(0, 3)));
+    return {
+        noun: noun, n: n, definite: definite, answer: answer, options: options,
+        prompt: definite
+            ? noun.def + " ___"
+            : "___ " + noun.bare,
+        /* The Hebrew has to agree too, or the prompt contradicts the
+           question: "מכונית הרביעי" asks for something that does not exist. */
+        /* Definiteness carries through both words or neither: "מכונית שישית"
+           against "המכונית השישית". */
+        hebrew: (definite ? "ה" : "") + noun.he + " " + (definite ? "ה" : "") +
+            ((noun.heGender || noun.gender) === "f"
+                ? ["ראשונה", "שנייה", "שלישית", "רביעית", "חמישית",
+                   "שישית", "שביעית", "שמינית", "תשיעית", "עשירית"][n - 1]
+                : ["ראשון", "שני", "שלישי", "רביעי", "חמישי",
+                   "שישי", "שביעי", "שמיני", "תשיעי", "עשירי"][n - 1]),
+    };
+}
+
+function NumberOrdinal({ onBack, onSessionDone }) {
+    const [task, setTask] = useState(buildOrdinalTask);
+    const [chosen, setChosen] = useState(null);
+    const [score, setScore] = useState({ correct: 0, total: 0 });
+    const [pos, setPos] = useState(0);
+    const [finished, setFinished] = useState(false);
+    const timerRef = useRef(null);
+
+    useEffect(() => {
+        if (finished && onSessionDone) onSessionDone({ mode: "numbers", right: score.correct, total: score.total });
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [finished]);
+    useEffect(() => () => { if (timerRef.current) clearTimeout(timerRef.current); }, []);
+
+    const restart = () => {
+        setTask(buildOrdinalTask()); setChosen(null);
+        setScore({ correct: 0, total: 0 }); setPos(0); setFinished(false);
+    };
+
+    if (finished) {
+        return React.createElement(SessionSummary, {
+            title: "סיימת · מספר סודר",
+            total: score.total, right: score.correct, wrong: score.total - score.correct,
+            restartLabel: "סבב נוסף", onRestart: restart, onBack: onBack,
+        });
+    }
+
+    const choose = (opt) => {
+        if (chosen) return;
+        setChosen(opt);
+        setScore((s) => ({ correct: s.correct + (opt === task.answer ? 1 : 0), total: s.total + 1 }));
+        if (timerRef.current) clearTimeout(timerRef.current);
+        timerRef.current = setTimeout(() => {
+            if (pos + 1 >= NUM_SESSION.ordinal) setFinished(true);
+            else { setPos(pos + 1); setTask(buildOrdinalTask()); setChosen(null); }
+        }, opt === task.answer ? 800 : 1800);
+    };
+
+    return (React.createElement("div", { className: "zl-anim" },
+        React.createElement(BackLink, { onClick: onBack }, "חזרה לשיטות תרגול"),
+        React.createElement(Card, null,
+            React.createElement("h2", { className: "zl-display", style: { fontSize: "1.15rem", fontWeight: 800, marginBottom: 12 } },
+                "מספר סודר"),
+            React.createElement(SessionBar, { pos: pos + 1, total: NUM_SESSION.ordinal }),
+            React.createElement("p", { style: { color: "var(--ink-muted)", fontSize: "0.85rem", marginBottom: 6 } },
+                "השלם את הצורה הנכונה — " + task.hebrew),
+            React.createElement("p", { style: { color: "var(--ink-muted)", fontSize: "0.76rem", marginBottom: 10 } },
+                task.definite ? "השם מיודע" : "השם אינו מיודע"),
+            React.createElement(PromptBox, { text: task.prompt, isLetter: false }),
+            /* The same grid the quiz uses, so a right answer looks the same
+               here as it does anywhere else. */
+            React.createElement(ChoiceGrid, {
+                question: { options: task.options, correctAnswer: task.answer },
+                chosen: chosen, locked: !!chosen, onChoose: choose,
+            }))));
+}
+
+/* ---------- 4. percentages ---------- */
+function NumberPercent({ onBack, onSessionDone }) {
+    const [queue, setQueue] = useState(() => numberQuestions(NUM_SESSION.percent, 999));
+    const [pos, setPos] = useState(0);
+    const [typed, setTyped] = useState("");
+    const [result, setResult] = useState(null);
+    const [score, setScore] = useState({ correct: 0, total: 0 });
+    const [finished, setFinished] = useState(false);
+    const timerRef = useRef(null);
+
+    useEffect(() => {
+        if (finished && onSessionDone) onSessionDone({ mode: "numbers", right: score.correct, total: score.total });
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [finished]);
+    useEffect(() => () => { if (timerRef.current) clearTimeout(timerRef.current); }, []);
+
+    const restart = () => {
+        setQueue(numberQuestions(NUM_SESSION.percent, 999));
+        setPos(0); setTyped(""); setResult(null);
+        setScore({ correct: 0, total: 0 }); setFinished(false);
+    };
+
+    if (finished) {
+        return React.createElement(SessionSummary, {
+            title: "סיימת · אחוזים",
+            total: score.total, right: score.correct, wrong: score.total - score.correct,
+            restartLabel: "סבב נוסף", onRestart: restart, onBack: onBack,
+        });
+    }
+
+    const n = queue[pos];
+    const advance = () => {
+        if (timerRef.current) clearTimeout(timerRef.current);
+        timerRef.current = setTimeout(() => {
+            if (pos + 1 >= queue.length) setFinished(true);
+            else { setPos(pos + 1); setTyped(""); setResult(null); }
+        }, 1200);
+    };
+    const submit = () => {
+        if (result || !typed.trim()) return;
+        const ok = parseInt(typed.trim(), 10) === n;
+        setScore((s) => ({ correct: s.correct + (ok ? 1 : 0), total: s.total + 1 }));
+        setResult(ok ? "correct" : "wrong");
+        advance();
+    };
+    const giveUp = () => {
+        if (result) return;
+        setScore((s) => ({ correct: s.correct, total: s.total + 1 }));
+        setResult("wrong");
+        advance();
+    };
+
+    return (React.createElement("div", { className: "zl-anim" },
+        React.createElement(BackLink, { onClick: onBack }, "חזרה לשיטות תרגול"),
+        React.createElement(Card, null,
+            React.createElement("h2", { className: "zl-display", style: { fontSize: "1.15rem", fontWeight: 800, marginBottom: 12 } },
+                "אחוזים"),
+            React.createElement(SessionBar, { pos: pos + 1, total: queue.length }),
+            React.createElement("p", { style: { color: "var(--ink-muted)", fontSize: "0.85rem", marginBottom: 10 } },
+                "כמה אחוזים?"),
+            React.createElement(PromptBox, { text: spellNumber(n) + " " + NUM_PERCENT, isLetter: false }),
+            React.createElement("input", {
+                className: "zl-search", value: typed, disabled: !!result,
+                inputMode: "numeric", placeholder: "ספרות בלבד", autoComplete: "off",
+                onChange: (e) => setTyped(e.target.value.replace(/[^0-9]/g, "")),
+                onKeyDown: (e) => { if (e.key === "Enter") submit(); },
+                style: { marginBottom: 10, direction: "ltr", textAlign: "center", fontSize: "1.2rem" },
+            }),
+            result
+                ? React.createElement("p", { className: "zl-anim", style: {
+                    fontWeight: 700, color: result === "correct" ? "var(--ok)" : "var(--bad)" } },
+                    result === "correct" ? "נכון" : "התשובה: " + n + "%")
+                : React.createElement("div", { style: { display: "flex", gap: 8 } },
+                    React.createElement(PrimaryButton, { onClick: submit, disabled: !typed.trim() }, "בדוק"),
+                    React.createElement(PrimaryButton, { variant: "outline", onClick: giveUp }, "לא יודע")))));
 }
 
 /* =========================================================================
@@ -4753,12 +5197,12 @@ const PRACTICE_METHODS = [
            teach a form the course does not use. */
         id: "numbers",
         title: "המספר",
-        desc: "קריאת מספרים, סדר גודל וצורת הסודר.",
+        desc: "קריאת מספרים, צורת הסודר ואחוזים.",
         Icon: NumberIcon,
         options: [
             { key: "digits", title: "הקלד את הספרה", desc: "המספר בתעתיק — הקלד את ערכו.", target: { screen: "num-digits" } },
-            { key: "order", title: "גדול או קטן", desc: "סדר שישה מספרים לפי גודלם.", target: { screen: "num-order" } },
             { key: "ordinal", title: "מספר סודר", desc: "צרף את צורת הסודר הנכונה.", target: { screen: "num-ordinal" } },
+            { key: "percent", title: "אחוזים", desc: "המספר בתעתיק — הקלד את האחוז.", target: { screen: "num-percent" } },
         ],
     },
     {
@@ -4771,13 +5215,16 @@ const PRACTICE_METHODS = [
     {
         id: "games",
         title: "משחקים",
-        desc: "תרגול קליל — צימוד, מהירות והשלמה.",
+        desc: "תרגול קליל — צימוד, מהירות, השלמה וסדר.",
         Icon: GameIcon,
         options: [
             { key: "single", title: "יחיד ורבים", desc: "צימוד כל מילה לצורת הרבים שלה.", target: { screen: "pairs", kind: "number" } },
             { key: "gender", title: "זכר ונקבה", desc: "צימוד כל מילה לצורת הנקבה שלה.", target: { screen: "pairs", kind: "gender" } },
             { key: "clock", title: "נגד השעון", desc: GAME_SIZES.clock + " שניות, כמה שאלות שתספיק.", target: { screen: "clock" } },
             { key: "blank", title: "השלמת משפט", desc: "איזו מילה חסרה במשפט.", target: { screen: "blank" } },
+            /* Ordering numbers is a game in the way the reading drills are
+               not: it is quick, it is scored per round, and nothing is typed. */
+            { key: "order", title: "גדול או קטן", desc: "סדר שישה מספרים לפי גודלם.", target: { screen: "num-order" } },
         ],
     },
     {
@@ -4847,9 +5294,28 @@ function PracticeTab({ screen, setScreen, banks, applyResult, onSessionDone, onE
             dir: dir, setDir: setDir, onSessionDone: (info) => onSessionDone("evening", info),
         });
     }
-    if (screen && String(screen.screen || "").indexOf("num-") === 0) {
-        return React.createElement(NumberDrillStub, {
-            kind: screen.screen, onBack: backToList("numbers"),
+    if (screen && screen.screen === "num-digits") {
+        return React.createElement(NumberDigits, {
+            onBack: backToList("numbers"),
+            onSessionDone: (info) => onSessionDone("morning", info),
+        });
+    }
+    if (screen && screen.screen === "num-order") {
+        return React.createElement(NumberOrder, {
+            onBack: backToList("numbers"),
+            onSessionDone: (info) => onSessionDone("morning", info),
+        });
+    }
+    if (screen && screen.screen === "num-ordinal") {
+        return React.createElement(NumberOrdinal, {
+            onBack: backToList("numbers"),
+            onSessionDone: (info) => onSessionDone("morning", info),
+        });
+    }
+    if (screen && screen.screen === "num-percent") {
+        return React.createElement(NumberPercent, {
+            onBack: backToList("numbers"),
+            onSessionDone: (info) => onSessionDone("morning", info),
         });
     }
     if (screen && screen.screen === "due") {
