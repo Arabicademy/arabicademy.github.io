@@ -5,18 +5,26 @@ const { execFileSync } = require('child_process');
 const path = require('path');
 
 const suites = [
-  ['harness.js',       'the site file parses and its script runs'],
-  ['content.test.js',  'vocabulary and sentences are internally consistent'],
-  ['practice.test.js', 'games, decoys, meetings and scoring behave'],
-  ['routine.test.js',  'the daily routine and its midday draw'],
+  ['harness.js',         'the site file parses and its script runs'],
+  ['content.test.js',    'vocabulary and sentences are internally consistent'],
+  ['practice.test.js',   'games, decoys, meetings and scoring behave'],
+  ['routine.test.js',    'the daily routine and its midday draw'],
+  ['exam.test.js',       'the exam grows with the course; typed questions answerable'],
+  ['vowels.test.js',     'misplaced vowel points and words entered twice'],
+  ['sweep.test.js',      'every screen reachable, every session reported'],
+  ['guide.test.js',      'the first-run guide opens once and stays away after'],
+  ['reset.test.js',      'setting a first password leaks nothing'],
+  ['numbers.test.js',    'the numbers, and the four drills built on them'],
 ];
 
 let failed = 0;
 suites.forEach(([file, what]) => {
-  console.log('\n-- ' + file + '  --  ' + what);
+  const line = '── ' + file + '  —  ' + what;
+  console.log('\n' + line);
   try {
     const out = execFileSync(process.execPath, [path.join(__dirname, file)], { encoding: 'utf8' });
-    console.log(out.trimEnd().split('\n').slice(-3).join('\n'));
+    const tail = out.trimEnd().split('\n').slice(-3).join('\n');
+    console.log(tail);
   } catch (e) {
     failed++;
     console.log((e.stdout || '').trimEnd());
@@ -25,5 +33,7 @@ suites.forEach(([file, what]) => {
   }
 });
 
-console.log('\n' + (failed ? failed + ' SUITE(S) FAILED — see above' : 'ALL SUITES PASSED'));
+console.log('\n' + (failed
+  ? failed + ' SUITE(S) FAILED — see above'
+  : 'ALL SUITES PASSED'));
 process.exit(failed ? 1 : 0);
