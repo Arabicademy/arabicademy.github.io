@@ -181,5 +181,52 @@ const seen = new Set();
 for (let d = 1; d <= 60; d++) seen.add(h.eveningNumberFor('2026-09-' + String(d % 28 + 1).padStart(2, '0')).label);
 check('both come up over two months', seen.size === 2, Array.from(seen).join(', '));
 
+
+console.log('\n=== every band actually gets practised');
+/* Drawing values uniformly from 1-999 looked fair and was not: only ten
+   values in a thousand are 1-10, so 96% of questions were composed numbers
+   and four of the six bands never moved however long anyone practised. */
+const { api: draw } = loadApp('buildDigitQueue, numberBand, buildNumberExamTasks, creditBand, bandScore, NUM_BANDS');
+const tally = {};
+for (let t = 0; t < 300; t++) {
+  draw.buildDigitQueue(null).forEach((q) => {
+    const b = draw.numberBand(q.value);
+    tally[b] = (tally[b] || 0) + 1;
+  });
+}
+const drawn = Object.values(tally).reduce((a, c) => a + c, 0);
+Object.keys(tally).sort().forEach((k) => {
+  console.log('   ' + k.padEnd(10) + Math.round(tally[k] / drawn * 100) + '%');
+});
+check('all five value bands are asked', Object.keys(tally).length === 5);
+check('none is vanishingly rare', Object.values(tally).every((n) => n / drawn > 0.03));
+check('and none swamps the rest', Object.values(tally).every((n) => n / drawn < 0.55));
+
+console.log('\n=== practice follows what is weakest');
+let solid = null;
+['ones', 'teens'].forEach((b) => {
+  for (let i = 0; i < 8; i++) solid = { numberStats: draw.creditBand(solid, b, true) };
+});
+const after = {};
+for (let t = 0; t < 300; t++) {
+  draw.buildDigitQueue(solid).forEach((q) => {
+    const b = draw.numberBand(q.value);
+    after[b] = (after[b] || 0) + 1;
+  });
+}
+const total2 = Object.values(after).reduce((a, c) => a + c, 0);
+check('a mastered band is asked less often',
+      (after.ones || 0) / total2 < (tally.ones || 0) / drawn,
+      Math.round((after.ones || 0) / total2 * 100) + '% vs ' + Math.round((tally.ones || 0) / drawn * 100) + '%');
+check('but never drops out entirely', (after.ones || 0) / total2 > 0.02);
+
+console.log('\n=== the exam reaches the ordinals too');
+const examTally = {};
+for (let t = 0; t < 400; t++) {
+  draw.buildNumberExamTasks(6, null).forEach((x) => { examTally[x.band] = (examTally[x.band] || 0) + 1; });
+}
+check('all six bands appear in exam questions', Object.keys(examTally).length === 6,
+      Object.keys(examTally).join(', '));
+
 console.log(bad ? '\n' + bad + ' CHECK(S) FAILED' : '\nALL NUMBER CHECKS PASSED');
 process.exit(bad ? 1 : 0);
