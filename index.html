@@ -132,7 +132,7 @@ try {
     throw new Error("React / ReactDOM לא נטענו מה-CDN (בדוק חיבור לאינטרנט או חסימת סקריפטים).");
   }
 "use strict";
-const APP_BUILD = "10.09 · 81";   // bump this every time the file is replaced
+const APP_BUILD = "10.09 · 82";   // bump this every time the file is replaced
 
 /* The institute logo, carried inline so the page stays a single file.
    LOGO_MARK is the emblem alone (header); LOGO_FULL includes the name
@@ -2713,7 +2713,11 @@ const MODE_LABELS = {
     builder: "הרכבת משפטים",
     blank: "השלמת משפט",
     clock: "נגד השעון",
-    numbers: "המספר",
+    "num-digits": "מספרים ואחוזים",
+    "num-order": "גדול או קטן",
+    "num-ordinal": "מספר סודר",
+    review: "חזרה יומית",
+    exam: "מבחן מלא",
     pairs: "צימוד",
     reading: "קריאה",
 };
@@ -3960,13 +3964,46 @@ function randomNumber(max) {
     return 1 + Math.floor(Math.random() * max);
 }
 
-function numberQuestions(count, max) {
+/* A value drawn from a named band.
+
+   Drawing uniformly from 1-999 looked fair and was not: only ten values in a
+   thousand are 1-10, and eight are round hundreds, so almost every question
+   was a composed number and every other band sat untouched however long
+   anyone practised. Bands are chosen first, values second. */
+function valueFromBand(key) {
+    if (key === "ones") return 1 + Math.floor(Math.random() * 10);
+    if (key === "teens") return 11 + Math.floor(Math.random() * 9);
+    if (key === "tens") return (2 + Math.floor(Math.random() * 8)) * 10;
+    if (key === "hundreds") return (1 + Math.floor(Math.random() * 9)) * 100;
+    /* composed: anything that is not already one of the above */
+    let n = 21 + Math.floor(Math.random() * 979);
+    if (n % 10 === 0) n += 1;
+    return Math.min(999, n);
+}
+
+/* The five bands a plain number can belong to; ordinals have a drill of their
+   own and are not drawn here. */
+const VALUE_BANDS = ["ones", "teens", "tens", "hundreds", "composed"];
+
+/* Weighted towards whatever is least known, so practice goes where it is
+   needed — but never so far that a solid band stops appearing at all. */
+function bandOrder(profile) {
+    const stats = (profile && profile.numberStats) || {};
+    return VALUE_BANDS.slice().sort((a, b) => bandScore(stats, a) - bandScore(stats, b));
+}
+
+function numberQuestions(count, profile) {
+    const order = bandOrder(profile);
     const seen = new Set();
     const out = [];
     let guard = 0;
-    while (out.length < count && guard < count * 40) {
+    while (out.length < count && guard < count * 60) {
         guard++;
-        const n = randomNumber(max);
+        /* Two thirds from the weaker half of the bands, a third from the
+           rest: enough to push at the gaps without drilling one band only. */
+        const pool = Math.random() < 0.66 ? order.slice(0, 3) : order;
+        const band = pool[Math.floor(Math.random() * pool.length)];
+        const n = valueFromBand(band);
         if (seen.has(n)) continue;
         seen.add(n);
         out.push(n);
@@ -3976,15 +4013,15 @@ function numberQuestions(count, max) {
 
 /* ---------- 1. read the number, type the digits ---------- */
 /* Each question carries its value and whether it is asked as a percentage. */
-function buildDigitQueue() {
-    const values = numberQuestions(NUM_SESSION.digits, 999);
+function buildDigitQueue(profile) {
+    const values = numberQuestions(NUM_SESSION.digits, profile);
     const wantPct = Math.round(values.length * PERCENT_RATIO);
     const pctSet = new Set(shuffle(values.slice()).slice(0, wantPct));
     return values.map((n) => ({ value: n, percent: pctSet.has(n) }));
 }
 
-function NumberDigits({ onBack, onSessionDone, onNumberResult }) {
-    const [queue, setQueue] = useState(buildDigitQueue);
+function NumberDigits({ onBack, onSessionDone, onNumberResult, profile }) {
+    const [queue, setQueue] = useState(() => buildDigitQueue(profile));
     const [pos, setPos] = useState(0);
     const [typed, setTyped] = useState("");
     const [result, setResult] = useState(null);
@@ -3993,13 +4030,13 @@ function NumberDigits({ onBack, onSessionDone, onNumberResult }) {
     const timerRef = useRef(null);
 
     useEffect(() => {
-        if (finished && onSessionDone) onSessionDone({ mode: "numbers", right: score.correct, total: score.total });
+        if (finished && onSessionDone) onSessionDone({ mode: "num-digits", right: score.correct, total: score.total });
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [finished]);
     useEffect(() => () => { if (timerRef.current) clearTimeout(timerRef.current); }, []);
 
     const restart = () => {
-        setQueue(buildDigitQueue());
+        setQueue(buildDigitQueue(profile));
         setPos(0); setTyped(""); setResult(null);
         setScore({ correct: 0, total: 0 }); setFinished(false);
     };
@@ -4065,9 +4102,9 @@ function NumberDigits({ onBack, onSessionDone, onNumberResult }) {
 }
 
 /* ---------- 2. order six numbers by size ---------- */
-function NumberOrder({ onBack, onSessionDone, onNumberResult }) {
+function NumberOrder({ onBack, onSessionDone, onNumberResult, profile }) {
     const makeRound = () => {
-        const nums = numberQuestions(NUM_SESSION.order, 200);
+        const nums = numberQuestions(NUM_SESSION.order, profile);
         return { nums: nums, ascending: Math.random() < 0.5 };
     };
     const [round, setRound] = useState(makeRound);
@@ -4078,7 +4115,7 @@ function NumberOrder({ onBack, onSessionDone, onNumberResult }) {
     const [finished, setFinished] = useState(false);
 
     useEffect(() => {
-        if (finished && onSessionDone) onSessionDone({ mode: "numbers", right: score.correct, total: score.total });
+        if (finished && onSessionDone) onSessionDone({ mode: "num-order", right: score.correct, total: score.total });
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [finished]);
 
@@ -4214,7 +4251,7 @@ function NumberOrdinal({ onBack, onSessionDone, onNumberResult }) {
     const timerRef = useRef(null);
 
     useEffect(() => {
-        if (finished && onSessionDone) onSessionDone({ mode: "numbers", right: score.correct, total: score.total });
+        if (finished && onSessionDone) onSessionDone({ mode: "num-ordinal", right: score.correct, total: score.total });
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [finished]);
     useEffect(() => () => { if (timerRef.current) clearTimeout(timerRef.current); }, []);
@@ -4306,7 +4343,9 @@ function DailyReview({ banks, applyResult, onBack, onSessionDone }) {
     }, [pos, tasks]);
 
     useEffect(() => {
-        if (finished && onSessionDone) onSessionDone({ mode: "flashcards", right: score.correct, total: score.total });
+        /* Its own mode: it mixes three question types over the due words, and
+           filing it as flashcards hid it from the statistics entirely. */
+        if (finished && onSessionDone) onSessionDone({ mode: "review", right: score.correct, total: score.total });
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [finished]);
     useEffect(() => () => { if (timerRef.current) clearTimeout(timerRef.current); }, []);
@@ -5318,14 +5357,14 @@ function PracticeTab({ screen, setScreen, banks, profile, applyResult, onSession
     }
     if (screen && screen.screen === "num-digits") {
         return React.createElement(NumberDigits, {
-            onBack: backToList("numbers"),
+            onBack: backToList("numbers"), profile: profile,
             onSessionDone: (info) => onSessionDone("evening", info),
             onNumberResult: onNumberResult,
         });
     }
     if (screen && screen.screen === "num-order") {
         return React.createElement(NumberOrder, {
-            onBack: backToList("numbers"),
+            onBack: backToList("numbers"), profile: profile,
             onSessionDone: (info) => onSessionDone("noon", info),
             onNumberResult: onNumberResult,
         });
@@ -5382,6 +5421,7 @@ function PracticeTab({ screen, setScreen, banks, profile, applyResult, onSession
             banks: banks, profile: profile, onBack: backToList("exam"),
             onExamStart: onExamStart, onExamFinish: onExamFinish,
             applyResult: applyResult, onNumberResult: onNumberResult,
+            onSessionDone: (info) => onSessionDone("morning", info),
         });
     }
 
@@ -5487,7 +5527,12 @@ function buildNumberExamTasks(count, profile) {
     const weakest = NUM_BANDS.slice()
         .sort((a, b) => bandScore(stats, a.key) - bandScore(stats, b.key));
     for (let i = 0; i < count; i++) {
-        const band = weakest[Math.min(i % 3, weakest.length - 1)];
+        /* Drawn rather than taken in order: cycling through the three weakest
+           meant that when every band read zero — which is where everyone
+           starts — the same three were asked every time and the ordinals were
+           never reached at all. */
+        const pool = Math.random() < 0.7 ? weakest.slice(0, 3) : weakest;
+        const band = pool[Math.floor(Math.random() * pool.length)];
         if (band.key === "ordinals") {
             const task = buildOrdinalTask();
             out.push({ kind: "number", numberKind: "ordinal", task: task, band: "ordinals" });
@@ -5626,7 +5671,7 @@ function examNotes(cats) {
     return parts.filter(Boolean).join(" ");
 }
 
-function FullExam({ banks, profile, onBack, onExamStart, onExamFinish, applyResult, onNumberResult }) {
+function FullExam({ banks, profile, onBack, onExamStart, onExamFinish, applyResult, onNumberResult, onSessionDone }) {
     const [tasks, setTasks] = useState(() => buildExamTasks(banks, profile));
     const [pos, setPos] = useState(0);
     const [typed, setTyped] = useState("");
@@ -5691,6 +5736,13 @@ function FullExam({ banks, profile, onBack, onExamStart, onExamFinish, applyResu
         const score = Math.round(earned);
         settledRef.current = true;
         onExamFinish(examIdRef.current, { score: score, cats: finalCats, aborted: false, questions: tasks.length });
+        /* Also counted among the practice modes: it is the longest session in
+           the app and showed as never attempted. */
+        if (onSessionDone) {
+            const right = Object.keys(finalCats).reduce((n, k) => n + finalCats[k].right, 0);
+            const asked = Object.keys(finalCats).reduce((n, k) => n + finalCats[k].total, 0);
+            if (asked > 0) onSessionDone({ mode: "exam", right: right, total: asked });
+        }
         setFinished(true);
     };
 
