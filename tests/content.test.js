@@ -28,7 +28,10 @@ V.forEach((w) => {
   if (w.form !== 'רבים') return;
   (w.pair || []).forEach((p) => {
     const s = byId.get(p);
-    if (s && s.form === 'יחיד' && s.back === w.back) {
+    /* A few Hebrew words are the same in both numbers — נישואין is one —
+       so an identical translation there is correct, not a copied one. */
+    const sameInBoth = /^(נישואין|מכנסיים|מים|שמיים)$/.test(String(w.back).trim());
+    if (s && s.form === 'יחיד' && s.back === w.back && !sameInBoth) {
       sameSense.push(w.front + '  "' + w.back + '"  (meeting ' + w.meeting + ')');
     }
   });
@@ -108,9 +111,9 @@ V.forEach((w) => {
 report('words with no typeable answer', untypeable);
 
 // 7. a final letter carrying a vowel.
-//    In the construct state the book keeps the plain letter, so a final form
-//    with a vowel under it is usually a slip. A few are genuine and are
-//    listed to be eyeballed, not trusted.
+//    In the construct state the book keeps the plain letter — מַחְ'זַנִ, not
+//    מַחְ'זֶןִ — so a final form with a vowel under it is usually a slip. A
+//    few are genuine and are listed to be eyeballed, not trusted.
 const FINALS = 'ךםןףץ';
 const isMark = (c) => /[\u0591-\u05C7\u0610-\u065F]/.test(c);
 const finalWithVowel = [];
@@ -126,5 +129,30 @@ V.forEach((w) => scan(w.front, 'word ' + w.id));
 report('final letters carrying a vowel — check by eye', finalWithVowel, 12);
 
 // 8. a card whose grammatical form disagrees with its translation.
-//    Hebrew has singulars that end like plurals and words that are plural by
-//    nature, so shapes that cannot be judged mechanically are exclu
+//    Hebrew has singulars that end like plurals (אחות, חנות) and words that
+//    are plural by nature (מכנסיים), so the shapes that cannot be judged
+//    mechanically are excluded rather than guessed at.
+const pluralish = (h) => {
+  const head = String(h).replace(/\s*\(.*?\)/g, '').replace(/\.$/, '').trim();
+  const parts = head.split('/').map((x) => x.trim()).filter(Boolean);
+  const plural = (t) => /(ים|ות|יים)$/.test(t.split(' ').pop())
+                     || /^(בתי|עורכי|עורכות|משרדי|שדות|דודים|דודות|בני|חולצות|מחטים)\s/.test(t);
+  /* Hebrew words whose shape says nothing about number: singulars that end
+     like plurals, and words that are plural by nature. */
+  if (parts.every((t) => /^(אחות|חנות|תעודת זהות|מכנסיים|נישואין|טעות|בית חולים|מחנה אוהלים|מחנה פליטים)$/.test(t))) return null;
+  if (parts.every(plural)) return true;
+  if (parts.every((t) => !plural(t))) return false;
+  return null;
+};
+const formClash = [];
+V.forEach((w) => {
+  if (!w.form) return;
+  const p = pluralish(w.back);
+  if (p === null) return;
+  if (w.form === 'רבים' && p === false) formClash.push(w.front + ' = "' + w.back + '" marked רבים');
+  if (w.form === 'יחיד' && p === true) formClash.push(w.front + ' = "' + w.back + '" marked יחיד');
+});
+report('form disagrees with translation', formClash, 12);
+
+console.log('\n' + (issues ? issues + ' ITEM(S) FLAGGED — read the list above' : 'NOTHING FLAGGED'));
+console.log('(the "final letters" and "no typeable answer" lists are expected to have a few entries)');
