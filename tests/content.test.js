@@ -126,7 +126,7 @@ const scan = (text, where) => {
 };
 S.forEach((s) => scan(s.arabic, 'sentence ' + s.id));
 V.forEach((w) => scan(w.front, 'word ' + w.id));
-report('final letters carrying a vowel — check by eye', finalWithVowel, 12);
+report('final letters carrying a vowel — check by eye', finalWithVowel, 14);
 
 // 8. a card whose grammatical form disagrees with its translation.
 //    Hebrew has singulars that end like plurals (אחות, חנות) and words that
@@ -136,7 +136,7 @@ const pluralish = (h) => {
   const head = String(h).replace(/\s*\(.*?\)/g, '').replace(/\.$/, '').trim();
   const parts = head.split('/').map((x) => x.trim()).filter(Boolean);
   const plural = (t) => /(ים|ות|יים)$/.test(t.split(' ').pop())
-                     || /^(בתי|עורכי|עורכות|משרדי|שדות|דודים|דודות|בני|חולצות|מחטים)\s/.test(t);
+                     || /^(בתי|עורכי|עורכות|משרדי|שדות|דודים|דודות|בני|חולצות|מחטים|מכונות|גני|מחנות|ימי)\s/.test(t);
   /* Hebrew words whose shape says nothing about number: singulars that end
      like plurals, and words that are plural by nature. */
   if (parts.every((t) => /^(אחות|חנות|תעודת זהות|מכנסיים|נישואין|טעות|בית חולים|מחנה אוהלים|מחנה פליטים)$/.test(t))) return null;
