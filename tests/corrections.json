@@ -1,0 +1,11043 @@
+{
+ "_readme": [
+  "ספר התיקונים — כל צורה שאושרה על ידי עמנואל.",
+  "",
+  "הכלל: ברגע שמילה או משפט קיבלו אישור, זו הצורה הסופית. לא נקודה",
+  "ולא אות. כל בנייה מחדש של האתר חייבת לעבור דרך הקובץ הזה, וכל",
+  "סתירה בינו לבין המאגר היא באג במאגר — לא בקובץ.",
+  "",
+  "מבנה רשומה במילים:",
+  "  meeting  — מספר המפגש (0 = מספרים, שאינם שייכים למפגש)",
+  "  front    — התעתיק, בדיוק כפי שאושר",
+  "  back     — התרגום",
+  "  form     — יחיד / רבים / null",
+  "  gender   — m / f / null",
+  "  note     — הערה חופשית, למשל חלופת כתיב",
+  "",
+  "מבנה רשומה במשפטים:",
+  "  meeting  — מספר המפגש",
+  "  arabic   — המשפט בתעתיק, כפי שאושר",
+  "  hebrew   — התרגום",
+  "",
+  "accepted_spellings — צמדים של כתיב חלופי בעברית שאסור להיכשל",
+  "עליהם בשאלה פתוחה. שתי הצורות נכונות."
+ ],
+ "version": 1,
+ "updated": "2026-09-23",
+ "words": [
+  {
+   "meeting": 1,
+   "id": 1,
+   "front": "צַבַּאח (א)לְחֵ'יר",
+   "back": "בוקר טוב",
+   "form": null,
+   "gender": null
+  },
+  {
+   "meeting": 1,
+   "id": 2,
+   "front": "צַבַּאח (אל)נّוּר",
+   "back": "בוקר אור",
+   "form": null,
+   "gender": null
+  },
+  {
+   "meeting": 1,
+   "id": 3,
+   "front": "מַסַא (א)לְחֵ'יר",
+   "back": "ערב טוב",
+   "form": null,
+   "gender": null
+  },
+  {
+   "meeting": 1,
+   "id": 4,
+   "front": "מַסַא (אל)נّוּר",
+   "back": "ערב אור",
+   "form": null,
+   "gender": null
+  },
+  {
+   "meeting": 1,
+   "id": 5,
+   "front": "מַרְחַבַּא",
+   "back": "שלום רב",
+   "form": null,
+   "gender": null
+  },
+  {
+   "meeting": 1,
+   "id": 6,
+   "front": "מַרְחַבְּתֵין",
+   "back": "רב שלומות",
+   "form": null,
+   "gender": null
+  },
+  {
+   "meeting": 1,
+   "id": 7,
+   "front": "אַהְלַן וְסַהְלַן",
+   "back": "שלום וברכה",
+   "form": null,
+   "gender": null
+  },
+  {
+   "meeting": 1,
+   "id": 8,
+   "front": "אַהְלַן וְסַהְלַן בִּיכּ",
+   "back": "שלום וברכה לך",
+   "form": null,
+   "gender": null
+  },
+  {
+   "meeting": 1,
+   "id": 9,
+   "front": "אִסֵם",
+   "back": "שם",
+   "form": "יחיד",
+   "gender": null
+  },
+  {
+   "meeting": 1,
+   "id": 10,
+   "front": "אַמִיר",
+   "back": "נסיך",
+   "form": "יחיד",
+   "gender": null
+  },
+  {
+   "meeting": 1,
+   "id": 11,
+   "front": "מְעַלֵّם",
+   "back": "מורה / אחראי",
+   "form": "יחיד",
+   "gender": "m"
+  },
+  {
+   "meeting": 1,
+   "id": 12,
+   "front": "מְעַלְّמֵה",
+   "back": "מורָה",
+   "form": "יחיד",
+   "gender": "f"
+  },
+  {
+   "meeting": 1,
+   "id": 13,
+   "front": "בִּ",
+   "back": "ב...",
+   "form": null,
+   "gender": null
+  },
+  {
+   "meeting": 1,
+   "id": 14,
+   "front": "פִי",
+   "back": "ב...",
+   "form": null,
+   "gender": null
+  },
+  {
+   "meeting": 1,
+   "id": 15,
+   "front": "מַע",
+   "back": "עם",
+   "form": null,
+   "gender": null
+  },
+  {
+   "meeting": 1,
+   "id": 16,
+   "front": "דַוְרַה",
+   "back": "קורס",
+   "form": "יחיד",
+   "gender": null
+  },
+  {
+   "meeting": 1,
+   "id": 17,
+   "front": "טַאלֵבּ",
+   "back": "סטודנט",
+   "form": "יחיד",
+   "gender": "m"
+  },
+  {
+   "meeting": 1,
+   "id": 18,
+   "front": "טַאלְבֵּה",
+   "back": "סטודנטית",
+   "form": "יחיד",
+   "gender": "f"
+  },
+  {
+   "meeting": 1,
+   "id": 19,
+   "front": "גַ'אמְעַה",
+   "back": "אוניברסיטה",
+   "form": "יחיד",
+   "gender": null
+  },
+  {
+   "meeting": 1,
+   "id": 20,
+   "front": "סֵכְּרֵתֵירַא",
+   "back": "מזכירה",
+   "form": "יחיד",
+   "gender": "f"
+  },
+  {
+   "meeting": 1,
+   "id": 21,
+   "front": "סֵכְּרֵתֵיר",
+   "back": "מזכיר",
+   "form": "יחיד",
+   "gender": "m"
+  },
+  {
+   "meeting": 1,
+   "id": 22,
+   "front": "אַמִין",
+   "back": "מזכיר של גוף רשמי / ישר / אמין",
+   "form": null,
+   "gender": "m"
+  },
+  {
+   "meeting": 1,
+   "id": 23,
+   "front": "אַמִינֵה",
+   "back": "מזכירה של גוף רשמי / ישרה / אמינה",
+   "form": null,
+   "gender": "f"
+  },
+  {
+   "meeting": 1,
+   "id": 24,
+   "front": "מַדְרַסֵה",
+   "back": "בית ספר",
+   "form": "יחיד",
+   "gender": null
+  },
+  {
+   "meeting": 1,
+   "id": 25,
+   "front": "מֻדִיר",
+   "back": "מנהל",
+   "form": "יחיד",
+   "gender": "m"
+  },
+  {
+   "meeting": 1,
+   "id": 26,
+   "front": "מֻדִירֵה",
+   "back": "מנהלת",
+   "form": "יחיד",
+   "gender": "f"
+  },
+  {
+   "meeting": 1,
+   "id": 27,
+   "front": "שִרְכֵּה",
+   "back": "חברה (ארגון / עסק)",
+   "form": "יחיד",
+   "gender": null
+  },
+  {
+   "meeting": 1,
+   "id": 28,
+   "front": "מֻחַאמִי",
+   "back": "עורך דין",
+   "form": "יחיד",
+   "gender": "m"
+  },
+  {
+   "meeting": 1,
+   "id": 29,
+   "front": "מֻחַאמִיֵّה",
+   "back": "עורכת דין",
+   "form": "יחיד",
+   "gender": "f"
+  },
+  {
+   "meeting": 1,
+   "id": 30,
+   "front": "וִזַארַה",
+   "back": "משרד ממשלתי",
+   "form": "יחיד",
+   "gender": null
+  },
+  {
+   "meeting": 1,
+   "id": 31,
+   "front": "עַדֵל",
+   "back": "צדק",
+   "form": null,
+   "gender": null
+  },
+  {
+   "meeting": 1,
+   "id": 32,
+   "front": "תִלְמִיז",
+   "back": "תלמיד",
+   "form": "יחיד",
+   "gender": "m"
+  },
+  {
+   "meeting": 1,
+   "id": 33,
+   "front": "תִלְמִיזֵה",
+   "back": "תלמידה",
+   "form": "יחיד",
+   "gender": "f"
+  },
+  {
+   "meeting": 1,
+   "id": 34,
+   "front": "צַאחֵבּ",
+   "back": "חבר / בעל מקום או עסק",
+   "form": "יחיד",
+   "gender": "m"
+  },
+  {
+   "meeting": 1,
+   "id": 35,
+   "front": "צַאחְבֵּה",
+   "back": "חברה / בעלת מקום או עסק",
+   "form": "יחיד",
+   "gender": "f"
+  },
+  {
+   "meeting": 1,
+   "id": 36,
+   "front": "דַאר",
+   "back": "בית",
+   "form": "יחיד",
+   "gender": null
+  },
+  {
+   "meeting": 1,
+   "id": 37,
+   "front": "וַלַד",
+   "back": "ילד",
+   "form": "יחיד",
+   "gender": null
+  },
+  {
+   "meeting": 1,
+   "id": 38,
+   "front": "אִבֵּן",
+   "back": "בן",
+   "form": "יחיד",
+   "gender": null
+  },
+  {
+   "meeting": 1,
+   "id": 39,
+   "front": "בִּנְת",
+   "back": "ילדה / בת",
+   "form": "יחיד",
+   "gender": null
+  },
+  {
+   "meeting": 1,
+   "id": 40,
+   "front": "עַםّ",
+   "back": "דוד מצד האב",
+   "form": "יחיד",
+   "gender": "m"
+  },
+  {
+   "meeting": 1,
+   "id": 41,
+   "front": "עַמֵّה",
+   "back": "דודה מצד האב",
+   "form": "יחיד",
+   "gender": "f"
+  },
+  {
+   "meeting": 1,
+   "id": 42,
+   "front": "חַ'אל",
+   "back": "דוד מצד האם",
+   "form": "יחיד",
+   "gender": "m"
+  },
+  {
+   "meeting": 1,
+   "id": 43,
+   "front": "חַ'אלֵה",
+   "back": "דודה מצד האם",
+   "form": "יחיד",
+   "gender": "f"
+  },
+  {
+   "meeting": 1,
+   "id": 44,
+   "front": "סַלַאמֵה",
+   "back": "בריאות / שלמות",
+   "form": null,
+   "gender": null
+  },
+  {
+   "meeting": 1,
+   "id": 45,
+   "front": "צַّפ",
+   "back": "כיתה",
+   "form": "יחיד",
+   "gender": null
+  },
+  {
+   "meeting": 1,
+   "id": 46,
+   "front": "בַּאבּ",
+   "back": "דלת / שער",
+   "form": "יחיד",
+   "gender": null
+  },
+  {
+   "meeting": 1,
+   "id": 47,
+   "front": "שֻבַּّאכּ",
+   "back": "חלון",
+   "form": "יחיד",
+   "gender": null
+  },
+  {
+   "meeting": 1,
+   "id": 48,
+   "front": "חֵיט",
+   "back": "קיר",
+   "form": "יחיד",
+   "gender": null
+  },
+  {
+   "meeting": 1,
+   "id": 49,
+   "front": "כֻּרְסִי",
+   "back": "כסא",
+   "form": "יחיד",
+   "gender": null
+  },
+  {
+   "meeting": 1,
+   "id": 50,
+   "front": "טַאוְלֵה",
+   "back": "שולחן",
+   "form": "יחיד",
+   "gender": null
+  },
+  {
+   "meeting": 1,
+   "id": 51,
+   "front": "לוֹח",
+   "back": "לוח",
+   "form": "יחיד",
+   "gender": null
+  },
+  {
+   "meeting": 1,
+   "id": 52,
+   "front": "קַלַם",
+   "back": "עט",
+   "form": "יחיד",
+   "gender": null
+  },
+  {
+   "meeting": 1,
+   "id": 53,
+   "front": "קַלַם רְצַאצ",
+   "back": "עיפרון",
+   "form": "יחיד",
+   "gender": null
+  },
+  {
+   "meeting": 1,
+   "id": 54,
+   "front": "דַפְתַר",
+   "back": "מחברת",
+   "form": "יחיד",
+   "gender": null
+  },
+  {
+   "meeting": 1,
+   "id": 55,
+   "front": "כְּתַאב",
+   "back": "ספר",
+   "form": "יחיד",
+   "gender": null
+  },
+  {
+   "meeting": 1,
+   "id": 56,
+   "front": "כֻּרַّאסֵה",
+   "back": "חוברת",
+   "form": "יחיד",
+   "gender": null
+  },
+  {
+   "meeting": 1,
+   "id": 57,
+   "front": "שַנְטַה",
+   "back": "תיק / מזוודה",
+   "form": "יחיד",
+   "gender": null
+  },
+  {
+   "meeting": 1,
+   "id": 58,
+   "front": "שַנְתַה",
+   "back": "תיק / מזוודה",
+   "form": "יחיד",
+   "gender": null
+  },
+  {
+   "meeting": 1,
+   "id": 59,
+   "front": "וַרְקַה",
+   "back": "דף",
+   "form": "יחיד",
+   "gender": null
+  },
+  {
+   "meeting": 1,
+   "id": 60,
+   "front": "צַפְחַה",
+   "back": "עמוד",
+   "form": "יחיד",
+   "gender": null
+  },
+  {
+   "meeting": 1,
+   "id": 61,
+   "front": "אִסְתִרַאחַה",
+   "back": "הפסקה",
+   "form": "יחיד",
+   "gender": null
+  },
+  {
+   "meeting": 1,
+   "id": 62,
+   "front": "פֻרְצַה",
+   "back": "הזדמנות / סיכוי / חופשה / הפסקה",
+   "form": "יחיד",
+   "gender": null
+  },
+  {
+   "meeting": 1,
+   "id": 63,
+   "front": "קַהְוֵה",
+   "back": "קפה",
+   "form": null,
+   "gender": null
+  },
+  {
+   "meeting": 1,
+   "id": 64,
+   "front": "שַאיְ",
+   "back": "תה",
+   "form": null,
+   "gender": null
+  },
+  {
+   "meeting": 1,
+   "id": 65,
+   "front": "סֻכַּّר",
+   "back": "סוכר",
+   "form": null,
+   "gender": null
+  },
+  {
+   "meeting": 1,
+   "id": 66,
+   "front": "כַּאסֵה",
+   "back": "כוס",
+   "form": "יחיד",
+   "gender": null
+  },
+  {
+   "meeting": 1,
+   "id": 67,
+   "front": "כֻּבַּّאיֵה",
+   "back": "כוס",
+   "form": "יחיד",
+   "gender": null
+  },
+  {
+   "meeting": 1,
+   "id": 68,
+   "front": "חַמַّאם",
+   "back": "אמבטיה / בית שימוש",
+   "form": "יחיד",
+   "gender": null
+  },
+  {
+   "meeting": 1,
+   "id": 69,
+   "front": "מֻחַאמַאה",
+   "back": "עריכת דין",
+   "form": null,
+   "gender": null
+  },
+  {
+   "meeting": 1,
+   "id": 70,
+   "front": "אַסַאמִי",
+   "back": "שמות",
+   "form": "רבים",
+   "gender": null
+  },
+  {
+   "meeting": 1,
+   "id": 71,
+   "front": "אֻמַרַאא",
+   "back": "נסיכים",
+   "form": "רבים",
+   "gender": null
+  },
+  {
+   "meeting": 1,
+   "id": 72,
+   "front": "מְעַלְّמִין",
+   "back": "מורים / אחראים",
+   "form": "רבים",
+   "gender": "m"
+  },
+  {
+   "meeting": 1,
+   "id": 73,
+   "front": "מְעַלְّמַאת",
+   "back": "מורות",
+   "form": "רבים",
+   "gender": "f"
+  },
+  {
+   "meeting": 1,
+   "id": 74,
+   "front": "דַוְרַאת",
+   "back": "קורסים",
+   "form": "רבים",
+   "gender": null
+  },
+  {
+   "meeting": 1,
+   "id": 75,
+   "front": "טֻלַّאבּ",
+   "back": "סטודנטים",
+   "form": "רבים",
+   "gender": "m"
+  },
+  {
+   "meeting": 1,
+   "id": 76,
+   "front": "טַאלִבַּאת",
+   "back": "סטודנטיות",
+   "form": "רבים",
+   "gender": "f"
+  },
+  {
+   "meeting": 1,
+   "id": 77,
+   "front": "גַ'אמִעַאת",
+   "back": "אוניברסיטאות",
+   "form": "רבים",
+   "gender": null
+  },
+  {
+   "meeting": 1,
+   "id": 78,
+   "front": "סֵכְּרֵתֵירַאת",
+   "back": "מזכירות",
+   "form": "רבים",
+   "gender": "f"
+  },
+  {
+   "meeting": 1,
+   "id": 79,
+   "front": "סֵכְּרֵתֵירִיוּן",
+   "back": "מזכירים",
+   "form": "רבים",
+   "gender": "m"
+  },
+  {
+   "meeting": 1,
+   "id": 80,
+   "front": "מַדַארֵס",
+   "back": "בתי ספר",
+   "form": "רבים",
+   "gender": null
+  },
+  {
+   "meeting": 1,
+   "id": 81,
+   "front": "מֻדַרַאא",
+   "back": "מנהלים",
+   "form": "רבים",
+   "gender": "m"
+  },
+  {
+   "meeting": 1,
+   "id": 82,
+   "front": "מֻדִירַאת",
+   "back": "מנהלות",
+   "form": "רבים",
+   "gender": "f"
+  },
+  {
+   "meeting": 1,
+   "id": 83,
+   "front": "שַרִכַּאת",
+   "back": "חברות (ארגונים / עסקים)",
+   "form": "רבים",
+   "gender": null
+  },
+  {
+   "meeting": 1,
+   "id": 84,
+   "front": "מֻחַאמִיִّין",
+   "back": "עורכי דין",
+   "form": "רבים",
+   "gender": "m"
+  },
+  {
+   "meeting": 1,
+   "id": 85,
+   "front": "מֻחַאמִיַّאת",
+   "back": "עורכות דין",
+   "form": "רבים",
+   "gender": "f"
+  },
+  {
+   "meeting": 1,
+   "id": 86,
+   "front": "וִזַארַאת",
+   "back": "משרדי ממשלה",
+   "form": "רבים",
+   "gender": null
+  },
+  {
+   "meeting": 1,
+   "id": 87,
+   "front": "תַלַאמִיז",
+   "back": "תלמידים",
+   "form": "רבים",
+   "gender": "m"
+  },
+  {
+   "meeting": 1,
+   "id": 88,
+   "front": "תִלְמִיזַאת",
+   "back": "תלמידות",
+   "form": "רבים",
+   "gender": "f"
+  },
+  {
+   "meeting": 1,
+   "id": 89,
+   "front": "אַצְחַאבּ",
+   "back": "חברים / בעלי מקום או עסק",
+   "form": "רבים",
+   "gender": "m"
+  },
+  {
+   "meeting": 1,
+   "id": 90,
+   "front": "צַאחְבַּאת",
+   "back": "חברות / בעלות מקום או עסק",
+   "form": "רבים",
+   "gender": "f"
+  },
+  {
+   "meeting": 1,
+   "id": 91,
+   "front": "דוּר",
+   "back": "בתים",
+   "form": "רבים",
+   "gender": null
+  },
+  {
+   "meeting": 1,
+   "id": 92,
+   "front": "וְלַאד",
+   "back": "ילדים",
+   "form": "רבים",
+   "gender": null
+  },
+  {
+   "meeting": 1,
+   "id": 93,
+   "front": "אַבְּנַאא",
+   "back": "בנים",
+   "form": "רבים",
+   "gender": "m"
+  },
+  {
+   "meeting": 1,
+   "id": 94,
+   "front": "בַּנַאת",
+   "back": "ילדות / בנות",
+   "form": "רבים",
+   "gender": "f"
+  },
+  {
+   "meeting": 1,
+   "id": 95,
+   "front": "עֻמוּם",
+   "back": "דודים מצד האב",
+   "form": "רבים",
+   "gender": "m"
+  },
+  {
+   "meeting": 1,
+   "id": 96,
+   "front": "עַמַّאת",
+   "back": "דודות מצד האב",
+   "form": "רבים",
+   "gender": "f"
+  },
+  {
+   "meeting": 1,
+   "id": 97,
+   "front": "אַחְ'וַאל",
+   "back": "דודים מצד האם",
+   "form": "רבים",
+   "gender": "m"
+  },
+  {
+   "meeting": 1,
+   "id": 98,
+   "front": "חַ'אלַאת",
+   "back": "דודות מצד האם",
+   "form": "רבים",
+   "gender": "f"
+  },
+  {
+   "meeting": 1,
+   "id": 99,
+   "front": "צְפוּפ",
+   "back": "כיתות",
+   "form": "רבים",
+   "gender": null
+  },
+  {
+   "meeting": 1,
+   "id": 100,
+   "front": "אַבְּוַאבּ",
+   "back": "דלתות / שערים",
+   "form": "רבים",
+   "gender": null
+  },
+  {
+   "meeting": 1,
+   "id": 101,
+   "front": "שַבַּאבִּיכּ",
+   "back": "חלונות",
+   "form": "רבים",
+   "gender": null
+  },
+  {
+   "meeting": 1,
+   "id": 102,
+   "front": "חֵיטַאן",
+   "back": "קירות",
+   "form": "רבים",
+   "gender": null
+  },
+  {
+   "meeting": 1,
+   "id": 103,
+   "front": "כַּרַאסִי",
+   "back": "כסאות",
+   "form": "רבים",
+   "gender": null
+  },
+  {
+   "meeting": 1,
+   "id": 104,
+   "front": "טַאוְלַאת",
+   "back": "שולחנות",
+   "form": "רבים",
+   "gender": null
+  },
+  {
+   "meeting": 1,
+   "id": 105,
+   "front": "אַלְוַאח",
+   "back": "לוחות",
+   "form": "רבים",
+   "gender": null
+  },
+  {
+   "meeting": 1,
+   "id": 106,
+   "front": "קְלַאם",
+   "back": "עטים",
+   "form": "רבים",
+   "gender": null
+  },
+  {
+   "meeting": 1,
+   "id": 107,
+   "front": "קְלַאם רְצַאצ",
+   "back": "עפרונות",
+   "form": "רבים",
+   "gender": null
+  },
+  {
+   "meeting": 1,
+   "id": 108,
+   "front": "דַפַאתֵר",
+   "back": "מחברות",
+   "form": "רבים",
+   "gender": null
+  },
+  {
+   "meeting": 1,
+   "id": 109,
+   "front": "כֻּתֻבּ",
+   "back": "ספרים",
+   "form": "רבים",
+   "gender": null
+  },
+  {
+   "meeting": 1,
+   "id": 110,
+   "front": "כֻּרַّאסַאת",
+   "back": "חוברות",
+   "form": "רבים",
+   "gender": null
+  },
+  {
+   "meeting": 1,
+   "id": 111,
+   "front": "כַּרַארִיס",
+   "back": "חוברות",
+   "form": "רבים",
+   "gender": null
+  },
+  {
+   "meeting": 1,
+   "id": 112,
+   "front": "שֻנַט",
+   "back": "תיקים / מזוודות",
+   "form": "רבים",
+   "gender": null
+  },
+  {
+   "meeting": 1,
+   "id": 113,
+   "front": "שַנְטַאת",
+   "back": "תיקים / מזוודות",
+   "form": "רבים",
+   "gender": null
+  },
+  {
+   "meeting": 1,
+   "id": 114,
+   "front": "שֻנַת",
+   "back": "תיקים / מזוודות",
+   "form": "רבים",
+   "gender": null
+  },
+  {
+   "meeting": 1,
+   "id": 115,
+   "front": "שַנְתַאת",
+   "back": "תיקים / מזוודות",
+   "form": "רבים",
+   "gender": null
+  },
+  {
+   "meeting": 1,
+   "id": 116,
+   "front": "אַוְרַאק",
+   "back": "דפים",
+   "form": "רבים",
+   "gender": null
+  },
+  {
+   "meeting": 1,
+   "id": 117,
+   "front": "וְרַאק",
+   "back": "דפים",
+   "form": "רבים",
+   "gender": null
+  },
+  {
+   "meeting": 1,
+   "id": 118,
+   "front": "צַפְחַאת",
+   "back": "עמודים",
+   "form": "רבים",
+   "gender": null
+  },
+  {
+   "meeting": 1,
+   "id": 119,
+   "front": "אִסְתִרַאחַאת",
+   "back": "הפסקות",
+   "form": "רבים",
+   "gender": null
+  },
+  {
+   "meeting": 1,
+   "id": 120,
+   "front": "פֻרַצ",
+   "back": "הזדמנויות / סיכויים / חופשות / הפסקות",
+   "form": "רבים",
+   "gender": null
+  },
+  {
+   "meeting": 1,
+   "id": 121,
+   "front": "כַּאסַאת",
+   "back": "כוסות",
+   "form": "רבים",
+   "gender": null
+  },
+  {
+   "meeting": 1,
+   "id": 122,
+   "front": "כֻּבַּّאיַאת",
+   "back": "כוסות",
+   "form": "רבים",
+   "gender": null
+  },
+  {
+   "meeting": 1,
+   "id": 123,
+   "front": "חַמַّאמַאת",
+   "back": "אמבטיות / בתי שימוש",
+   "form": "רבים",
+   "gender": null
+  },
+  {
+   "meeting": 2,
+   "id": 124,
+   "front": "מַרַה",
+   "back": "אישה",
+   "form": "יחיד",
+   "gender": "f"
+  },
+  {
+   "meeting": 2,
+   "id": 125,
+   "front": "נִסְוַאן",
+   "back": "נשים",
+   "form": "רבים",
+   "gender": "f"
+  },
+  {
+   "meeting": 2,
+   "id": 126,
+   "front": "מַרַّה",
+   "back": "פעם",
+   "form": "יחיד",
+   "gender": null
+  },
+  {
+   "meeting": 2,
+   "id": 127,
+   "front": "מַרַّאת",
+   "back": "פעמים",
+   "form": "רבים",
+   "gender": null
+  },
+  {
+   "meeting": 2,
+   "id": 128,
+   "front": "רַגֻ'ל",
+   "back": "גבר / איש",
+   "form": "יחיד",
+   "gender": "m"
+  },
+  {
+   "meeting": 2,
+   "id": 129,
+   "front": "רְגַ'אל",
+   "back": "גברים / אנשים",
+   "form": "רבים",
+   "gender": "m"
+  },
+  {
+   "meeting": 2,
+   "id": 130,
+   "front": "זַלַמֶה",
+   "back": "גבר / איש",
+   "form": "יחיד",
+   "gender": "m"
+  },
+  {
+   "meeting": 2,
+   "id": 131,
+   "front": "זְלַאם",
+   "back": "גברים / אנשים",
+   "form": "רבים",
+   "gender": "m"
+  },
+  {
+   "meeting": 2,
+   "id": 132,
+   "front": "אִנְסַאן",
+   "back": "איש / בן אדם",
+   "form": "יחיד",
+   "gender": null
+  },
+  {
+   "meeting": 2,
+   "id": 133,
+   "front": "אֻנַאס",
+   "back": "אנשים / בני אדם",
+   "form": "רבים",
+   "gender": null
+  },
+  {
+   "meeting": 2,
+   "id": 134,
+   "front": "אַנַאסִי",
+   "back": "אנשים / בני אדם",
+   "form": "רבים",
+   "gender": null
+  },
+  {
+   "meeting": 2,
+   "id": 135,
+   "front": "נַאס",
+   "back": "אנשים / בני אדם",
+   "form": "רבים",
+   "gender": null
+  },
+  {
+   "meeting": 2,
+   "id": 136,
+   "front": "אֻםّ",
+   "back": "אמא",
+   "form": "יחיד",
+   "gender": "f"
+  },
+  {
+   "meeting": 2,
+   "id": 137,
+   "front": "אֻמַّהַאת",
+   "back": "אמהות",
+   "form": "רבים",
+   "gender": "f"
+  },
+  {
+   "meeting": 2,
+   "id": 138,
+   "front": "אַב",
+   "back": "אבא",
+   "form": "יחיד",
+   "gender": "m"
+  },
+  {
+   "meeting": 2,
+   "id": 139,
+   "front": "אַאבַּאא",
+   "back": "אבות",
+   "form": "רבים",
+   "gender": "m"
+  },
+  {
+   "meeting": 2,
+   "id": 140,
+   "front": "עֵילֶה",
+   "back": "משפחה (גרעינית)",
+   "form": "יחיד",
+   "gender": null
+  },
+  {
+   "meeting": 2,
+   "id": 141,
+   "front": "עַאאִלַאת",
+   "back": "משפחות (גרעיניות)",
+   "form": "רבים",
+   "gender": null
+  },
+  {
+   "meeting": 2,
+   "id": 142,
+   "front": "גֹ'וז",
+   "back": "בעל",
+   "form": "יחיד",
+   "gender": "m"
+  },
+  {
+   "meeting": 2,
+   "id": 143,
+   "front": "אַזְוַאג'",
+   "back": "בעלים",
+   "form": "רבים",
+   "gender": "m"
+  },
+  {
+   "meeting": 2,
+   "id": 144,
+   "front": "וֵין",
+   "back": "איפה / היכן",
+   "form": null,
+   "gender": null
+  },
+  {
+   "meeting": 2,
+   "id": 145,
+   "front": "פֵין",
+   "back": "איפה / היכן",
+   "form": null,
+   "gender": null
+  },
+  {
+   "meeting": 2,
+   "id": 146,
+   "front": "גַ'מְבּ",
+   "back": "ליד",
+   "form": null,
+   "gender": null
+  },
+  {
+   "meeting": 2,
+   "id": 147,
+   "front": "גַ'נְבּ",
+   "back": "ליד",
+   "form": null,
+   "gender": null
+  },
+  {
+   "meeting": 2,
+   "id": 148,
+   "front": "כַּמַאן",
+   "back": "גם",
+   "form": null,
+   "gender": null
+  },
+  {
+   "meeting": 2,
+   "id": 149,
+   "front": "אַעְטַא",
+   "back": "נתן",
+   "form": null,
+   "gender": null
+  },
+  {
+   "meeting": 2,
+   "id": 150,
+   "front": "עַאפְיֶה",
+   "back": "בריאות",
+   "form": null,
+   "gender": null
+  },
+  {
+   "meeting": 2,
+   "id": 151,
+   "front": "גְ'דִיד",
+   "back": "חדש",
+   "form": "יחיד",
+   "gender": "m"
+  },
+  {
+   "meeting": 2,
+   "id": 152,
+   "front": "גְ'דַאד",
+   "back": "חדשים",
+   "form": "רבים",
+   "gender": "m"
+  },
+  {
+   "meeting": 2,
+   "id": 153,
+   "front": "גֻ'דֻד",
+   "back": "חדשים",
+   "form": "רבים",
+   "gender": "m"
+  },
+  {
+   "meeting": 2,
+   "id": 154,
+   "front": "גְ'דִידֶה",
+   "back": "חדשה",
+   "form": null,
+   "gender": "f"
+  },
+  {
+   "meeting": 2,
+   "id": 155,
+   "front": "קַדִים",
+   "back": "ישן (זמן)",
+   "form": "יחיד",
+   "gender": "m"
+  },
+  {
+   "meeting": 2,
+   "id": 156,
+   "front": "קֻדַמַאא",
+   "back": "ישנים (זמן)",
+   "form": "רבים",
+   "gender": "m"
+  },
+  {
+   "meeting": 2,
+   "id": 157,
+   "front": "קַדִימֶה",
+   "back": "ישנה (זמן)",
+   "form": null,
+   "gender": "f"
+  },
+  {
+   "meeting": 2,
+   "id": 158,
+   "front": "כְּבִּיר",
+   "back": "גדול",
+   "form": "יחיד",
+   "gender": "m"
+  },
+  {
+   "meeting": 2,
+   "id": 159,
+   "front": "כְּבַּאר",
+   "back": "גדולים",
+   "form": "רבים",
+   "gender": "m"
+  },
+  {
+   "meeting": 2,
+   "id": 160,
+   "front": "כְּבִּירֶה",
+   "back": "גדולה",
+   "form": null,
+   "gender": "f"
+  },
+  {
+   "meeting": 2,
+   "id": 161,
+   "front": "זְעִ'יר",
+   "back": "קטן",
+   "form": "יחיד",
+   "gender": "m"
+  },
+  {
+   "meeting": 2,
+   "id": 162,
+   "front": "זְעַ'אר",
+   "back": "קטנים",
+   "form": "רבים",
+   "gender": "m"
+  },
+  {
+   "meeting": 2,
+   "id": 163,
+   "front": "זְעִ'ירֶה",
+   "back": "קטנה",
+   "form": null,
+   "gender": "f"
+  },
+  {
+   "meeting": 2,
+   "id": 164,
+   "front": "חַאסוּבּ",
+   "back": "מחשב",
+   "form": "יחיד",
+   "gender": null
+  },
+  {
+   "meeting": 2,
+   "id": 165,
+   "front": "חַוַאסִיבּ",
+   "back": "מחשבים",
+   "form": "רבים",
+   "gender": null
+  },
+  {
+   "meeting": 2,
+   "id": 166,
+   "front": "כַּמְבְּיוּתֶר",
+   "back": "מחשב",
+   "form": "יחיד",
+   "gender": null
+  },
+  {
+   "meeting": 2,
+   "id": 167,
+   "front": "כַּמְבְּיוּתֶרַאת",
+   "back": "מחשבים",
+   "form": "רבים",
+   "gender": null
+  },
+  {
+   "meeting": 2,
+   "id": 168,
+   "front": "חַארַה",
+   "back": "שכונה",
+   "form": "יחיד",
+   "gender": null
+  },
+  {
+   "meeting": 2,
+   "id": 169,
+   "front": "חַארַאת",
+   "back": "שכונות",
+   "form": "רבים",
+   "gender": null
+  },
+  {
+   "meeting": 2,
+   "id": 170,
+   "front": "חַיّ",
+   "back": "שכונה",
+   "form": "יחיד",
+   "gender": null
+  },
+  {
+   "meeting": 2,
+   "id": 171,
+   "front": "אַחְיַאא",
+   "back": "שכונות",
+   "form": "רבים",
+   "gender": null
+  },
+  {
+   "meeting": 2,
+   "id": 172,
+   "front": "מַסְגֵ'ד",
+   "back": "מסגד",
+   "form": "יחיד",
+   "gender": null
+  },
+  {
+   "meeting": 2,
+   "id": 173,
+   "front": "מַסַאגֵ'ד",
+   "back": "מסגדים",
+   "form": "רבים",
+   "gender": null
+  },
+  {
+   "meeting": 2,
+   "id": 174,
+   "front": "גַ'אמֶע",
+   "back": "מסגד",
+   "form": "יחיד",
+   "gender": null
+  },
+  {
+   "meeting": 2,
+   "id": 175,
+   "front": "גַ'וַאמֶע",
+   "back": "מסגדים",
+   "form": "רבים",
+   "gender": null
+  },
+  {
+   "meeting": 2,
+   "id": 176,
+   "front": "חַ'זַאנֶה",
+   "back": "ארון / כספת",
+   "form": "יחיד",
+   "gender": null
+  },
+  {
+   "meeting": 2,
+   "id": 177,
+   "front": "חַ'זַאאֶן",
+   "back": "ארונות / כספות",
+   "form": "רבים",
+   "gender": null
+  },
+  {
+   "meeting": 2,
+   "id": 178,
+   "front": "מַחְ'זַן",
+   "back": "מחסן",
+   "form": "יחיד",
+   "gender": null
+  },
+  {
+   "meeting": 2,
+   "id": 179,
+   "front": "מַחַ'אזֵן",
+   "back": "מחסנים",
+   "form": "רבים",
+   "gender": null
+  },
+  {
+   "meeting": 2,
+   "id": 180,
+   "front": "מַטְבַּח'",
+   "back": "מטבח",
+   "form": "יחיד",
+   "gender": null
+  },
+  {
+   "meeting": 2,
+   "id": 181,
+   "front": "מַטַאבֶּח'",
+   "back": "מטבחים",
+   "form": "רבים",
+   "gender": null
+  },
+  {
+   "meeting": 2,
+   "id": 182,
+   "front": "עֻ'רְפֶה",
+   "back": "חדר",
+   "form": "יחיד",
+   "gender": null
+  },
+  {
+   "meeting": 2,
+   "id": 183,
+   "front": "עֻ'רַף",
+   "back": "חדרים",
+   "form": "רבים",
+   "gender": null
+  },
+  {
+   "meeting": 2,
+   "id": 184,
+   "front": "אוֹצַ'ה",
+   "back": "חדר",
+   "form": "יחיד",
+   "gender": null
+  },
+  {
+   "meeting": 2,
+   "id": 185,
+   "front": "אֻוַצ'",
+   "back": "חדרים",
+   "form": "רבים",
+   "gender": null
+  },
+  {
+   "meeting": 2,
+   "id": 186,
+   "front": "בַּלכּוֹנֶה",
+   "back": "מרפסת",
+   "form": "יחיד",
+   "gender": null
+  },
+  {
+   "meeting": 2,
+   "id": 187,
+   "front": "בַּלכּוֹנַאת",
+   "back": "מרפסות",
+   "form": "רבים",
+   "gender": null
+  },
+  {
+   "meeting": 2,
+   "id": 188,
+   "front": "בַּרַנְדַא",
+   "back": "מרפסת",
+   "form": "יחיד",
+   "gender": null
+  },
+  {
+   "meeting": 2,
+   "id": 189,
+   "front": "בַּרַנְדַאת",
+   "back": "מרפסות",
+   "form": "רבים",
+   "gender": null
+  },
+  {
+   "meeting": 2,
+   "id": 190,
+   "front": "דַרַגֶ'ה",
+   "back": "מדרגה",
+   "form": "יחיד",
+   "gender": null
+  },
+  {
+   "meeting": 2,
+   "id": 191,
+   "front": "דַרַגַ'את",
+   "back": "מדרגות",
+   "form": "רבים",
+   "gender": null
+  },
+  {
+   "meeting": 2,
+   "id": 192,
+   "front": "דַרַג'",
+   "back": "מדרגות (שם קיבוצי)",
+   "form": null,
+   "gender": null
+  },
+  {
+   "meeting": 2,
+   "id": 193,
+   "front": "מַלְגַ'א",
+   "back": "מקלט / מחסה",
+   "form": "יחיד",
+   "gender": null
+  },
+  {
+   "meeting": 2,
+   "id": 194,
+   "front": "מַלַאגֵ'י",
+   "back": "מקלטים / מחסות",
+   "form": "רבים",
+   "gender": null
+  },
+  {
+   "meeting": 2,
+   "id": 195,
+   "front": "סַטֶח",
+   "back": "גג",
+   "form": "יחיד",
+   "gender": null
+  },
+  {
+   "meeting": 2,
+   "id": 196,
+   "front": "סְטוּח",
+   "back": "גגות",
+   "form": "רבים",
+   "gender": null
+  },
+  {
+   "meeting": 2,
+   "id": 197,
+   "front": "סַקֶפ",
+   "back": "תקרה",
+   "form": "יחיד",
+   "gender": null
+  },
+  {
+   "meeting": 2,
+   "id": 198,
+   "front": "סְקוּפ",
+   "back": "תקרות",
+   "form": "רבים",
+   "gender": null
+  },
+  {
+   "meeting": 2,
+   "id": 199,
+   "front": "סֵיעַה",
+   "back": "שעה",
+   "form": "יחיד",
+   "gender": null
+  },
+  {
+   "meeting": 2,
+   "id": 200,
+   "front": "סַאעַאת",
+   "back": "שעות",
+   "form": "רבים",
+   "gender": null
+  },
+  {
+   "meeting": 2,
+   "id": 201,
+   "front": "דְקִיקַה",
+   "back": "דקה (זמן)",
+   "form": "יחיד",
+   "gender": null
+  },
+  {
+   "meeting": 2,
+   "id": 202,
+   "front": "דַקַאיֶק",
+   "back": "דקות (זמן)",
+   "form": "רבים",
+   "gender": null
+  },
+  {
+   "meeting": 2,
+   "id": 203,
+   "front": "תַאנְיֶה",
+   "back": "שנייה (יחידת זמן)",
+   "form": "יחיד",
+   "gender": null
+  },
+  {
+   "meeting": 2,
+   "id": 204,
+   "front": "תַוַאנִי",
+   "back": "שניות",
+   "form": "רבים",
+   "gender": null
+  },
+  {
+   "meeting": 2,
+   "id": 205,
+   "front": "לַחְטַ'ה",
+   "back": "רגע",
+   "form": "יחיד",
+   "gender": null
+  },
+  {
+   "meeting": 2,
+   "id": 206,
+   "front": "לַחַטַ'את",
+   "back": "רגעים",
+   "form": "רבים",
+   "gender": null
+  },
+  {
+   "meeting": 2,
+   "id": 207,
+   "front": "מַכְּתַבּ",
+   "back": "משרד",
+   "form": "יחיד",
+   "gender": null
+  },
+  {
+   "meeting": 2,
+   "id": 208,
+   "front": "מַכַּאתֶבּ",
+   "back": "משרדים / ספריות",
+   "form": "רבים",
+   "gender": null
+  },
+  {
+   "meeting": 2,
+   "id": 209,
+   "front": "מַכְּתַבֶּה",
+   "back": "ספרייה / חנות ספרים",
+   "form": "יחיד",
+   "gender": null
+  },
+  {
+   "meeting": 2,
+   "id": 210,
+   "front": "מַכְּתַאבַּאת",
+   "back": "ספריות / חנויות ספרים",
+   "form": "רבים",
+   "gender": null
+  },
+  {
+   "meeting": 2,
+   "id": 211,
+   "front": "וַטִ'יפֶה",
+   "back": "משרה / מטלה / שיעורי בית",
+   "form": "יחיד",
+   "gender": null
+  },
+  {
+   "meeting": 2,
+   "id": 212,
+   "front": "וַטַ'אאֶף",
+   "back": "משרות / מטלות",
+   "form": "רבים",
+   "gender": null
+  },
+  {
+   "meeting": 2,
+   "id": 213,
+   "front": "שַהַאדֶה",
+   "back": "תעודה (מקצוע, הוכחה)",
+   "form": "יחיד",
+   "gender": null
+  },
+  {
+   "meeting": 2,
+   "id": 214,
+   "front": "שַהַאדַאת",
+   "back": "תעודות (מקצוע, הוכחה)",
+   "form": "רבים",
+   "gender": null
+  },
+  {
+   "meeting": 2,
+   "id": 215,
+   "front": "קַמִיץ",
+   "back": "חולצה מכופתרת",
+   "form": "יחיד",
+   "gender": null
+  },
+  {
+   "meeting": 2,
+   "id": 216,
+   "front": "קֻמְצַאן",
+   "back": "חולצות מכופתרות",
+   "form": "רבים",
+   "gender": null
+  },
+  {
+   "meeting": 2,
+   "id": 217,
+   "front": "בְּלוּזֶה",
+   "back": "חולצת טריקו",
+   "form": "יחיד",
+   "gender": null
+  },
+  {
+   "meeting": 2,
+   "id": 218,
+   "front": "בַּלַאיֶז",
+   "back": "חולצות טריקו",
+   "form": "רבים",
+   "gender": null
+  },
+  {
+   "meeting": 2,
+   "id": 219,
+   "front": "בַּנְטַלוֹן",
+   "back": "מכנסיים",
+   "form": "יחיד",
+   "gender": null
+  },
+  {
+   "meeting": 2,
+   "id": 220,
+   "front": "בַּנַאטִיל",
+   "back": "מכנסיים (ר)",
+   "form": "רבים",
+   "gender": null
+  },
+  {
+   "meeting": 2,
+   "id": 221,
+   "front": "בַּנְטַלוֹנַאת",
+   "back": "מכנסיים (ר)",
+   "form": "רבים",
+   "gender": null
+  },
+  {
+   "meeting": 2,
+   "id": 222,
+   "front": "כֻּנְדַרַה",
+   "back": "נעל",
+   "form": "יחיד",
+   "gender": null
+  },
+  {
+   "meeting": 2,
+   "id": 223,
+   "front": "כַּנַאדֶר",
+   "back": "נעליים",
+   "form": "רבים",
+   "gender": null
+  },
+  {
+   "meeting": 2,
+   "id": 224,
+   "front": "עַמַארַה",
+   "back": "בניין",
+   "form": "יחיד",
+   "gender": null
+  },
+  {
+   "meeting": 2,
+   "id": 225,
+   "front": "עַמַארַאת",
+   "back": "בניינים",
+   "form": "רבים",
+   "gender": null
+  },
+  {
+   "meeting": 2,
+   "id": 226,
+   "front": "טַאבֵּק",
+   "back": "קומה",
+   "form": "יחיד",
+   "gender": null
+  },
+  {
+   "meeting": 2,
+   "id": 227,
+   "front": "טַוַאבֵּק",
+   "back": "קומות",
+   "form": "רבים",
+   "gender": null
+  },
+  {
+   "meeting": 2,
+   "id": 228,
+   "front": "גַ'אר",
+   "back": "שכן",
+   "form": "יחיד",
+   "gender": "m"
+  },
+  {
+   "meeting": 2,
+   "id": 229,
+   "front": "גִ'ירַאן",
+   "back": "שכנים",
+   "form": "רבים",
+   "gender": "m"
+  },
+  {
+   "meeting": 2,
+   "id": 230,
+   "front": "גַ'ארַה",
+   "back": "שכנה",
+   "form": "יחיד",
+   "gender": "f"
+  },
+  {
+   "meeting": 2,
+   "id": 231,
+   "front": "גַ'ארַאת",
+   "back": "שכנות",
+   "form": "רבים",
+   "gender": "f"
+  },
+  {
+   "meeting": 2,
+   "id": 232,
+   "front": "דֻכַּّאן",
+   "back": "חנות",
+   "form": "יחיד",
+   "gender": null
+  },
+  {
+   "meeting": 2,
+   "id": 233,
+   "front": "דַכַּאכִּין",
+   "back": "חנויות",
+   "form": "רבים",
+   "gender": null
+  },
+  {
+   "meeting": 2,
+   "id": 234,
+   "front": "מַחַלّ",
+   "back": "מקום",
+   "form": "יחיד",
+   "gender": null
+  },
+  {
+   "meeting": 2,
+   "id": 235,
+   "front": "מַחַלّאת",
+   "back": "מקומות",
+   "form": "רבים",
+   "gender": null
+  },
+  {
+   "meeting": 2,
+   "id": 236,
+   "front": "סֻאַאל",
+   "back": "שאלה",
+   "form": "יחיד",
+   "gender": null
+  },
+  {
+   "meeting": 2,
+   "id": 237,
+   "front": "אַסְאִלֶה",
+   "back": "שאלות",
+   "form": "רבים",
+   "gender": null
+  },
+  {
+   "meeting": 2,
+   "id": 238,
+   "front": "סֻאַאלַאת",
+   "back": "שאלות",
+   "form": "רבים",
+   "gender": null
+  },
+  {
+   "meeting": 2,
+   "id": 239,
+   "front": "גַ'וַאבּ",
+   "back": "תשובה",
+   "form": "יחיד",
+   "gender": null
+  },
+  {
+   "meeting": 2,
+   "id": 240,
+   "front": "אַגְ'וִבֶּה",
+   "back": "תשובות",
+   "form": "רבים",
+   "gender": null
+  },
+  {
+   "meeting": 2,
+   "id": 241,
+   "front": "גַ'וַאבַּאת",
+   "back": "תשובות",
+   "form": "רבים",
+   "gender": null
+  },
+  {
+   "meeting": 2,
+   "id": 242,
+   "front": "מַטַאר",
+   "back": "שדה תעופה",
+   "form": "יחיד",
+   "gender": null
+  },
+  {
+   "meeting": 2,
+   "id": 243,
+   "front": "מַטַארַאת",
+   "back": "שדות תעופה",
+   "form": "רבים",
+   "gender": null
+  },
+  {
+   "meeting": 2,
+   "id": 244,
+   "front": "שֻעֻ'ל",
+   "back": "עבודה",
+   "form": "יחיד",
+   "gender": null
+  },
+  {
+   "meeting": 2,
+   "id": 245,
+   "front": "אַשְעַ'אל",
+   "back": "עבודות",
+   "form": "רבים",
+   "gender": null
+  },
+  {
+   "meeting": 2,
+   "id": 246,
+   "front": "בַּלַד",
+   "back": "יישוב",
+   "form": "יחיד",
+   "gender": null
+  },
+  {
+   "meeting": 2,
+   "id": 247,
+   "front": "בֻּלַדַאן",
+   "back": "יישובים",
+   "form": "רבים",
+   "gender": null
+  },
+  {
+   "meeting": 2,
+   "id": 248,
+   "front": "דוֹלֶה",
+   "back": "מדינה",
+   "form": "יחיד",
+   "gender": null
+  },
+  {
+   "meeting": 2,
+   "id": 249,
+   "front": "דֻוַל",
+   "back": "מדינות",
+   "form": "רבים",
+   "gender": null
+  },
+  {
+   "meeting": 2,
+   "id": 250,
+   "front": "מַדִינֶה",
+   "back": "עיר",
+   "form": "יחיד",
+   "gender": null
+  },
+  {
+   "meeting": 2,
+   "id": 251,
+   "front": "מֻדֻן",
+   "back": "ערים",
+   "form": "רבים",
+   "gender": null
+  },
+  {
+   "meeting": 2,
+   "id": 252,
+   "front": "קַרְיֶה",
+   "back": "כפר",
+   "form": "יחיד",
+   "gender": null
+  },
+  {
+   "meeting": 2,
+   "id": 253,
+   "front": "קֻרַא",
+   "back": "כפרים",
+   "form": "רבים",
+   "gender": null
+  },
+  {
+   "meeting": 2,
+   "id": 254,
+   "front": "מִנְטַקַה",
+   "back": "אזור",
+   "form": "יחיד",
+   "gender": null
+  },
+  {
+   "meeting": 2,
+   "id": 255,
+   "front": "מַנַאטֶק",
+   "back": "אזורים",
+   "form": "רבים",
+   "gender": null
+  },
+  {
+   "meeting": 2,
+   "id": 256,
+   "front": "שַארֶע",
+   "back": "רחוב",
+   "form": "יחיד",
+   "gender": null
+  },
+  {
+   "meeting": 2,
+   "id": 257,
+   "front": "שַוַארֶע",
+   "back": "רחובות",
+   "form": "רבים",
+   "gender": null
+  },
+  {
+   "meeting": 2,
+   "id": 258,
+   "front": "סַאכֵּן",
+   "back": "גר / שוכן",
+   "form": "יחיד",
+   "gender": "m"
+  },
+  {
+   "meeting": 2,
+   "id": 259,
+   "front": "סַאכְּנִין",
+   "back": "גרים / שוכנים",
+   "form": "רבים",
+   "gender": "m"
+  },
+  {
+   "meeting": 2,
+   "id": 260,
+   "front": "סַאכְּנֶה",
+   "back": "גרה / שוכנת",
+   "form": "יחיד",
+   "gender": "f"
+  },
+  {
+   "meeting": 2,
+   "id": 261,
+   "front": "סַאכְּנַאת",
+   "back": "גרות / שוכנות",
+   "form": "רבים",
+   "gender": "f"
+  },
+  {
+   "meeting": 2,
+   "id": 262,
+   "front": "סֻכַּّאן",
+   "back": "תושבים",
+   "form": null,
+   "gender": null
+  },
+  {
+   "meeting": 2,
+   "id": 263,
+   "front": "מֻשְכִּלֶה",
+   "back": "בעיה",
+   "form": "יחיד",
+   "gender": null
+  },
+  {
+   "meeting": 2,
+   "id": 264,
+   "front": "מַשַאכֶּל",
+   "back": "בעיות",
+   "form": "רבים",
+   "gender": null
+  },
+  {
+   "meeting": 2,
+   "id": 265,
+   "front": "הַוִיֶّה",
+   "back": "תעודת זהות",
+   "form": "יחיד",
+   "gender": null
+  },
+  {
+   "meeting": 2,
+   "id": 266,
+   "front": "הַוִיַّאת",
+   "back": "תעודות זהות",
+   "form": "רבים",
+   "gender": null
+  },
+  {
+   "meeting": 2,
+   "id": 267,
+   "front": "בַּיַّארַה",
+   "back": "פרדס",
+   "form": "יחיד",
+   "gender": null
+  },
+  {
+   "meeting": 2,
+   "id": 268,
+   "front": "בַּיַّארַאת",
+   "back": "פרדסים",
+   "form": "רבים",
+   "gender": null
+  },
+  {
+   "meeting": 3,
+   "id": 269,
+   "front": "לֻעַ'ה",
+   "back": "שפה",
+   "form": "יחיד",
+   "gender": null
+  },
+  {
+   "meeting": 3,
+   "id": 270,
+   "front": "לֻעַ'את",
+   "back": "שפות",
+   "form": "רבים",
+   "gender": null
+  },
+  {
+   "meeting": 3,
+   "id": 271,
+   "front": "קֻצַّה",
+   "back": "סיפור",
+   "form": "יחיד",
+   "gender": null
+  },
+  {
+   "meeting": 3,
+   "id": 272,
+   "front": "קֻצַצ",
+   "back": "סיפורים",
+   "form": "רבים",
+   "gender": null
+  },
+  {
+   "meeting": 3,
+   "id": 273,
+   "front": "גַ'בְהַה",
+   "back": "חזית",
+   "form": "יחיד",
+   "gender": null
+  },
+  {
+   "meeting": 3,
+   "id": 274,
+   "front": "גַ'בְהַאת",
+   "back": "חזיתות",
+   "form": "רבים",
+   "gender": null
+  },
+  {
+   "meeting": 3,
+   "id": 275,
+   "front": "חַרַכֶּה",
+   "back": "תנועה",
+   "form": "יחיד",
+   "gender": null
+  },
+  {
+   "meeting": 3,
+   "id": 276,
+   "front": "חַרַכַּאת",
+   "back": "תנועות",
+   "form": "רבים",
+   "gender": null
+  },
+  {
+   "meeting": 3,
+   "id": 277,
+   "front": "מַחַטַّה",
+   "back": "תחנה",
+   "form": "יחיד",
+   "gender": null
+  },
+  {
+   "meeting": 3,
+   "id": 278,
+   "front": "מַחַטַّאת",
+   "back": "תחנות",
+   "form": "רבים",
+   "gender": null
+  },
+  {
+   "meeting": 3,
+   "id": 279,
+   "front": "רֻחְ'צַה",
+   "back": "רישיון / אישור",
+   "form": "יחיד",
+   "gender": null
+  },
+  {
+   "meeting": 3,
+   "id": 280,
+   "front": "רֻחַ'צ",
+   "back": "רישיונות / אישורים",
+   "form": "רבים",
+   "gender": null
+  },
+  {
+   "meeting": 3,
+   "id": 281,
+   "front": "סְוַאקַה",
+   "back": "נהיגה",
+   "form": null,
+   "gender": null
+  },
+  {
+   "meeting": 3,
+   "id": 282,
+   "front": "סֵיר",
+   "back": "נסיעה / תחבורה",
+   "form": null,
+   "gender": null
+  },
+  {
+   "meeting": 3,
+   "id": 283,
+   "front": "שוֹפֵיר",
+   "back": "נהג",
+   "form": "יחיד",
+   "gender": null
+  },
+  {
+   "meeting": 3,
+   "id": 284,
+   "front": "שוֹפֵירִיֶّה",
+   "back": "נהגים",
+   "form": "רבים",
+   "gender": null
+  },
+  {
+   "meeting": 3,
+   "id": 285,
+   "front": "סַאאֶק",
+   "back": "נהג",
+   "form": "יחיד",
+   "gender": null
+  },
+  {
+   "meeting": 3,
+   "id": 286,
+   "front": "סַאאִקִין",
+   "back": "נהגים",
+   "form": "רבים",
+   "gender": null
+  },
+  {
+   "meeting": 3,
+   "id": 287,
+   "front": "סֻוַّאק",
+   "back": "נהגים",
+   "form": "רבים",
+   "gender": null
+  },
+  {
+   "meeting": 3,
+   "id": 288,
+   "front": "בַּאצ",
+   "back": "אוטובוס",
+   "form": "יחיד",
+   "gender": null
+  },
+  {
+   "meeting": 3,
+   "id": 289,
+   "front": "בַּאצַאת",
+   "back": "אוטובוסים",
+   "form": "רבים",
+   "gender": null
+  },
+  {
+   "meeting": 3,
+   "id": 290,
+   "front": "סַנֶה",
+   "back": "שנה",
+   "form": "יחיד",
+   "gender": null
+  },
+  {
+   "meeting": 3,
+   "id": 291,
+   "front": "סְנִין",
+   "back": "שנים",
+   "form": "רבים",
+   "gender": null
+  },
+  {
+   "meeting": 3,
+   "id": 292,
+   "front": "סַנַוַאת",
+   "back": "שנים",
+   "form": "רבים",
+   "gender": null
+  },
+  {
+   "meeting": 3,
+   "id": 293,
+   "front": "עֻמוּלֶה",
+   "back": "עמלה",
+   "form": "יחיד",
+   "gender": null
+  },
+  {
+   "meeting": 3,
+   "id": 294,
+   "front": "עֻמוּלַאת",
+   "back": "עמלות",
+   "form": "רבים",
+   "gender": null
+  },
+  {
+   "meeting": 3,
+   "id": 295,
+   "front": "חֻכּוּמֶה",
+   "back": "ממשלה",
+   "form": "יחיד",
+   "gender": null
+  },
+  {
+   "meeting": 3,
+   "id": 296,
+   "front": "חֻכּוּמַאת",
+   "back": "ממשלות",
+   "form": "רבים",
+   "gender": null
+  },
+  {
+   "meeting": 3,
+   "id": 297,
+   "front": "בַּנְכּ",
+   "back": "בנק",
+   "form": "יחיד",
+   "gender": null
+  },
+  {
+   "meeting": 3,
+   "id": 298,
+   "front": "בְּנוּכּ",
+   "back": "בנקים",
+   "form": "רבים",
+   "gender": null
+  },
+  {
+   "meeting": 3,
+   "id": 299,
+   "front": "לַזִיז",
+   "back": "טעים",
+   "form": null,
+   "gender": "m"
+  },
+  {
+   "meeting": 3,
+   "id": 300,
+   "front": "לַזִיזֶה",
+   "back": "טעימה",
+   "form": null,
+   "gender": "f"
+  },
+  {
+   "meeting": 3,
+   "id": 301,
+   "front": "קַנִّינֶה",
+   "back": "בקבוק",
+   "form": "יחיד",
+   "gender": null
+  },
+  {
+   "meeting": 3,
+   "id": 302,
+   "front": "קַנַאנִי",
+   "back": "בקבוקים",
+   "form": "רבים",
+   "gender": null
+  },
+  {
+   "meeting": 3,
+   "id": 303,
+   "front": "עִלְבֶּה",
+   "back": "קופסה",
+   "form": "יחיד",
+   "gender": null
+  },
+  {
+   "meeting": 3,
+   "id": 304,
+   "front": "עֻלַבּ",
+   "back": "קופסאות",
+   "form": "רבים",
+   "gender": null
+  },
+  {
+   "meeting": 3,
+   "id": 305,
+   "front": "אִבְּרֵה",
+   "back": "מחט / זריקה",
+   "form": "יחיד",
+   "gender": null
+  },
+  {
+   "meeting": 3,
+   "id": 306,
+   "front": "אִבַּר",
+   "back": "מחטים / זריקות",
+   "form": "רבים",
+   "gender": null
+  },
+  {
+   "meeting": 3,
+   "id": 307,
+   "front": "אַחְ'צַ'ר",
+   "back": "ירוק",
+   "form": "יחיד",
+   "gender": "m"
+  },
+  {
+   "meeting": 3,
+   "id": 308,
+   "front": "חֹ'צֶ'ר",
+   "back": "ירוקים / ירוקות",
+   "form": "רבים",
+   "gender": "m"
+  },
+  {
+   "meeting": 3,
+   "id": 309,
+   "front": "חַ'צְ'רַא",
+   "back": "ירוקה",
+   "form": "יחיד",
+   "gender": "f"
+  },
+  {
+   "meeting": 3,
+   "id": 310,
+   "front": "שֵיח'",
+   "back": "שיח'",
+   "form": "יחיד",
+   "gender": null
+  },
+  {
+   "meeting": 3,
+   "id": 311,
+   "front": "שְיוּח'",
+   "back": "שיח'ים",
+   "form": "רבים",
+   "gender": null
+  },
+  {
+   "meeting": 3,
+   "id": 312,
+   "front": "מַשַאיֵח'",
+   "back": "שיח'ים",
+   "form": "רבים",
+   "gender": null
+  },
+  {
+   "meeting": 3,
+   "id": 313,
+   "front": "שַקַّה",
+   "back": "דירה",
+   "form": "יחיד",
+   "gender": null
+  },
+  {
+   "meeting": 3,
+   "id": 314,
+   "front": "שֻקַק",
+   "back": "דירות",
+   "form": "רבים",
+   "gender": null
+  },
+  {
+   "meeting": 3,
+   "id": 315,
+   "front": "טַרַפ",
+   "back": "צד / חלק",
+   "form": "יחיד",
+   "gender": null
+  },
+  {
+   "meeting": 3,
+   "id": 316,
+   "front": "אַטְרַאפ",
+   "back": "צדדים / חלקים",
+   "form": "רבים",
+   "gender": null
+  },
+  {
+   "meeting": 3,
+   "id": 317,
+   "front": "גַ'נַבּ",
+   "back": "צד (פיזי)",
+   "form": "יחיד",
+   "gender": null
+  },
+  {
+   "meeting": 3,
+   "id": 318,
+   "front": "אַגְ'נַאבּ",
+   "back": "צדדים (פיזי)",
+   "form": "רבים",
+   "gender": null
+  },
+  {
+   "meeting": 3,
+   "id": 319,
+   "front": "חַאגֶ'ז",
+   "back": "מחסום",
+   "form": "יחיד",
+   "gender": null
+  },
+  {
+   "meeting": 3,
+   "id": 320,
+   "front": "חַוַאגֶ'ז",
+   "back": "מחסומים",
+   "form": "רבים",
+   "gender": null
+  },
+  {
+   "meeting": 3,
+   "id": 321,
+   "front": "רַמְזוֹן",
+   "back": "רמזור",
+   "form": "יחיד",
+   "gender": null
+  },
+  {
+   "meeting": 3,
+   "id": 322,
+   "front": "רַמְזוֹנַאת",
+   "back": "רמזורים",
+   "form": "רבים",
+   "gender": null
+  },
+  {
+   "meeting": 3,
+   "id": 323,
+   "front": "דַוַّאר",
+   "back": "כיכר",
+   "form": "יחיד",
+   "gender": null
+  },
+  {
+   "meeting": 3,
+   "id": 324,
+   "front": "דַוַאוִיר",
+   "back": "כיכרות",
+   "form": "רבים",
+   "gender": null
+  },
+  {
+   "meeting": 3,
+   "id": 325,
+   "front": "דֻוַّאר",
+   "back": "כיכרות",
+   "form": "רבים",
+   "gender": null
+  },
+  {
+   "meeting": 3,
+   "id": 326,
+   "front": "גַ'רִידֶה",
+   "back": "עיתון",
+   "form": "יחיד",
+   "gender": null
+  },
+  {
+   "meeting": 3,
+   "id": 327,
+   "front": "גַ'רַאיֶד",
+   "back": "עיתונים",
+   "form": "רבים",
+   "gender": null
+  },
+  {
+   "meeting": 3,
+   "id": 328,
+   "front": "שַגַ'רַה",
+   "back": "עץ",
+   "form": "יחיד",
+   "gender": null
+  },
+  {
+   "meeting": 3,
+   "id": 329,
+   "front": "אַשְגַ'אר",
+   "back": "עצים",
+   "form": "רבים",
+   "gender": null
+  },
+  {
+   "meeting": 3,
+   "id": 330,
+   "front": "שַגַ'רַאת",
+   "back": "עצים",
+   "form": "רבים",
+   "gender": null
+  },
+  {
+   "meeting": 3,
+   "id": 331,
+   "front": "שַגַ'ר",
+   "back": "עצים (שם קיבוצי)",
+   "form": null,
+   "gender": null
+  },
+  {
+   "meeting": 3,
+   "id": 332,
+   "front": "זֵיתוּן",
+   "back": "זיתים (שם קיבוצי)",
+   "form": null,
+   "gender": null
+  },
+  {
+   "meeting": 3,
+   "id": 333,
+   "front": "זֵית",
+   "back": "שמן",
+   "form": "יחיד",
+   "gender": null
+  },
+  {
+   "meeting": 3,
+   "id": 334,
+   "front": "זְיוּת",
+   "back": "שמנים",
+   "form": "רבים",
+   "gender": null
+  },
+  {
+   "meeting": 3,
+   "id": 335,
+   "front": "מִנّ",
+   "back": "מ...",
+   "form": null,
+   "gender": null
+  },
+  {
+   "meeting": 3,
+   "id": 336,
+   "front": "עַלַא",
+   "back": "על",
+   "form": null,
+   "gender": null
+  },
+  {
+   "meeting": 3,
+   "id": 337,
+   "front": "עַנّ",
+   "back": "אודות",
+   "form": null,
+   "gender": null
+  },
+  {
+   "meeting": 3,
+   "id": 338,
+   "front": "תַארִיח'",
+   "back": "תאריך / היסטוריה",
+   "form": "יחיד",
+   "gender": null
+  },
+  {
+   "meeting": 3,
+   "id": 339,
+   "front": "תַוַארִיח'",
+   "back": "תאריכים",
+   "form": "רבים",
+   "gender": null
+  },
+  {
+   "meeting": 3,
+   "id": 340,
+   "front": "דִין",
+   "back": "דת",
+   "form": "יחיד",
+   "gender": null
+  },
+  {
+   "meeting": 3,
+   "id": 341,
+   "front": "אַדְיַאן",
+   "back": "דתות",
+   "form": "רבים",
+   "gender": null
+  },
+  {
+   "meeting": 3,
+   "id": 342,
+   "front": "אִסְלַאם",
+   "back": "אסלאם",
+   "form": null,
+   "gender": null
+  },
+  {
+   "meeting": 3,
+   "id": 343,
+   "front": "מִסְלֶם",
+   "back": "מוסלמי",
+   "form": "יחיד",
+   "gender": "m"
+  },
+  {
+   "meeting": 3,
+   "id": 344,
+   "front": "מִסְלִמִין",
+   "back": "מוסלמים",
+   "form": "רבים",
+   "gender": "m"
+  },
+  {
+   "meeting": 3,
+   "id": 345,
+   "front": "מֻסְלִמֶה",
+   "back": "מוסלמית",
+   "form": "יחיד",
+   "gender": "f"
+  },
+  {
+   "meeting": 3,
+   "id": 346,
+   "front": "מֻסְלִמַאת",
+   "back": "מוסלמיות",
+   "form": "רבים",
+   "gender": "f"
+  },
+  {
+   "meeting": 3,
+   "id": 347,
+   "front": "יַהוּדִי",
+   "back": "יהודי",
+   "form": "יחיד",
+   "gender": "m"
+  },
+  {
+   "meeting": 3,
+   "id": 348,
+   "front": "יַהוּד",
+   "back": "יהודים",
+   "form": "רבים",
+   "gender": "m"
+  },
+  {
+   "meeting": 3,
+   "id": 349,
+   "front": "יַהוּדִיֶّה",
+   "back": "יהודייה",
+   "form": "יחיד",
+   "gender": "f"
+  },
+  {
+   "meeting": 3,
+   "id": 350,
+   "front": "יַהוּדִיַّאת",
+   "back": "יהודיות",
+   "form": "רבים",
+   "gender": "f"
+  },
+  {
+   "meeting": 3,
+   "id": 351,
+   "front": "מַסִיחִי",
+   "back": "נוצרי",
+   "form": "יחיד",
+   "gender": "m"
+  },
+  {
+   "meeting": 3,
+   "id": 352,
+   "front": "מַסִיחִיּוּן",
+   "back": "נוצרים",
+   "form": "רבים",
+   "gender": "m"
+  },
+  {
+   "meeting": 3,
+   "id": 353,
+   "front": "מַסִיחִיֶّה",
+   "back": "נוצרייה",
+   "form": "יחיד",
+   "gender": "f"
+  },
+  {
+   "meeting": 3,
+   "id": 354,
+   "front": "מַסִיחִיַّאת",
+   "back": "נוצריות",
+   "form": "רבים",
+   "gender": "f"
+  },
+  {
+   "meeting": 3,
+   "id": 355,
+   "front": "תַכְּסִי",
+   "back": "מונית",
+   "form": "יחיד",
+   "gender": null
+  },
+  {
+   "meeting": 3,
+   "id": 356,
+   "front": "תַכְּסִיַאת",
+   "back": "מוניות",
+   "form": "רבים",
+   "gender": null
+  },
+  {
+   "meeting": 3,
+   "id": 357,
+   "front": "יַמִין",
+   "back": "ימין (צד)",
+   "form": null,
+   "gender": null
+  },
+  {
+   "meeting": 3,
+   "id": 359,
+   "front": "חַקّ",
+   "back": "זכות / צדק / מחיר",
+   "form": "יחיד",
+   "gender": null
+  },
+  {
+   "meeting": 3,
+   "id": 360,
+   "front": "חֻקוּק",
+   "back": "זכויות / מחיר",
+   "form": "רבים",
+   "gender": null
+  },
+  {
+   "meeting": 3,
+   "id": 361,
+   "front": "בַּסִיט",
+   "back": "פשוט",
+   "form": "יחיד",
+   "gender": "m"
+  },
+  {
+   "meeting": 3,
+   "id": 362,
+   "front": "בֻּסַטַאא",
+   "back": "פשוטים",
+   "form": "רבים",
+   "gender": "m"
+  },
+  {
+   "meeting": 3,
+   "id": 363,
+   "front": "בַּסִיטַה",
+   "back": "פשוטה / לא נורא",
+   "form": null,
+   "gender": "f"
+  },
+  {
+   "meeting": 3,
+   "id": 364,
+   "front": "חַ'טّ",
+   "back": "קו",
+   "form": "יחיד",
+   "gender": null
+  },
+  {
+   "meeting": 3,
+   "id": 365,
+   "front": "חְ'טוּט",
+   "back": "קווים",
+   "form": "רבים",
+   "gender": null
+  },
+  {
+   "meeting": 3,
+   "id": 366,
+   "front": "אַח'",
+   "back": "אח",
+   "form": "יחיד",
+   "gender": "m"
+  },
+  {
+   "meeting": 3,
+   "id": 367,
+   "front": "אִחְ'וֶה",
+   "back": "אחים",
+   "form": "רבים",
+   "gender": "m"
+  },
+  {
+   "meeting": 3,
+   "id": 368,
+   "front": "אֻחְ'ת",
+   "back": "אחות",
+   "form": "יחיד",
+   "gender": "f"
+  },
+  {
+   "meeting": 3,
+   "id": 369,
+   "front": "חַ'וַאת",
+   "back": "אחיות",
+   "form": "רבים",
+   "gender": "f"
+  },
+  {
+   "meeting": 3,
+   "id": 370,
+   "front": "מֻפְתַאח",
+   "back": "מפתח",
+   "form": "יחיד",
+   "gender": null
+  },
+  {
+   "meeting": 3,
+   "id": 371,
+   "front": "מַפַאתִיח",
+   "back": "מפתחות",
+   "form": "רבים",
+   "gender": null
+  },
+  {
+   "meeting": 3,
+   "id": 372,
+   "front": "קִפֵל",
+   "back": "מנעול",
+   "form": "יחיד",
+   "gender": null
+  },
+  {
+   "meeting": 3,
+   "id": 373,
+   "front": "אַקְפַאל",
+   "back": "מנעולים",
+   "form": "רבים",
+   "gender": null
+  },
+  {
+   "meeting": 3,
+   "id": 374,
+   "front": "שַאבّ",
+   "back": "בחור צעיר",
+   "form": "יחיד",
+   "gender": "m"
+  },
+  {
+   "meeting": 3,
+   "id": 375,
+   "front": "שַבַּאבּ",
+   "back": "בחורים צעירים",
+   "form": "רבים",
+   "gender": "m"
+  },
+  {
+   "meeting": 3,
+   "id": 376,
+   "front": "שַאבֶּّה",
+   "back": "בחורה צעירה",
+   "form": "יחיד",
+   "gender": "f"
+  },
+  {
+   "meeting": 3,
+   "id": 377,
+   "front": "שַאבַּّאת",
+   "back": "בחורות צעירות",
+   "form": "רבים",
+   "gender": "f"
+  },
+  {
+   "meeting": 3,
+   "id": 378,
+   "front": "צִ'דّ",
+   "back": "נגד",
+   "form": null,
+   "gender": null
+  },
+  {
+   "meeting": 3,
+   "id": 379,
+   "front": "כֻּלّ",
+   "back": "כל",
+   "form": null,
+   "gender": null
+  },
+  {
+   "meeting": 3,
+   "id": 380,
+   "front": "אַו",
+   "back": "או",
+   "form": null,
+   "gender": null
+  },
+  {
+   "meeting": 3,
+   "id": 381,
+   "front": "וִלַّא",
+   "back": "או",
+   "form": null,
+   "gender": null
+  },
+  {
+   "meeting": 3,
+   "id": 382,
+   "front": "שַעַבּ",
+   "back": "עם",
+   "form": "יחיד",
+   "gender": null
+  },
+  {
+   "meeting": 3,
+   "id": 383,
+   "front": "שֻעוּבּ",
+   "back": "עמים",
+   "form": "רבים",
+   "gender": null
+  },
+  {
+   "meeting": 3,
+   "id": 384,
+   "front": "רַסְמִי",
+   "back": "רשמי",
+   "form": "יחיד",
+   "gender": "m"
+  },
+  {
+   "meeting": 3,
+   "id": 385,
+   "front": "רַסְמִיִّין",
+   "back": "רשמיים",
+   "form": "רבים",
+   "gender": "m"
+  },
+  {
+   "meeting": 3,
+   "id": 386,
+   "front": "רַסְמִיֶّה",
+   "back": "רשמית",
+   "form": "יחיד",
+   "gender": "f"
+  },
+  {
+   "meeting": 3,
+   "id": 387,
+   "front": "רַאסְמִיַّאת",
+   "back": "רשמיות",
+   "form": "רבים",
+   "gender": "f"
+  },
+  {
+   "meeting": 4,
+   "id": 388,
+   "front": "וַרַא",
+   "back": "אחרי / מאחרי",
+   "form": null,
+   "gender": null
+  },
+  {
+   "meeting": 4,
+   "id": 389,
+   "front": "קֻדַّאם",
+   "back": "לפני",
+   "form": null,
+   "gender": null
+  },
+  {
+   "meeting": 4,
+   "id": 390,
+   "front": "תַחְת",
+   "back": "תחת / מתחת / למטה",
+   "form": null,
+   "gender": null
+  },
+  {
+   "meeting": 4,
+   "id": 391,
+   "front": "פוֹק",
+   "back": "מעל / על / למעלה",
+   "form": null,
+   "gender": null
+  },
+  {
+   "meeting": 4,
+   "id": 392,
+   "front": "קְבַּאל",
+   "back": "מול",
+   "form": null,
+   "gender": null
+  },
+  {
+   "meeting": 4,
+   "id": 393,
+   "front": "חַוַאלִי",
+   "back": "בערך / סביב",
+   "form": null,
+   "gender": null
+  },
+  {
+   "meeting": 4,
+   "id": 394,
+   "front": "הוֹן",
+   "back": "פה",
+   "form": null,
+   "gender": null
+  },
+  {
+   "meeting": 4,
+   "id": 395,
+   "front": "הֻנַאכּ",
+   "back": "שם",
+   "form": null,
+   "gender": null
+  },
+  {
+   "meeting": 4,
+   "id": 396,
+   "front": "בַּרַّא",
+   "back": "חוץ / בחוץ",
+   "form": null,
+   "gender": null
+  },
+  {
+   "meeting": 4,
+   "id": 397,
+   "front": "גֻ'וّא",
+   "back": "פנימה / בפנים",
+   "form": null,
+   "gender": null
+  },
+  {
+   "meeting": 4,
+   "id": 398,
+   "front": "לַחַדّ",
+   "back": "עד",
+   "form": null,
+   "gender": null
+  },
+  {
+   "meeting": 4,
+   "id": 399,
+   "front": "לַ",
+   "back": "עד",
+   "form": null,
+   "gender": null
+  },
+  {
+   "meeting": 4,
+   "id": 400,
+   "front": "בַּס",
+   "back": "זהו / מספיק / אבל / רק",
+   "form": null,
+   "gender": null
+  },
+  {
+   "meeting": 4,
+   "id": 401,
+   "front": "מִתֶל",
+   "back": "כמו",
+   "form": null,
+   "gender": null
+  },
+  {
+   "meeting": 4,
+   "id": 402,
+   "front": "זַיְّ",
+   "back": "כמו",
+   "form": null,
+   "gender": null
+  },
+  {
+   "meeting": 4,
+   "id": 403,
+   "front": "בַּעַד",
+   "back": "אחרי (לזמן ולמקום)",
+   "form": null,
+   "gender": null
+  },
+  {
+   "meeting": 4,
+   "id": 404,
+   "front": "קַבֶּל",
+   "back": "לפני (לזמן ולמקום)",
+   "form": null,
+   "gender": null
+  },
+  {
+   "meeting": 4,
+   "id": 405,
+   "front": "חַתַّא",
+   "back": "עד ש... / כדי ש... / אפילו",
+   "form": null,
+   "gender": null
+  },
+  {
+   "meeting": 4,
+   "id": 406,
+   "front": "תַ",
+   "back": "עד ש... / כדי ש...",
+   "form": null,
+   "gender": null
+  },
+  {
+   "meeting": 4,
+   "id": 407,
+   "front": "דֻעְ'רִי",
+   "back": "ישר / מיד",
+   "form": null,
+   "gender": null
+  },
+  {
+   "meeting": 4,
+   "id": 408,
+   "front": "אִלִّי",
+   "back": "אשר / ש...",
+   "form": null,
+   "gender": null
+  },
+  {
+   "meeting": 4,
+   "id": 409,
+   "front": "פִשّ",
+   "back": "אין",
+   "form": null,
+   "gender": null
+  },
+  {
+   "meeting": 4,
+   "id": 410,
+   "front": "מַפִשّ",
+   "back": "אין",
+   "form": null,
+   "gender": null
+  },
+  {
+   "meeting": 4,
+   "id": 411,
+   "front": "מַפִיש",
+   "back": "אין",
+   "form": null,
+   "gender": null
+  },
+  {
+   "meeting": 4,
+   "id": 412,
+   "front": "מַא פִי",
+   "back": "אין",
+   "form": null,
+   "gender": null
+  },
+  {
+   "meeting": 4,
+   "id": 413,
+   "front": "אַמַّא",
+   "back": "אבל",
+   "form": null,
+   "gender": null
+  },
+  {
+   "meeting": 4,
+   "id": 414,
+   "front": "עִדֵّת",
+   "back": "מספר / מניין (של פריטים)",
+   "form": null,
+   "gender": null
+  },
+  {
+   "meeting": 4,
+   "id": 415,
+   "front": "עַדַד",
+   "back": "מספר / מניין (של פריטים)",
+   "form": null,
+   "gender": null
+  },
+  {
+   "meeting": 4,
+   "id": 416,
+   "front": "מַדְחַ'ל",
+   "back": "כניסה / פתח",
+   "form": "יחיד",
+   "gender": null
+  },
+  {
+   "meeting": 4,
+   "id": 417,
+   "front": "מַדַאחֵ'ל",
+   "back": "כניסות / פתחים",
+   "form": "רבים",
+   "gender": null
+  },
+  {
+   "meeting": 4,
+   "id": 418,
+   "front": "פוֹתֵה",
+   "back": "כניסה / פתח",
+   "form": "יחיד",
+   "gender": null
+  },
+  {
+   "meeting": 4,
+   "id": 419,
+   "front": "פוֹתַאת",
+   "back": "כניסות / פתחים",
+   "form": "רבים",
+   "gender": null
+  },
+  {
+   "meeting": 4,
+   "id": 420,
+   "front": "רַוְצַ'ה",
+   "back": "גן (ילדים)",
+   "form": "יחיד",
+   "gender": null
+  },
+  {
+   "meeting": 4,
+   "id": 421,
+   "front": "רַוְצַ'את",
+   "back": "גני ילדים",
+   "form": "רבים",
+   "gender": null
+  },
+  {
+   "meeting": 4,
+   "id": 422,
+   "front": "רַוְצַ'ת אַטְפַאל",
+   "back": "גן ילדים",
+   "form": null,
+   "gender": null
+  },
+  {
+   "meeting": 4,
+   "id": 423,
+   "front": "טִפֶל",
+   "back": "תינוק / פעוט",
+   "form": "יחיד",
+   "gender": null
+  },
+  {
+   "meeting": 4,
+   "id": 424,
+   "front": "אַטְפַאל",
+   "back": "תינוקות / פעוטות",
+   "form": "רבים",
+   "gender": null
+  },
+  {
+   "meeting": 4,
+   "id": 425,
+   "front": "שַאחְנֶה",
+   "back": "משאית",
+   "form": "יחיד",
+   "gender": null
+  },
+  {
+   "meeting": 4,
+   "id": 426,
+   "front": "שַאחְנַאת",
+   "back": "משאיות",
+   "form": "רבים",
+   "gender": null
+  },
+  {
+   "meeting": 4,
+   "id": 427,
+   "front": "תְרַכّ",
+   "back": "משאית",
+   "form": "יחיד",
+   "gender": null
+  },
+  {
+   "meeting": 4,
+   "id": 428,
+   "front": "תְרַאכַּّאת",
+   "back": "משאיות",
+   "form": "רבים",
+   "gender": null
+  },
+  {
+   "meeting": 4,
+   "id": 429,
+   "front": "נַקֶל",
+   "back": "תחבורה / תעבורה / העברה / העתקה",
+   "form": null,
+   "gender": null
+  },
+  {
+   "meeting": 4,
+   "id": 430,
+   "front": "נַקְלֶה",
+   "back": "הובלה",
+   "form": "יחיד",
+   "gender": null
+  },
+  {
+   "meeting": 4,
+   "id": 431,
+   "front": "נַקְלַאת",
+   "back": "הובלות",
+   "form": "רבים",
+   "gender": null
+  },
+  {
+   "meeting": 4,
+   "id": 432,
+   "front": "שוֹכֶּה",
+   "back": "מזלג",
+   "form": "יחיד",
+   "gender": null
+  },
+  {
+   "meeting": 4,
+   "id": 433,
+   "front": "שֻוַכּ",
+   "back": "מזלגות",
+   "form": "רבים",
+   "gender": null
+  },
+  {
+   "meeting": 4,
+   "id": 434,
+   "front": "טַרִיק",
+   "back": "כביש / דרך",
+   "form": "יחיד",
+   "gender": null
+  },
+  {
+   "meeting": 4,
+   "id": 435,
+   "front": "טֻרֻק",
+   "back": "כבישים / דרכים",
+   "form": "רבים",
+   "gender": null
+  },
+  {
+   "meeting": 4,
+   "id": 436,
+   "front": "נֻצّ",
+   "back": "חצי",
+   "form": "יחיד",
+   "gender": null
+  },
+  {
+   "meeting": 4,
+   "id": 437,
+   "front": "נְצַאצ",
+   "back": "חצאים",
+   "form": "רבים",
+   "gender": null
+  },
+  {
+   "meeting": 4,
+   "id": 438,
+   "front": "מַוְג'וּד",
+   "back": "נמצא",
+   "form": "יחיד",
+   "gender": "m"
+  },
+  {
+   "meeting": 4,
+   "id": 439,
+   "front": "מַוְג'וּדִין",
+   "back": "נמצאים",
+   "form": "רבים",
+   "gender": "m"
+  },
+  {
+   "meeting": 4,
+   "id": 440,
+   "front": "מַוְג'וּדֶה",
+   "back": "נמצאת",
+   "form": "יחיד",
+   "gender": "f"
+  },
+  {
+   "meeting": 4,
+   "id": 441,
+   "front": "מַוְג'וּדַאת",
+   "back": "נמצאות",
+   "form": "רבים",
+   "gender": "f"
+  },
+  {
+   "meeting": 4,
+   "id": 442,
+   "front": "טַאלֶע",
+   "back": "עולה / יוצא",
+   "form": "יחיד",
+   "gender": "m"
+  },
+  {
+   "meeting": 4,
+   "id": 443,
+   "front": "טַאלְעִין",
+   "back": "עולים / יוצאים",
+   "form": "רבים",
+   "gender": "m"
+  },
+  {
+   "meeting": 4,
+   "id": 444,
+   "front": "טַאלְעַה",
+   "back": "עולה / יוצאת",
+   "form": "יחיד",
+   "gender": "f"
+  },
+  {
+   "meeting": 4,
+   "id": 445,
+   "front": "טַאלְעַאת",
+   "back": "עולות / יוצאות",
+   "form": "רבים",
+   "gender": "f"
+  },
+  {
+   "meeting": 4,
+   "id": 446,
+   "front": "נַאזֶל",
+   "back": "יורד",
+   "form": "יחיד",
+   "gender": "m"
+  },
+  {
+   "meeting": 4,
+   "id": 447,
+   "front": "נַאזְלִין",
+   "back": "יורדים",
+   "form": "רבים",
+   "gender": "m"
+  },
+  {
+   "meeting": 4,
+   "id": 448,
+   "front": "נַאזְלֶה",
+   "back": "יורדת",
+   "form": "יחיד",
+   "gender": "f"
+  },
+  {
+   "meeting": 4,
+   "id": 449,
+   "front": "נַאזְלַאת",
+   "back": "יורדות",
+   "form": "רבים",
+   "gender": "f"
+  },
+  {
+   "meeting": 4,
+   "id": 450,
+   "front": "פַגֶ'ר",
+   "back": "שחר / עלות השחר",
+   "form": null,
+   "gender": null
+  },
+  {
+   "meeting": 4,
+   "id": 451,
+   "front": "צֻבֶּח",
+   "back": "בוקר",
+   "form": null,
+   "gender": null
+  },
+  {
+   "meeting": 4,
+   "id": 452,
+   "front": "צֻ'הֻר",
+   "back": "צהריים",
+   "form": null,
+   "gender": null
+  },
+  {
+   "meeting": 4,
+   "id": 453,
+   "front": "עַצֶר",
+   "back": "אחר הצהריים / תקופה / דור",
+   "form": null,
+   "gender": null
+  },
+  {
+   "meeting": 4,
+   "id": 454,
+   "front": "מַעְ'רֶב",
+   "back": "בין ערביים",
+   "form": null,
+   "gender": null
+  },
+  {
+   "meeting": 4,
+   "id": 455,
+   "front": "מַסַא",
+   "back": "ערב",
+   "form": null,
+   "gender": null
+  },
+  {
+   "meeting": 4,
+   "id": 456,
+   "front": "לֵיל",
+   "back": "לילה",
+   "form": null,
+   "gender": null
+  },
+  {
+   "meeting": 4,
+   "id": 457,
+   "front": "צַלַאה",
+   "back": "תפילה",
+   "form": "יחיד",
+   "gender": null
+  },
+  {
+   "meeting": 4,
+   "id": 458,
+   "front": "צַלַוַאת",
+   "back": "תפילות",
+   "form": "רבים",
+   "gender": null
+  },
+  {
+   "meeting": 4,
+   "id": 459,
+   "front": "צַ'וְ",
+   "back": "אור",
+   "form": "יחיד",
+   "gender": null
+  },
+  {
+   "meeting": 4,
+   "id": 460,
+   "front": "אַצְ'וַאא",
+   "back": "אורות",
+   "form": "רבים",
+   "gender": null
+  },
+  {
+   "meeting": 4,
+   "id": 461,
+   "front": "עַתְמֶה",
+   "back": "חושך / אפילה",
+   "form": null,
+   "gender": null
+  },
+  {
+   "meeting": 4,
+   "id": 462,
+   "front": "מַלַאן",
+   "back": "מלא",
+   "form": null,
+   "gender": "m"
+  },
+  {
+   "meeting": 4,
+   "id": 463,
+   "front": "מַלַאנֶה",
+   "back": "מלאה",
+   "form": null,
+   "gender": "f"
+  },
+  {
+   "meeting": 4,
+   "id": 464,
+   "front": "פַאצִ'י",
+   "back": "ריק / פנוי",
+   "form": null,
+   "gender": "m"
+  },
+  {
+   "meeting": 4,
+   "id": 465,
+   "front": "פַאצְ'יֶה",
+   "back": "ריקה / פנויה",
+   "form": null,
+   "gender": "f"
+  },
+  {
+   "meeting": 4,
+   "id": 466,
+   "front": "בִּ(א)לְמַרַّה",
+   "back": "לגמרי / בכלל",
+   "form": null,
+   "gender": null
+  },
+  {
+   "meeting": 4,
+   "id": 467,
+   "front": "אַצֶל",
+   "back": "מקור",
+   "form": null,
+   "gender": null
+  },
+  {
+   "meeting": 4,
+   "id": 468,
+   "front": "אַצְלִי",
+   "back": "מקורי",
+   "form": "יחיד",
+   "gender": "m"
+  },
+  {
+   "meeting": 4,
+   "id": 469,
+   "front": "אַצְלִיִّין",
+   "back": "מקוריים",
+   "form": "רבים",
+   "gender": "m"
+  },
+  {
+   "meeting": 4,
+   "id": 470,
+   "front": "אַצְלִיֶّה",
+   "back": "מקורית",
+   "form": "יחיד",
+   "gender": "f"
+  },
+  {
+   "meeting": 4,
+   "id": 471,
+   "front": "אַצְלִיַّאת",
+   "back": "מקוריות",
+   "form": "רבים",
+   "gender": "f"
+  },
+  {
+   "meeting": 4,
+   "id": 472,
+   "front": "מַוְקֶפ",
+   "back": "חנייה",
+   "form": "יחיד",
+   "gender": null
+  },
+  {
+   "meeting": 4,
+   "id": 473,
+   "front": "מַוַאקֶפ",
+   "back": "חניות",
+   "form": "רבים",
+   "gender": null
+  },
+  {
+   "meeting": 4,
+   "id": 474,
+   "front": "דַאיְמַן",
+   "back": "תמיד",
+   "form": null,
+   "gender": null
+  },
+  {
+   "meeting": 4,
+   "id": 475,
+   "front": "עַאמוּד",
+   "back": "עמוד",
+   "form": "יחיד",
+   "gender": null
+  },
+  {
+   "meeting": 4,
+   "id": 476,
+   "front": "עֻמְדַאן",
+   "back": "עמודים",
+   "form": "רבים",
+   "gender": null
+  },
+  {
+   "meeting": 4,
+   "id": 477,
+   "front": "לַחֶם",
+   "back": "בשר",
+   "form": "יחיד",
+   "gender": null
+  },
+  {
+   "meeting": 4,
+   "id": 478,
+   "front": "לֻחוּם",
+   "back": "בשרים",
+   "form": "רבים",
+   "gender": null
+  },
+  {
+   "meeting": 4,
+   "id": 479,
+   "front": "מַלְחַמֶה",
+   "back": "אטליז / בית מטבחיים",
+   "form": "יחיד",
+   "gender": null
+  },
+  {
+   "meeting": 4,
+   "id": 480,
+   "front": "מַלַאחֶם",
+   "back": "אטליזים / בתי מטבחיים",
+   "form": "רבים",
+   "gender": null
+  },
+  {
+   "meeting": 4,
+   "id": 481,
+   "front": "חֻ'בֶּז",
+   "back": "לחם",
+   "form": null,
+   "gender": null
+  },
+  {
+   "meeting": 4,
+   "id": 482,
+   "front": "מַחְ'בַּז",
+   "back": "מאפייה",
+   "form": "יחיד",
+   "gender": null
+  },
+  {
+   "meeting": 4,
+   "id": 483,
+   "front": "מַחַ'אבֶּז",
+   "back": "מאפיות",
+   "form": "רבים",
+   "gender": null
+  },
+  {
+   "meeting": 4,
+   "id": 484,
+   "front": "מַחְ'בַּזֶה",
+   "back": "מאפייה",
+   "form": "יחיד",
+   "gender": null
+  },
+  {
+   "meeting": 4,
+   "id": 485,
+   "front": "מַטְעַם",
+   "back": "מסעדה",
+   "form": "יחיד",
+   "gender": null
+  },
+  {
+   "meeting": 4,
+   "id": 486,
+   "front": "מַטַאעֶם",
+   "back": "מסעדות",
+   "form": "רבים",
+   "gender": null
+  },
+  {
+   "meeting": 4,
+   "id": 487,
+   "front": "כַּהְרַבַּא",
+   "back": "חשמל",
+   "form": null,
+   "gender": null
+  },
+  {
+   "meeting": 5,
+   "id": 488,
+   "front": "מַצַארִי",
+   "back": "כסף",
+   "form": null,
+   "gender": null
+  },
+  {
+   "meeting": 5,
+   "id": 489,
+   "front": "פְלוּס",
+   "back": "כסף",
+   "form": null,
+   "gender": null
+  },
+  {
+   "meeting": 5,
+   "id": 490,
+   "front": "אַבּוּ",
+   "back": "בעל (תכונה) / אבא של…",
+   "form": null,
+   "gender": null
+  },
+  {
+   "meeting": 5,
+   "id": 491,
+   "front": "נַצַ'ّארַאת",
+   "back": "משקפיים",
+   "form": null,
+   "gender": null
+  },
+  {
+   "meeting": 5,
+   "id": 492,
+   "front": "נַצַ'ّארַה",
+   "back": "משקפת",
+   "form": null,
+   "gender": null
+  },
+  {
+   "meeting": 5,
+   "id": 493,
+   "front": "מַעְלַקַה",
+   "back": "כף",
+   "form": "יחיד",
+   "gender": null
+  },
+  {
+   "meeting": 5,
+   "id": 494,
+   "front": "מַעַאלֶק",
+   "back": "כפות",
+   "form": "רבים",
+   "gender": null
+  },
+  {
+   "meeting": 5,
+   "id": 495,
+   "front": "מַעְלַקַה זְעִ'ירֶה",
+   "back": "כפית",
+   "form": null,
+   "gender": null
+  },
+  {
+   "meeting": 5,
+   "id": 496,
+   "front": "סַכִּّינֶה",
+   "back": "סכין",
+   "form": "יחיד",
+   "gender": null
+  },
+  {
+   "meeting": 5,
+   "id": 497,
+   "front": "סַכַּאכִּין",
+   "back": "סכינים",
+   "form": "רבים",
+   "gender": null
+  },
+  {
+   "meeting": 5,
+   "id": 498,
+   "front": "טַנְגַ'רַה",
+   "back": "סיר",
+   "form": "יחיד",
+   "gender": null
+  },
+  {
+   "meeting": 5,
+   "id": 499,
+   "front": "טַנַאגֶ'ר",
+   "back": "סירים",
+   "form": "רבים",
+   "gender": null
+  },
+  {
+   "meeting": 5,
+   "id": 500,
+   "front": "שַוַארֶבּ",
+   "back": "שפם",
+   "form": null,
+   "gender": null
+  },
+  {
+   "meeting": 5,
+   "id": 501,
+   "front": "צוּרַה",
+   "back": "תמונה",
+   "form": "יחיד",
+   "gender": null
+  },
+  {
+   "meeting": 5,
+   "id": 502,
+   "front": "צֻוַר",
+   "back": "תמונות",
+   "form": "רבים",
+   "gender": null
+  },
+  {
+   "meeting": 5,
+   "id": 503,
+   "front": "צַחֶן",
+   "back": "צלחת",
+   "form": "יחיד",
+   "gender": null
+  },
+  {
+   "meeting": 5,
+   "id": 504,
+   "front": "צְחוּן",
+   "back": "צלחות",
+   "form": "רבים",
+   "gender": null
+  },
+  {
+   "meeting": 5,
+   "id": 505,
+   "front": "צַנְדוּק",
+   "back": "תיבה / קופה",
+   "form": "יחיד",
+   "gender": null
+  },
+  {
+   "meeting": 5,
+   "id": 506,
+   "front": "צַנַאדִיק",
+   "back": "תיבות / קופות",
+   "form": "רבים",
+   "gender": null
+  },
+  {
+   "meeting": 5,
+   "id": 507,
+   "front": "בֵּלֵפוֹן",
+   "back": "פלאפון",
+   "form": "יחיד",
+   "gender": null
+  },
+  {
+   "meeting": 5,
+   "id": 508,
+   "front": "בֵּלֵפוֹנַאת",
+   "back": "פלאפונים",
+   "form": "רבים",
+   "gender": null
+  },
+  {
+   "meeting": 5,
+   "id": 509,
+   "front": "לִיסְתַה",
+   "back": "רשימה",
+   "form": "יחיד",
+   "gender": null
+  },
+  {
+   "meeting": 5,
+   "id": 510,
+   "front": "לִיסְתַאת",
+   "back": "רשימות",
+   "form": "רבים",
+   "gender": null
+  },
+  {
+   "meeting": 5,
+   "id": 511,
+   "front": "טַאקִיֶّה",
+   "back": "כובע",
+   "form": "יחיד",
+   "gender": null
+  },
+  {
+   "meeting": 5,
+   "id": 512,
+   "front": "טַוַאקִי",
+   "back": "כובעים",
+   "form": "רבים",
+   "gender": null
+  },
+  {
+   "meeting": 5,
+   "id": 513,
+   "front": "אַרְצ'",
+   "back": "אדמה",
+   "form": "יחיד",
+   "gender": null
+  },
+  {
+   "meeting": 5,
+   "id": 514,
+   "front": "אַרַאצִ'י",
+   "back": "אדמות",
+   "form": "רבים",
+   "gender": null
+  },
+  {
+   "meeting": 5,
+   "id": 515,
+   "front": "קַרִיבּ",
+   "back": "קרוב משפחה / קרוב (במרחק)",
+   "form": "יחיד",
+   "gender": null
+  },
+  {
+   "meeting": 5,
+   "id": 516,
+   "front": "קַרַאיֶבּ",
+   "back": "קרובי משפחה / קרובים",
+   "form": "רבים",
+   "gender": null
+  },
+  {
+   "meeting": 5,
+   "id": 517,
+   "front": "מֻמְכֶּן",
+   "back": "אולי / אפשרי",
+   "form": null,
+   "gender": null
+  },
+  {
+   "meeting": 5,
+   "id": 518,
+   "front": "יִמְכֶּן",
+   "back": "אולי / אפשרי",
+   "form": null,
+   "gender": null
+  },
+  {
+   "meeting": 5,
+   "id": 519,
+   "front": "בִּיגוּז",
+   "back": "אולי / אפשרי",
+   "form": null,
+   "gender": null
+  },
+  {
+   "meeting": 5,
+   "id": 520,
+   "front": "בַּלְכִּי",
+   "back": "אולי / אפשרי",
+   "form": null,
+   "gender": null
+  },
+  {
+   "meeting": 5,
+   "id": 521,
+   "front": "מַסְכִּין",
+   "back": "מסכן",
+   "form": "יחיד",
+   "gender": null
+  },
+  {
+   "meeting": 5,
+   "id": 522,
+   "front": "מַסַאכִּין",
+   "back": "מסכנים",
+   "form": "רבים",
+   "gender": null
+  },
+  {
+   "meeting": 5,
+   "id": 523,
+   "front": "בַּסّ",
+   "back": "רק",
+   "form": null,
+   "gender": null
+  },
+  {
+   "meeting": 5,
+   "id": 524,
+   "front": "פַקַט",
+   "back": "רק",
+   "form": null,
+   "gender": null
+  },
+  {
+   "meeting": 5,
+   "id": 525,
+   "front": "אִלַّא",
+   "back": "רק",
+   "form": null,
+   "gender": null
+  },
+  {
+   "meeting": 5,
+   "id": 526,
+   "front": "יַתִים",
+   "back": "יתום",
+   "form": "יחיד",
+   "gender": null
+  },
+  {
+   "meeting": 5,
+   "id": 527,
+   "front": "אַיְתַאם",
+   "back": "יתומים",
+   "form": "רבים",
+   "gender": null
+  },
+  {
+   "meeting": 5,
+   "id": 528,
+   "front": "חְסַאבּ",
+   "back": "חשבון",
+   "form": "יחיד",
+   "gender": null
+  },
+  {
+   "meeting": 5,
+   "id": 529,
+   "front": "חְסַאבַּאת",
+   "back": "חשבונות",
+   "form": "רבים",
+   "gender": null
+  },
+  {
+   "meeting": 5,
+   "id": 532,
+   "front": "מֻקַאבַּלֶה",
+   "back": "פגישה",
+   "form": "יחיד",
+   "gender": null
+  },
+  {
+   "meeting": 5,
+   "id": 533,
+   "front": "מֻקַאבַּלַאת",
+   "back": "פגישות",
+   "form": "רבים",
+   "gender": null
+  },
+  {
+   "meeting": 5,
+   "id": 534,
+   "front": "לִקַאא",
+   "back": "פגישה",
+   "form": "יחיד",
+   "gender": null
+  },
+  {
+   "meeting": 5,
+   "id": 535,
+   "front": "לִקַאאת",
+   "back": "פגישות",
+   "form": "רבים",
+   "gender": null
+  },
+  {
+   "meeting": 5,
+   "id": 536,
+   "front": "גֻ'זְדַאן",
+   "back": "ארנק",
+   "form": "יחיד",
+   "gender": null
+  },
+  {
+   "meeting": 5,
+   "id": 537,
+   "front": "גַ'זַאדִין",
+   "back": "ארנקים",
+   "form": "רבים",
+   "gender": null
+  },
+  {
+   "meeting": 5,
+   "id": 538,
+   "front": "מַרְכַּז",
+   "back": "מרכז",
+   "form": "יחיד",
+   "gender": null
+  },
+  {
+   "meeting": 5,
+   "id": 539,
+   "front": "מַרַאכֶּז",
+   "back": "מרכזים",
+   "form": "רבים",
+   "gender": null
+  },
+  {
+   "meeting": 5,
+   "id": 540,
+   "front": "קַלְבּ",
+   "back": "לב",
+   "form": "יחיד",
+   "gender": null
+  },
+  {
+   "meeting": 5,
+   "id": 541,
+   "front": "קְלוּבּ",
+   "back": "לבבות",
+   "form": "רבים",
+   "gender": null
+  },
+  {
+   "meeting": 5,
+   "id": 542,
+   "front": "נַפְס",
+   "back": "נפש / רצון / נשמה / חשק",
+   "form": "יחיד",
+   "gender": null
+  },
+  {
+   "meeting": 5,
+   "id": 543,
+   "front": "נְפוּס",
+   "back": "נפשות / רצונות / נשמות / חשקים",
+   "form": "רבים",
+   "gender": null
+  },
+  {
+   "meeting": 5,
+   "id": 544,
+   "front": "אִשִי",
+   "back": "דבר מה / משהו / חפץ / עניין",
+   "form": "יחיד",
+   "gender": null
+  },
+  {
+   "meeting": 5,
+   "id": 545,
+   "front": "אַשְיַאא",
+   "back": "דברים / חפצים / עניינים",
+   "form": "רבים",
+   "gender": null
+  },
+  {
+   "meeting": 5,
+   "id": 546,
+   "front": "תַאנִי",
+   "back": "שני / אחר",
+   "form": null,
+   "gender": null
+  },
+  {
+   "meeting": 5,
+   "id": 547,
+   "front": "תַאנְיֶה",
+   "back": "שנייה / אחרת (סדר)",
+   "form": null,
+   "gender": null
+  },
+  {
+   "meeting": 5,
+   "id": 548,
+   "front": "וַאחַד",
+   "back": "אחד",
+   "form": null,
+   "gender": null
+  },
+  {
+   "meeting": 5,
+   "id": 549,
+   "front": "לַאבֶּס",
+   "back": "לובש",
+   "form": "יחיד",
+   "gender": "m"
+  },
+  {
+   "meeting": 5,
+   "id": 550,
+   "front": "לַאבְּסִין",
+   "back": "לובשים",
+   "form": "רבים",
+   "gender": "m"
+  },
+  {
+   "meeting": 5,
+   "id": 551,
+   "front": "לַאבְּסֶה",
+   "back": "לובשת",
+   "form": "יחיד",
+   "gender": "f"
+  },
+  {
+   "meeting": 5,
+   "id": 552,
+   "front": "לַאבְּסַאת",
+   "back": "לובשות",
+   "form": "רבים",
+   "gender": "f"
+  },
+  {
+   "meeting": 5,
+   "id": 553,
+   "front": "רַאס",
+   "back": "ראש",
+   "form": "יחיד",
+   "gender": null
+  },
+  {
+   "meeting": 5,
+   "id": 554,
+   "front": "רוּס",
+   "back": "ראשים",
+   "form": "רבים",
+   "gender": null
+  },
+  {
+   "meeting": 5,
+   "id": 555,
+   "front": "מֻהִםّ",
+   "back": "חשוב / משמעותי",
+   "form": null,
+   "gender": "m"
+  },
+  {
+   "meeting": 5,
+   "id": 556,
+   "front": "מֻהִמֶّה",
+   "back": "חשובה / משמעותית",
+   "form": null,
+   "gender": "f"
+  },
+  {
+   "meeting": 5,
+   "id": 557,
+   "front": "הַםّ",
+   "back": "דאגה / צער",
+   "form": "יחיד",
+   "gender": null
+  },
+  {
+   "meeting": 5,
+   "id": 558,
+   "front": "הֻמוּם",
+   "back": "דאגות / צערים",
+   "form": "רבים",
+   "gender": null
+  },
+  {
+   "meeting": 5,
+   "id": 559,
+   "front": "כִּלְמֶה",
+   "back": "מילה",
+   "form": "יחיד",
+   "gender": null
+  },
+  {
+   "meeting": 5,
+   "id": 560,
+   "front": "כַּלִמַאת",
+   "back": "מילים",
+   "form": "רבים",
+   "gender": null
+  },
+  {
+   "meeting": 5,
+   "id": 561,
+   "front": "כַּלַאם",
+   "back": "דיבורים (שם קיבוצי)",
+   "form": null,
+   "gender": null
+  },
+  {
+   "meeting": 5,
+   "id": 562,
+   "front": "מֻכַּאלַמֶה",
+   "back": "שיחה",
+   "form": "יחיד",
+   "gender": null
+  },
+  {
+   "meeting": 5,
+   "id": 563,
+   "front": "מֻכַּאלַמַאת",
+   "back": "שיחות",
+   "form": "רבים",
+   "gender": null
+  },
+  {
+   "meeting": 5,
+   "id": 564,
+   "front": "עַארֶפ",
+   "back": "יודע",
+   "form": "יחיד",
+   "gender": "m"
+  },
+  {
+   "meeting": 5,
+   "id": 565,
+   "front": "עַארְפִין",
+   "back": "יודעים",
+   "form": "רבים",
+   "gender": "m"
+  },
+  {
+   "meeting": 5,
+   "id": 566,
+   "front": "עַארְפֶה",
+   "back": "יודעת",
+   "form": "יחיד",
+   "gender": "f"
+  },
+  {
+   "meeting": 5,
+   "id": 567,
+   "front": "עַארְפַאת",
+   "back": "יודעות",
+   "form": "רבים",
+   "gender": "f"
+  },
+  {
+   "meeting": 5,
+   "id": 568,
+   "front": "שַאיֶפ",
+   "back": "רואה",
+   "form": "יחיד",
+   "gender": "m"
+  },
+  {
+   "meeting": 5,
+   "id": 569,
+   "front": "שַאיְפִין",
+   "back": "רואים",
+   "form": "רבים",
+   "gender": "m"
+  },
+  {
+   "meeting": 5,
+   "id": 570,
+   "front": "שַאיְפֶה",
+   "back": "רואה",
+   "form": "יחיד",
+   "gender": "f"
+  },
+  {
+   "meeting": 5,
+   "id": 571,
+   "front": "שַאיְפַאת",
+   "back": "רואות",
+   "form": "רבים",
+   "gender": "f"
+  },
+  {
+   "meeting": 5,
+   "id": 572,
+   "front": "רַקַם",
+   "back": "מספר",
+   "form": "יחיד",
+   "gender": null
+  },
+  {
+   "meeting": 5,
+   "id": 573,
+   "front": "אַרְקַאם",
+   "back": "מספרים",
+   "form": "רבים",
+   "gender": null
+  },
+  {
+   "meeting": 5,
+   "id": 574,
+   "front": "מַוְצ'וּע",
+   "back": "נושא",
+   "form": "יחיד",
+   "gender": null
+  },
+  {
+   "meeting": 5,
+   "id": 575,
+   "front": "מַוַאצִ'יע",
+   "back": "נושאים",
+   "form": "רבים",
+   "gender": null
+  },
+  {
+   "meeting": 5,
+   "id": 576,
+   "front": "וַצֵ'ע",
+   "back": "מצב",
+   "form": "יחיד",
+   "gender": null
+  },
+  {
+   "meeting": 5,
+   "id": 577,
+   "front": "אַוְצַ'אע",
+   "back": "מצבים",
+   "form": "רבים",
+   "gender": null
+  },
+  {
+   "meeting": 5,
+   "id": 578,
+   "front": "מְנִיח",
+   "back": "טוב",
+   "form": "יחיד",
+   "gender": "m"
+  },
+  {
+   "meeting": 5,
+   "id": 579,
+   "front": "מְנַאח",
+   "back": "טובים",
+   "form": "רבים",
+   "gender": "m"
+  },
+  {
+   "meeting": 5,
+   "id": 580,
+   "front": "מְנִיחַה",
+   "back": "טובה",
+   "form": null,
+   "gender": "f"
+  },
+  {
+   "meeting": 5,
+   "id": 581,
+   "front": "חַאל",
+   "back": "מצב / מקרה",
+   "form": "יחיד",
+   "gender": null
+  },
+  {
+   "meeting": 5,
+   "id": 582,
+   "front": "אַחְוַאל",
+   "back": "מצבים / מקרים",
+   "form": "רבים",
+   "gender": null
+  },
+  {
+   "meeting": 5,
+   "id": 583,
+   "front": "כִּיפ",
+   "back": "איך",
+   "form": null,
+   "gender": null
+  },
+  {
+   "meeting": 5,
+   "id": 584,
+   "front": "כֵּיפ",
+   "back": "הנאה / תענוג",
+   "form": null,
+   "gender": null
+  },
+  {
+   "meeting": 5,
+   "id": 585,
+   "front": "מַאשִי",
+   "back": "הולך",
+   "form": "יחיד",
+   "gender": "m"
+  },
+  {
+   "meeting": 5,
+   "id": 586,
+   "front": "מַאשְיִין",
+   "back": "הולכים",
+   "form": "רבים",
+   "gender": "m"
+  },
+  {
+   "meeting": 5,
+   "id": 587,
+   "front": "מַאשְיֶה",
+   "back": "הולכת",
+   "form": "יחיד",
+   "gender": "f"
+  },
+  {
+   "meeting": 5,
+   "id": 588,
+   "front": "מַאשְיַאת",
+   "back": "הולכות",
+   "form": "רבים",
+   "gender": "f"
+  },
+  {
+   "meeting": 5,
+   "id": 589,
+   "front": "צַרַאחַה",
+   "back": "כנות / גילוי לב",
+   "form": null,
+   "gender": null
+  },
+  {
+   "meeting": 5,
+   "id": 590,
+   "front": "טַיֶّבּ",
+   "back": "טוב / בסדר",
+   "form": null,
+   "gender": null
+  },
+  {
+   "meeting": 5,
+   "id": 591,
+   "front": "תַמַאם",
+   "back": "מושלם / שלם / בדיוק",
+   "form": null,
+   "gender": null
+  },
+  {
+   "meeting": 5,
+   "id": 592,
+   "front": "וַלַא..",
+   "back": "שום / אף אחד / ולא",
+   "form": null,
+   "gender": null
+  },
+  {
+   "meeting": 5,
+   "id": 593,
+   "front": "מַטְ'בּוּט",
+   "back": "מדויק / נכון",
+   "form": "יחיד",
+   "gender": "m"
+  },
+  {
+   "meeting": 5,
+   "id": 594,
+   "front": "מַטְ'בּוּטִין",
+   "back": "מדויקים / נכונים",
+   "form": "רבים",
+   "gender": "m"
+  },
+  {
+   "meeting": 5,
+   "id": 595,
+   "front": "מַטְ'בּוּטַה",
+   "back": "מדויקת / נכונה",
+   "form": "יחיד",
+   "gender": "f"
+  },
+  {
+   "meeting": 5,
+   "id": 596,
+   "front": "מַטְ'בּוּטַאת",
+   "back": "מדויקות / נכונות",
+   "form": "רבים",
+   "gender": "f"
+  },
+  {
+   "meeting": 6,
+   "id": 597,
+   "front": "נֻמְרַה",
+   "back": "מספר",
+   "form": "יחיד",
+   "gender": null
+  },
+  {
+   "meeting": 6,
+   "id": 598,
+   "front": "נֻמַר",
+   "back": "מספרים",
+   "form": "רבים",
+   "gender": null
+  },
+  {
+   "meeting": 6,
+   "id": 599,
+   "front": "עַ'לַט",
+   "back": "טעות",
+   "form": "יחיד",
+   "gender": null
+  },
+  {
+   "meeting": 6,
+   "id": 600,
+   "front": "אַעְ'לַאט",
+   "back": "טעויות",
+   "form": "רבים",
+   "gender": null
+  },
+  {
+   "meeting": 6,
+   "id": 601,
+   "front": "עַ'לְטַה",
+   "back": "טעות",
+   "form": "יחיד",
+   "gender": null
+  },
+  {
+   "meeting": 6,
+   "id": 602,
+   "front": "עַ'לְטַאת",
+   "back": "טעויות",
+   "form": "רבים",
+   "gender": null
+  },
+  {
+   "meeting": 6,
+   "id": 603,
+   "front": "עַ'לְטַאן",
+   "back": "טועה",
+   "form": "יחיד",
+   "gender": "m"
+  },
+  {
+   "meeting": 6,
+   "id": 604,
+   "front": "עַ'לְטַאנִין",
+   "back": "טועים",
+   "form": "רבים",
+   "gender": "m"
+  },
+  {
+   "meeting": 6,
+   "id": 605,
+   "front": "עַ'לְטַאנֶה",
+   "back": "טועה",
+   "form": "יחיד",
+   "gender": "f"
+  },
+  {
+   "meeting": 6,
+   "id": 606,
+   "front": "עַ'לְטַאנַאת",
+   "back": "טועות",
+   "form": "רבים",
+   "gender": "f"
+  },
+  {
+   "meeting": 6,
+   "id": 607,
+   "front": "מַא לוֹ",
+   "back": "מה יש לו?",
+   "form": null,
+   "gender": null
+  },
+  {
+   "meeting": 6,
+   "id": 608,
+   "front": "חַאלֶה",
+   "back": "מצב / מקרה",
+   "form": "יחיד",
+   "gender": null
+  },
+  {
+   "meeting": 6,
+   "id": 609,
+   "front": "חַאלַאת",
+   "back": "מצבים / מקרים",
+   "form": "רבים",
+   "gender": null
+  },
+  {
+   "meeting": 6,
+   "id": 610,
+   "front": "וֵיל",
+   "back": "צרה / צער",
+   "form": null,
+   "gender": null
+  },
+  {
+   "meeting": 6,
+   "id": 611,
+   "front": "מַכְּשוּפ",
+   "back": "גלוי / חשוף",
+   "form": "יחיד",
+   "gender": "m"
+  },
+  {
+   "meeting": 6,
+   "id": 612,
+   "front": "מַכְּשוּפִין",
+   "back": "גלויים / חשופים",
+   "form": "רבים",
+   "gender": "m"
+  },
+  {
+   "meeting": 6,
+   "id": 613,
+   "front": "מַכְּשוּפֶה",
+   "back": "גלויה / חשופה",
+   "form": "יחיד",
+   "gender": "f"
+  },
+  {
+   "meeting": 6,
+   "id": 614,
+   "front": "מַכְּשוּפַאת",
+   "back": "גלויות / חשופות",
+   "form": "רבים",
+   "gender": "f"
+  },
+  {
+   "meeting": 6,
+   "id": 615,
+   "front": "אִ(ל)רַّמְלֶה",
+   "back": "רמלה",
+   "form": null,
+   "gender": null
+  },
+  {
+   "meeting": 6,
+   "id": 616,
+   "front": "אִ(ל)לִّדّ",
+   "back": "לוד",
+   "form": null,
+   "gender": null
+  },
+  {
+   "meeting": 6,
+   "id": 617,
+   "front": "יַאפַא",
+   "back": "יפו",
+   "form": null,
+   "gender": null
+  },
+  {
+   "meeting": 6,
+   "id": 618,
+   "front": "חֵיפַא",
+   "back": "חיפה",
+   "form": null,
+   "gender": null
+  },
+  {
+   "meeting": 6,
+   "id": 619,
+   "front": "אִלְקֻדְס",
+   "back": "ירושלים",
+   "form": null,
+   "gender": null
+  },
+  {
+   "meeting": 6,
+   "id": 620,
+   "front": "דַרְס",
+   "back": "שיעור",
+   "form": "יחיד",
+   "gender": null
+  },
+  {
+   "meeting": 6,
+   "id": 621,
+   "front": "דֻרוּס",
+   "back": "שיעורים",
+   "form": "רבים",
+   "gender": null
+  },
+  {
+   "meeting": 6,
+   "id": 622,
+   "front": "חַפְלֶה",
+   "back": "מסיבה",
+   "form": "יחיד",
+   "gender": null
+  },
+  {
+   "meeting": 6,
+   "id": 623,
+   "front": "חַפְלַאת",
+   "back": "מסיבות",
+   "form": "רבים",
+   "gender": null
+  },
+  {
+   "meeting": 6,
+   "id": 624,
+   "front": "פַרַח",
+   "back": "שמחה / אירוע",
+   "form": "יחיד",
+   "gender": null
+  },
+  {
+   "meeting": 6,
+   "id": 625,
+   "front": "אַפְרַאח",
+   "back": "שמחות / אירועים",
+   "form": "רבים",
+   "gender": null
+  },
+  {
+   "meeting": 6,
+   "id": 626,
+   "front": "פַרְחַה",
+   "back": "שמחה / אירוע",
+   "form": "יחיד",
+   "gender": null
+  },
+  {
+   "meeting": 6,
+   "id": 627,
+   "front": "פַרְחַאן",
+   "back": "שמח",
+   "form": "יחיד",
+   "gender": "m"
+  },
+  {
+   "meeting": 6,
+   "id": 628,
+   "front": "פַרְחַאנִין",
+   "back": "שמחים",
+   "form": "רבים",
+   "gender": "m"
+  },
+  {
+   "meeting": 6,
+   "id": 629,
+   "front": "פַרְחַאנֶה",
+   "back": "שמחה",
+   "form": "יחיד",
+   "gender": "f"
+  },
+  {
+   "meeting": 6,
+   "id": 630,
+   "front": "פַרְחַאנַאת",
+   "back": "שמחות",
+   "form": "רבים",
+   "gender": "f"
+  },
+  {
+   "meeting": 6,
+   "id": 631,
+   "front": "מַבְּסוּט",
+   "back": "מבסוט",
+   "form": "יחיד",
+   "gender": null
+  },
+  {
+   "meeting": 6,
+   "id": 632,
+   "front": "מַבְּסוּטִין",
+   "back": "מבסוטים",
+   "form": "רבים",
+   "gender": null
+  },
+  {
+   "meeting": 6,
+   "id": 633,
+   "front": "עֻרְס",
+   "back": "נישואין",
+   "form": "יחיד",
+   "gender": null
+  },
+  {
+   "meeting": 6,
+   "id": 634,
+   "front": "אַעְרַאס",
+   "back": "נישואין",
+   "form": "רבים",
+   "gender": null
+  },
+  {
+   "meeting": 6,
+   "id": 635,
+   "front": "זַוַאג'",
+   "back": "נישואין",
+   "form": "יחיד",
+   "gender": null
+  },
+  {
+   "meeting": 6,
+   "id": 636,
+   "front": "זַוַאגַ'את",
+   "back": "נישואין",
+   "form": "רבים",
+   "gender": null
+  },
+  {
+   "meeting": 6,
+   "id": 637,
+   "front": "חֻ'טְבֶּה",
+   "back": "אירוסין / נאום / דרשה",
+   "form": "יחיד",
+   "gender": null
+  },
+  {
+   "meeting": 6,
+   "id": 638,
+   "front": "חֻ'טַבּ",
+   "back": "נאומים / דרשות",
+   "form": "רבים",
+   "gender": null
+  },
+  {
+   "meeting": 6,
+   "id": 639,
+   "front": "קַאעַה",
+   "back": "אולם",
+   "form": "יחיד",
+   "gender": null
+  },
+  {
+   "meeting": 6,
+   "id": 640,
+   "front": "קַאעַאת",
+   "back": "אולמות",
+   "form": "רבים",
+   "gender": null
+  },
+  {
+   "meeting": 6,
+   "id": 641,
+   "front": "אַוַאעִי",
+   "back": "בגדים",
+   "form": null,
+   "gender": null
+  },
+  {
+   "meeting": 6,
+   "id": 642,
+   "front": "עִיד",
+   "back": "חג",
+   "form": "יחיד",
+   "gender": null
+  },
+  {
+   "meeting": 6,
+   "id": 643,
+   "front": "אַעְיַאד",
+   "back": "חגים",
+   "form": "רבים",
+   "gender": null
+  },
+  {
+   "meeting": 6,
+   "id": 644,
+   "front": "סַפַר",
+   "back": "נסיעה / טיול",
+   "form": "יחיד",
+   "gender": null
+  },
+  {
+   "meeting": 6,
+   "id": 645,
+   "front": "סַפַרִיַّאת",
+   "back": "נסיעות / טיולים",
+   "form": "רבים",
+   "gender": null
+  },
+  {
+   "meeting": 6,
+   "id": 646,
+   "front": "סַפַרִיֶّה",
+   "back": "נסיעה / טיול",
+   "form": "יחיד",
+   "gender": null
+  },
+  {
+   "meeting": 6,
+   "id": 647,
+   "front": "עִיַאדֶה",
+   "back": "מרפאה",
+   "form": "יחיד",
+   "gender": null
+  },
+  {
+   "meeting": 6,
+   "id": 648,
+   "front": "עִיַאדַאת",
+   "back": "מרפאות",
+   "form": "רבים",
+   "gender": null
+  },
+  {
+   "meeting": 6,
+   "id": 649,
+   "front": "מֻסְתַשְפַא",
+   "back": "בית חולים",
+   "form": "יחיד",
+   "gender": null
+  },
+  {
+   "meeting": 6,
+   "id": 650,
+   "front": "מֻסְתַשְפַיַאת",
+   "back": "בתי חולים",
+   "form": "רבים",
+   "gender": null
+  },
+  {
+   "meeting": 6,
+   "id": 651,
+   "front": "דוֹכְּתוֹר",
+   "back": "דוקטור",
+   "form": "יחיד",
+   "gender": null
+  },
+  {
+   "meeting": 6,
+   "id": 652,
+   "front": "דַכַּאתְרַה",
+   "back": "דוקטורים",
+   "form": "רבים",
+   "gender": null
+  },
+  {
+   "meeting": 6,
+   "id": 653,
+   "front": "טַבִּיבּ",
+   "back": "דוקטור",
+   "form": "יחיד",
+   "gender": null
+  },
+  {
+   "meeting": 6,
+   "id": 654,
+   "front": "אַטִבַּّאא",
+   "back": "דוקטורים",
+   "form": "רבים",
+   "gender": null
+  },
+  {
+   "meeting": 6,
+   "id": 655,
+   "front": "מֻמַרֶّצ'",
+   "back": "אח (רפואי)",
+   "form": "יחיד",
+   "gender": "m"
+  },
+  {
+   "meeting": 6,
+   "id": 656,
+   "front": "מֻמַרִצ'ין",
+   "back": "אחים (רפואיים)",
+   "form": "רבים",
+   "gender": "m"
+  },
+  {
+   "meeting": 6,
+   "id": 657,
+   "front": "מֻמַרִצַ'ה",
+   "back": "אחות (רפואית)",
+   "form": "יחיד",
+   "gender": "f"
+  },
+  {
+   "meeting": 6,
+   "id": 658,
+   "front": "מֻמַרִצַ'את",
+   "back": "אחיות (רפואיות)",
+   "form": "רבים",
+   "gender": "f"
+  },
+  {
+   "meeting": 6,
+   "id": 659,
+   "front": "גַ'רִיח",
+   "back": "פצוע",
+   "form": "יחיד",
+   "gender": "m"
+  },
+  {
+   "meeting": 6,
+   "id": 660,
+   "front": "גַ'רְחַא",
+   "back": "פצועים",
+   "form": "רבים",
+   "gender": "m"
+  },
+  {
+   "meeting": 6,
+   "id": 661,
+   "front": "גְ'רִיחַה",
+   "back": "פצועה",
+   "form": "יחיד",
+   "gender": "f"
+  },
+  {
+   "meeting": 6,
+   "id": 662,
+   "front": "גְ'רִיחַאת",
+   "back": "פצועות",
+   "form": "רבים",
+   "gender": "f"
+  },
+  {
+   "meeting": 6,
+   "id": 663,
+   "front": "פַחְצ",
+   "back": "בדיקה",
+   "form": "יחיד",
+   "gender": null
+  },
+  {
+   "meeting": 6,
+   "id": 664,
+   "front": "פֻחֻצַאת",
+   "back": "בדיקות",
+   "form": "רבים",
+   "gender": null
+  },
+  {
+   "meeting": 6,
+   "id": 665,
+   "front": "מֻחְ'תַבַּר",
+   "back": "מעבדה",
+   "form": "יחיד",
+   "gender": null
+  },
+  {
+   "meeting": 6,
+   "id": 666,
+   "front": "מֻחְ'תַבַּרַאת",
+   "back": "מעבדות",
+   "form": "רבים",
+   "gender": null
+  },
+  {
+   "meeting": 6,
+   "id": 667,
+   "front": "מַרַצ'",
+   "back": "מחלה",
+   "form": "יחיד",
+   "gender": null
+  },
+  {
+   "meeting": 6,
+   "id": 668,
+   "front": "אַמְרַאצ'",
+   "back": "מחלות",
+   "form": "רבים",
+   "gender": null
+  },
+  {
+   "meeting": 6,
+   "id": 669,
+   "front": "מַרִיצ'",
+   "back": "חולה",
+   "form": "יחיד",
+   "gender": "m"
+  },
+  {
+   "meeting": 6,
+   "id": 670,
+   "front": "מַרְצַ'א",
+   "back": "חולים",
+   "form": "רבים",
+   "gender": "m"
+  },
+  {
+   "meeting": 6,
+   "id": 671,
+   "front": "מַרִיצַ'ה",
+   "back": "חולה",
+   "form": "יחיד",
+   "gender": "f"
+  },
+  {
+   "meeting": 6,
+   "id": 672,
+   "front": "מַרִיצַ'את",
+   "back": "חולות",
+   "form": "רבים",
+   "gender": "f"
+  },
+  {
+   "meeting": 6,
+   "id": 673,
+   "front": "אַכֶּל",
+   "back": "אוכל",
+   "form": null,
+   "gender": null
+  },
+  {
+   "meeting": 6,
+   "id": 674,
+   "front": "גַ'רְסוֹן",
+   "back": "מלצר",
+   "form": "יחיד",
+   "gender": null
+  },
+  {
+   "meeting": 6,
+   "id": 675,
+   "front": "גַ'רְסוֹנַאת",
+   "back": "מלצרים",
+   "form": "רבים",
+   "gender": null
+  },
+  {
+   "meeting": 6,
+   "id": 676,
+   "front": "בַּעְדְהַא",
+   "back": "לאחר מכן",
+   "form": null,
+   "gender": null
+  },
+  {
+   "meeting": 6,
+   "id": 677,
+   "front": "בַּעְדֵין",
+   "back": "אחר כך",
+   "form": null,
+   "gender": null
+  },
+  {
+   "meeting": 6,
+   "id": 678,
+   "front": "חַאדֶס",
+   "back": "תאונה / אירוע",
+   "form": "יחיד",
+   "gender": null
+  },
+  {
+   "meeting": 6,
+   "id": 679,
+   "front": "חַוַאדֶס",
+   "back": "תאונות / אירועים",
+   "form": "רבים",
+   "gender": null
+  },
+  {
+   "meeting": 6,
+   "id": 680,
+   "front": "בֻּסְתַאן",
+   "back": "גן",
+   "form": "יחיד",
+   "gender": null
+  },
+  {
+   "meeting": 6,
+   "id": 681,
+   "front": "בַּסַאתִין",
+   "back": "גנים",
+   "form": "רבים",
+   "gender": null
+  },
+  {
+   "meeting": 6,
+   "id": 682,
+   "front": "מַקְלוּבּ",
+   "back": "הפוך",
+   "form": "יחיד",
+   "gender": "m"
+  },
+  {
+   "meeting": 6,
+   "id": 683,
+   "front": "מַקְלוּבִּין",
+   "back": "הפוכים",
+   "form": "רבים",
+   "gender": "m"
+  },
+  {
+   "meeting": 6,
+   "id": 684,
+   "front": "מַקְלוּבֶּה",
+   "back": "הפוכה",
+   "form": null,
+   "gender": "f"
+  },
+  {
+   "meeting": 6,
+   "id": 685,
+   "front": "מַקְלוּבֶּה (מאכל)",
+   "back": "תבשיל אורז וירקות",
+   "form": null,
+   "gender": null
+  },
+  {
+   "meeting": 6,
+   "id": 686,
+   "front": "חַלַוִיַّאת",
+   "back": "מתוקים מזרחיים",
+   "form": null,
+   "gender": null
+  },
+  {
+   "meeting": 6,
+   "id": 687,
+   "front": "כְּנַאפֶה",
+   "back": "כנאפה",
+   "form": null,
+   "gender": null
+  },
+  {
+   "meeting": 6,
+   "id": 688,
+   "front": "חִלוּ",
+   "back": "מתוק / יפה",
+   "form": "יחיד",
+   "gender": "m"
+  },
+  {
+   "meeting": 6,
+   "id": 689,
+   "front": "חִלְוִין",
+   "back": "מתוקים / יפים",
+   "form": "רבים",
+   "gender": "m"
+  },
+  {
+   "meeting": 6,
+   "id": 690,
+   "front": "חִלְוֶה",
+   "back": "מתוקה / יפה",
+   "form": "יחיד",
+   "gender": "f"
+  },
+  {
+   "meeting": 6,
+   "id": 691,
+   "front": "חִלְוַאת",
+   "back": "מתוקות / יפות",
+   "form": "רבים",
+   "gender": "f"
+  },
+  {
+   "meeting": 6,
+   "id": 692,
+   "front": "חַלַّאק",
+   "back": "סַפָּר",
+   "form": "יחיד",
+   "gender": null
+  },
+  {
+   "meeting": 6,
+   "id": 693,
+   "front": "חַלַّאקִין",
+   "back": "סַפָּרִים",
+   "form": "רבים",
+   "gender": null
+  },
+  {
+   "meeting": 6,
+   "id": 694,
+   "front": "חְלַאקַה",
+   "back": "תספורת / גילוח",
+   "form": null,
+   "gender": null
+  },
+  {
+   "meeting": 6,
+   "id": 695,
+   "front": "חַלְקַה",
+   "back": "פרק (בסדרה)",
+   "form": "יחיד",
+   "gender": null
+  },
+  {
+   "meeting": 6,
+   "id": 696,
+   "front": "חַלְקַאת",
+   "back": "פרקים",
+   "form": "רבים",
+   "gender": null
+  },
+  {
+   "meeting": 6,
+   "id": 697,
+   "front": "דַקֵן",
+   "back": "זקן",
+   "form": "יחיד",
+   "gender": null
+  },
+  {
+   "meeting": 6,
+   "id": 698,
+   "front": "דְקוּן",
+   "back": "זקנים",
+   "form": "רבים",
+   "gender": null
+  },
+  {
+   "meeting": 6,
+   "id": 699,
+   "front": "בַּעַצ'",
+   "back": "חלק / מקצת / אחד את השני",
+   "form": null,
+   "gender": null
+  },
+  {
+   "meeting": 6,
+   "id": 700,
+   "front": "מַע בַּעַצ'",
+   "back": "ביחד",
+   "form": null,
+   "gender": null
+  },
+  {
+   "meeting": 6,
+   "id": 701,
+   "front": "נַקְדִי",
+   "back": "מזומן",
+   "form": null,
+   "gender": null
+  },
+  {
+   "meeting": 6,
+   "id": 702,
+   "front": "כַּאש",
+   "back": "מזומן",
+   "form": null,
+   "gender": null
+  },
+  {
+   "meeting": 6,
+   "id": 703,
+   "front": "תַעְבַּאן",
+   "back": "עייף / לא מרגיש טוב",
+   "form": "יחיד",
+   "gender": null
+  },
+  {
+   "meeting": 6,
+   "id": 704,
+   "front": "תַעְבַּאנִין",
+   "back": "עייפים",
+   "form": "רבים",
+   "gender": null
+  },
+  {
+   "meeting": 6,
+   "id": 705,
+   "front": "מַלְעַבּ",
+   "back": "מגרש",
+   "form": "יחיד",
+   "gender": null
+  },
+  {
+   "meeting": 6,
+   "id": 706,
+   "front": "מַלַאעֶבּ",
+   "back": "מגרשים",
+   "form": "רבים",
+   "gender": null
+  },
+  {
+   "meeting": 6,
+   "id": 707,
+   "front": "חֵ'יר",
+   "back": "טוב / מצוין",
+   "form": "יחיד",
+   "gender": null
+  },
+  {
+   "meeting": 6,
+   "id": 708,
+   "front": "חֵ'ירַאת",
+   "back": "טובים / מצוינים",
+   "form": "רבים",
+   "gender": null
+  },
+  {
+   "meeting": 6,
+   "id": 709,
+   "front": "אִנְשַאלّלַה",
+   "back": "בעזרת השם",
+   "form": null,
+   "gender": null
+  },
+  {
+   "meeting": 6,
+   "id": 710,
+   "front": "עַלַא טוּל",
+   "back": "מיד / כל הזמן",
+   "form": null,
+   "gender": null
+  },
+  {
+   "meeting": 6,
+   "id": 711,
+   "front": "טוּל",
+   "back": "אורך / גובה / משך",
+   "form": "יחיד",
+   "gender": null
+  },
+  {
+   "meeting": 6,
+   "id": 712,
+   "front": "אַטְוַאל",
+   "back": "אורכים / גבהים",
+   "form": "רבים",
+   "gender": null
+  },
+  {
+   "meeting": 6,
+   "id": 713,
+   "front": "כַּאנ",
+   "back": "היה",
+   "form": null,
+   "gender": "m"
+  },
+  {
+   "meeting": 6,
+   "id": 714,
+   "front": "כַּאנַת",
+   "back": "הייתה",
+   "form": null,
+   "gender": "f"
+  },
+  {
+   "meeting": 6,
+   "id": 715,
+   "front": "צַעֵבּ",
+   "back": "קשה",
+   "form": null,
+   "gender": null
+  },
+  {
+   "meeting": 6,
+   "id": 716,
+   "front": "נְהַאר",
+   "back": "יום (שעות האור)",
+   "form": null,
+   "gender": null
+  },
+  {
+   "meeting": 6,
+   "id": 717,
+   "front": "עַאלַם",
+   "back": "עולם",
+   "form": null,
+   "gender": null
+  },
+  {
+   "meeting": 6,
+   "id": 718,
+   "front": "חַ'בַּר",
+   "back": "ידיעה / חדשה",
+   "form": "יחיד",
+   "gender": null
+  },
+  {
+   "meeting": 6,
+   "id": 719,
+   "front": "אַחְ'בַּאר",
+   "back": "ידיעות / חדשות",
+   "form": "רבים",
+   "gender": null
+  },
+  {
+   "meeting": 6,
+   "id": 720,
+   "front": "תְרֵין",
+   "back": "רכבת",
+   "form": null,
+   "gender": null
+  },
+  {
+   "meeting": 6,
+   "id": 721,
+   "front": "אִלְחַמְדֻלִלַّה",
+   "back": "השבח לאל",
+   "form": null,
+   "gender": null
+  },
+  {
+   "meeting": 6,
+   "id": 722,
+   "front": "חַמְד",
+   "back": "שבח",
+   "form": null,
+   "gender": null
+  },
+  {
+   "meeting": 6,
+   "id": 723,
+   "front": "חֻרְמֶה",
+   "back": "אסורה / כינוי לאשת איש",
+   "form": null,
+   "gender": null
+  },
+  {
+   "meeting": 6,
+   "id": 724,
+   "front": "(אל)סַנַה (אל)דְרַאסִיֶّה",
+   "back": "שנת הלימודים",
+   "form": null,
+   "gender": null
+  },
+  {
+   "meeting": 6,
+   "id": 725,
+   "front": "דִרַאסִי",
+   "back": "לימודי",
+   "form": null,
+   "gender": "m"
+  },
+  {
+   "meeting": 6,
+   "id": 726,
+   "front": "דִרַאסִיֶّה",
+   "back": "לימודית",
+   "form": null,
+   "gender": "f"
+  },
+  {
+   "meeting": 6,
+   "id": 727,
+   "front": "מֻחַ'יַّם צִיפִי",
+   "back": "מחנה קיץ",
+   "form": null,
+   "gender": null
+  },
+  {
+   "meeting": 6,
+   "id": 728,
+   "front": "מֻחַ'יַّם",
+   "back": "מחנה אוהלים / מחנה פליטים",
+   "form": "יחיד",
+   "gender": null
+  },
+  {
+   "meeting": 6,
+   "id": 729,
+   "front": "מֻחַ'יַّמַאת",
+   "back": "מחנות אוהלים / מחנות פליטים",
+   "form": "רבים",
+   "gender": null
+  },
+  {
+   "meeting": 6,
+   "id": 730,
+   "front": "חֵ'ימֶה",
+   "back": "אוהל",
+   "form": "יחיד",
+   "gender": null
+  },
+  {
+   "meeting": 6,
+   "id": 731,
+   "front": "חִ'יַם",
+   "back": "אוהלים",
+   "form": "רבים",
+   "gender": null
+  },
+  {
+   "meeting": 6,
+   "id": 732,
+   "front": "וַקְת",
+   "back": "זמן",
+   "form": "יחיד",
+   "gender": null
+  },
+  {
+   "meeting": 6,
+   "id": 733,
+   "front": "אַוְקַאת",
+   "back": "זמנים",
+   "form": "רבים",
+   "gender": null
+  },
+  {
+   "meeting": 6,
+   "id": 734,
+   "front": "יוֹם",
+   "back": "יום",
+   "form": "יחיד",
+   "gender": null
+  },
+  {
+   "meeting": 6,
+   "id": 735,
+   "front": "אַיַّאם",
+   "back": "ימים",
+   "form": "רבים",
+   "gender": null
+  },
+  {
+   "meeting": 6,
+   "id": 736,
+   "front": "אֻסְבּוּע",
+   "back": "שבוע",
+   "form": "יחיד",
+   "gender": null
+  },
+  {
+   "meeting": 6,
+   "id": 737,
+   "front": "אַסַאבִּיע",
+   "back": "שבועות",
+   "form": "רבים",
+   "gender": null
+  },
+  {
+   "meeting": 6,
+   "id": 738,
+   "front": "גֻ'מְעַה",
+   "back": "שבוע",
+   "form": "יחיד",
+   "gender": null
+  },
+  {
+   "meeting": 6,
+   "id": 739,
+   "front": "גֻ'מַע",
+   "back": "שבועות",
+   "form": "רבים",
+   "gender": null
+  },
+  {
+   "meeting": 6,
+   "id": 740,
+   "front": "שַהַר",
+   "back": "חודש",
+   "form": "יחיד",
+   "gender": null
+  },
+  {
+   "meeting": 6,
+   "id": 901,
+   "front": "שַהֵר",
+   "back": "חודש",
+   "form": "יחיד",
+   "gender": null
+  },
+  {
+   "meeting": 6,
+   "id": 741,
+   "front": "שְהוּר",
+   "back": "חודשים",
+   "form": "רבים",
+   "gender": null
+  },
+  {
+   "meeting": 6,
+   "id": 742,
+   "front": "אַשְהֻר",
+   "back": "חודשים",
+   "form": "רבים",
+   "gender": null
+  },
+  {
+   "meeting": 6,
+   "id": 743,
+   "front": "אִ(ל)גַ'ّאי",
+   "back": "הבא",
+   "form": null,
+   "gender": "m"
+  },
+  {
+   "meeting": 6,
+   "id": 744,
+   "front": "אִ(ל)גַ'ّאיֶה",
+   "back": "הבאה",
+   "form": null,
+   "gender": "f"
+  },
+  {
+   "meeting": 6,
+   "id": 745,
+   "front": "אִלִّי פַאת",
+   "back": "שעבר",
+   "form": null,
+   "gender": "m"
+  },
+  {
+   "meeting": 6,
+   "id": 746,
+   "front": "אִלִّי פַאתַת",
+   "back": "שעברה",
+   "form": null,
+   "gender": "f"
+  },
+  {
+   "meeting": 6,
+   "id": 749,
+   "front": "יוֹם (א)לְאַחַד",
+   "back": "יום ראשון",
+   "form": null,
+   "gender": null
+  },
+  {
+   "meeting": 6,
+   "id": 750,
+   "front": "יוֹם (אל)תִّנֵין",
+   "back": "יום שני",
+   "form": null,
+   "gender": null
+  },
+  {
+   "meeting": 6,
+   "id": 751,
+   "front": "יוֹם (אל)תַّלַאתֶה",
+   "back": "יום שלישי",
+   "form": null,
+   "gender": null
+  },
+  {
+   "meeting": 6,
+   "id": 752,
+   "front": "יוֹם (א)לְאַרְבַּעַה",
+   "back": "יום רביעי",
+   "form": null,
+   "gender": null
+  },
+  {
+   "meeting": 6,
+   "id": 753,
+   "front": "יוֹם (א)לְחַ'מִיס",
+   "back": "יום חמישי",
+   "form": null,
+   "gender": null
+  },
+  {
+   "meeting": 6,
+   "id": 754,
+   "front": "יוֹם (אל)גֻ'ّמְעַה",
+   "back": "יום שישי",
+   "form": null,
+   "gender": null
+  },
+  {
+   "meeting": 6,
+   "id": 755,
+   "front": "יוֹם (אל)סַّבְּת",
+   "back": "יום שבת",
+   "form": null,
+   "gender": null
+  },
+  {
+   "meeting": 6,
+   "id": 756,
+   "front": "אִמְבַּארֶח",
+   "back": "אתמול",
+   "form": null,
+   "gender": null
+  },
+  {
+   "meeting": 6,
+   "id": 757,
+   "front": "אַוַّל אִמְבַּארֶח",
+   "back": "שלשום",
+   "form": null,
+   "gender": null
+  },
+  {
+   "meeting": 6,
+   "id": 758,
+   "front": "בֻּכְּרַה",
+   "back": "מחר",
+   "form": null,
+   "gender": null
+  },
+  {
+   "meeting": 6,
+   "id": 759,
+   "front": "בַּעַד בֻּכְּרַה",
+   "back": "מחרתיים",
+   "form": null,
+   "gender": null
+  },
+  {
+   "meeting": 7,
+   "id": 760,
+   "front": "קַצִיר",
+   "back": "קצר",
+   "form": "יחיד",
+   "gender": "m"
+  },
+  {
+   "meeting": 7,
+   "id": 761,
+   "front": "קְצַאר",
+   "back": "קצרים",
+   "form": "רבים",
+   "gender": "m"
+  },
+  {
+   "meeting": 7,
+   "id": 762,
+   "front": "קַצִירֵה",
+   "back": "קצרה",
+   "form": null,
+   "gender": "f"
+  },
+  {
+   "meeting": 7,
+   "id": 763,
+   "front": "עַרִיצ'",
+   "back": "רחב",
+   "form": "יחיד",
+   "gender": "m"
+  },
+  {
+   "meeting": 7,
+   "id": 764,
+   "front": "עְרַאצ'",
+   "back": "רחבים",
+   "form": "רבים",
+   "gender": "m"
+  },
+  {
+   "meeting": 7,
+   "id": 765,
+   "front": "עַרִיצַ'ה",
+   "back": "רחבה",
+   "form": null,
+   "gender": "f"
+  },
+  {
+   "meeting": 7,
+   "id": 766,
+   "front": "מֻרִיח",
+   "back": "נוח / משביע רצון",
+   "form": null,
+   "gender": "m"
+  },
+  {
+   "meeting": 7,
+   "id": 767,
+   "front": "מֻרִיחַה",
+   "back": "נוחה / משביעת רצון",
+   "form": null,
+   "gender": "f"
+  },
+  {
+   "meeting": 7,
+   "id": 771,
+   "front": "עְ'אלִי",
+   "back": "יקר",
+   "form": "יחיד",
+   "gender": "m"
+  },
+  {
+   "meeting": 7,
+   "id": 772,
+   "front": "עְ'אלְיִין",
+   "back": "יקרים",
+   "form": "רבים",
+   "gender": "m"
+  },
+  {
+   "meeting": 7,
+   "id": 773,
+   "front": "עְ'אלְיֶה",
+   "back": "יקרה",
+   "form": null,
+   "gender": "f"
+  },
+  {
+   "meeting": 7,
+   "id": 774,
+   "front": "קַוִי",
+   "back": "חזק",
+   "form": "יחיד",
+   "gender": "m"
+  },
+  {
+   "meeting": 7,
+   "id": 775,
+   "front": "קַוִיִّין",
+   "back": "חזקים",
+   "form": "רבים",
+   "gender": "m"
+  },
+  {
+   "meeting": 7,
+   "id": 776,
+   "front": "קַוִיֶّה",
+   "back": "חזקה",
+   "form": null,
+   "gender": "f"
+  },
+  {
+   "meeting": 7,
+   "id": 777,
+   "front": "נַאצֶח",
+   "back": "שמן",
+   "form": "יחיד",
+   "gender": "m"
+  },
+  {
+   "meeting": 7,
+   "id": 778,
+   "front": "נְצַאח",
+   "back": "שמנים",
+   "form": "רבים",
+   "gender": "m"
+  },
+  {
+   "meeting": 7,
+   "id": 779,
+   "front": "נַאצְחַה",
+   "back": "שמנה",
+   "form": null,
+   "gender": "f"
+  },
+  {
+   "meeting": 7,
+   "id": 780,
+   "front": "וִסֶח'",
+   "back": "מלוכלך",
+   "form": "יחיד",
+   "gender": "m"
+  },
+  {
+   "meeting": 7,
+   "id": 781,
+   "front": "וְסַאח'",
+   "back": "מלוכלכים",
+   "form": "רבים",
+   "gender": "m"
+  },
+  {
+   "meeting": 7,
+   "id": 782,
+   "front": "וִסְחַ'ה",
+   "back": "מלוכלכת",
+   "form": null,
+   "gender": "f"
+  },
+  {
+   "meeting": 7,
+   "id": 783,
+   "front": "שַרִיפ",
+   "back": "מכובד",
+   "form": "יחיד",
+   "gender": "m"
+  },
+  {
+   "meeting": 7,
+   "id": 784,
+   "front": "שֻרַפַא",
+   "back": "מכובדים",
+   "form": "רבים",
+   "gender": "m"
+  },
+  {
+   "meeting": 7,
+   "id": 785,
+   "front": "שַרִיפֶה",
+   "back": "מכובדת",
+   "form": null,
+   "gender": "f"
+  },
+  {
+   "meeting": 7,
+   "id": 789,
+   "front": "עַאלִי",
+   "back": "גבוה",
+   "form": "יחיד",
+   "gender": "m"
+  },
+  {
+   "meeting": 7,
+   "id": 790,
+   "front": "עַאלְיִין",
+   "back": "גבוהים",
+   "form": "רבים",
+   "gender": "m"
+  },
+  {
+   "meeting": 7,
+   "id": 791,
+   "front": "עַאלְיֶה",
+   "back": "גבוהה",
+   "form": null,
+   "gender": "f"
+  },
+  {
+   "meeting": 7,
+   "id": 792,
+   "front": "טַוִיל",
+   "back": "ארוך / גבוה",
+   "form": "יחיד",
+   "gender": "m"
+  },
+  {
+   "meeting": 7,
+   "id": 793,
+   "front": "טְוַאל",
+   "back": "ארוכים / גבוהים",
+   "form": "רבים",
+   "gender": "m"
+  },
+  {
+   "meeting": 7,
+   "id": 794,
+   "front": "טַוִילֶה",
+   "back": "גבוהה",
+   "form": null,
+   "gender": "f"
+  },
+  {
+   "meeting": 7,
+   "id": 795,
+   "front": "צַ'יֶّק",
+   "back": "צר",
+   "form": null,
+   "gender": "m"
+  },
+  {
+   "meeting": 7,
+   "id": 796,
+   "front": "צַ'יְקַה",
+   "back": "צרה",
+   "form": null,
+   "gender": "f"
+  },
+  {
+   "meeting": 7,
+   "id": 797,
+   "front": "צַעֶבּ",
+   "back": "קשה",
+   "form": "יחיד",
+   "gender": "m"
+  },
+  {
+   "meeting": 7,
+   "id": 798,
+   "front": "צְעַאבּ",
+   "back": "קשים",
+   "form": "רבים",
+   "gender": "m"
+  },
+  {
+   "meeting": 7,
+   "id": 799,
+   "front": "צַעְבֶּה",
+   "back": "קשה",
+   "form": null,
+   "gender": "f"
+  },
+  {
+   "meeting": 7,
+   "id": 800,
+   "front": "עַאטֶל",
+   "back": "רע",
+   "form": "יחיד",
+   "gender": "m"
+  },
+  {
+   "meeting": 7,
+   "id": 801,
+   "front": "עַוַאטֶל",
+   "back": "רעים",
+   "form": "רבים",
+   "gender": "m"
+  },
+  {
+   "meeting": 7,
+   "id": 802,
+   "front": "עַאטְלֶה",
+   "back": "רעה",
+   "form": null,
+   "gender": "f"
+  },
+  {
+   "meeting": 7,
+   "id": 803,
+   "front": "סַהְל",
+   "back": "קל",
+   "form": null,
+   "gender": "m"
+  },
+  {
+   "meeting": 7,
+   "id": 804,
+   "front": "סַהְלֶה",
+   "back": "קלה",
+   "form": null,
+   "gender": "f"
+  },
+  {
+   "meeting": 7,
+   "id": 805,
+   "front": "רְחִ'יצ",
+   "back": "זול",
+   "form": "יחיד",
+   "gender": "m"
+  },
+  {
+   "meeting": 7,
+   "id": 806,
+   "front": "רְחַ'אצ",
+   "back": "זולים",
+   "form": "רבים",
+   "gender": "m"
+  },
+  {
+   "meeting": 7,
+   "id": 807,
+   "front": "רְחִ'יצַה",
+   "back": "זולה",
+   "form": null,
+   "gender": "f"
+  },
+  {
+   "meeting": 7,
+   "id": 808,
+   "front": "עַ'נִי",
+   "back": "עשיר",
+   "form": "יחיד",
+   "gender": "m"
+  },
+  {
+   "meeting": 7,
+   "id": 809,
+   "front": "אַעְ'נִיַא",
+   "back": "עשירים",
+   "form": "רבים",
+   "gender": "m"
+  },
+  {
+   "meeting": 7,
+   "id": 810,
+   "front": "עַ'נִיֶّה",
+   "back": "עשירה",
+   "form": null,
+   "gender": "f"
+  },
+  {
+   "meeting": 7,
+   "id": 811,
+   "front": "צְ'עִיפ",
+   "back": "רזה / חלש",
+   "form": "יחיד",
+   "gender": "m"
+  },
+  {
+   "meeting": 7,
+   "id": 812,
+   "front": "צְ'עַאפ",
+   "back": "רזים / חלשים",
+   "form": "רבים",
+   "gender": "m"
+  },
+  {
+   "meeting": 7,
+   "id": 813,
+   "front": "צְ'עִיפֶה",
+   "back": "רזה / חלשה",
+   "form": null,
+   "gender": "f"
+  },
+  {
+   "meeting": 7,
+   "id": 814,
+   "front": "נְצִ'יפ",
+   "back": "נקי",
+   "form": "יחיד",
+   "gender": "m"
+  },
+  {
+   "meeting": 7,
+   "id": 815,
+   "front": "נְצַ'אפ",
+   "back": "נקיים",
+   "form": "רבים",
+   "gender": "m"
+  },
+  {
+   "meeting": 7,
+   "id": 816,
+   "front": "נְצִ'יפֶה",
+   "back": "נקייה",
+   "form": null,
+   "gender": "f"
+  },
+  {
+   "meeting": 7,
+   "id": 817,
+   "front": "בִּשֶע",
+   "back": "מכוער",
+   "form": "יחיד",
+   "gender": "m"
+  },
+  {
+   "meeting": 7,
+   "id": 818,
+   "front": "בִּשְעִין",
+   "back": "מכוערים",
+   "form": "רבים",
+   "gender": "m"
+  },
+  {
+   "meeting": 7,
+   "id": 819,
+   "front": "בִּשְעַה",
+   "back": "מכוערת",
+   "form": null,
+   "gender": "f"
+  },
+  {
+   "meeting": 7,
+   "id": 820,
+   "front": "וַאטִי",
+   "back": "נמוך",
+   "form": "יחיד",
+   "gender": "m"
+  },
+  {
+   "meeting": 7,
+   "id": 821,
+   "front": "וַאטִיִין",
+   "back": "נמוכים",
+   "form": "רבים",
+   "gender": "m"
+  },
+  {
+   "meeting": 7,
+   "id": 822,
+   "front": "וַאטְיֶה",
+   "back": "נמוכה",
+   "form": null,
+   "gender": "f"
+  },
+  {
+   "meeting": 7,
+   "id": 823,
+   "front": "חַ'פִיפ",
+   "back": "מעט / דליל",
+   "form": "יחיד",
+   "gender": "m"
+  },
+  {
+   "meeting": 7,
+   "id": 824,
+   "front": "חְ'פַאפ",
+   "back": "מעטים / דלילים",
+   "form": "רבים",
+   "gender": "m"
+  },
+  {
+   "meeting": 7,
+   "id": 825,
+   "front": "חַ'פִיפֶה",
+   "back": "מעטה / דלילה",
+   "form": null,
+   "gender": "f"
+  },
+  {
+   "meeting": 7,
+   "id": 826,
+   "front": "צַחִיח",
+   "back": "נכון",
+   "form": "יחיד",
+   "gender": "m"
+  },
+  {
+   "meeting": 7,
+   "id": 827,
+   "front": "צְחַאח",
+   "back": "נכונים",
+   "form": "רבים",
+   "gender": "m"
+  },
+  {
+   "meeting": 7,
+   "id": 828,
+   "front": "צַחִיחַה",
+   "back": "נכונה",
+   "form": null,
+   "gender": "f"
+  },
+  {
+   "meeting": 7,
+   "id": 829,
+   "front": "קַלִיל",
+   "back": "מועט",
+   "form": "יחיד",
+   "gender": "m"
+  },
+  {
+   "meeting": 7,
+   "id": 830,
+   "front": "קְלַאל",
+   "back": "מועטים",
+   "form": "רבים",
+   "gender": "m"
+  },
+  {
+   "meeting": 7,
+   "id": 831,
+   "front": "קַלִילֶה",
+   "back": "מועטה",
+   "form": null,
+   "gender": "f"
+  },
+  {
+   "meeting": 7,
+   "id": 832,
+   "front": "סוּק",
+   "back": "שוק",
+   "form": "יחיד",
+   "gender": null
+  },
+  {
+   "meeting": 7,
+   "id": 833,
+   "front": "אַסְוַאק",
+   "back": "שווקים",
+   "form": "רבים",
+   "gender": null
+  },
+  {
+   "meeting": 7,
+   "id": 834,
+   "front": "בְּצַ'אעַה",
+   "back": "סחורה",
+   "form": "יחיד",
+   "gender": null
+  },
+  {
+   "meeting": 7,
+   "id": 835,
+   "front": "בַּצַ'איֶע",
+   "back": "סחורות",
+   "form": "רבים",
+   "gender": null
+  },
+  {
+   "meeting": 7,
+   "id": 836,
+   "front": "חַסַבּ",
+   "back": "לפי / בהתאם ל",
+   "form": null,
+   "gender": null
+  },
+  {
+   "meeting": 7,
+   "id": 837,
+   "front": "וַחִיד",
+   "back": "יחיד / מיוחד",
+   "form": null,
+   "gender": "m"
+  },
+  {
+   "meeting": 7,
+   "id": 838,
+   "front": "וַחִידֶה",
+   "back": "יחידה / מיוחדת",
+   "form": null,
+   "gender": "f"
+  },
+  {
+   "meeting": 7,
+   "id": 839,
+   "front": "שִעְ'יל",
+   "back": "עובד",
+   "form": "יחיד",
+   "gender": null
+  },
+  {
+   "meeting": 7,
+   "id": 840,
+   "front": "שִעְ'ילֶה",
+   "back": "עובדים",
+   "form": "רבים",
+   "gender": null
+  },
+  {
+   "meeting": 7,
+   "id": 841,
+   "front": "מַשְעְ'וּל",
+   "back": "עסוק / טרוד / תפוס",
+   "form": "יחיד",
+   "gender": "m"
+  },
+  {
+   "meeting": 7,
+   "id": 842,
+   "front": "מַשְעְ'וּלִין",
+   "back": "עסוקים / טרודים / תפוסים",
+   "form": "רבים",
+   "gender": "m"
+  },
+  {
+   "meeting": 7,
+   "id": 843,
+   "front": "מַשְעְ'וּלֶה",
+   "back": "עסוקה / טרודה / תפוסה",
+   "form": "יחיד",
+   "gender": "f"
+  },
+  {
+   "meeting": 7,
+   "id": 844,
+   "front": "מַשְעְ'וּלַאת",
+   "back": "עסוקות / טרודות / תפוסות",
+   "form": "רבים",
+   "gender": "f"
+  },
+  {
+   "meeting": 7,
+   "id": 845,
+   "front": "בִּדִّי",
+   "back": "אני רוצה / צריך",
+   "form": null,
+   "gender": null
+  },
+  {
+   "meeting": 7,
+   "id": 846,
+   "front": "מַגְ'ד",
+   "back": "כבוד / תהילה",
+   "form": null,
+   "gender": null
+  },
+  {
+   "meeting": 7,
+   "id": 847,
+   "front": "מַאגֵ'ד",
+   "back": "מפואר / מהולל",
+   "form": null,
+   "gender": null
+  },
+  {
+   "meeting": 7,
+   "id": 848,
+   "front": "אַמְגַ'ד",
+   "back": "שם של גבר",
+   "form": null,
+   "gender": null
+  },
+  {
+   "meeting": 7,
+   "id": 849,
+   "front": "אֻסְתַאז",
+   "back": "מורה בכיר / מומחה",
+   "form": "יחיד",
+   "gender": null
+  },
+  {
+   "meeting": 7,
+   "id": 850,
+   "front": "אַסַאתְזַה",
+   "back": "מורים בכירים / מומחים",
+   "form": "רבים",
+   "gender": null
+  },
+  {
+   "meeting": 7,
+   "id": 851,
+   "front": "הוֹתֵיל",
+   "back": "מלון",
+   "form": "יחיד",
+   "gender": null
+  },
+  {
+   "meeting": 7,
+   "id": 852,
+   "front": "הוֹתֵילַאת",
+   "back": "מלונות",
+   "form": "רבים",
+   "gender": null
+  },
+  {
+   "meeting": 7,
+   "id": 853,
+   "front": "אוֹתֵיל",
+   "back": "מלון",
+   "form": "יחיד",
+   "gender": null
+  },
+  {
+   "meeting": 7,
+   "id": 854,
+   "front": "אוֹתֵילַאת",
+   "back": "מלונות",
+   "form": "רבים",
+   "gender": null
+  },
+  {
+   "meeting": 7,
+   "id": 855,
+   "front": "חַבִּיבּ",
+   "back": "אהוב / יקר",
+   "form": "יחיד",
+   "gender": null
+  },
+  {
+   "meeting": 7,
+   "id": 856,
+   "front": "אַחִבַּّאא",
+   "back": "אהובים / יקרים",
+   "form": "רבים",
+   "gender": null
+  },
+  {
+   "meeting": 7,
+   "id": 857,
+   "front": "חַבַּאיֶבּ",
+   "back": "אהובים / יקרים",
+   "form": null,
+   "gender": null
+  },
+  {
+   "meeting": 7,
+   "id": 858,
+   "front": "תְפַצַ'ّל",
+   "back": "בבקשה / התכבד",
+   "form": null,
+   "gender": null
+  },
+  {
+   "meeting": 7,
+   "id": 859,
+   "front": "אִמְכַּאנִיֶّה",
+   "back": "אפשרות / יכולת",
+   "form": "יחיד",
+   "gender": null
+  },
+  {
+   "meeting": 7,
+   "id": 860,
+   "front": "אִמְכַּאנִיַّאת",
+   "back": "אפשרויות / יכולות",
+   "form": "רבים",
+   "gender": null
+  },
+  {
+   "meeting": 7,
+   "id": 861,
+   "front": "מַפְתוּח",
+   "back": "פתוח",
+   "form": "יחיד",
+   "gender": "m"
+  },
+  {
+   "meeting": 7,
+   "id": 862,
+   "front": "מַפְתוּחִין",
+   "back": "פתוחים",
+   "form": "רבים",
+   "gender": "m"
+  },
+  {
+   "meeting": 7,
+   "id": 863,
+   "front": "מַפְתוּחַה",
+   "back": "פתוחה",
+   "form": "יחיד",
+   "gender": "f"
+  },
+  {
+   "meeting": 7,
+   "id": 864,
+   "front": "מַפְתוּחַאת",
+   "back": "פתוחות",
+   "form": "רבים",
+   "gender": "f"
+  },
+  {
+   "meeting": 7,
+   "id": 865,
+   "front": "סִעֶר",
+   "back": "מחיר",
+   "form": "יחיד",
+   "gender": null
+  },
+  {
+   "meeting": 7,
+   "id": 866,
+   "front": "אַסְעַאר",
+   "back": "מחירים",
+   "form": "רבים",
+   "gender": null
+  },
+  {
+   "meeting": 7,
+   "id": 867,
+   "front": "עַלַאמֶה",
+   "back": "ציון / סימן",
+   "form": "יחיד",
+   "gender": null
+  },
+  {
+   "meeting": 7,
+   "id": 868,
+   "front": "עַלַאמַאת",
+   "back": "ציונים / סימנים",
+   "form": "רבים",
+   "gender": null
+  },
+  {
+   "meeting": 7,
+   "id": 869,
+   "front": "עַאמֶר",
+   "back": "מאוכלס / משגשג",
+   "form": null,
+   "gender": null
+  },
+  {
+   "meeting": 7,
+   "id": 870,
+   "front": "אִמְתִחַאן",
+   "back": "מבחן",
+   "form": "יחיד",
+   "gender": null
+  },
+  {
+   "meeting": 7,
+   "id": 871,
+   "front": "אִמְתִחַאנַאת",
+   "back": "מבחנים",
+   "form": "רבים",
+   "gender": null
+  },
+  {
+   "meeting": 7,
+   "id": 872,
+   "front": "פִעְלַן",
+   "back": "באמת / בפועל / למעשה",
+   "form": null,
+   "gender": null
+  },
+  {
+   "meeting": 7,
+   "id": 873,
+   "front": "פִעֶל",
+   "back": "פועל / מעשה",
+   "form": "יחיד",
+   "gender": null
+  },
+  {
+   "meeting": 7,
+   "id": 874,
+   "front": "אַפְעַאל",
+   "back": "פעלים / מעשים",
+   "form": "רבים",
+   "gender": null
+  },
+  {
+   "meeting": 7,
+   "id": 875,
+   "front": "עַ'רַצ'",
+   "back": "חפץ",
+   "form": "יחיד",
+   "gender": null
+  },
+  {
+   "meeting": 7,
+   "id": 876,
+   "front": "אַעְ'רַאצ'",
+   "back": "חפצים",
+   "form": "רבים",
+   "gender": null
+  },
+  {
+   "meeting": 7,
+   "id": 877,
+   "front": "סִרְקַה",
+   "back": "גניבה",
+   "form": "יחיד",
+   "gender": null
+  },
+  {
+   "meeting": 7,
+   "id": 878,
+   "front": "סִרְקַאת",
+   "back": "גניבות",
+   "form": "רבים",
+   "gender": null
+  },
+  {
+   "meeting": 7,
+   "id": 879,
+   "front": "עַ'סַّאלֶה",
+   "back": "מכונת כביסה",
+   "form": "יחיד",
+   "gender": null
+  },
+  {
+   "meeting": 7,
+   "id": 880,
+   "front": "עַ'סַّאלַאת",
+   "back": "מכונות כביסה",
+   "form": "רבים",
+   "gender": null
+  },
+  {
+   "meeting": 7,
+   "id": 881,
+   "front": "עַ'סִיל",
+   "back": "כביסה",
+   "form": null,
+   "gender": null
+  },
+  {
+   "meeting": 7,
+   "id": 882,
+   "front": "נַאקֶצ",
+   "back": "חסר",
+   "form": "יחיד",
+   "gender": null
+  },
+  {
+   "meeting": 7,
+   "id": 883,
+   "front": "נַאקְצִין",
+   "back": "חסרים",
+   "form": "רבים",
+   "gender": null
+  },
+  {
+   "meeting": 7,
+   "id": 884,
+   "front": "נִקֶצ",
+   "back": "היה חסר",
+   "form": null,
+   "gender": null
+  },
+  {
+   "meeting": 7,
+   "id": 885,
+   "front": "עַאגֶ'בּ",
+   "back": "מוצא חן / מפליא",
+   "form": "יחיד",
+   "gender": null
+  },
+  {
+   "meeting": 7,
+   "id": 886,
+   "front": "עַאגְ'בִּין",
+   "back": "מוצאים חן / מפליאים",
+   "form": "רבים",
+   "gender": null
+  },
+  {
+   "meeting": 7,
+   "id": 887,
+   "front": "צַ'אבֶּט",
+   "back": "קצין",
+   "form": "יחיד",
+   "gender": "m"
+  },
+  {
+   "meeting": 7,
+   "id": 888,
+   "front": "צֻ'בַּّאט",
+   "back": "קצינים",
+   "form": "רבים",
+   "gender": "m"
+  },
+  {
+   "meeting": 7,
+   "id": 889,
+   "front": "צַ'אבִּטַה",
+   "back": "קצינה",
+   "form": "יחיד",
+   "gender": "f"
+  },
+  {
+   "meeting": 7,
+   "id": 890,
+   "front": "צַ'אבִּטַאת",
+   "back": "קצינות",
+   "form": "רבים",
+   "gender": "f"
+  },
+  {
+   "meeting": 7,
+   "id": 891,
+   "front": "בִּסִכְּלֵית",
+   "back": "אופניים",
+   "form": null,
+   "gender": null
+  },
+  {
+   "meeting": 7,
+   "id": 892,
+   "front": "כֻּלִّיֶה",
+   "back": "מכללה",
+   "form": "יחיד",
+   "gender": null
+  },
+  {
+   "meeting": 7,
+   "id": 893,
+   "front": "כֻּלִّיַאת",
+   "back": "מכללות",
+   "form": "רבים",
+   "gender": null
+  },
+  {
+   "meeting": 7,
+   "id": 894,
+   "front": "טִבּّ",
+   "back": "רפואה",
+   "form": null,
+   "gender": null
+  },
+  {
+   "meeting": 7,
+   "id": 895,
+   "front": "אַכִּיד",
+   "back": "ודאי / בטוח",
+   "form": null,
+   "gender": null
+  },
+  {
+   "meeting": 7,
+   "id": 896,
+   "front": "חַכִּי",
+   "back": "דיבור / סיפור",
+   "form": null,
+   "gender": null
+  },
+  {
+   "meeting": 7,
+   "id": 897,
+   "front": "חַט'ّ",
+   "back": "מזל / סיכוי",
+   "form": "יחיד",
+   "gender": null
+  },
+  {
+   "meeting": 7,
+   "id": 898,
+   "front": "חְט'וּט'",
+   "back": "מזלות / סיכויים",
+   "form": "רבים",
+   "gender": null
+  },
+  {
+   "meeting": 7,
+   "id": 899,
+   "front": "שֻרְטַה",
+   "back": "משטרה",
+   "form": null,
+   "gender": null
+  },
+  {
+   "meeting": 7,
+   "id": 900,
+   "front": "בּוֹלִיס",
+   "back": "משטרה",
+   "form": null,
+   "gender": null
+  },
+  {
+   "meeting": 5,
+   "id": 902,
+   "front": "אַצְפַר",
+   "back": "צהוב",
+   "form": "יחיד",
+   "gender": "m"
+  },
+  {
+   "meeting": 5,
+   "id": 903,
+   "front": "צַפְרַא",
+   "back": "צהובה",
+   "form": "יחיד",
+   "gender": "f"
+  },
+  {
+   "meeting": 5,
+   "id": 904,
+   "front": "צֹפֶר",
+   "back": "צהובים",
+   "form": "רבים",
+   "gender": null
+  },
+  {
+   "meeting": 5,
+   "id": 905,
+   "front": "אַזְרַק",
+   "back": "כחול",
+   "form": "יחיד",
+   "gender": "m"
+  },
+  {
+   "meeting": 5,
+   "id": 906,
+   "front": "זַרְקַא",
+   "back": "כחולה",
+   "form": "יחיד",
+   "gender": "f"
+  },
+  {
+   "meeting": 5,
+   "id": 907,
+   "front": "זֹרֶק",
+   "back": "כחולים",
+   "form": "רבים",
+   "gender": null
+  },
+  {
+   "meeting": 5,
+   "id": 911,
+   "front": "אַחְמַר",
+   "back": "אדום",
+   "form": "יחיד",
+   "gender": "m"
+  },
+  {
+   "meeting": 5,
+   "id": 912,
+   "front": "חַמְרַא",
+   "back": "אדומה",
+   "form": "יחיד",
+   "gender": "f"
+  },
+  {
+   "meeting": 5,
+   "id": 913,
+   "front": "חֹמֶר",
+   "back": "אדומים",
+   "form": "רבים",
+   "gender": null
+  },
+  {
+   "meeting": 5,
+   "id": 914,
+   "front": "אַשְקַר",
+   "back": "בלונדיני",
+   "form": "יחיד",
+   "gender": "m"
+  },
+  {
+   "meeting": 5,
+   "id": 915,
+   "front": "שַקְרַא",
+   "back": "בלונדינית",
+   "form": "יחיד",
+   "gender": "f"
+  },
+  {
+   "meeting": 5,
+   "id": 916,
+   "front": "שֹקֶר",
+   "back": "בלונדינים",
+   "form": "רבים",
+   "gender": null
+  },
+  {
+   "meeting": 5,
+   "id": 917,
+   "front": "אַסְמַר",
+   "back": "שחרחר",
+   "form": "יחיד",
+   "gender": "m"
+  },
+  {
+   "meeting": 5,
+   "id": 918,
+   "front": "סַמְרַא",
+   "back": "שחרחרה",
+   "form": "יחיד",
+   "gender": "f"
+  },
+  {
+   "meeting": 5,
+   "id": 919,
+   "front": "סֹמֶר",
+   "back": "שחרחרים",
+   "form": "רבים",
+   "gender": null
+  },
+  {
+   "meeting": 5,
+   "id": 920,
+   "front": "אַסְוַד",
+   "back": "שחור",
+   "form": "יחיד",
+   "gender": "m"
+  },
+  {
+   "meeting": 5,
+   "id": 921,
+   "front": "סַוְדַא",
+   "back": "שחורה",
+   "form": "יחיד",
+   "gender": "f"
+  },
+  {
+   "meeting": 5,
+   "id": 922,
+   "front": "סוּד",
+   "back": "שחורים",
+   "form": "רבים",
+   "gender": null
+  },
+  {
+   "meeting": 5,
+   "id": 923,
+   "front": "אַבְּיַצ'",
+   "back": "לבן",
+   "form": "יחיד",
+   "gender": "m"
+  },
+  {
+   "meeting": 5,
+   "id": 924,
+   "front": "בֵּיצַ'א",
+   "back": "לבנה",
+   "form": "יחיד",
+   "gender": "f"
+  },
+  {
+   "meeting": 5,
+   "id": 925,
+   "front": "בִּיצ'",
+   "back": "לבנים",
+   "form": "רבים",
+   "gender": null
+  },
+  {
+   "meeting": 5,
+   "id": 926,
+   "front": "עַסַלִי",
+   "back": "חום (דבש)",
+   "form": null,
+   "gender": "m"
+  },
+  {
+   "meeting": 5,
+   "id": 927,
+   "front": "עַסַלִיֶّה",
+   "back": "חומה (דבש)",
+   "form": null,
+   "gender": "f"
+  },
+  {
+   "meeting": 5,
+   "id": 928,
+   "front": "קַמְחִי",
+   "back": "חום (חיטה)",
+   "form": null,
+   "gender": "m"
+  },
+  {
+   "meeting": 5,
+   "id": 929,
+   "front": "קַמְחִיֶّה",
+   "back": "חומה (חיטה)",
+   "form": null,
+   "gender": "f"
+  },
+  {
+   "meeting": 5,
+   "id": 930,
+   "front": "רַמַאדִי",
+   "back": "אפור",
+   "form": null,
+   "gender": "m"
+  },
+  {
+   "meeting": 5,
+   "id": 931,
+   "front": "רַמַאדִיֶّה",
+   "back": "אפורה",
+   "form": null,
+   "gender": "f"
+  },
+  {
+   "meeting": 5,
+   "id": 932,
+   "front": "סַכַּّנִי",
+   "back": "אפור",
+   "form": null,
+   "gender": "m"
+  },
+  {
+   "meeting": 5,
+   "id": 933,
+   "front": "סַכַנִיֶّה",
+   "back": "אפורה",
+   "form": null,
+   "gender": "f"
+  },
+  {
+   "meeting": 5,
+   "id": 934,
+   "front": "רַצַאצִי",
+   "back": "אפור",
+   "form": null,
+   "gender": "m"
+  },
+  {
+   "meeting": 5,
+   "id": 935,
+   "front": "רַצַאצִיֶّה",
+   "back": "אפורה",
+   "form": null,
+   "gender": "f"
+  },
+  {
+   "meeting": 5,
+   "id": 936,
+   "front": "בֻּנִّי",
+   "back": "חום",
+   "form": null,
+   "gender": "m"
+  },
+  {
+   "meeting": 5,
+   "id": 937,
+   "front": "בֻּנִّיֶّה",
+   "back": "חומה",
+   "form": null,
+   "gender": "f"
+  },
+  {
+   "meeting": 5,
+   "id": 938,
+   "front": "שַטֵינִי",
+   "back": "שטני / חום בהיר",
+   "form": null,
+   "gender": null
+  },
+  {
+   "meeting": 5,
+   "id": 939,
+   "front": "בֻּרְתֻקַאלִי",
+   "back": "כתום",
+   "form": null,
+   "gender": "m"
+  },
+  {
+   "meeting": 5,
+   "id": 940,
+   "front": "בֻּרְתֻקַאלִיֶّה",
+   "back": "כתומה",
+   "form": null,
+   "gender": "f"
+  },
+  {
+   "meeting": 5,
+   "id": 941,
+   "front": "בֻּרְדְקַאנִי",
+   "back": "כתום",
+   "form": null,
+   "gender": "m"
+  },
+  {
+   "meeting": 5,
+   "id": 942,
+   "front": "בֻּרְדְקַאנִיֶّה",
+   "back": "כתומה",
+   "form": null,
+   "gender": "f"
+  },
+  {
+   "meeting": 5,
+   "id": 943,
+   "front": "בַּנַפְסַגִ'י",
+   "back": "סגול",
+   "form": null,
+   "gender": "m"
+  },
+  {
+   "meeting": 5,
+   "id": 944,
+   "front": "בַּנַפְסַגִ'יֶّה",
+   "back": "סגולה",
+   "form": null,
+   "gender": "f"
+  },
+  {
+   "meeting": 5,
+   "id": 945,
+   "front": "לַיְלַכִּי",
+   "back": "סגול",
+   "form": null,
+   "gender": "m"
+  },
+  {
+   "meeting": 5,
+   "id": 946,
+   "front": "לַיְלַכִּיֶّה",
+   "back": "סגולה",
+   "form": null,
+   "gender": "f"
+  },
+  {
+   "meeting": 5,
+   "id": 947,
+   "front": "וַרְדִי",
+   "back": "ורוד",
+   "form": null,
+   "gender": "m"
+  },
+  {
+   "meeting": 5,
+   "id": 948,
+   "front": "וַרְדִיֶّה",
+   "back": "ורודה",
+   "form": null,
+   "gender": "f"
+  },
+  {
+   "meeting": 5,
+   "id": 949,
+   "front": "זַהְרִי",
+   "back": "ורוד",
+   "form": null,
+   "gender": "m"
+  },
+  {
+   "meeting": 5,
+   "id": 950,
+   "front": "זַהְרִיֶّה",
+   "back": "ורודה",
+   "form": null,
+   "gender": "f"
+  },
+  {
+   "meeting": 5,
+   "id": 951,
+   "front": "פִצִّ'י",
+   "back": "כסוף",
+   "form": null,
+   "gender": "m"
+  },
+  {
+   "meeting": 5,
+   "id": 952,
+   "front": "פִצִّ'יֶّה",
+   "back": "כסופה",
+   "form": null,
+   "gender": "f"
+  },
+  {
+   "meeting": 5,
+   "id": 953,
+   "front": "דַהְבִּי",
+   "back": "מוזהב",
+   "form": null,
+   "gender": "m"
+  },
+  {
+   "meeting": 5,
+   "id": 954,
+   "front": "דַהְבִּיֶّה",
+   "back": "מוזהבת",
+   "form": null,
+   "gender": "f"
+  },
+  {
+   "meeting": 5,
+   "id": 955,
+   "front": "סַמַאוִי",
+   "back": "תכלת",
+   "form": null,
+   "gender": "m"
+  },
+  {
+   "meeting": 5,
+   "id": 956,
+   "front": "סַמַאוִיֶّה",
+   "back": "תכלת",
+   "form": null,
+   "gender": "f"
+  },
+  {
+   "meeting": 5,
+   "id": 957,
+   "front": "בַּטוּנִי",
+   "back": "בצבע בטון",
+   "form": null,
+   "gender": null
+  },
+  {
+   "meeting": 5,
+   "id": 958,
+   "front": "שַפַّאפ",
+   "back": "שקוף",
+   "form": null,
+   "gender": null
+  },
+  {
+   "meeting": 5,
+   "id": 959,
+   "front": "מְלַוַّן",
+   "back": "צבעוני",
+   "form": null,
+   "gender": null
+  },
+  {
+   "meeting": 5,
+   "id": 960,
+   "front": "פַאתֶח",
+   "back": "בהיר",
+   "form": null,
+   "gender": null
+  },
+  {
+   "meeting": 5,
+   "id": 961,
+   "front": "עַ'אמֶק",
+   "back": "כהה",
+   "form": null,
+   "gender": null
+  },
+  {
+   "meeting": 5,
+   "id": 962,
+   "front": "לַאמֶע",
+   "back": "בוהק / מבריק",
+   "form": null,
+   "gender": null
+  },
+  {
+   "meeting": 8,
+   "id": 963,
+   "front": "גַ'איְ",
+   "back": "בא",
+   "form": "יחיד",
+   "gender": "m"
+  },
+  {
+   "meeting": 8,
+   "id": 964,
+   "front": "גַ'איִין",
+   "back": "באים",
+   "form": "רבים",
+   "gender": "m"
+  },
+  {
+   "meeting": 8,
+   "id": 965,
+   "front": "גַ'איֶה",
+   "back": "באה",
+   "form": "יחיד",
+   "gender": "f"
+  },
+  {
+   "meeting": 8,
+   "id": 966,
+   "front": "גַ'איַאת",
+   "back": "באות",
+   "form": "רבים",
+   "gender": "f"
+  },
+  {
+   "meeting": 8,
+   "id": 967,
+   "front": "עוֹמוֹר",
+   "back": "גיל / חיים / משך החיים",
+   "form": "יחיד",
+   "gender": null
+  },
+  {
+   "meeting": 8,
+   "id": 968,
+   "front": "אַעְמַאר",
+   "back": "גילאים / חיים",
+   "form": "רבים",
+   "gender": null
+  },
+  {
+   "meeting": 8,
+   "id": 969,
+   "front": "חַיַאה",
+   "back": "חיים",
+   "form": null,
+   "gender": null
+  },
+  {
+   "meeting": 8,
+   "id": 970,
+   "front": "בַּנְדוֹרַה",
+   "back": "עגבניה (שם קיבוצי)",
+   "form": null,
+   "gender": null
+  },
+  {
+   "meeting": 8,
+   "id": 971,
+   "front": "חִ'יַארַה",
+   "back": "מלפפון",
+   "form": "יחיד",
+   "gender": null
+  },
+  {
+   "meeting": 8,
+   "id": 972,
+   "front": "חִ'יַארַאת",
+   "back": "מלפפונים",
+   "form": "רבים",
+   "gender": null
+  },
+  {
+   "meeting": 8,
+   "id": 973,
+   "front": "חְ'יַאר",
+   "back": "מלפפונים (שם קיבוצי)",
+   "form": null,
+   "gender": null
+  },
+  {
+   "meeting": 8,
+   "id": 975,
+   "front": "וַחְדֶה",
+   "back": "אחת",
+   "form": null,
+   "gender": null
+  },
+  {
+   "meeting": 8,
+   "id": 976,
+   "front": "וַחַדֶה",
+   "back": "אחת",
+   "form": null,
+   "gender": null
+  },
+  {
+   "meeting": 8,
+   "id": 977,
+   "front": "מוֹתוֹר",
+   "back": "אופנוע / מנוע",
+   "form": "יחיד",
+   "gender": null
+  },
+  {
+   "meeting": 8,
+   "id": 978,
+   "front": "מוֹתוֹרַאת",
+   "back": "אופנועים / מנועים",
+   "form": "רבים",
+   "gender": null
+  },
+  {
+   "meeting": 8,
+   "id": 979,
+   "front": "מַסִירֶה",
+   "back": "צעדה / תהלוכה",
+   "form": null,
+   "gender": null
+  },
+  {
+   "meeting": 8,
+   "id": 980,
+   "front": "גִ'ים",
+   "back": "חדר כושר",
+   "form": null,
+   "gender": null
+  },
+  {
+   "meeting": 8,
+   "id": 981,
+   "front": "גִ'הַאד",
+   "back": "מלחמת קודש / שם של גבר",
+   "form": null,
+   "gender": null
+  },
+  {
+   "meeting": 8,
+   "id": 982,
+   "front": "גַ'מַאל",
+   "back": "יופי / שם של גבר",
+   "form": null,
+   "gender": null
+  },
+  {
+   "meeting": 8,
+   "id": 983,
+   "front": "הַלַּא",
+   "back": "עכשיו",
+   "form": null,
+   "gender": null
+  },
+  {
+   "meeting": 8,
+   "id": 984,
+   "front": "הַלְקֵית",
+   "back": "עכשיו",
+   "form": null,
+   "gender": null
+  },
+  {
+   "meeting": 8,
+   "id": 985,
+   "front": "אִסַّא",
+   "back": "עכשיו",
+   "form": null,
+   "gender": null
+  },
+  {
+   "meeting": 8,
+   "id": 986,
+   "front": "הַסַّא",
+   "back": "עכשיו",
+   "form": null,
+   "gender": null
+  },
+  {
+   "meeting": 8,
+   "id": 987,
+   "front": "הַ(א)לְחִין",
+   "back": "עכשיו",
+   "form": null,
+   "gender": null
+  },
+  {
+   "meeting": 8,
+   "id": 988,
+   "front": "יַאבַּאנִי",
+   "back": "יפני",
+   "form": "יחיד",
+   "gender": "m"
+  },
+  {
+   "meeting": 8,
+   "id": 989,
+   "front": "יַאבַּאנִיִין",
+   "back": "יפנים",
+   "form": "רבים",
+   "gender": "m"
+  },
+  {
+   "meeting": 8,
+   "id": 990,
+   "front": "יַאבַּאנִיֶّה",
+   "back": "יפנית",
+   "form": "יחיד",
+   "gender": "f"
+  },
+  {
+   "meeting": 8,
+   "id": 991,
+   "front": "יַאבַּאנִיַّאת",
+   "back": "יפניות",
+   "form": "רבים",
+   "gender": "f"
+  },
+  {
+   "meeting": 8,
+   "id": 992,
+   "front": "אִלְיַאבַּאן",
+   "back": "יפן",
+   "form": null,
+   "gender": null
+  },
+  {
+   "meeting": 8,
+   "id": 993,
+   "front": "שְמַאל",
+   "back": "שמאל",
+   "form": null,
+   "gender": null
+  },
+  {
+   "meeting": 8,
+   "id": 994,
+   "front": "יַסַאר",
+   "back": "שמאל",
+   "form": null,
+   "gender": null
+  },
+  {
+   "meeting": 8,
+   "id": 995,
+   "front": "בַּלַדִיֶّה",
+   "back": "עירייה",
+   "form": "יחיד",
+   "gender": null
+  },
+  {
+   "meeting": 8,
+   "id": 996,
+   "front": "בַּלַדִיַّאת",
+   "back": "עיריות",
+   "form": "רבים",
+   "gender": null
+  },
+  {
+   "meeting": 8,
+   "id": 997,
+   "front": "בַּלַדִי",
+   "back": "מקומי (אדם או תוצר)",
+   "form": null,
+   "gender": null
+  },
+  {
+   "meeting": 8,
+   "id": 998,
+   "front": "שְוַיّ",
+   "back": "מעט / לאט",
+   "form": null,
+   "gender": null
+  },
+  {
+   "meeting": 8,
+   "id": 999,
+   "front": "שְוַיֶّה",
+   "back": "מעט / לאט",
+   "form": null,
+   "gender": null
+  },
+  {
+   "meeting": 8,
+   "id": 1000,
+   "front": "וַאצֵ'ח",
+   "back": "ברור / גלוי / נראה לעין",
+   "form": null,
+   "gender": null
+  },
+  {
+   "meeting": 8,
+   "id": 1001,
+   "front": "סַאמֶע",
+   "back": "שומע",
+   "form": "יחיד",
+   "gender": "m"
+  },
+  {
+   "meeting": 8,
+   "id": 1002,
+   "front": "סַאמְעִין",
+   "back": "שומעים",
+   "form": "רבים",
+   "gender": "m"
+  },
+  {
+   "meeting": 8,
+   "id": 1003,
+   "front": "סַאמְעַה",
+   "back": "שומעת",
+   "form": "יחיד",
+   "gender": "f"
+  },
+  {
+   "meeting": 8,
+   "id": 1004,
+   "front": "סַאמְעַאת",
+   "back": "שומעות",
+   "form": "רבים",
+   "gender": "f"
+  },
+  {
+   "meeting": 8,
+   "id": 1005,
+   "front": "רַאיֶח",
+   "back": "הולך",
+   "form": "יחיד",
+   "gender": "m"
+  },
+  {
+   "meeting": 8,
+   "id": 1006,
+   "front": "רַאיְחִין",
+   "back": "הולכים",
+   "form": "רבים",
+   "gender": "m"
+  },
+  {
+   "meeting": 8,
+   "id": 1007,
+   "front": "רַאיְחַה",
+   "back": "הולכת",
+   "form": "יחיד",
+   "gender": "f"
+  },
+  {
+   "meeting": 8,
+   "id": 1008,
+   "front": "רַאיְחַאת",
+   "back": "הולכות",
+   "form": "רבים",
+   "gender": "f"
+  },
+  {
+   "meeting": 8,
+   "id": 1009,
+   "front": "רַאגֶ'ע",
+   "back": "חוזר",
+   "form": "יחיד",
+   "gender": "m"
+  },
+  {
+   "meeting": 8,
+   "id": 1010,
+   "front": "רַאגְ'עִין",
+   "back": "חוזרים",
+   "form": "רבים",
+   "gender": "m"
+  },
+  {
+   "meeting": 8,
+   "id": 1011,
+   "front": "רַאגְ'עַה",
+   "back": "חוזרת",
+   "form": "יחיד",
+   "gender": "f"
+  },
+  {
+   "meeting": 8,
+   "id": 1012,
+   "front": "רַאגְ'עַאת",
+   "back": "חוזרות",
+   "form": "רבים",
+   "gender": "f"
+  },
+  {
+   "meeting": 8,
+   "id": 1013,
+   "front": "עַאמֶל",
+   "back": "עושה / עובד",
+   "form": "יחיד",
+   "gender": "m"
+  },
+  {
+   "meeting": 8,
+   "id": 1014,
+   "front": "עַאמְלִין",
+   "back": "עושים / עובדים",
+   "form": "רבים",
+   "gender": "m"
+  },
+  {
+   "meeting": 8,
+   "id": 1015,
+   "front": "עַאמְלֶה",
+   "back": "עושה / עובדת",
+   "form": "יחיד",
+   "gender": "f"
+  },
+  {
+   "meeting": 8,
+   "id": 1016,
+   "front": "עַאמְלַאת",
+   "back": "עושות / עובדות",
+   "form": "רבים",
+   "gender": "f"
+  },
+  {
+   "meeting": 8,
+   "id": 1017,
+   "front": "חַאגֶ'ז",
+   "back": "מזמין (מקום)",
+   "form": "יחיד",
+   "gender": "m"
+  },
+  {
+   "meeting": 8,
+   "id": 1018,
+   "front": "חַאגְ'זִין",
+   "back": "מזמינים",
+   "form": "רבים",
+   "gender": "m"
+  },
+  {
+   "meeting": 8,
+   "id": 1019,
+   "front": "חַאגְ'זֶה",
+   "back": "מזמינה / ות מקום",
+   "form": "יחיד",
+   "gender": "f"
+  },
+  {
+   "meeting": 8,
+   "id": 1020,
+   "front": "חַאגְ'זַאת",
+   "back": "מזמינות",
+   "form": "רבים",
+   "gender": "f"
+  },
+  {
+   "meeting": 8,
+   "id": 1021,
+   "front": "תַזְכַּרַה",
+   "back": "כרטיס",
+   "form": "יחיד",
+   "gender": null
+  },
+  {
+   "meeting": 8,
+   "id": 1022,
+   "front": "תַזַאכֶּר",
+   "back": "כרטיסים",
+   "form": "רבים",
+   "gender": null
+  },
+  {
+   "meeting": 8,
+   "id": 1023,
+   "front": "מַעְרַצ'",
+   "back": "תערוכה / תצוגה / יריד",
+   "form": "יחיד",
+   "gender": null
+  },
+  {
+   "meeting": 8,
+   "id": 1024,
+   "front": "מַעַארֶצ'",
+   "back": "תערוכות / תצוגות / ירידים",
+   "form": "רבים",
+   "gender": null
+  },
+  {
+   "meeting": 8,
+   "id": 1025,
+   "front": "כַּאזִיֶّה",
+   "back": "תחנת דלק",
+   "form": "יחיד",
+   "gender": null
+  },
+  {
+   "meeting": 8,
+   "id": 1026,
+   "front": "כַּאזִיַّאת",
+   "back": "תחנות דלק",
+   "form": "רבים",
+   "gender": null
+  },
+  {
+   "meeting": 8,
+   "id": 1027,
+   "front": "כַּרַאג'",
+   "back": "מוסך / חניון",
+   "form": "יחיד",
+   "gender": null
+  },
+  {
+   "meeting": 8,
+   "id": 1028,
+   "front": "כַּרַאגַ'את",
+   "back": "מוסכים / חניונים",
+   "form": "רבים",
+   "gender": null
+  },
+  {
+   "meeting": 8,
+   "id": 1029,
+   "front": "וְלַ",
+   "back": "אוי..",
+   "form": null,
+   "gender": null
+  },
+  {
+   "meeting": 8,
+   "id": 1030,
+   "front": "מַעְקוּל",
+   "back": "הגיוני / עושה שכל",
+   "form": null,
+   "gender": null
+  },
+  {
+   "meeting": 8,
+   "id": 1031,
+   "front": "נִסְבֶּה",
+   "back": "יחס / אחוז / שיעור",
+   "form": null,
+   "gender": null
+  },
+  {
+   "meeting": 8,
+   "id": 1032,
+   "front": "מַצְנַע",
+   "back": "מפעל",
+   "form": "יחיד",
+   "gender": null
+  },
+  {
+   "meeting": 8,
+   "id": 1033,
+   "front": "מַצַאנֶע",
+   "back": "מפעלים",
+   "form": "רבים",
+   "gender": null
+  },
+  {
+   "meeting": 8,
+   "id": 1034,
+   "front": "מַוְצוּל",
+   "back": "מחובר / מתמשך",
+   "form": "יחיד",
+   "gender": "m"
+  },
+  {
+   "meeting": 8,
+   "id": 1035,
+   "front": "מַוְצוּלִין",
+   "back": "מחוברים / מתמשכים",
+   "form": "רבים",
+   "gender": "m"
+  },
+  {
+   "meeting": 8,
+   "id": 1036,
+   "front": "מַוְצוּלֶה",
+   "back": "מחוברת / מתמשכת",
+   "form": "יחיד",
+   "gender": "f"
+  },
+  {
+   "meeting": 8,
+   "id": 1037,
+   "front": "מַוְצוּלַאת",
+   "back": "מחוברות / מתמשכות",
+   "form": "רבים",
+   "gender": "f"
+  },
+  {
+   "meeting": 8,
+   "id": 1038,
+   "front": "מִהְרַגַ'אן",
+   "back": "פסטיבל / עצרת",
+   "form": "יחיד",
+   "gender": null
+  },
+  {
+   "meeting": 8,
+   "id": 1039,
+   "front": "מִהְרַגַ'אנַאת",
+   "back": "פסטיבלים / עצרות",
+   "form": "רבים",
+   "gender": null
+  },
+  {
+   "meeting": 8,
+   "id": 1040,
+   "front": "מַעְזוּם",
+   "back": "מוזמן",
+   "form": "יחיד",
+   "gender": "m"
+  },
+  {
+   "meeting": 8,
+   "id": 1041,
+   "front": "מַעַאזִים",
+   "back": "מוזמנים",
+   "form": "רבים",
+   "gender": "m"
+  },
+  {
+   "meeting": 8,
+   "id": 1042,
+   "front": "מַעְזוּמֶה",
+   "back": "מוזמנת",
+   "form": "יחיד",
+   "gender": "f"
+  },
+  {
+   "meeting": 8,
+   "id": 1043,
+   "front": "מַעְזוּמַאת",
+   "back": "מוזמנות",
+   "form": "רבים",
+   "gender": "f"
+  },
+  {
+   "meeting": 8,
+   "id": 1044,
+   "front": "אֻחְ'רַא",
+   "back": "עוד / בעוד / בנוסף",
+   "form": null,
+   "gender": null
+  },
+  {
+   "meeting": 8,
+   "id": 1045,
+   "front": "פַאהֶם",
+   "back": "מבין",
+   "form": "יחיד",
+   "gender": "m"
+  },
+  {
+   "meeting": 8,
+   "id": 1046,
+   "front": "פַאהְמִין",
+   "back": "מבינים",
+   "form": "רבים",
+   "gender": "m"
+  },
+  {
+   "meeting": 8,
+   "id": 1047,
+   "front": "פַאהְמֶה",
+   "back": "מבינה",
+   "form": "יחיד",
+   "gender": "f"
+  },
+  {
+   "meeting": 8,
+   "id": 1048,
+   "front": "פַאהְמַאת",
+   "back": "מבינות",
+   "form": "רבים",
+   "gender": "f"
+  },
+  {
+   "meeting": 8,
+   "id": 1049,
+   "front": "מֻחַאצַ'רַה",
+   "back": "הרצאה",
+   "form": "יחיד",
+   "gender": null
+  },
+  {
+   "meeting": 8,
+   "id": 1050,
+   "front": "מֻחַאצַ'רַאת",
+   "back": "הרצאות",
+   "form": "רבים",
+   "gender": null
+  },
+  {
+   "meeting": 8,
+   "id": 1051,
+   "front": "נַאדִי",
+   "back": "מועדון",
+   "form": "יחיד",
+   "gender": null
+  },
+  {
+   "meeting": 8,
+   "id": 1052,
+   "front": "נַוַאדִי",
+   "back": "מועדונים",
+   "form": "רבים",
+   "gender": null
+  },
+  {
+   "meeting": 8,
+   "id": 1053,
+   "front": "שִכֶּל",
+   "back": "צורה / סוג / אופן",
+   "form": "יחיד",
+   "gender": null
+  },
+  {
+   "meeting": 8,
+   "id": 1054,
+   "front": "אַשְכַּאל",
+   "back": "צורות / סוגים / אופנים",
+   "form": "רבים",
+   "gender": null
+  },
+  {
+   "meeting": 8,
+   "id": 1055,
+   "front": "אִנְשַאלַّה",
+   "back": "בעזרת השם / אם ירצה השם",
+   "form": null,
+   "gender": null
+  },
+  {
+   "meeting": 8,
+   "id": 1056,
+   "front": "יַא רֵית",
+   "back": "הלוואי",
+   "form": null,
+   "gender": null
+  },
+  {
+   "meeting": 8,
+   "id": 1059,
+   "front": "מְסַאחַה",
+   "back": "שטח / מדידת שטח",
+   "form": null,
+   "gender": null
+  },
+  {
+   "meeting": 8,
+   "id": 1060,
+   "front": "זַמִיל",
+   "back": "עמית / קולגה",
+   "form": "יחיד",
+   "gender": null
+  },
+  {
+   "meeting": 8,
+   "id": 1061,
+   "front": "זֻמַלַאא",
+   "back": "עמיתים / קולגות",
+   "form": "רבים",
+   "gender": null
+  },
+  {
+   "meeting": 8,
+   "id": 1062,
+   "front": "עַאדֶה",
+   "back": "מנהג / הרגל",
+   "form": "יחיד",
+   "gender": null
+  },
+  {
+   "meeting": 8,
+   "id": 1063,
+   "front": "עַאדַאת",
+   "back": "מנהגים / הרגלים",
+   "form": "רבים",
+   "gender": null
+  },
+  {
+   "meeting": 8,
+   "id": 1064,
+   "front": "אַבְּצַר",
+   "back": "אני תוהה / מעניין",
+   "form": null,
+   "gender": null
+  },
+  {
+   "meeting": 8,
+   "id": 1065,
+   "front": "צַאר",
+   "back": "נהיה / קרה",
+   "form": null,
+   "gender": null
+  },
+  {
+   "meeting": 8,
+   "id": 1066,
+   "front": "עַאדִי",
+   "back": "רגיל / פשוט",
+   "form": "יחיד",
+   "gender": "m"
+  },
+  {
+   "meeting": 8,
+   "id": 1067,
+   "front": "עַאדִיִין",
+   "back": "רגילים / פשוטים",
+   "form": "רבים",
+   "gender": "m"
+  },
+  {
+   "meeting": 8,
+   "id": 1068,
+   "front": "עַאדִיֶّה",
+   "back": "רגילה",
+   "form": "יחיד",
+   "gender": "f"
+  },
+  {
+   "meeting": 8,
+   "id": 1069,
+   "front": "עַאדִיַّאת",
+   "back": "רגילות",
+   "form": "רבים",
+   "gender": "f"
+  },
+  {
+   "meeting": 8,
+   "id": 1070,
+   "front": "בַּטִّיח'",
+   "back": "אבטיח (שם קיבוצי)",
+   "form": null,
+   "gender": null
+  },
+  {
+   "meeting": 8,
+   "id": 1071,
+   "front": "בַּטִّיחַ'ה",
+   "back": "אבטיח",
+   "form": "יחיד",
+   "gender": null
+  },
+  {
+   "meeting": 8,
+   "id": 1072,
+   "front": "בַּטִّיחַ'את",
+   "back": "אבטיחים",
+   "form": "רבים",
+   "gender": null
+  },
+  {
+   "meeting": 8,
+   "id": 1073,
+   "front": "בַּרְד",
+   "back": "קור",
+   "form": null,
+   "gender": null
+  },
+  {
+   "meeting": 8,
+   "id": 1074,
+   "front": "בַּארֶד",
+   "back": "קר / אדיש (אדם)",
+   "form": "יחיד",
+   "gender": "m"
+  },
+  {
+   "meeting": 8,
+   "id": 1075,
+   "front": "בַּארְדִין",
+   "back": "קרים / אדישים",
+   "form": "רבים",
+   "gender": "m"
+  },
+  {
+   "meeting": 8,
+   "id": 1076,
+   "front": "בַּארְדֶה",
+   "back": "קרה / אדישה",
+   "form": "יחיד",
+   "gender": "f"
+  },
+  {
+   "meeting": 8,
+   "id": 1077,
+   "front": "בַּארְדַאת",
+   "back": "קרות / אדישות",
+   "form": "רבים",
+   "gender": "f"
+  },
+  {
+   "meeting": 8,
+   "id": 1078,
+   "front": "בַּרְדַאן",
+   "back": "אחד שקר לו",
+   "form": null,
+   "gender": "m"
+  },
+  {
+   "meeting": 8,
+   "id": 1079,
+   "front": "בַּרְדַאנֶה",
+   "back": "אחת שקר לה",
+   "form": null,
+   "gender": "f"
+  },
+  {
+   "meeting": 8,
+   "id": 1080,
+   "front": "נַאר",
+   "back": "אש",
+   "form": "יחיד",
+   "gender": null
+  },
+  {
+   "meeting": 8,
+   "id": 1081,
+   "front": "נִירַאן",
+   "back": "אשים",
+   "form": "רבים",
+   "gender": null
+  },
+  {
+   "meeting": 8,
+   "id": 1082,
+   "front": "עַ'רִיבּ",
+   "back": "זר / מוזר",
+   "form": "יחיד",
+   "gender": null
+  },
+  {
+   "meeting": 8,
+   "id": 1083,
+   "front": "עֻ'רַבַּא",
+   "back": "זרים / מוזרים",
+   "form": "רבים",
+   "gender": null
+  },
+  {
+   "meeting": 8,
+   "id": 1084,
+   "front": "טַקֶס",
+   "back": "מזג אוויר",
+   "form": "יחיד",
+   "gender": null
+  },
+  {
+   "meeting": 8,
+   "id": 1085,
+   "front": "טְקוּס",
+   "back": "מזגי אוויר",
+   "form": "רבים",
+   "gender": null
+  },
+  {
+   "meeting": 8,
+   "id": 1086,
+   "front": "דִנְיַא",
+   "back": "עולם",
+   "form": null,
+   "gender": null
+  },
+  {
+   "meeting": 8,
+   "id": 1087,
+   "front": "דַםّ",
+   "back": "דם",
+   "form": null,
+   "gender": null
+  },
+  {
+   "meeting": 8,
+   "id": 1088,
+   "front": "תְקִיל",
+   "back": "כבד (משקל)",
+   "form": "יחיד",
+   "gender": null
+  },
+  {
+   "meeting": 8,
+   "id": 1089,
+   "front": "תְקַאל",
+   "back": "כבדים",
+   "form": "רבים",
+   "gender": null
+  },
+  {
+   "meeting": 8,
+   "id": 1090,
+   "front": "שַאֶן",
+   "back": "עניין / דבר",
+   "form": "יחיד",
+   "gender": null
+  },
+  {
+   "meeting": 8,
+   "id": 1091,
+   "front": "שְאוּן",
+   "back": "עניינים / דברים",
+   "form": "רבים",
+   "gender": null
+  },
+  {
+   "meeting": 8,
+   "id": 1093,
+   "front": "סֻרְעַה",
+   "back": "מהירות",
+   "form": null,
+   "gender": null
+  },
+  {
+   "meeting": 9,
+   "id": 1094,
+   "front": "תַאְמִין",
+   "back": "ביטוח / אבטחה",
+   "form": "יחיד",
+   "gender": null
+  },
+  {
+   "meeting": 9,
+   "id": 1095,
+   "front": "תַאְמִינַאת",
+   "back": "ביטוחים",
+   "form": "רבים",
+   "gender": null
+  },
+  {
+   "meeting": 9,
+   "id": 1096,
+   "front": "טַאלֶבּ",
+   "back": "מבקש",
+   "form": "יחיד",
+   "gender": null
+  },
+  {
+   "meeting": 9,
+   "id": 1097,
+   "front": "טַאלְבִּין",
+   "back": "מבקשים",
+   "form": "רבים",
+   "gender": null
+  },
+  {
+   "meeting": 9,
+   "id": 1098,
+   "front": "תַפְצִיל",
+   "back": "פרט",
+   "form": "יחיד",
+   "gender": null
+  },
+  {
+   "meeting": 9,
+   "id": 1099,
+   "front": "תַפַאצִיל",
+   "back": "פרטים",
+   "form": "רבים",
+   "gender": null
+  },
+  {
+   "meeting": 9,
+   "id": 1100,
+   "front": "אַוّל",
+   "back": "התחלה / ראשון",
+   "form": "יחיד",
+   "gender": null
+  },
+  {
+   "meeting": 9,
+   "id": 1101,
+   "front": "אַוַאאֶל",
+   "back": "התחלות",
+   "form": "רבים",
+   "gender": null
+  },
+  {
+   "meeting": 9,
+   "id": 1102,
+   "front": "תַאְחִ'יר",
+   "back": "דחייה / עיכוב",
+   "form": "יחיד",
+   "gender": null
+  },
+  {
+   "meeting": 9,
+   "id": 1103,
+   "front": "תַאְחִ'ירַאת",
+   "back": "דחיות / עיכובים",
+   "form": "רבים",
+   "gender": null
+  },
+  {
+   "meeting": 9,
+   "id": 1104,
+   "front": "דַפֵע",
+   "back": "תשלום",
+   "form": "יחיד",
+   "gender": null
+  },
+  {
+   "meeting": 9,
+   "id": 1105,
+   "front": "דַפְעַאת",
+   "back": "תשלומים",
+   "form": "רבים",
+   "gender": null
+  },
+  {
+   "meeting": 9,
+   "id": 1106,
+   "front": "טַבְּעַן",
+   "back": "כמובן",
+   "form": null,
+   "gender": null
+  },
+  {
+   "meeting": 9,
+   "id": 1107,
+   "front": "מַאנֶע",
+   "back": "מונע / אוסר",
+   "form": "יחיד",
+   "gender": null
+  },
+  {
+   "meeting": 9,
+   "id": 1108,
+   "front": "מַאנְעִין",
+   "back": "מונעים / אוסרים",
+   "form": "רבים",
+   "gender": null
+  },
+  {
+   "meeting": 9,
+   "id": 1109,
+   "front": "מַנַע",
+   "back": "אסר / מנע",
+   "form": null,
+   "gender": null
+  },
+  {
+   "meeting": 9,
+   "id": 1110,
+   "front": "תַצְרִיח",
+   "back": "אישור / רשיון / היתר / הצהרה",
+   "form": "יחיד",
+   "gender": null
+  },
+  {
+   "meeting": 9,
+   "id": 1111,
+   "front": "תַצַארִיח",
+   "back": "אישורים / רשיונות",
+   "form": "רבים",
+   "gender": null
+  },
+  {
+   "meeting": 9,
+   "id": 1112,
+   "front": "הַדִיֶّה",
+   "back": "מתנה",
+   "form": "יחיד",
+   "gender": null
+  },
+  {
+   "meeting": 9,
+   "id": 1113,
+   "front": "הַדַאיַא",
+   "back": "מתנות",
+   "form": "רבים",
+   "gender": null
+  },
+  {
+   "meeting": 9,
+   "id": 1114,
+   "front": "עִנְוַאן",
+   "back": "כתובת / כותרת",
+   "form": "יחיד",
+   "gender": null
+  },
+  {
+   "meeting": 9,
+   "id": 1115,
+   "front": "עַנַאוִין",
+   "back": "כתובות / כותרות",
+   "form": "רבים",
+   "gender": null
+  },
+  {
+   "meeting": 9,
+   "id": 1116,
+   "front": "קַצִّיֶה",
+   "back": "סוגיה / תביעה משפטית / עניין",
+   "form": "יחיד",
+   "gender": null
+  },
+  {
+   "meeting": 9,
+   "id": 1117,
+   "front": "קַצַ'איַא",
+   "back": "סוגיות / תביעות",
+   "form": "רבים",
+   "gender": null
+  },
+  {
+   "meeting": 9,
+   "id": 1118,
+   "front": "מַסְאוּל",
+   "back": "אחראי / פקיד בכיר",
+   "form": "יחיד",
+   "gender": null
+  },
+  {
+   "meeting": 9,
+   "id": 1119,
+   "front": "מַסְאוּלִין",
+   "back": "אחראים",
+   "form": "רבים",
+   "gender": null
+  },
+  {
+   "meeting": 9,
+   "id": 1120,
+   "front": "מַחְכַּמֶה",
+   "back": "בית משפט",
+   "form": "יחיד",
+   "gender": null
+  },
+  {
+   "meeting": 9,
+   "id": 1121,
+   "front": "מַחַאכֶּם",
+   "back": "בתי משפט",
+   "form": "רבים",
+   "gender": null
+  },
+  {
+   "meeting": 9,
+   "id": 1122,
+   "front": "אַלְפ",
+   "back": "אלף",
+   "form": "יחיד",
+   "gender": null
+  },
+  {
+   "meeting": 9,
+   "id": 1123,
+   "front": "אַלַאפ",
+   "back": "אלפים",
+   "form": "רבים",
+   "gender": null
+  },
+  {
+   "meeting": 9,
+   "id": 1124,
+   "front": "תַעְוִיצ'",
+   "back": "פיצוי",
+   "form": "יחיד",
+   "gender": null
+  },
+  {
+   "meeting": 9,
+   "id": 1125,
+   "front": "תַעְוִיצַ'את",
+   "back": "פיצויים",
+   "form": "רבים",
+   "gender": null
+  },
+  {
+   "meeting": 9,
+   "id": 1548,
+   "front": "אִנִّי",
+   "back": "שאני",
+   "form": null,
+   "gender": null
+  },
+  {
+   "meeting": 9,
+   "id": 1549,
+   "front": "אִנַّכּ",
+   "back": "שאתה",
+   "form": null,
+   "gender": null
+  },
+  {
+   "meeting": 9,
+   "id": 1550,
+   "front": "אִנֵّכּ",
+   "back": "שאת",
+   "form": null,
+   "gender": null
+  },
+  {
+   "meeting": 9,
+   "id": 1126,
+   "front": "אִנّוֹ",
+   "back": "שהוא",
+   "form": null,
+   "gender": null
+  },
+  {
+   "meeting": 9,
+   "id": 1127,
+   "front": "חִ'לַאל",
+   "back": "במהלך (זמן)",
+   "form": null,
+   "gender": null
+  },
+  {
+   "meeting": 9,
+   "id": 1128,
+   "front": "טַלַבּ",
+   "back": "בקשה / הזמנה",
+   "form": "יחיד",
+   "gender": null
+  },
+  {
+   "meeting": 9,
+   "id": 1129,
+   "front": "טַלַבַּאת",
+   "back": "בקשות / הזמנות",
+   "form": "רבים",
+   "gender": null
+  },
+  {
+   "meeting": 9,
+   "id": 1130,
+   "front": "קִסֶם",
+   "back": "חלק / מחלקה",
+   "form": "יחיד",
+   "gender": null
+  },
+  {
+   "meeting": 9,
+   "id": 1131,
+   "front": "אַקְסַאם",
+   "back": "חלקים / מחלקות",
+   "form": "רבים",
+   "gender": null
+  },
+  {
+   "meeting": 9,
+   "id": 1132,
+   "front": "צַ'רִיבֶּה",
+   "back": "מס",
+   "form": "יחיד",
+   "gender": null
+  },
+  {
+   "meeting": 9,
+   "id": 1133,
+   "front": "צַ'רַאיֶבּ",
+   "back": "מיסים",
+   "form": "רבים",
+   "gender": null
+  },
+  {
+   "meeting": 9,
+   "id": 1134,
+   "front": "מִתֵר",
+   "back": "מטר",
+   "form": "יחיד",
+   "gender": null
+  },
+  {
+   "meeting": 9,
+   "id": 1135,
+   "front": "אַמְתַאר",
+   "back": "מטרים",
+   "form": "רבים",
+   "gender": null
+  },
+  {
+   "meeting": 9,
+   "id": 1136,
+   "front": "עַאםّ",
+   "back": "כללי / ציבורי",
+   "form": null,
+   "gender": "m"
+  },
+  {
+   "meeting": 9,
+   "id": 1137,
+   "front": "עַאמֶّה",
+   "back": "כללית / ציבורית",
+   "form": null,
+   "gender": "f"
+  },
+  {
+   "meeting": 9,
+   "id": 1138,
+   "front": "שַחְ'צ",
+   "back": "אדם / איש",
+   "form": "יחיד",
+   "gender": null
+  },
+  {
+   "meeting": 9,
+   "id": 1139,
+   "front": "אַשְחַ'אצ",
+   "back": "בני אדם / אנשים",
+   "form": "רבים",
+   "gender": null
+  },
+  {
+   "meeting": 9,
+   "id": 1140,
+   "front": "שַחְ'צִי",
+   "back": "אישי",
+   "form": null,
+   "gender": "m"
+  },
+  {
+   "meeting": 9,
+   "id": 1141,
+   "front": "שַחְ'צִיֶّה",
+   "back": "אישית / אישיות",
+   "form": null,
+   "gender": "f"
+  },
+  {
+   "meeting": 9,
+   "id": 1142,
+   "front": "תִגַ'ארַה",
+   "back": "מסחר",
+   "form": null,
+   "gender": null
+  },
+  {
+   "meeting": 9,
+   "id": 1143,
+   "front": "תַאגֶ'ר",
+   "back": "סוחר",
+   "form": "יחיד",
+   "gender": null
+  },
+  {
+   "meeting": 9,
+   "id": 1144,
+   "front": "תֻגַ'ّאר",
+   "back": "סוחרים",
+   "form": "רבים",
+   "gender": null
+  },
+  {
+   "meeting": 9,
+   "id": 1145,
+   "front": "תִגַ'ארִי",
+   "back": "מסחרי",
+   "form": null,
+   "gender": "m"
+  },
+  {
+   "meeting": 9,
+   "id": 1146,
+   "front": "תִגַ'ארִיֶّה",
+   "back": "מסחרית",
+   "form": null,
+   "gender": "f"
+  },
+  {
+   "meeting": 9,
+   "id": 1147,
+   "front": "וַאלֶד",
+   "back": "אבא",
+   "form": null,
+   "gender": "m"
+  },
+  {
+   "meeting": 9,
+   "id": 1148,
+   "front": "וַאלְדֶה",
+   "back": "אמא",
+   "form": null,
+   "gender": "f"
+  },
+  {
+   "meeting": 9,
+   "id": 1149,
+   "front": "וַאלְדֵין",
+   "back": "אבא ואמא (שני ההורים)",
+   "form": null,
+   "gender": null
+  },
+  {
+   "meeting": 9,
+   "id": 1150,
+   "front": "אַחִ'צַאאִי",
+   "back": "מומחה",
+   "form": "יחיד",
+   "gender": "m"
+  },
+  {
+   "meeting": 9,
+   "id": 1151,
+   "front": "אַחִ'צַאאִיִין",
+   "back": "מומחים",
+   "form": "רבים",
+   "gender": "m"
+  },
+  {
+   "meeting": 9,
+   "id": 1152,
+   "front": "אַחִ'צַאאִיֶّה",
+   "back": "מומחית",
+   "form": null,
+   "gender": "f"
+  },
+  {
+   "meeting": 9,
+   "id": 1153,
+   "front": "נַאפֶע",
+   "back": "מועיל",
+   "form": "יחיד",
+   "gender": "m"
+  },
+  {
+   "meeting": 9,
+   "id": 1154,
+   "front": "נַאפְעִין",
+   "back": "מועילים",
+   "form": "רבים",
+   "gender": "m"
+  },
+  {
+   "meeting": 9,
+   "id": 1155,
+   "front": "נַאפְעַה",
+   "back": "מועילה",
+   "form": "יחיד",
+   "gender": "f"
+  },
+  {
+   "meeting": 9,
+   "id": 1156,
+   "front": "נַאפְעַאת",
+   "back": "מועילות",
+   "form": "רבים",
+   "gender": "f"
+  },
+  {
+   "meeting": 9,
+   "id": 1157,
+   "front": "תַצְלִיח",
+   "back": "תיקון",
+   "form": "יחיד",
+   "gender": null
+  },
+  {
+   "meeting": 9,
+   "id": 1158,
+   "front": "תַצְלִיחַאת",
+   "back": "תיקונים",
+   "form": "רבים",
+   "gender": null
+  },
+  {
+   "meeting": 9,
+   "id": 1159,
+   "front": "חַ'רְבַּאן",
+   "back": "מקולקל / הרוס",
+   "form": null,
+   "gender": null
+  },
+  {
+   "meeting": 9,
+   "id": 1160,
+   "front": "מַטְרַח",
+   "back": "מקום",
+   "form": null,
+   "gender": null
+  },
+  {
+   "meeting": 9,
+   "id": 1161,
+   "front": "חַארֶס",
+   "back": "שומר / מאבטח",
+   "form": "יחיד",
+   "gender": null
+  },
+  {
+   "meeting": 9,
+   "id": 1162,
+   "front": "חֻרַ'אס",
+   "back": "שומרים / מאבטחים",
+   "form": "רבים",
+   "gender": null
+  },
+  {
+   "meeting": 9,
+   "id": 1163,
+   "front": "מוֹל",
+   "back": "קניון",
+   "form": null,
+   "gender": null
+  },
+  {
+   "meeting": 9,
+   "id": 1164,
+   "front": "מְגַ'מַّע",
+   "back": "קניון",
+   "form": null,
+   "gender": null
+  },
+  {
+   "meeting": 9,
+   "id": 1165,
+   "front": "מֻדֶّה",
+   "back": "תקופה / פרק זמן",
+   "form": null,
+   "gender": null
+  },
+  {
+   "meeting": 9,
+   "id": 1166,
+   "front": "זַמַאן",
+   "back": "תקופה / זמן בעבר / פעם",
+   "form": null,
+   "gender": null
+  },
+  {
+   "meeting": 9,
+   "id": 1167,
+   "front": "שֻרְטִי",
+   "back": "שוטר",
+   "form": "יחיד",
+   "gender": null
+  },
+  {
+   "meeting": 9,
+   "id": 1168,
+   "front": "שֻרְטִיִין",
+   "back": "שוטרים",
+   "form": "רבים",
+   "gender": null
+  },
+  {
+   "meeting": 9,
+   "id": 1169,
+   "front": "תַפְתִיש",
+   "back": "חיפוש",
+   "form": "יחיד",
+   "gender": null
+  },
+  {
+   "meeting": 9,
+   "id": 1170,
+   "front": "תַפְתִישַאת",
+   "back": "חיפושים",
+   "form": "רבים",
+   "gender": null
+  },
+  {
+   "meeting": 9,
+   "id": 1171,
+   "front": "עַ'רַאמֶה",
+   "back": "קנס",
+   "form": "יחיד",
+   "gender": null
+  },
+  {
+   "meeting": 9,
+   "id": 1172,
+   "front": "עַ'רַאמַאת",
+   "back": "קנסות",
+   "form": "רבים",
+   "gender": null
+  },
+  {
+   "meeting": 9,
+   "id": 1173,
+   "front": "פַאתוּרַה",
+   "back": "חשבונית",
+   "form": "יחיד",
+   "gender": null
+  },
+  {
+   "meeting": 9,
+   "id": 1174,
+   "front": "פַוַאתִיר",
+   "back": "חשבוניות",
+   "form": "רבים",
+   "gender": null
+  },
+  {
+   "meeting": 9,
+   "id": 1175,
+   "front": "דַאפֶע",
+   "back": "משלם",
+   "form": "יחיד",
+   "gender": null
+  },
+  {
+   "meeting": 9,
+   "id": 1176,
+   "front": "דַאפְעִין",
+   "back": "משלמים",
+   "form": "רבים",
+   "gender": null
+  },
+  {
+   "meeting": 9,
+   "id": 1177,
+   "front": "מַרְוַחִיֶّה",
+   "back": "מסוק",
+   "form": "יחיד",
+   "gender": null
+  },
+  {
+   "meeting": 9,
+   "id": 1178,
+   "front": "מַרְוַחִיַّאת",
+   "back": "מסוקים",
+   "form": "רבים",
+   "gender": null
+  },
+  {
+   "meeting": 9,
+   "id": 1179,
+   "front": "עַסְכַּרִי",
+   "back": "צבאי",
+   "form": null,
+   "gender": "m"
+  },
+  {
+   "meeting": 9,
+   "id": 1180,
+   "front": "עַסְכַּרִיֶّה",
+   "back": "צבאית",
+   "form": null,
+   "gender": "f"
+  },
+  {
+   "meeting": 9,
+   "id": 1181,
+   "front": "גֻ'נְדִי",
+   "back": "חייל",
+   "form": "יחיד",
+   "gender": null
+  },
+  {
+   "meeting": 9,
+   "id": 1182,
+   "front": "גֻ'נוּד",
+   "back": "חיילים",
+   "form": "רבים",
+   "gender": null
+  },
+  {
+   "meeting": 9,
+   "id": 1183,
+   "front": "רַאכֶּצ'",
+   "back": "רץ",
+   "form": "יחיד",
+   "gender": null
+  },
+  {
+   "meeting": 9,
+   "id": 1184,
+   "front": "רַאכְּצִ'ין",
+   "back": "רצים",
+   "form": "רבים",
+   "gender": null
+  },
+  {
+   "meeting": 9,
+   "id": 1185,
+   "front": "רַכֶּצ'",
+   "back": "ריצה",
+   "form": null,
+   "gender": null
+  },
+  {
+   "meeting": 9,
+   "id": 1186,
+   "front": "קֻוֶّה",
+   "back": "כוח",
+   "form": "יחיד",
+   "gender": null
+  },
+  {
+   "meeting": 9,
+   "id": 1187,
+   "front": "קֻוַّאת",
+   "back": "כוחות",
+   "form": "רבים",
+   "gender": null
+  },
+  {
+   "meeting": 9,
+   "id": 1188,
+   "front": "חַ'אצّ",
+   "back": "מיוחד / פרטי",
+   "form": null,
+   "gender": "m"
+  },
+  {
+   "meeting": 9,
+   "id": 1189,
+   "front": "חַ'אצַّה",
+   "back": "מיוחדת / פרטית",
+   "form": null,
+   "gender": "f"
+  },
+  {
+   "meeting": 9,
+   "id": 1190,
+   "front": "חַאמֶל",
+   "back": "נושא / מרים",
+   "form": "יחיד",
+   "gender": null
+  },
+  {
+   "meeting": 9,
+   "id": 1191,
+   "front": "חַאמְלִין",
+   "back": "נושאים / מרימים",
+   "form": "רבים",
+   "gender": null
+  },
+  {
+   "meeting": 9,
+   "id": 1192,
+   "front": "גִ'סְם",
+   "back": "גוף",
+   "form": null,
+   "gender": null
+  },
+  {
+   "meeting": 9,
+   "id": 1193,
+   "front": "סְלַאח",
+   "back": "נשק / כלי נשק / חיל",
+   "form": "יחיד",
+   "gender": null
+  },
+  {
+   "meeting": 9,
+   "id": 1194,
+   "front": "אַסְלִחַה",
+   "back": "נשקים / כלי נשק",
+   "form": "רבים",
+   "gender": null
+  },
+  {
+   "meeting": 9,
+   "id": 1195,
+   "front": "קַדّ",
+   "back": "כמו / באותה מידה",
+   "form": null,
+   "gender": null
+  },
+  {
+   "meeting": 9,
+   "id": 1196,
+   "front": "בַּארוּדֶה",
+   "back": "רובה",
+   "form": "יחיד",
+   "gender": null
+  },
+  {
+   "meeting": 9,
+   "id": 1197,
+   "front": "בַּוַארִיד",
+   "back": "רובים",
+   "form": "רבים",
+   "gender": null
+  },
+  {
+   "meeting": 9,
+   "id": 1198,
+   "front": "פַרְד",
+   "back": "אקדח",
+   "form": "יחיד",
+   "gender": null
+  },
+  {
+   "meeting": 9,
+   "id": 1199,
+   "front": "פְרוּדֶה",
+   "back": "אקדחים",
+   "form": "רבים",
+   "gender": null
+  },
+  {
+   "meeting": 9,
+   "id": 1200,
+   "front": "מְסַדַّס",
+   "back": "אקדח",
+   "form": "יחיד",
+   "gender": null
+  },
+  {
+   "meeting": 9,
+   "id": 1201,
+   "front": "מְסַדַّסַאת",
+   "back": "אקדחים",
+   "form": "רבים",
+   "gender": null
+  },
+  {
+   "meeting": 9,
+   "id": 1202,
+   "front": "פַרְד (יחיד)",
+   "back": "יחיד / בודד",
+   "form": "יחיד",
+   "gender": null
+  },
+  {
+   "meeting": 9,
+   "id": 1203,
+   "front": "אַפְרַאד",
+   "back": "יחידים / בודדים",
+   "form": "רבים",
+   "gender": null
+  },
+  {
+   "meeting": 9,
+   "id": 1204,
+   "front": "קֻנְבֻּלֶה",
+   "back": "פצצה",
+   "form": "יחיד",
+   "gender": null
+  },
+  {
+   "meeting": 9,
+   "id": 1205,
+   "front": "קַנַאבֶּל",
+   "back": "פצצות",
+   "form": "רבים",
+   "gender": null
+  },
+  {
+   "meeting": 9,
+   "id": 1206,
+   "front": "עֵ'יר",
+   "back": "אחר / חוץ מ..",
+   "form": null,
+   "gender": null
+  },
+  {
+   "meeting": 9,
+   "id": 1207,
+   "front": "מַעַאש",
+   "back": "משכורת",
+   "form": "יחיד",
+   "gender": null
+  },
+  {
+   "meeting": 9,
+   "id": 1208,
+   "front": "מַעַאשַאת",
+   "back": "משכורות",
+   "form": "רבים",
+   "gender": null
+  },
+  {
+   "meeting": 9,
+   "id": 1209,
+   "front": "קַאבֶּצ'",
+   "back": "מקבל משכורת / תשלום",
+   "form": null,
+   "gender": null
+  },
+  {
+   "meeting": 9,
+   "id": 1210,
+   "front": "קַבַּצ'",
+   "back": "קיבל משכורת",
+   "form": null,
+   "gender": null
+  },
+  {
+   "meeting": 9,
+   "id": 1211,
+   "front": "וַכִּיל",
+   "back": "סוכן / נציג",
+   "form": "יחיד",
+   "gender": null
+  },
+  {
+   "meeting": 9,
+   "id": 1212,
+   "front": "וֻכַּלַאא",
+   "back": "סוכנים / נציגים",
+   "form": "רבים",
+   "gender": null
+  },
+  {
+   "meeting": 9,
+   "id": 1213,
+   "front": "חַ'לַצ",
+   "back": "מספיק / די",
+   "form": null,
+   "gender": null
+  },
+  {
+   "meeting": 9,
+   "id": 1214,
+   "front": "מַרְחַלֶה",
+   "back": "שלב / פרק זמן",
+   "form": "יחיד",
+   "gender": null
+  },
+  {
+   "meeting": 9,
+   "id": 1215,
+   "front": "מַרַאחֶל",
+   "back": "שלבים",
+   "form": "רבים",
+   "gender": null
+  },
+  {
+   "meeting": 9,
+   "id": 1216,
+   "front": "קִרְש",
+   "back": "גרוש / אגורה",
+   "form": "יחיד",
+   "gender": null
+  },
+  {
+   "meeting": 9,
+   "id": 1217,
+   "front": "קְרוּש",
+   "back": "גרושים / אגורות",
+   "form": "רבים",
+   "gender": null
+  },
+  {
+   "meeting": 9,
+   "id": 1218,
+   "front": "גֵ'יבֶּה",
+   "back": "כיס",
+   "form": "יחיד",
+   "gender": null
+  },
+  {
+   "meeting": 9,
+   "id": 1219,
+   "front": "גְ'יַאבּ",
+   "back": "כיסים",
+   "form": "רבים",
+   "gender": null
+  },
+  {
+   "meeting": 9,
+   "id": 1220,
+   "front": "אִעְלַאן",
+   "back": "מודעה / פרסום",
+   "form": "יחיד",
+   "gender": null
+  },
+  {
+   "meeting": 9,
+   "id": 1221,
+   "front": "אִעְלַאנַאת",
+   "back": "מודעות / פרסומים",
+   "form": "רבים",
+   "gender": null
+  },
+  {
+   "meeting": 9,
+   "id": 1222,
+   "front": "בַּארֶז",
+   "back": "בולט",
+   "form": "יחיד",
+   "gender": null
+  },
+  {
+   "meeting": 9,
+   "id": 1223,
+   "front": "בַּארְזִין",
+   "back": "בולטים",
+   "form": "רבים",
+   "gender": null
+  }
+ ],
+ "sentences": [
+  {
+   "meeting": 1,
+   "id": 1,
+   "arabic": "צַפְחַאת (א)לִכְּתַאבּ.",
+   "hebrew": "עמודי הספר."
+  },
+  {
+   "meeting": 1,
+   "id": 2,
+   "arabic": "הַ(א)לְבִּנְת וְהַ(א)לְוַלַד.",
+   "hebrew": "זאת הילדה וזה הילד."
+  },
+  {
+   "meeting": 1,
+   "id": 3,
+   "arabic": "הַאד חַמַّאמִ (א)לְבֵּית, הַאד מֻשִ (א)לְבֵּית.",
+   "hebrew": "זה אמבטיית (בית שימוש) הבית, זה לא הבית."
+  },
+  {
+   "meeting": 1,
+   "id": 4,
+   "arabic": "הַאדַא בַּאבִּ (א)לְמַדְרַסֵה, הַאדַא מֻש בַּאבִּ (א)לְוִזַארַה.",
+   "hebrew": "זאת דלת בית הספר, זאת לא דלת המשרד הממשלתי."
+  },
+  {
+   "meeting": 1,
+   "id": 5,
+   "arabic": "הַאיִ (א)לְכֻּרַّאסֵה וְהַאדַא (א)לְקַלַם.",
+   "hebrew": "זאת החוברת וזה העט."
+  },
+  {
+   "meeting": 1,
+   "id": 6,
+   "arabic": "הַדַאכּ חֵיטִ (א)לְמַדְרַסֵה וְהַדִיכּ שַנְטַתִ (א)לְמֻדִירֵה.",
+   "hebrew": "ההוא קיר בית הספר וההיא תיק המנהלת."
+  },
+  {
+   "meeting": 1,
+   "id": 7,
+   "arabic": "הַדוֹלִ (א)לְכֻּרְסִי וִ(א)לִכְּתַאבּ.",
+   "hebrew": "אלו הכסא והספר."
+  },
+  {
+   "meeting": 1,
+   "id": 8,
+   "arabic": "הַדוֹלַאכּ (א)לִמְעַלְّמֵה וִ(א)לְבִּנְת.",
+   "hebrew": "ההן המורה והילדה (והבת)."
+  },
+  {
+   "meeting": 1,
+   "id": 9,
+   "arabic": "הַאדִי (א)לְמֻדִירֵה וְהַאדַא (א)לִמְעַלֵّם.",
+   "hebrew": "זאת המנהלת וזה המורה."
+  },
+  {
+   "meeting": 1,
+   "id": 10,
+   "arabic": "הַדוֹל דַפַאתֵר וְכֻּתֻבּ וְכַּרַאסִי.",
+   "hebrew": "אלו מחברות וספרים וכסאות."
+  },
+  {
+   "meeting": 1,
+   "id": 11,
+   "arabic": "אִנְתוּ טֻלַّאבּ גַ'אמְעַה וְהֻםֵّ תַלַאמִיז מַדַארֵס.",
+   "hebrew": "אתם סטודנטים (של) אוניברסיטה והם תלמידי בתי ספר."
+  },
+  {
+   "meeting": 1,
+   "id": 12,
+   "arabic": "הֻוֵّ מֻדִיר וִזַארַתִ (א)לְעַדֵל.",
+   "hebrew": "הוא מנהל משרד המשפטים."
+  },
+  {
+   "meeting": 1,
+   "id": 13,
+   "arabic": "הַאדִי כַּאסֵת קַהְוֵה וְהַאדִי כַּאסֵת שַאיְ וְהַדַאכּ סֻכַּّר.",
+   "hebrew": "זה כוס קפה וזה כוס תה וההוא סוכר."
+  },
+  {
+   "meeting": 1,
+   "id": 14,
+   "arabic": "אַחְמַד הֻוֵّ אִבֵּן עַמִّי וְנַגַ'אח הִיֵّ בִּנְת חַ'אלִי.",
+   "hebrew": "אחמד הוא בן דודי (מצד אבי) ונג'אח היא בת דודי (מצד אימי)."
+  },
+  {
+   "meeting": 1,
+   "id": 15,
+   "arabic": "סֵכְּרֵתֵירַא פִי שִרְכֵּת מֻחַאמַאה.",
+   "hebrew": "מזכירה בחברת עריכת דין."
+  },
+  {
+   "meeting": 2,
+   "id": 16,
+   "arabic": "הַאדַא אַבּוּי וְהַאדִי אִמִّי וְהַדוֹל הַוִّיַאתְהֹם!",
+   "hebrew": "זה אבי וזאת אמי ואלו תעודותיהם!"
+  },
+  {
+   "meeting": 2,
+   "id": 17,
+   "arabic": "הַאדַא שַארְעִי וְהַאדִי סַיַّארִתְנַא! הַאדִי מֶש סַיַّארִתְכֹּם!",
+   "hebrew": "זה רחובי וזאת מכוניתנו! זאת לא מכוניתכם!"
+  },
+  {
+   "meeting": 2,
+   "id": 18,
+   "arabic": "הַאדִי שַנְטַתְכֹּם? לַא, הַאדִי מֶש שַנְטַתְנַא, הַאדִי שַנְטַתְהֹם, הַדִיכּ שַנְטַתְנַא!",
+   "hebrew": "זה תיקכם? לא זה לא תיקנו, זה תיקם, ההוא תיקנו!"
+  },
+  {
+   "meeting": 2,
+   "id": 19,
+   "arabic": "הַאדַא שֻבַּّאכַּכּ? לַא, הַאדַא מֶש שֻבַּّאכִּי, הַאדַא שֻבַּّאכְּהַא וְהַדַאכּ שֻבַּّאכִּי!",
+   "hebrew": "זה חלונך? לא, זה לא חלוני, זה חלונה וההוא חלוני!"
+  },
+  {
+   "meeting": 2,
+   "id": 20,
+   "arabic": "הַדִיכּ עֵילִתְהַא? לַא, הַדִיכּ מֶש עֵילִתְהַא, הַדִיכּ עֵילִתוֹ!",
+   "hebrew": "ההיא משפחתה? לא, ההיא לא משפחתה, ההיא משפחתו!"
+  },
+  {
+   "meeting": 2,
+   "id": 21,
+   "arabic": "הַאדִי חַארִתְנַא וַהַדִיכּ חַארִתְהֹם!",
+   "hebrew": "זאת שכונתנו וההיא שכונתם!"
+  },
+  {
+   "meeting": 2,
+   "id": 22,
+   "arabic": "הַדַאכּ מַכְּתַבֹּם? לַא, הַדַאכּ מֶש מַכְּתַבְּהֹם, הַדַאכּ מַכְּתַבְּנַא",
+   "hebrew": "ההוא משרדם? לא, ההוא לא משרדם, ההוא משרדנו!"
+  },
+  {
+   "meeting": 2,
+   "id": 23,
+   "arabic": "הַאדַא צַפְּכֹּם? לַא, הַאדַא מֶש צַפְּנַא, הַאדַא צַפְּהֹם",
+   "hebrew": "זאת כיתתכם? לא, זאת לא כיתתנו, זאת כיתתם!"
+  },
+  {
+   "meeting": 2,
+   "id": 24,
+   "arabic": "הַאדַא אַחְמַד מְעַלְמַכּ? לַא, הַאדַא מֶש אַחְמַד מְעַלְמִי הַאדַא בְּלִאל!",
+   "hebrew": "זה אחמד המורה שלך? לא, זה לא אחמד המורה שלי, זה בלאל!"
+  },
+  {
+   "meeting": 2,
+   "id": 25,
+   "arabic": "הַאדִי פַאטְמֶה מַרַתַכּ? לַא וַללַّה, הַאדִי מֶש פַאטְמֶה מַרַתִי, הַאדִי נַבִילֵה!",
+   "hebrew": "זאת פאטמה אישתך? לא ואללה, זאת לא פאטמה אשתי, זאת נבילה!"
+  },
+  {
+   "meeting": 2,
+   "id": 26,
+   "arabic": "הַדוֹל נַבִּיל וְחַ'דִיגֶ'ה אַצְחַאבְּהֹם? לַא, הַדוֹל מֶש נַבִּיל וְחַ'דִיגֶ'ה, הַדוֹל וִסַאם וּמַרְיַם!",
+   "hebrew": "אלה נביל וח'דיג'ה חבריהם? לא, אלה לא נביל וח'דיג'ה, אלה וסאם ומרים!"
+  },
+  {
+   "meeting": 2,
+   "id": 27,
+   "arabic": "הַדַאכּ מְחַמַّד אִבִּנְהַא? לַא, הַדַאכּ מֶש מְחַמַّד, הַדַאכּ מַחְמוּד!",
+   "hebrew": "ההוא מחמד הבן שלה? לא, ההוא לא מחמד, ההוא מחמוד!"
+  },
+  {
+   "meeting": 2,
+   "id": 28,
+   "arabic": "הַדִיכּ וִדַאד בִּנְתוֹ? לַא, הַדִיכּ מֶש וִדַאד, הַדִיכּ פַיְרוּז!",
+   "hebrew": "ההיא ודאד הבת שלו? לא, ההיא לא ודאד, ההיא פירוז!"
+  },
+  {
+   "meeting": 2,
+   "id": 29,
+   "arabic": "הַדוֹלַאכּ אִבְּרַאהִים וְעַלַאא גֵ'ירַאנַّא? לַא וַללַّה, הַדוֹלַאכּ מֶש אִבְּרַאהִים וְעַלַאא, הַדוֹלַאכּ רַאאֶד וְחַסַן!",
+   "hebrew": "ההם אברהים ועלאא שכנינו? לא ואללה, ההם לא אברהים ועלאא, ההם ראאד וחסן!"
+  },
+  {
+   "meeting": 2,
+   "id": 30,
+   "arabic": "הַאדַא בֵּיתַכּ? לַא, הַאדַא מֶש בֵּיתִי, הַאד בֵּיתְהַא וְהַדַאכּ בֵּיתְנַא!",
+   "hebrew": "זה ביתך? לא, זה לא ביתי, זה ביתה וההוא ביתנו!"
+  },
+  {
+   "meeting": 2,
+   "id": 31,
+   "arabic": "הַאדִי עַמַארִתְכֹּם? לַא, הַאדִי מֶש עַמַארִתְנַא, הַדִיכּ (א)לְעַמַארַה!",
+   "hebrew": "זה בנייניכם? לא, זה לא בניינינו, הבניין ההוא!"
+  },
+  {
+   "meeting": 2,
+   "id": 32,
+   "arabic": "הַדוֹל בַּנְטַלוֹנַכּ וְקַמִיצַכּ? לַא, הַדוֹל מֶש בַּנְטַלוֹנִי וְקַמִיצִי, הַדוֹלַאכּ בַּנְטַלוֹנִי וְקַמִיצִי!",
+   "hebrew": "אלו מכנסיך וחולצתך? לא, אלו לא מכנסיי וחולצתי, ההם מכנסיי וחולצתי!"
+  },
+  {
+   "meeting": 2,
+   "id": 33,
+   "arabic": "הַאדִי צַאחְבִּתְכֹּם? לַא, הַאדִי מֶש צַאחְבִּתְנַא, הַאדִי צַאחְבִּתְהַא!",
+   "hebrew": "זאת חברתכם? לא, זאת לא חברתנו, זאת חברתה!"
+  },
+  {
+   "meeting": 2,
+   "id": 34,
+   "arabic": "הַאדִי (אל)סֵّיעַה, גְ'דִידֶה!",
+   "hebrew": "השעון הזה, חדש!"
+  },
+  {
+   "meeting": 2,
+   "id": 35,
+   "arabic": "אִ(ל)דַّאר הַאדִי וְ(א)לְעַמַארַה הַאדִי (א)לִכְּבִּירֶה.",
+   "hebrew": "הבית הזה והבניין הגדול הזה."
+  },
+  {
+   "meeting": 2,
+   "id": 36,
+   "arabic": "הַאדִי (אל)שַנְטַה (א)לִכְּבִּירֶה וַהַדוֹלַאכּ (אל)שֻנַט (א)לִזְעַ'אר.",
+   "hebrew": "המזוודה הגדולה הזאת והמזוודות הקטנות ההן."
+  },
+  {
+   "meeting": 2,
+   "id": 37,
+   "arabic": "אִ(ל)דַّפְתַר וִ(א)לְקַלַם הַדוֹל, גְ'דַאד.",
+   "hebrew": "המחברת והעט האלו חדשים."
+  },
+  {
+   "meeting": 2,
+   "id": 38,
+   "arabic": "הַדִיכּ (אל)טַאוְלֵה בִּהַדַאכּ (אל)צַףّ.",
+   "hebrew": "השולחן ההוא בכיתה ההיא."
+  },
+  {
+   "meeting": 2,
+   "id": 39,
+   "arabic": "הַדִיכּ (א)לְמַרַّה שֻפֶת הַאדִי (א)לְמַרַה.",
+   "hebrew": "(ב)פעם ההיא ראיתי את האישה הזאת."
+  },
+  {
+   "meeting": 2,
+   "id": 40,
+   "arabic": "הַאדִי מִש (א)לְעֻ'רְפֶה! הַאדַא (א)לְחַמַّאם!",
+   "hebrew": "זה לא החדר! זאת המקלחת!"
+  },
+  {
+   "meeting": 2,
+   "id": 41,
+   "arabic": "מַחְ'זַנִ (אל)דַّאר עַ (אל)סַّטֶח.",
+   "hebrew": "מחסן הבית על הגג."
+  },
+  {
+   "meeting": 2,
+   "id": 42,
+   "arabic": "הַאדִי מִש (אל)דַّאר הַאדַא (אל)דֻכַּّאן.",
+   "hebrew": "זה לא הבית זאת החנות."
+  },
+  {
+   "meeting": 2,
+   "id": 43,
+   "arabic": "הַאדַא מַטַארִ (אל)דוֹלֶה.",
+   "hebrew": "זה שדה התעופה (של) המדינה."
+  },
+  {
+   "meeting": 2,
+   "id": 44,
+   "arabic": "הַ(אל)צַّפְחַה פִי הַדַאכּ (א)לִכְּתַאבּ.",
+   "hebrew": "העמוד הזה בספר ההוא."
+  },
+  {
+   "meeting": 2,
+   "id": 45,
+   "arabic": "אִ(ל)דַّפַאתֶר וְ(א)לְכֻּרַّאסֶה פִי (אל)שַّנְטַה.",
+   "hebrew": "המחברות והחוברת בתיק."
+  },
+  {
+   "meeting": 2,
+   "id": 46,
+   "arabic": "הַאדַא (אל)שַّאי וְהַאדַא (אל)סֻّכַּّר.",
+   "hebrew": "זה התה וזה הסוכר."
+  },
+  {
+   "meeting": 2,
+   "id": 47,
+   "arabic": "אִ(ל)סֶכְּרֵתֵירַא מִע (אל)טֻלַّאבּ בִּ(אל)גַ'אמְעַה.",
+   "hebrew": "המזכירה עם הסטודנטים באוניברסיטה."
+  },
+  {
+   "meeting": 2,
+   "id": 48,
+   "arabic": "אִ(ל)שַّבַּאבִּיכּ פִי (א)לִצְפוּפ.",
+   "hebrew": "החלונות בכיתות."
+  },
+  {
+   "meeting": 2,
+   "id": 49,
+   "arabic": "מִש (אל)טַّאבֵּק הַאד, הַדַאכּ (אל)טַّאבֵּק.",
+   "hebrew": "לא הקומה הזאת, הקומה ההיא."
+  },
+  {
+   "meeting": 3,
+   "id": 50,
+   "arabic": "הַאדַא מַחְ'זַנִ (א)לְמַסְגִ'ד.",
+   "hebrew": "זה מחסן המסגד."
+  },
+  {
+   "meeting": 3,
+   "id": 51,
+   "arabic": "הַדַאכּ מַסְג'דִ (א)לְחַארַה.",
+   "hebrew": "ההוא מסגד השכונה."
+  },
+  {
+   "meeting": 3,
+   "id": 52,
+   "arabic": "הַאדַא מַטְבַּחִ' (אל)דַّאר.",
+   "hebrew": "זה מטבח הבית."
+  },
+  {
+   "meeting": 3,
+   "id": 53,
+   "arabic": "הַאדִי עֻ'רְפִת (א)לְוַלַד.",
+   "hebrew": "זה חדר הילד."
+  },
+  {
+   "meeting": 3,
+   "id": 54,
+   "arabic": "הַדַאכּ חֵיטִ (א)לְבַּלכּוֹנֶה.",
+   "hebrew": "ההוא קיר המרפסת."
+  },
+  {
+   "meeting": 3,
+   "id": 55,
+   "arabic": "אִ(ל)טַّאוְלֶה וִ(א)לְכֻּרְסִי הַדוֹל.",
+   "hebrew": "השולחן והכסא האלו."
+  },
+  {
+   "meeting": 3,
+   "id": 56,
+   "arabic": "הַאדִי מַרַת חַ'אלִי וְהַאדִי מַרַת עַמִّי.",
+   "hebrew": "זאת אשת דודי (אמא) וזאת אשת דודי (אבא)."
+  },
+  {
+   "meeting": 3,
+   "id": 57,
+   "arabic": "הַדַאכּ בַּאבִּ (א)לְחַארַה.",
+   "hebrew": "ההוא שער השכונה."
+  },
+  {
+   "meeting": 3,
+   "id": 58,
+   "arabic": "הַאדִי עֵילֵת מַנְצוּר.",
+   "hebrew": "זאת משפחת מנצור."
+  },
+  {
+   "meeting": 3,
+   "id": 59,
+   "arabic": "הַאדִי חַ'זַאנִת (א)לְחַמַّאם.",
+   "hebrew": "זה ארון המקלחת."
+  },
+  {
+   "meeting": 3,
+   "id": 60,
+   "arabic": "הַאדִי מַכְּתַבִּת (אל)גַ'אמְעַה.",
+   "hebrew": "זאת ספריית האוניברסיטה."
+  },
+  {
+   "meeting": 3,
+   "id": 61,
+   "arabic": "הַדִיכּ מֻחַאמְיִת (א)לְוִזַארַה.",
+   "hebrew": "ההיא עורכת דין המשרד (הממשלתי)."
+  },
+  {
+   "meeting": 3,
+   "id": 62,
+   "arabic": "הַאי מַדְרַסִת (א)לְחַארַה.",
+   "hebrew": "זה בית ספר השכונה."
+  },
+  {
+   "meeting": 3,
+   "id": 63,
+   "arabic": "חַארְתִ (אל)דַّרַג' גַ'מְבּ בַּיַّארַת גַ'ארִי.",
+   "hebrew": "שכונת המדרגות ליד פרדס שכני."
+  },
+  {
+   "meeting": 3,
+   "id": 64,
+   "arabic": "שַהַאדִת (אל)דַוְרַה בִּ(א)לְבַּרַנְדַא.",
+   "hebrew": "תעודת הקורס במרפסת."
+  },
+  {
+   "meeting": 3,
+   "id": 65,
+   "arabic": "אִ(ל)דַّוְרַה הִיֶّ עַנִ (אל)תַّארִיח' אִ(ל)אִסְלַאמִי.",
+   "hebrew": "הקורס הוא אודות ההיסטוריה האסלאמית."
+  },
+  {
+   "meeting": 3,
+   "id": 66,
+   "arabic": "מַחַטִّת (אל)תַّכְּסִיַאת פִי (א)לְעַמַארַה עַלַא (א)לְיַמִין.",
+   "hebrew": "תחנת המוניות בבניין על צד ימין."
+  },
+  {
+   "meeting": 3,
+   "id": 67,
+   "arabic": "אִ(ל)טַّאוְלֶה וִ(א)לְכַּרַאסִי עַלַא סַטְחִ (א)לְבֵּית.",
+   "hebrew": "השולחן והכיסאות על גג הבית."
+  },
+  {
+   "meeting": 3,
+   "id": 68,
+   "arabic": "אִלְחַקّ מֶש עַלֵיכּ, אִלְחַקّ עַלַיّ.",
+   "hebrew": "האשמה לא עליך האשמה עלי."
+  },
+  {
+   "meeting": 3,
+   "id": 69,
+   "arabic": "הֻוֶّ כַּתַבִּ (א)לְקֻצַّה עַנְכֹּם, מֶש עַנְהֹם.",
+   "hebrew": "הוא כתב את הסיפור אודותיכם, לא אודותם."
+  },
+  {
+   "meeting": 3,
+   "id": 70,
+   "arabic": "הַדוֹל מִנִّי וּמִנّוֹ.",
+   "hebrew": "אלו ממני וממנו."
+  },
+  {
+   "meeting": 3,
+   "id": 71,
+   "arabic": "אִ(ל)זַّלַמֶה מִנַّא וּפִינַא.",
+   "hebrew": "הבן אדם משלנו."
+  },
+  {
+   "meeting": 3,
+   "id": 72,
+   "arabic": "יוֹם מַעַכּ וְיוֹם עַלֵיכּ.",
+   "hebrew": "יום איתך ויום נגדך (עליך)."
+  },
+  {
+   "meeting": 3,
+   "id": 73,
+   "arabic": "אִלְחַקّ מֶש עַלֵיהֹם, אִלְחַקّ עַלֵיכֹּם.",
+   "hebrew": "האשמה לא עליהם, האשמה עליכם."
+  },
+  {
+   "meeting": 3,
+   "id": 74,
+   "arabic": "הַ(א)לְחַ'זַאנֶה? אִ(ל)שֻّנַט עַלֵיהַא.",
+   "hebrew": "הארון ההוא? התיקים עליו."
+  },
+  {
+   "meeting": 3,
+   "id": 75,
+   "arabic": "אִלְקֻצַّה מֶש עַנְהַא וּמֶש עַנַכּ, אִלְקֻצַّה עַנַّא.",
+   "hebrew": "הסיפור לא אודותיה ולא אודותיך, הסיפור אודותינו."
+  },
+  {
+   "meeting": 3,
+   "id": 76,
+   "arabic": "אִ(ל)שַהַאדֶה הַאדִי מִנְהַא וּמִנַّכּ.",
+   "hebrew": "התעודה הזאת ממנה וממך."
+  },
+  {
+   "meeting": 3,
+   "id": 77,
+   "arabic": "אִ(ל)שַّנְטַה, פִיהַא בַּנְטַלוֹן וּבְּלוּזֶה.",
+   "hebrew": "התיק (יש) בו מכנסיים וחולצה."
+  },
+  {
+   "meeting": 3,
+   "id": 78,
+   "arabic": "הַדַאכּ (אל)צַףّ פִיّוֹ שֻבַּّאכּ.",
+   "hebrew": "הכיתה (יש) בה חלון."
+  },
+  {
+   "meeting": 3,
+   "id": 79,
+   "arabic": "אִ(ל)דַّפְתַר וִ(א)לְקַלַם עַ (אל)טַّאוְלֶה פִי מַכְּתַבִּי.",
+   "hebrew": "המחברת והעט על השולחן במשרדי."
+  },
+  {
+   "meeting": 4,
+   "id": 80,
+   "arabic": "אִ(ל)סַיַّארַה וַרַא הַ(א)לְבֵּית, תַבַּעַכּ? לַא! אִ(ל)סַיַّארַה מֶש תַבַּעְתִי.",
+   "hebrew": "המכונית מאחרי הבית הזה שלך? לא, המכונית לא שלי."
+  },
+  {
+   "meeting": 4,
+   "id": 81,
+   "arabic": "אִ(ל)שַّאחְנֶה תַעוֹ פִי (אל)שַארֶע קֻדַّאם בֵּיתִי.",
+   "hebrew": "המשאית שלו ברחוב מול ביתי."
+  },
+  {
+   "meeting": 4,
+   "id": 82,
+   "arabic": "דַאר אַבּוּי גַ'מְבּ מַכְּתַבּ גַ'ארְכֹּם אַבּוּ לוּאַאיְ.",
+   "hebrew": "בית אבי ליד משרד שכנכם אבו לואאי."
+  },
+  {
+   "meeting": 4,
+   "id": 83,
+   "arabic": "הַאדִי (אל)שַקַّה אִלִי, וְהַאד מַדְחַ'לִ (א)לְעַמַארַה תַחְתְהַא.",
+   "hebrew": "הדירה הזאת שלי וזאת כניסת הבניין תחתיה."
+  },
+  {
+   "meeting": 4,
+   "id": 84,
+   "arabic": "אִ(ל)שַקַّה תַבַּעְתִכֹּם מַוְגּ'וּדֶה פוֹקִ (אל)שִרְכֶּה תַבַּעִתְהֹם.",
+   "hebrew": "הדירה שלכם נמצאת מעל החברה שלהם."
+  },
+  {
+   "meeting": 4,
+   "id": 85,
+   "arabic": "אִ(ל)טַّאוְלֶה תַבַּעִתְנַא קְבַּאלִ (אל)שֻבַּّאכּ תַבַּעְהַא.",
+   "hebrew": "השולחן שלנו מול החלון שלה."
+  },
+  {
+   "meeting": 4,
+   "id": 86,
+   "arabic": "אִלְבִּנֶת תַעֵכּ חַוַאלִי סֵיעַה מֻש הוֹן.",
+   "hebrew": "הבת שלך בערך שעה לא פה."
+  },
+  {
+   "meeting": 4,
+   "id": 87,
+   "arabic": "לִמְעַלְמֶה מַוְגּ'וּדֶה בַּרַّא הֻנַאכּ, גֻ'וזְהַא מַוְגּ'וד הוֹן גֻ'וַّא.",
+   "hebrew": "המורה נמצאת שם בחוץ, בעלה נמצא בפנים."
+  },
+  {
+   "meeting": 4,
+   "id": 88,
+   "arabic": "מִנّ הוֹן דֻעְ'רִי לַחַדִ (אל)שַّוֹכֶּה תַעִ (אל)טֻّרֻק וּבַּّס.",
+   "hebrew": "מפה ישר עד המזלג של הכבישים וזהו."
+  },
+  {
+   "meeting": 4,
+   "id": 89,
+   "arabic": "רַוְצַ'תִ (א)לְאַטְפַאל תַע בִּנְתִי, פִי וַרַאהַא מַוְקֶפ סַיַّארַאת.",
+   "hebrew": "גן הילדים של בתי יש מאחוריו חניון מכוניות."
+  },
+  {
+   "meeting": 4,
+   "id": 90,
+   "arabic": "קֻדַّאם דַוַّארִ (א)לְבַּלַד הֻנַאכּ פִי רַמְזוֹן.",
+   "hebrew": "מול כיכר היישוב, יש שם רמזור."
+  },
+  {
+   "meeting": 4,
+   "id": 91,
+   "arabic": "אִ(ל)טַّאבֶּק אִלִי פוֹק וְ(אל)טַّאבֶּק אִלִי תַחֵת.",
+   "hebrew": "הקומה שלמעלה והקומה שמתחת."
+  },
+  {
+   "meeting": 4,
+   "id": 92,
+   "arabic": "מִנّ בַּרַّא רְחַ'אם וּמִנّ גֻ'וַّא סְחַ'אם.",
+   "hebrew": "מבחוץ שיש ומבפנים טינופת."
+  },
+  {
+   "meeting": 4,
+   "id": 93,
+   "arabic": "פִי עַלֵינַא שֻעְ'ל כְּתִיר, יַעְנִי חַוַאלִי עַשַר נַקְלַאת.",
+   "hebrew": "יש לנו עבודה רבה בערך 10 הובלות."
+  },
+  {
+   "meeting": 4,
+   "id": 94,
+   "arabic": "דֻעְ'רִי בַּעַד צַלַאתִ (א)לְפַגֶ'ר.",
+   "hebrew": "מיד לאחר תפילת השחר."
+  },
+  {
+   "meeting": 5,
+   "id": 95,
+   "arabic": "אַבּוּ אַחְמַד וּמַרַתוֹ עִנְדְהֹם וְלַאד? לַא וַאללַה! מַעִנְדְהוֹמְש וְלַאד!",
+   "hebrew": "אבו אחמד ואשתו יש להם ילדים? לא, אין להם ילדים."
+  },
+  {
+   "meeting": 5,
+   "id": 96,
+   "arabic": "הַאדַא (א)לְבֵּית (א)לִכְּבִּיר אִלֵכּ? אלְבֵּית מֶש אִלִי, הַאדַא (א)לְבֵּית לַאחְ'וּי.",
+   "hebrew": "הבית הגדול הזה שלך? הבית לא שלי, הבית של אחי."
+  },
+  {
+   "meeting": 5,
+   "id": 97,
+   "arabic": "עִנְדְכֹּם מַדְרַסֶה פִי (א)לְבַּלַד? מַעִנַّאש מַדְרַסֶה בְּ(א)לְבַּלַד! עִנַّא בַּסّ רַוְצַ'ה.",
+   "hebrew": "יש אצלכם בית ספר בכפר? אין לנו בית ספר בכפר, יש אצלנו רק גן ילדים."
+  },
+  {
+   "meeting": 5,
+   "id": 98,
+   "arabic": "מֻמְכֶּן אַחְמַד מַוְגּ'וד עִנְדְהֹם? לַא! הֻוֶّ מֶש עִנְדְהֹם! מַוְגּ'וד עִנְדִי פִי (אל)דַّאר.",
+   "hebrew": "אולי אחמד נמצא אצלם? לא, הוא לא אצלם, הוא נמצא אצלי בבית."
+  },
+  {
+   "meeting": 5,
+   "id": 99,
+   "arabic": "עִנְדַכּ חְסַאבּ הוֹן בִּ(א)לְבַּנְכּ? לַא! מַעִנְדִיש חְסַאבּ עִנְדְכֹּם! חְסַאבִּי פִי בַּנְכּ תַאנִי.",
+   "hebrew": "יש לך חשבון פה בבנק? אין לי חשבון אצלכם, חשבוני בבנק אחר."
+  },
+  {
+   "meeting": 5,
+   "id": 100,
+   "arabic": "מַפַאתִיחִ (אל)סַיַّארַה מַעַכּ? אלְמַפַאתִיח מֶש מַעִי, (א)לְמַפַאתִיח עִנְדִי בִּ(א)לְמַכְּתַבּ.",
+   "hebrew": "מפתחות המכונית עמך? המפתחות לא עימי, המפתחות במשרד."
+  },
+  {
+   "meeting": 5,
+   "id": 101,
+   "arabic": "אִ(ל)גֻ'ّזְדַאן (א)לִגְ'דִיד מַעַכּ? אִ(ל)גֻ'ّזְדַאן מֶש מַעִי, מַוְגּ'וד עִנְדִי בִּ(אל)סַיַّארַה.",
+   "hebrew": "הארנק החדש עמך? הארנק לא עימי, נמצא במכונית."
+  },
+  {
+   "meeting": 5,
+   "id": 102,
+   "arabic": "אִנְתוּ אִלְכֹּם תֵלֵפִזְיוֹן בִּ(אל)דַّאר? מַלְנַאש תֵלֵפִזְיוֹן בִּ(אל)דַّאר, בַּסّ פִי בֵּית אַבּוּי.",
+   "hebrew": "יש לכם טלוויזיה בבית? אין לנו טלוויזיה בבית, רק בבית אבי."
+  },
+  {
+   "meeting": 5,
+   "id": 103,
+   "arabic": "אִלְנַא אַצְחַאבּ פִי (אל)גַ'אמְעַה, הֵמّ טֻלַّאבּ גְ'דַאד.",
+   "hebrew": "יש לנו חברים באוניברסיטה, הם סטודנטים חדשים."
+  },
+  {
+   "meeting": 5,
+   "id": 104,
+   "arabic": "אִלְהֹם קַרַאיֶבּ עִנַّא פִי (א)לְבַּלַד, נַאס טַיְّבִּין.",
+   "hebrew": "יש להם קרובים אצלנו ביישוב, אנשים טובים."
+  },
+  {
+   "meeting": 5,
+   "id": 105,
+   "arabic": "(הֻםّ) מַעְהֹם בַּסّ עִשְרִין שֵיכֶּל, מַאשִי?",
+   "hebrew": "יש להם רק 20 שקל, בסדר?"
+  },
+  {
+   "meeting": 5,
+   "id": 106,
+   "arabic": "אַחְ'וּכִּי מֶש עִנַّא, רַאח קַבֶּל סַאעְתֵין, כֻּלّ שִי תַמַאם?",
+   "hebrew": "אחיך לא אצלנו, הלך לפני שעתיים, הכל בסדר?"
+  },
+  {
+   "meeting": 5,
+   "id": 107,
+   "arabic": "בַּעִד (א)לְמֻכַּאלַמֶה, אִלְהֹם הַםّ כְּבִּיר.",
+   "hebrew": "אחרי השיחה, יש להם דאגה גדולה."
+  },
+  {
+   "meeting": 5,
+   "id": 108,
+   "arabic": "הִיֶّ מַלְהַאש עֵילֶה, מִסְכִּינֶה, יַתִימֶה!",
+   "hebrew": "אין לה משפחה, מסכנה יתומה."
+  },
+  {
+   "meeting": 5,
+   "id": 109,
+   "arabic": "כִּיפ חַאלַכּ יַאחְ'וּי? מֻמְכֶּן מַעַכּ בֵּלֵפוֹן?",
+   "hebrew": "מה מצבך, אחי? יש לך אולי פלאפון?"
+  },
+  {
+   "meeting": 5,
+   "id": 110,
+   "arabic": "אִלְמֻקַאבַּלֶה עִנְדֵכּ בְּ(א)לְמַכְּתַבּ אַו פִי (א)לְמַטְעַם?",
+   "hebrew": "הפגישה אצלך במשרד או במסעדה?"
+  },
+  {
+   "meeting": 5,
+   "id": 111,
+   "arabic": "הַאדַא מֶש אִלִי וְלַא אִלַכּ הַאדַא אִלוֹ!",
+   "hebrew": "זה לא שלי ולא שלך, זה שלו!"
+  },
+  {
+   "meeting": 5,
+   "id": 112,
+   "arabic": "יַא עַמִّי, עִנְדִי וִלַא עִנְדַכּ, וַללִה כֻּלّוֹ נַפְס (אל)שִי.",
+   "hebrew": "דוד, אצלי או אצלך, באמת הכל אותו דבר."
+  },
+  {
+   "meeting": 5,
+   "id": 113,
+   "arabic": "וַלְלַّה, אַנַא מַאשִי מַעַאכּ זַיّ (אל)סֵّיעַה, מַטְ'בּוּט וִלַא לַא?",
+   "hebrew": "האמת, אני הולך עימך כמו שעון, נכון או לא?"
+  },
+  {
+   "meeting": 5,
+   "id": 114,
+   "arabic": "אִ(ל)צַרַאחַה, אַבּוּ נִצַ'אל, זַלַמֶה טַיֶّבּ וַעַלַא כֵּיפ כֵּיפַכּ, מַא פִי כַּלַאם!",
+   "hebrew": "בכנות, אבו נצ'אל, בן אדם טוב, אין מה להגיד!"
+  },
+  {
+   "meeting": 5,
+   "id": 115,
+   "arabic": "מַטְ'בּוּט וִלַא מֶש מַטְ'בּוּט כֻּלّוֹ מַאשִי, שַאיֶפ?",
+   "hebrew": "מדויק או לא מדויק, הכל הולך, אתה רואה?"
+  },
+  {
+   "meeting": 6,
+   "id": 116,
+   "arabic": "אַנַא אַאסֶפ, מַפִשّ נַאצֶר הוֹן, אִ(ל)נֻّמְרַה עַ'לַט יַא-חְ'תִי.",
+   "hebrew": "אני מצטער, אין פה נאצר, זאת טעות במספר, אחותי."
+  },
+  {
+   "meeting": 6,
+   "id": 117,
+   "arabic": "הַאדַא מַא לוֹ? מֻש שַאיֶפ (אל)טַّרִיק? סַיַّארְתוֹ צַ'רְבַּת סַיַّארִתְהֹם, אלְחַמְדֻלִלַّה מַפִש גְ'רְחַא.",
+   "hebrew": "זה, מה יש לו? לא רואה את הדרך? מכוניתו פגעה במכוניתם, תודה לאל אין פצועים."
+  },
+  {
+   "meeting": 6,
+   "id": 118,
+   "arabic": "אִחְנַא וְצִלְנַא עַ (א)לְבַּלַד בַּעַדִ (אל)צֻ'הֻר וְהֹםّ בַּסّ חַ'רַג'וּ מִנִ (אל)דַّאר.",
+   "hebrew": "אנחנו הגענו ליישוב אחר הצהריים והם רק יצאו מהבית."
+  },
+  {
+   "meeting": 6,
+   "id": 119,
+   "arabic": "וַללַّהִ יַא-חְ'י, חַאלִתְנַא בִּ(א)לְוֵיל, חְסַאבְּנַא עַ (א)לְמַכְּשוּפ.",
+   "hebrew": "האמת אחי, מצבנו על הפנים, חשבוננו במינוס."
+  },
+  {
+   "meeting": 6,
+   "id": 120,
+   "arabic": "רְכִּבְּנַא (א)לְבַּאצ חַ'טִّ (אל)רַמְלֶה מְנִّ (אל)לִّדّ לַחַדִّ (א)לְמַחַטّה (א)לְמַרְכַּזִיֶّה.",
+   "hebrew": "נסענו באוטובוס קו רמלה מלוד עד התחנה המרכזית."
+  },
+  {
+   "meeting": 6,
+   "id": 121,
+   "arabic": "אַחוּה לַצַאחְבִּי צַ'רְבַּתוֹ סַיַّארַה אַוّל אִמְבַּארֶח וְבַּעַדְהַא הַרְבַּת מִנְّ מַחַלִّ (א)לְחַאדֶס.",
+   "hebrew": "אחיו של חברי, פגעה בו מכונית שלשום ולאחר מכן ברחה ממקום התאונה."
+  },
+  {
+   "meeting": 6,
+   "id": 122,
+   "arabic": "אַנַא טַלֵבְּת מִנّוֹ אַלְפ מַרַّה, חַ'רַאם הַאדַא (א)לְחַכִּי!",
+   "hebrew": "אני ביקשתי ממנו אלף פעמים, חבל על הסיפור הזה!"
+  },
+  {
+   "meeting": 6,
+   "id": 123,
+   "arabic": "קַעַדְנַא עִנְדְהֹם שְרִבְּנַא קַהְוֶה וִטְלִעְנַא מִנְّהֹם בַּעַד סֵיעַה.",
+   "hebrew": "ישבנו אצלם, שתינו קפה ויצאנו מהם לאחר שעה."
+  },
+  {
+   "meeting": 6,
+   "id": 124,
+   "arabic": "יוֹם (אל)גֻ'מְעַה בַּעַתְנַא (א)לְפַכְּס וִצֵל בַּסّ יוֹם (אל)תְנֵין.",
+   "hebrew": "יום שישי שלחנו את הפקס, הגיע רק ביום שני."
+  },
+  {
+   "meeting": 6,
+   "id": 125,
+   "arabic": "לִמְעַלְמֶה שַרְחַתִ (אל)דַרְס וְ(אל)תַّלַאמִיז פְהְמוּ כֻּלّ שִי.",
+   "hebrew": "המורה הסבירה את השיעור והתלמידים הבינו הכל."
+  },
+  {
+   "meeting": 6,
+   "id": 126,
+   "arabic": "גַ'ארִתְנַא אַחְ'דַת מִנַّא טַנְגַ'רַה וְטַבְּחַ'ת פִיהַא מַקְלוּבֶּה לַחַפְלֶת בִּנְתְהַא.",
+   "hebrew": "שכנתנו לקחה מאיתנו סיר ובישלה בו מקלובה למסיבת בתה."
+  },
+  {
+   "meeting": 6,
+   "id": 127,
+   "arabic": "יוֹם (א)לְחַ'מִיס כֻּלّ וְלַאד צַפִּّי לִבְּסוּ אַוַאעִי (א)לְעִיד.",
+   "hebrew": "יום חמישי כל ילדי כיתתי לבשו את בגדי החג."
+  },
+  {
+   "meeting": 6,
+   "id": 128,
+   "arabic": "נַקַלוּ מַכְּתַבִּ (אל)סַפַרִיַّאת עַלַא קַלְבִּ (א)לְבַּלַד.",
+   "hebrew": "העבירו את משרד הנסיעות למרכז היישוב."
+  },
+  {
+   "meeting": 6,
+   "id": 129,
+   "arabic": "אִמְבַּארֶח נְזִלְנַא עַ מַרְכַּז (א)לְבַּלַד דַחַ'לְנַא מַטְעַם \"אִלְבֻּסְתַאן\" וְאַכַּלְנַא הֻנַאכּ מַקְלוּבֶּה.",
+   "hebrew": "אתמול ירדנו למרכז היישוב, נכנסנו למסעדת אלבסתאן ואכלנו שם מקלובה."
+  },
+  {
+   "meeting": 6,
+   "id": 130,
+   "arabic": "בַּסّ פַתַחוּ מַחַלִّ (א)לְחַלַוִיַّאת (א)לִגְ'דִיד הַגְ'מַת עַלֵיה כֻּלִّ (א)לְעַאלַם.",
+   "hebrew": "רק פתחו את חנות המתוקים החדשה, הסתערו עליה כולם."
+  },
+  {
+   "meeting": 7,
+   "id": 131,
+   "arabic": "הַאדִי (א)לְבְּצַ'אעַה נְצִ'יפֶה, אַמַّא הַדִיכּ אַנְצַ'פ וְאַרְחַ'צ, יַעְנִי דַפַעְנַא עַלֵיהַא עִשְרִין שֵיכֶּל אַקַלّ.",
+   "hebrew": "הסחורה הזאת נקייה, אבל ההיא נקייה וזולה יותר, שילמנו עליה 20 שקל פחות."
+  },
+  {
+   "meeting": 7,
+   "id": 132,
+   "arabic": "הַדוֹל (א)לְקֻמְצַאן כְּבַּאר! מַא פִי אַזְעַ'ר? בִּדִّי אַזְעַ'ר אִשִי, אַללַה יְחַ'לִّיכּ.",
+   "hebrew": "החולצות האלו גדולות! אין משהו קטן יותר? אני רוצה את הכי קטן."
+  },
+  {
+   "meeting": 7,
+   "id": 133,
+   "arabic": "אַמְגַ'ד, הֻוֶّ אַכְּבַּّר וַאחַד עִנַّא בִּ(אל)צַפّ, אִלְיִום (א)לְאֻסְתַאז סַאל סֻאַאל וְהֻוֶّ (א)לְוַחִיד אִלִّי עִרֶפ (אל)גַ'ّוַאבּ.",
+   "hebrew": "אמג'ד הוא הכי גדול אצלנו בכיתה, היום המורה שאל שאלה והוא היחיד שידע את התשובה."
+  },
+  {
+   "meeting": 7,
+   "id": 134,
+   "arabic": "אִ(ל)סַّנֶה אִלִّי פַאתַת נְזִלְנַא עַלַא אוֹתֵיל הִילְתוֹן, וַלְלַّהִ אַחְלַא אוֹתֵיל פִי עַמַّאן.",
+   "hebrew": "שנה שעברה התארחנו במלון הילטון, באמת המלון הכי טוב בעמאן."
+  },
+  {
+   "meeting": 7,
+   "id": 135,
+   "arabic": "פִי עִנַّא עִדֶّת דַכַּאתְרַה, אַמַّא הֻוֶّ אַחְסַן דוֹכְּתוֹר עִנַّא בִּ(א)לְעִיַאדֶה.",
+   "hebrew": "יש לנו מספר רופאים אבל הוא הרופא הכי טוב אצלנו במרפאה."
+  },
+  {
+   "meeting": 7,
+   "id": 136,
+   "arabic": "יַא חַבִּיבִּי תְפַצַ'ّל, אִלְאִמְכַּאנִיַّאת מַפְתוּחַה, אִנְתֶ שוּ אַרְיַחְלַכּ, יַאחְ'י?",
+   "hebrew": "יקירי, בבקשה, האפשרויות פתוחות, מה יותר נוח לך, אחי?"
+  },
+  {
+   "meeting": 7,
+   "id": 137,
+   "arabic": "אִ(ל)צַّרַאחַה, אִלְאַסְעַאר עִנְדְהֹם עַ'אלְיֶה כְּתִיר, יַעְנִי הֻםّ אַעְ'לַא מַחַלّ פִי (א)לְבַּלַד.",
+   "hebrew": "בכנות, המחירים אצלם יקרים מאוד, הם המקום הכי יקר ביישוב."
+  },
+  {
+   "meeting": 7,
+   "id": 138,
+   "arabic": "אַשְרַפ חַ'בַּצ בִּ(א)לְאִמְתִחַאן, אַחַ'ד אַוְטַא עַלַאמֶה בִּ(אל)דّוֹרַה. פִעְלַן אַצְעַבּ אִמְתִחַאן אִלִי כַּאן אִלְנַא.",
+   "hebrew": "אשרף נכשל במבחן, קיבל את הציון הכי נמוך בקורס. באמת המבחן הכי קשה שהיה לנו."
+  },
+  {
+   "meeting": 7,
+   "id": 139,
+   "arabic": "הַאדַא (א)לְחַרַאמִי (א)לְוַאטִי, דַחַ'ל עַ(אל)דֻכַּّאן וְסַרַק מִנַّא אַעְ'רַאצ'. בַּסّ בַּעַדְהַא בְּיוֹם, כַּשַפְנַא (אל)סִّרְקַה.",
+   "hebrew": "הגנב השפל הזה נכנס לחנות וגנב מאיתנו דברים, רק יום לאחר מכן גילינו את הגניבה."
+  },
+  {
+   "meeting": 7,
+   "id": 140,
+   "arabic": "עַ'סַלְנַא (א)לְעַ'סִיל פִי (א)לְעַ'סַّאלֶה טְלֶע אַוְסַח', בִּדְנַא עַ'סַّאלֶה גְ'דִידֶה.",
+   "hebrew": "כיבסנו את הכביסה במכונת הכביסה, יצאה מלוכלכת יותר. אנחנו צריכים מכונת כביסה חדשה."
+  },
+  {
+   "meeting": 7,
+   "id": 141,
+   "arabic": "אִלְמַטְ'בּוט, מַעְרִפְתֶש הַאדַא (א)לְאִשִי. אַכִּיד הַאדַא (א)לְחַכִּי?",
+   "hebrew": "האמת, לא ידעתי על כך. זה ודאי הדבר הזה?"
+  },
+  {
+   "meeting": 7,
+   "id": 142,
+   "arabic": "מַאחַ'דוּש אִבְּן עַמִّי מַעְהֹם. הַרַבּ מִן (א)לְמַחַלّ קַבֶּל.",
+   "hebrew": "לא לקחו את בן דודי עימם, ברח מהמקום לפני."
+  },
+  {
+   "meeting": 7,
+   "id": 143,
+   "arabic": "פַאתֶח (א)לְמַחַלّ עִנְדְכֹּם? לַא וַאללַה! מֶש פַאתֶח!",
+   "hebrew": "המקום פתוח אצלכם? באמת שלא! לא פתוח!"
+  },
+  {
+   "meeting": 7,
+   "id": 144,
+   "arabic": "נַאקֶצ כְּתִיר אַשְיַאא, הַאדַא (א)לְחַכִּי מֶש עַאגִ'בְּנִי!",
+   "hebrew": "חסר הרבה דברים, העניין הזה לא מוצא חן בעיניי!"
+  },
+  {
+   "meeting": 7,
+   "id": 145,
+   "arabic": "מַסְמִעְנַאש צוֹתוֹ בִּ(א)לְמַרַّה, מֶש עַארְפִין וֵין הֻוֶّ.",
+   "hebrew": "לא שמענו את קולו בכלל, לא יודעים איפה הוא."
+  },
+  {
+   "meeting": 7,
+   "id": 146,
+   "arabic": "מַרְגִ'עְתֶש בִּ(א)לְבַּאצ, רְגֶ'עֶת עַ (א)לְבִּסְכְּלֵית.",
+   "hebrew": "לא חזרתי באוטובוס, חזרתי באופניים."
+  },
+  {
+   "meeting": 7,
+   "id": 147,
+   "arabic": "אִבֶּן גַ'ארְנַא מַקִבְּלוּהוֹש עַ (א)לְכֻּלִّיֶّה, אִ(ל)זַלַמֶה מַלוֹש חַטّ.",
+   "hebrew": "בן שכננו לא התקבל למכללה, לא היה לו מזל."
+  },
+  {
+   "meeting": 7,
+   "id": 148,
+   "arabic": "אִמְבַּארֶח מַקַעַדְנַאש פִי (א)לְקַהְוֶה. קַעַדְנַא הֻנַאכּ יוֹם (אל)גֻ'מְעַה.",
+   "hebrew": "אתמול לא ישבנו בבית הקפה, ישבנו שם יום שישי."
+  },
+  {
+   "meeting": 7,
+   "id": 149,
+   "arabic": "הַאדַא בִּנְתוֹ מֶש מַוְהוּבֶּה, מַדַרְסְתֶש טִבّ פִי (אל)גַ'אמְעַה.",
+   "hebrew": "הבת שלו לא מוכשרת, לא למדה רפואה באוניברסיטה."
+  },
+  {
+   "meeting": 7,
+   "id": 150,
+   "arabic": "טַבّ כִּיפ כַּאן? טַ'בְּטַת מַעַכֹּם וְלַא מַטְ'בַּטֶתְש?",
+   "hebrew": "טוב, איך היה? הסתדר לכם או לא הסתדר?"
+  },
+  {
+   "meeting": 7,
+   "id": 151,
+   "arabic": "אַבּוּ חַ'אלֶד מַעַזַמְנַאש עַלַא חַפְלֶת בִּנְתוֹ, בַּסִיטַה! אִלְאַיַّאם בֵּינַתְנַא!",
+   "hebrew": "אבו ח'אלד לא הזמין אותנו למסיבת בתו. אנחנו נזכור לו את זה."
+  },
+  {
+   "meeting": 7,
+   "id": 152,
+   "arabic": "אִחְנַא מַחַגַ'זְנַאש עֻ'רְפֶה עִנְדְכֹּם בִּ(א)לְאוֹתֵיל, צַאחְבִּי הֻוֶّ אִלִّי חַגַ'ז עִנְדְכֹּם.",
+   "hebrew": "לא הזמנו חדר אצלכם במלון, חברי הוא זה אשר הזמין אצלכם."
+  },
+  {
+   "meeting": 7,
+   "id": 153,
+   "arabic": "הַדַאכּ (אל)שַהֶר מַרְבִּחְתוּש כְּתִיר מַצַארִי, מֶש חַרַאם, חִ'סְרְתוּ כֻּלّ שִי?",
+   "hebrew": "החודש הקודם לא הרווחתם הרבה כסף, לא חבל, הפסדתם את הכל?"
+  },
+  {
+   "meeting": 7,
+   "id": 154,
+   "arabic": "מַלְחִקְתֶש וּמַחַ'לַّצְתֶש אִ(ל)שֻעְ'ל עַ (א)לְוַקֶת, רְגֶ'עֶת עַ(אל)דַّאר בַּסّ קַבֶּל סֵיעַה.",
+   "hebrew": "לא הספקתי ולא סיימתי את העבודה בזמן, חזרתי הביתה רק לפני שעה."
+  },
+  {
+   "meeting": 7,
+   "id": 155,
+   "arabic": "אַנַא מַגַ'מַעְתֶש (א)לְוַרַאק, אַמַّא (א)לְמַטְ'בּוט מֶש נַאקֶצ אִשִי.",
+   "hebrew": "אני לא אספתי את הניירות, אבל האמת לא חסר דבר."
+  },
+  {
+   "meeting": 8,
+   "id": 156,
+   "arabic": "אַנַא מֶש סַאמֶע, כַּלַאמַכּ מֶש וַאצֵ'ח, אֵיש בִּדַّכּ?",
+   "hebrew": "אני לא שומע, דבריך אינם ברורים, מה אתה רוצה?"
+  },
+  {
+   "meeting": 8,
+   "id": 157,
+   "arabic": "דַלַאל מֶש מַוְג'וּדֶה? טַבّ וֵינְהַא? עַוֵין רַאיְחַה?",
+   "hebrew": "דלאל לא נמצאת? טוב, איפה היא? לאן היא הלכה?"
+  },
+  {
+   "meeting": 8,
+   "id": 158,
+   "arabic": "וַקְת אֵיש רִגְ'עַת?... אלְהַא גֻ'מְעַה רַאגְ'עַה מִן עַמַّאן וְאַנַא מֶש עַארֶפ?!",
+   "hebrew": "מתי היא חוזרת? שבע מאז שחזרה מעמאן ואני לא יודע!"
+  },
+  {
+   "meeting": 8,
+   "id": 159,
+   "arabic": "אֵיש עַאמֶל הוֹן יַאבַּא? בִּדַّכּ מִנַّא אִשִי?",
+   "hebrew": "מה אתה עושה פה, יאבא? אתה רוצה מאיתנו משהו?"
+  },
+  {
+   "meeting": 8,
+   "id": 160,
+   "arabic": "אִחְנַא חַאגְ'זִין תַזְכַּרַה לַלְמַעְרַצ', כִּיפ יַעְנִי פִש מַחַלّ?",
+   "hebrew": "הזמנו כרטיסים לתערוכה, איך אין מקום?"
+  },
+  {
+   "meeting": 8,
+   "id": 161,
+   "arabic": "לַאֵימְתַא פַאתְחַה (א)לְכַּאזִיֶّה, יַא עַמִّי?",
+   "hebrew": "עד מתי פתוחה תחנת הדלק?"
+  },
+  {
+   "meeting": 8,
+   "id": 162,
+   "arabic": "צַבַּאח (א)לְחֵ'יר, פַאתֶח (א)לְכַּרַאג'? וְלַא בַּעְדוֹ?",
+   "hebrew": "בוקר טוב, המוסך פתוח או עדיין לא?"
+  },
+  {
+   "meeting": 8,
+   "id": 163,
+   "arabic": "לַחַדّ אֵימְתַא? סַנַת (אל)גַ'אי? וַלַ, מַעְקוּל הַ(א)לְחַכִּי? עַ'רִיבּ וַאללַה!",
+   "hebrew": "עד מתי? שנה הבאה? אוי, הגיוני הסיפור הזה? מוזר באמת!"
+  },
+  {
+   "meeting": 8,
+   "id": 164,
+   "arabic": "שוּ בִּ(אל)נִّסְבֶּה לַלְמַצְנַע הַאדַא? מַוְצוּל בִּ(א)לְכַּהְרַבַּא וְלַא כִּיפ?",
+   "hebrew": "מה לגבי המפעל הזה? מחובר לחשמל או מה?"
+  },
+  {
+   "meeting": 8,
+   "id": 165,
+   "arabic": "אַיّ מִהְרַגַ'אן מַעְזוּם עַלֵיה אִנְתֶ? אֵימְתַא הֻוֶّ? אֻחְ'רַא שַהֵר?",
+   "hebrew": "לאיזה פסטיבל אתה מוזמן אליו? מתי הוא? עוד חודש?"
+  },
+  {
+   "meeting": 8,
+   "id": 166,
+   "arabic": "אַנַא מֶש פַאהֶם עַלֵיכּ בִּ(א)לְמַרַّה, אִנְתֶ לֵיש עַאמֶל הֵיכּ?",
+   "hebrew": "אני לא מבין אותך, בכלל, למה אתה עושה (מתנהג) כך?"
+  },
+  {
+   "meeting": 8,
+   "id": 167,
+   "arabic": "יַא זַלַמֶה, הַאדַא (א)לְאִישִי מֶש צַחִיח, מְנֵין (א)לְכַּלַאם הַאד?",
+   "hebrew": "בן אדם, הדבר הזה לא נכון, מהיכן הבאת את האלו?"
+  },
+  {
+   "meeting": 8,
+   "id": 168,
+   "arabic": "עַנّ אֵיש (א)לִמְחַאצַ'רַה (א)לְיוֹם בִּ(אל)נַّאדִי? וְכַּמַאן, מִן אֵימְתַא לַאֵימְתַא הִיֶّ?",
+   "hebrew": "איזו מה ההרצאה היום? וגם, ממתי עד מתי היא?"
+  },
+  {
+   "meeting": 8,
+   "id": 169,
+   "arabic": "אִנְתֶ שַכְּלַכּ מֶש עַלַא בַּעְצַ'כּ, חֵ'יר? שוּ פִי? אִנְשַאלַّה כֻּלّ שִי תַמַאם?",
+   "hebrew": "אתה נראה שונה מהרגיל, (אתה) טוב? מה יש? ברוך השם הכל טוב?"
+  },
+  {
+   "meeting": 8,
+   "id": 170,
+   "arabic": "בִּדְנַא (אל)שַקַّה! כַּם עֻ'רְפֶה פִיהַא (אל)שַקַّה? מְסַאחְתַא קַדֵّיש, יַא סִידִי?",
+   "hebrew": "אנחנו רוצים את הדירה, כמה חדרים יש בה בדירה? כמה השטח שלה, אדוני?"
+  },
+  {
+   "meeting": 8,
+   "id": 171,
+   "arabic": "וֵין מֻחַמַّד זַמִילַכּ? אלעַאדֶה גַ'איְ מַעַכּ, אַבְּצַר, שוּ צַאר (א)לְיוֹם?",
+   "hebrew": "איפה מחמד עמיתך? בדרך כלל הוא בא עימך, מעניין, מה קרה היום?"
+  },
+  {
+   "meeting": 8,
+   "id": 172,
+   "arabic": "אִ(ל)טַקֶס (א)לְיוֹם עַאדִי, מַפִש לַא בַּרְד וְלַא בַּטִّיח'! אִנְתֶ לֵיש בַּרְדַאן?",
+   "hebrew": "מזג האוויר רגיל, אין לא קור ולא כלום (אבטיח)! למה קר לך?"
+  },
+  {
+   "meeting": 8,
+   "id": 173,
+   "arabic": "אִ(ל)דִנְיַא שוּבּ נַאר (א)לְיוֹם, וֵין צַאחְבַּכּ (א)לְבַּארֶד הַאד? וַאללַה דַמّוֹ תְקִיל",
+   "hebrew": "העולם חום אש היום, איפה חברך האדיש הזה? באמת שהדם שלו כבד (אדיש)"
+  },
+  {
+   "meeting": 8,
+   "id": 174,
+   "arabic": "מִנְשַאן אַללַה, אִנְתֶ אֵיש בִּדַّכּ מִנִّי? מֶש שַאיֶפ אִנّוּ (אל)דֻנְיַא רַמַצַ'אן (א)לְיוֹם?!",
+   "hebrew": "בשם אלוהים, מה אתה רוצה ממני? אתה לא רואה שהעולם רמצ'אן היום!"
+  },
+  {
+   "meeting": 8,
+   "id": 175,
+   "arabic": "חֵ'יר, יַא-חְ'תִי? אִנְתֶ אֵימְתַא גַ'איֶה? יַאללַה בְּסֻרְעַה! בִּדְנַא (א)לְאַעְ'רַאצ' הַלַّא!",
+   "hebrew": "הכל טוב, אחותי? מתי את מגיעה? קדימה במהירות! אנחנו צריכים את החפצים עכשיו!"
+  },
+  {
+   "meeting": 9,
+   "id": 176,
+   "arabic": "צַ'רַבּוּלִי תֵלֵיפוֹן מִן שַרְכִּת (אל)תַאַמִין, טַאלְבִּין מִנִّי (אל)תַפַאצִיל אִלִّי נַאקְצַה.",
+   "hebrew": "התקשרו אלי מחברת הביטוח, מבקשים ממני את הפרטים החסרים."
+  },
+  {
+   "meeting": 9,
+   "id": 177,
+   "arabic": "אַוַّל שִי פִי תַאְחִ'יר בִּ(אל)דַّפֵע וְהַאדַא טַבְּעַן מֶש עַאגִ'בְּנִי בִּ(א)לְמַרַّה, הַלַّא שוּ פִי כַּמַאן?",
+   "hebrew": "קודם כל יש איחור בתשלום וזה כמובן לא מוצא חן בעיניי בכלל, עכשיו מה יש עוד?"
+  },
+  {
+   "meeting": 9,
+   "id": 178,
+   "arabic": "פִעְלַן אַנַא מֶש פַאהֶם עַלֵיכּ, לֵיש עַאמְלִלְנַא הֵיכּ? לֵיש מַאנְעַנַא מִן (אל)תַצְרִיח אִנְתֶ?",
+   "hebrew": "באמת, שאני לא מבין אותך, למה אתה עושה לנו כך? למה אתה מונע מאיתנו את האישור?"
+  },
+  {
+   "meeting": 9,
+   "id": 179,
+   "arabic": "בֵּינִי וּבֵינַכּ בַּעַתְנַאלְהֹם (א)לְהַדִיֶّה עַלַא עִנְוַאנְהֹם קַבֶּל יוֹמֵין, לַלְיוֹם מַא קַאלוּלְנַאש אִשִי.",
+   "hebrew": "ביני לבינך, שלחנו להם את המתנה לכתובתם לפני יומיים, עד היום לא אמרו לנו דבר."
+  },
+  {
+   "meeting": 9,
+   "id": 180,
+   "arabic": "רַפַעְנַא (א)לְקַצִّיֶّה צִ'דّ (א)לְמַסְאוּל לַלְמַחְכַּמֶה, חַכַּמוּלְנַא אַלְפ שֵיכֶּל תַעְוִיצ'.",
+   "hebrew": "הגשנו תביעה לבית המשפט נגד האחראי, פסקו לנו אלף שם פיצוי."
+  },
+  {
+   "meeting": 9,
+   "id": 181,
+   "arabic": "אִלְבַּלַדִיֶّה וַעַדוּנִי, אִנּוֹ חִ'לַאל יוֹמֵין תַלַאתֶה בְּכּוּן עִנְדִי תַצְרִיח עַ (אל)טַלַבּ אִלִّי טַלַבְּתוֹ.",
+   "hebrew": "העירייה הבטיחה לי שתוך (במהלך) יומיים שלושה, יהיה אצלי אישור על בקשתי שביקשתי אותה."
+  },
+  {
+   "meeting": 9,
+   "id": 182,
+   "arabic": "קִסֶם (אל)צַ'רַאיֶבּ, קַדֵّיש חַסַּבּוּלַכּ (א)לְמִתֵר? יַעְנִי (אל)צַ'רִיבֶּה (א)לְעַאמֶّה, טְלֶעַתְלַכּ שַחְ'צִיֶّה וְלַא תִגַ'ארִיֶّה?",
+   "hebrew": "מחלקת המיסים, כמה החשבון שלך את המטר? יעני, המס הכללי (ארנונה), יצאה לך פרטית או מסחרית?"
+  },
+  {
+   "meeting": 9,
+   "id": 183,
+   "arabic": "אִלְוַאלְדֵין בִּ(א)לְאַוַّל אַחַ'דוּהַא עַ(א)לְעִיַאדֶה, מַא פַחַצוּהַאש הֻנַאכּ. פַ עַלַא טוּל נַקַלְנַאהַא עַלַא דוֹכְּתוֹר אַחִ'צַאאִי.",
+   "hebrew": "ההורים באו לאחר אחד מהם לעיירה, מה פחדו האנשים. פ עלא טול נקלנאהא עלא דכתור אחצאאי."
+  },
+  {
+   "meeting": 9,
+   "id": 184,
+   "arabic": "אַנַא פִעְלַן מֶש סַאמֶע, (א)לְחֵ'יט עִנְדְכֹּם חַ'רְבַּאן, פַחַצְנַאה וְטְלֶע מֶש נַאפֶע בִּדּוֹ תַצְלִיח.",
+   "hebrew": "אני שמעתי ממך, (א)לחיט אצלכם ח'רבאן, פחצנאה וטלע מש נאפע בדו תצליח."
+  },
+  {
+   "meeting": 9,
+   "id": 185,
+   "arabic": "קַבֶּל אֻסְבּוּע מַרַת עַמִּי צַ'רַבַּתְהַא סַיַّארַה וְהַרַבַּת מִן (א)לְמַטְרַח, מִן חַטַّא, כַּאן הֻנַאכּ חַארֶס חַמַלְהַא עַלַא (א)לְמוֹל גֻ'וַّא.",
+   "hebrew": "לפני שבוע אשתו של דודי עברה תאונה ליד ביתם, מכונית והרבה מן המטרח, מן חטא, כאן הנאך חארס חמלהא עלא (א)למול ג'וא."
+  },
+  {
+   "meeting": 9,
+   "id": 186,
+   "arabic": "מִן מֻדֶّה, יַעְנִי אַבּוּ שַהֵר זַמַאן, הֵיכּ שִי, דַחַ'ל עַלֵינַא שֻרְטִי עַמַל תַפְתִיש הוֹן בִּ(א)לְמַחַלّ וְסַאַלְנִי עַנַّכּ.",
+   "hebrew": "מן מדה, יעני אבו שהר זמאן, היכ שי, דח'ל עלינא שרטי עמל תפתיש הון ב(א)למחל וסאלני ענכ."
+  },
+  {
+   "meeting": 9,
+   "id": 187,
+   "arabic": "שוּ בִּ(אל)נִסְבֶּה לַלְעַ'רַאמֶה אִלִّי חַכַּמוּהַא עַלֵיכֹּם? שַאיֶפ אִנּוֹ (א)לְפַוַאתִיר, לִסַّא מֶש דַאפְעִינְהַא.",
+   "hebrew": "מה בקשר לקנס שהוטל עליכם? אני רואה שהחשבוניות עדיין לא משולמים אותה."
+  },
+  {
+   "meeting": 9,
+   "id": 188,
+   "arabic": "הַבַּטַת (א)לְמַרְוַחִיֶّה (א)לְעַסְכַּרִיֶّה וְטְלְעוּ מִנְהַא גְ'נוּד רַאכְּצִ'ין, שַכְּלְהֹם קֻוַّאת חַ'אצַّה, כֻּלّ וַאחַד חַאמֶל עַ גִ'סְמוֹ סְלַאח קַדّ (אל)דֻנְיַא, בַּארוּדֶה וְפַרְד וְקַנַאבֶּל וְעֵ'ירוֹ.",
+   "hebrew": "נחת המסוק הצבאי ויצאו ממנו חיילים בריצה, נראים כוחות מיוחדות, כל אחד נשא על גופו כלי נשק בכמות גדולה (כמו כל העולם), רובה ואקדח ופצצות ועוד (חוץ מזה..)."
+  },
+  {
+   "meeting": 9,
+   "id": 189,
+   "arabic": "מַעַאשִי מֶש קַאבְּצ'וֹ אַנַא! אַללַה וַכִּילַכּ, אַנַא צַבַּרְת עַלֵיכּ כְּתִיר, צַארְלִי פַתְרַה, אַמַّא חַ'לַצ, וְצִלֶת לַמַרְחַלֶה אִנّוֹ מַעִיש וְלַא קִרְש בְּגֵ'יבְּתִי.",
+   "hebrew": "משכורתי לא קיבלתי אלוהים עדי, שהתאמצתי בסבלנות איתך הרבה, כבר תקופה, אבל מספיק, הגעתי לשלב שאין עימי אפילו לא גרוש בכיסי."
+  },
+  {
+   "meeting": 9,
+   "id": 190,
+   "arabic": "אִלְאִעְלַאן אִלִّי נַאזְלִינוֹ פִי (אל)גַ'רִידֶה, עִנְוַאנוֹ בַּארֶז כְּתִיר,",
+   "hebrew": "המודעה, כשעורידים אותה (מפרסמים) בעיתון, הכותרת שלה בולטת מאוד, אתה רואה אותה או לא רואה אותה?"
+  }
+ ],
+ "accepted_spellings": [
+  [
+   "רישיונות",
+   "רשיונות"
+  ],
+  [
+   "רישיון",
+   "רשיון"
+  ],
+  [
+   "עיתונים",
+   "עתונים"
+  ],
+  [
+   "עיתון",
+   "עתון"
+  ],
+  [
+   "עניינים",
+   "ענינים"
+  ],
+  [
+   "מעוניין",
+   "מעונין"
+  ],
+  [
+   "עניין",
+   "ענין"
+  ],
+  [
+   "בניינים",
+   "בנינים"
+  ],
+  [
+   "בניין",
+   "בנין"
+  ],
+  [
+   "תוכניות",
+   "תכניות"
+  ],
+  [
+   "תוכנית",
+   "תכנית"
+  ],
+  [
+   "אוויר",
+   "אויר"
+  ],
+  [
+   "שינויים",
+   "שנויים"
+  ],
+  [
+   "שינוי",
+   "שנוי"
+  ],
+  [
+   "גיליון",
+   "גליון"
+  ],
+  [
+   "כיוונים",
+   "כוונים"
+  ],
+  [
+   "כיוון",
+   "כוון"
+  ],
+  [
+   "זיכרון",
+   "זכרון"
+  ],
+  [
+   "ביטחון",
+   "בטחון"
+  ],
+  [
+   "פיתרון",
+   "פתרון"
+  ],
+  [
+   "סידורים",
+   "סדורים"
+  ],
+  [
+   "סידור",
+   "סדור"
+  ],
+  [
+   "תיאור",
+   "תאור"
+  ],
+  [
+   "אירגון",
+   "ארגון"
+  ],
+  [
+   "צהריים",
+   "צהרים"
+  ],
+  [
+   "ערביים",
+   "ערבים"
+  ],
+  [
+   "שמיים",
+   "שמים"
+  ],
+  [
+   "אופניים",
+   "אופנים"
+  ],
+  [
+   "מכנסיים",
+   "מכנסים"
+  ],
+  [
+   "משקפיים",
+   "משקפים"
+  ],
+  [
+   "נעליים",
+   "נעלים"
+  ],
+  [
+   "רשיון",
+   "רישיון"
+  ],
+  [
+   "מאחרי",
+   "מאחורי"
+  ],
+  [
+   "קופסא",
+   "קופסה"
+  ],
+  [
+   "נער",
+   "בחור"
+  ],
+  [
+   "נערה",
+   "בחורה"
+  ],
+  [
+   "טלויזיה",
+   "טלוויזיה"
+  ],
+  [
+   "פלאפון",
+   "פלפון"
+  ],
+  [
+   "מזוודה",
+   "מזודה"
+  ],
+  [
+   "שנייה",
+   "שניה"
+  ],
+  [
+   "מאפייה",
+   "מאפיה"
+  ],
+  [
+   "חנייה",
+   "חניה"
+  ],
+  [
+   "ספרייה",
+   "ספריה"
+  ],
+  [
+   "אוניברסיטה",
+   "אוניברסיטא"
+  ],
+  [
+   "כיתה",
+   "כתה"
+  ],
+  [
+   "מסעדה",
+   "מיסעדה"
+  ]
+ ],
+ "locked_meetings_words": [
+  1,
+  2,
+  3,
+  4,
+  5,
+  6,
+  7,
+  8,
+  9
+ ],
+ "locked_meetings_sentences": [
+  1,
+  2,
+  3,
+  4,
+  5,
+  6,
+  7,
+  8,
+  9
+ ]
+}
