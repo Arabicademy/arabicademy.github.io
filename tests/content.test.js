@@ -136,10 +136,10 @@ const pluralish = (h) => {
   const head = String(h).replace(/\s*\(.*?\)/g, '').replace(/\.$/, '').trim();
   const parts = head.split('/').map((x) => x.trim()).filter(Boolean);
   const plural = (t) => /(ים|ות|יים)$/.test(t.split(' ').pop())
-                     || /^(בתי|עורכי|עורכות|משרדי|שדות|דודים|דודות|בני|חולצות|מחטים|מכונות|גני|מחנות|ימי)\s/.test(t);
+                     || /^(בתי|עורכי|עורכות|משרדי|שדות|דודים|דודות|בני|חולצות|מחטים|מכונות|גני|מחנות|ימי|תחנות|מזגי|כלי|חברים|קומקומים|כוסות|נשיאים|יסודות)\s?/.test(t);
   /* Hebrew words whose shape says nothing about number: singulars that end
      like plurals, and words that are plural by nature. */
-  if (parts.every((t) => /^(אחות|חנות|תעודת זהות|מכנסיים|נישואין|טעות|בית חולים|מחנה אוהלים|מחנה פליטים)$/.test(t))) return null;
+  if (parts.every((t) => /^(אחות|חנות|תעודת זהות|מכנסיים|נישואין|טעות|בית חולים|מחנה אוהלים|מחנה פליטים|כמות|קומקום להרתחת מים)$/.test(t))) return null;
   if (parts.every(plural)) return true;
   if (parts.every((t) => !plural(t))) return false;
   return null;

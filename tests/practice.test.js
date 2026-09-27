@@ -1,7 +1,7 @@
 /* Tests the machinery behind the practice modes, as opposed to the content:
    the games, the sentence decoys, the meeting split, the knowledge model and
-   the morning drill. Each section covers a rule that was argued over and
-   settled, so a future change that quietly breaks one is caught. */
+   the screen a session lands on. Each section covers a rule that was argued
+   over and settled, so a future change that quietly breaks one is caught. */
 const { loadApp } = require('./harness.js');
 
 const { api: g } = loadApp(
@@ -59,8 +59,14 @@ sentences.forEach((item) => {
       built++;
       if (task.options.filter((o) => o === task.answer).length !== 1) blankFaults++;
       if (new Set(task.options).size !== task.options.length) blankFaults++;
-      const rebuilt = [task.before, task.answer, task.after].filter(Boolean).join(' ');
-      if (rebuilt !== (dir === 'he2ar' ? item.arabic : item.hebrew)) blankFaults++;
+      /* The article and any trailing stop now stay in the sentence, so the
+         pieces rejoin without the spaces that used to sit around them. */
+      const rebuilt = (task.before + ' ' + task.answer + ' ' + task.after)
+        .replace(/(\(א\)ל|\(אל\)) /g, '$1')
+        .replace(/ ([.,!?])/g, '$1')
+        .replace(/\s+/g, ' ').trim();
+      const original = (dir === 'he2ar' ? item.arabic : item.hebrew).trim();
+      if (rebuilt !== original) blankFaults++;
     }
   });
 });
@@ -158,8 +164,7 @@ let mFaults = 0, choice = 0, typed = 0;
 for (let t = 0; t < 200; t++) {
   const tasks = g.buildMorningTasks(vdeck, 3);
   const opens = tasks.filter((x) => x.open);
-  choice += tasks.length - opens.length;
-  typed += opens.length;
+  choice += tasks.length - opens.length; typed += opens.length;
   if (opens.some((x) => !g.isTypeable(x.item))) mFaults++;
   const keys = tasks.map((x) => x.item._key);
   if (new Set(keys).size !== keys.length) mFaults++;

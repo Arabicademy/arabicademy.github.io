@@ -15,6 +15,8 @@ const suites = [
   ['guide.test.js',      'the first-run guide opens once and stays away after'],
   ['reset.test.js',      'setting a first password leaks nothing'],
   ['numbers.test.js',    'the numbers, and the four drills built on them'],
+  ['locked.test.js',     'every approved spelling is still exactly as approved'],
+  ['spelling.test.js',   'no card can fail a correct alternative Hebrew spelling'],
 ];
 
 let failed = 0;

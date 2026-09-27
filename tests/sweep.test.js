@@ -105,9 +105,12 @@ check('the midday draw is stable on any date',
       days.every((d) => JSON.stringify(g.noonPlanFor(d)) === JSON.stringify(g.noonPlanFor(d))));
 
 console.log('\n=== stray text that should not ship');
+/* Search the code, not the embedded images: a base64 blob is random
+   characters and will sooner or later contain "XXX" by chance. */
+const codeOnly = html.replace(/data:image\/[a-z+]+;base64,[A-Za-z0-9+/=]+/g, '');
 const leftovers = [];
 ['TODO', 'FIXME', 'XXX', 'console.warn', 'debugger'].forEach((word) => {
-  const n = (html.match(new RegExp(word, 'g')) || []).length;
+  const n = (codeOnly.match(new RegExp(word, 'g')) || []).length;
   if (n) leftovers.push(word + ' x' + n);
 });
 check('no debugging leftovers', leftovers.length === 0, leftovers.join(', '));
@@ -128,6 +131,27 @@ SESSIONS.forEach((fn) => {
   if (!/onSessionDone\(\{ mode:/.test(body)) silent.push(fn);
 });
 check('no session finishes without reporting', silent.length === 0, silent.join(', '));
+
+/* Every drill files under a name of its own. Three number drills once shared
+   one label and the full exam reported nothing at all, so both showed as
+   never attempted however often they were run. */
+const REPORTERS = ['AmericanQuiz','FlashcardPractice','SentenceBuilderSession','PairGame',
+                   'ClockGame','BlankGame','MorningDrill','DailyReview',
+                   'NumberDigits','NumberOrder','NumberOrdinal','FullExam'];
+const modes = new Set();
+REPORTERS.forEach((fn) => {
+  const i = html.indexOf('function ' + fn);
+  const j = html.indexOf('\nfunction ', i + 10);
+  const body = html.slice(i, j > 0 ? j : html.length);
+  const m = body.match(/onSessionDone\(\{ mode: "([\w-]+)"/);
+  if (m) modes.add(m[1]);
+});
+check('the full exam is counted among the modes', /onSessionDone\(\{ mode: "exam"/.test(html));
+check('the daily review is not filed as flashcards', /onSessionDone\(\{ mode: "review"/.test(html));
+check('each number drill has its own mode',
+      /"num-digits"/.test(html) && /"num-order"/.test(html) && /"num-ordinal"/.test(html));
+const unlabelled = [...modes].filter((m) => !g.MODE_LABELS[m]);
+check('every reported mode has a label', unlabelled.length === 0, unlabelled.join(', '));
 check('reading is distinguishable from flashcards',
       /mode: \(deck === "sentences" \|\| deck === "idioms"\) \? "reading" : "flashcards"/.test(html));
 check('the quiz reports as its own mode', /onSessionDone\(\{ mode: "quiz"/.test(html));

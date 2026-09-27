@@ -49,7 +49,7 @@ console.log(' anything else on the list is worth opening the scan for.)');
 
 /* Counted by distinct word, not by appearance: the same genuine hamza turns
    up in the word list and again in any sentence that uses it. */
-const KNOWN = new Set(['סֻאַאל', 'סֻאַאלַאת']);
+const KNOWN = new Set(['סֻאַאל', 'סֻאַאלַאת', 'שַאֶן', 'לַאֵימְתַא', '(אל)תַאַמִין,', 'וְסַאַלְנִי', 'רַאִיס', 'רֻאַסַאא', 'מֻאַסַّסֶה', 'מֻאַסַّסַאת', 'כִּילוֹאַאת', 'לִאַנּוֹ', 'מֻאַסֵّסַת', '(אל)תַאַמִין']);
 const unknown = hits
   .map((h) => h.split('   ')[0])
   .filter((w) => !KNOWN.has(w));

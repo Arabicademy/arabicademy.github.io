@@ -18,7 +18,7 @@ const key = '2026-09-01';
 const first = JSON.stringify(g.noonPlanFor(key));
 let stable = true;
 for (let i = 0; i < 500; i++) if (JSON.stringify(g.noonPlanFor(key)) !== first) stable = false;
-check('the same date always gives the same plan', stable);
+check('the same date always gives the same plan', stable, first);
 check('a different date can give a different plan',
       new Set(['2026-09-01', '2026-09-02', '2026-09-03', '2026-09-04', '2026-09-05', '2026-09-06']
         .map((d) => g.noonPlanFor(d).mode)).size === 2);
@@ -39,14 +39,14 @@ for (let d = 0; d < 365; d++) {
 console.log('  reading days ' + reading + ', game days ' + games);
 check('the split is roughly even', Math.abs(reading - games) < 80, reading + ' vs ' + games);
 console.log('  each game appears:');
-Object.keys(gameCounts).sort().forEach((k) => console.log('     ' + k + '  ' + gameCounts[k]));
+Object.keys(gameCounts).sort().forEach((k) => console.log('     ' + k.padEnd(14) + gameCounts[k]));
 check('every game gets used', Object.keys(gameCounts).length === g.NOON_GAMES.length);
 const counts = Object.values(gameCounts);
-check('no game dominates', Math.max.apply(null, counts) < Math.min.apply(null, counts) * 2,
-      Math.min.apply(null, counts) + '-' + Math.max.apply(null, counts));
+check('no game dominates', Math.max(...counts) < Math.min(...counts) * 2,
+      Math.min(...counts) + '–' + Math.max(...counts));
 
 console.log('\n=== the midday tick waits for both games');
-/* mirrors markRoutineDone in the app */
+// mirrors markRoutineDone in the app
 function mark(state, dayKey, slot) {
   const today = state[dayKey] || {};
   if (today[slot]) return state;
@@ -60,9 +60,10 @@ function mark(state, dayKey, slot) {
   }
   return { ...state, [dayKey]: { ...today, [slot]: true } };
 }
-const week = ['2026-09-01','2026-09-02','2026-09-03','2026-09-04','2026-09-05','2026-09-06','2026-09-07'];
-const gameDay = week.find((d) => g.noonPlanFor(d).mode === 'games');
-const readDay = week.find((d) => g.noonPlanFor(d).mode === 'reading');
+const gameDay = ['2026-09-01','2026-09-02','2026-09-03','2026-09-04','2026-09-05','2026-09-06','2026-09-07']
+  .find((d) => g.noonPlanFor(d).mode === 'games');
+const readDay = ['2026-09-01','2026-09-02','2026-09-03','2026-09-04','2026-09-05','2026-09-06','2026-09-07']
+  .find((d) => g.noonPlanFor(d).mode === 'reading');
 let st = {};
 st = mark(st, gameDay, 'noon');
 check('one game is not enough', !st[gameDay].noon, 'count ' + st[gameDay].noonCount);
@@ -70,7 +71,8 @@ st = mark(st, gameDay, 'noon');
 check('two games complete it', !!st[gameDay].noon);
 st = mark(st, gameDay, 'noon');
 check('a third finish changes nothing', st[gameDay].noonCount === 2);
-const st2 = mark({}, readDay, 'noon');
+
+let st2 = mark({}, readDay, 'noon');
 check('a reading day completes in one', !!st2[readDay].noon);
 
 console.log('\n=== the routine itself');
