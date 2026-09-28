@@ -162,7 +162,7 @@ try {
     throw new Error("React / ReactDOM לא נטענו מה-CDN (בדוק חיבור לאינטרנט או חסימת סקריפטים).");
   }
 "use strict";
-const APP_BUILD = "27.09 · 98";   // bump this every time the file is replaced
+const APP_BUILD = "28.09 · 100";   // bump this every time the file is replaced
 
 /* The institute logo, carried inline so the page stays a single file.
    STAMP is the round seal (full-screen waits); LOCKUP is the horizontal name
@@ -438,14 +438,14 @@ const GLOBAL_CSS = `
     .zl-login-head {
       position:relative;
       text-align:center;
-      padding:26px 22px 22px;
+      padding:22px 22px 24px;
       background:var(--band);
     }
     .zl-login-head::after {
       content:""; position:absolute; inset:auto 0 0 0; height:3px;
       background:linear-gradient(90deg, var(--accent) 0%, transparent 70%);
     }
-    .zl-login-logo { width:min(158px, 46%); display:block; margin:2px auto 14px; }
+    .zl-login-logo { width:min(230px, 62%); display:block; margin:0 auto; }
     .zl-login-body { padding:20px; }
 
     /* ---- greeting screen ---- */
@@ -6719,10 +6719,22 @@ function examLength(openMeetings) {
    current meeting down to a third — the opposite of what an exam should
    weight. Idioms are marginal enough to be a single question, and often
    none. */
+/* Weight has to bear some relation to how many questions carry it. Idioms
+   were one question worth twelve points — four times what a vocabulary
+   question was worth, and more than the whole alphabet section. A single
+   wrong idiom cost more than five wrong words, which is not what the section
+   is for. Three points puts one idiom in the same range as one word, and the
+   nine points it gives up go back to the two sections that actually grow
+   with the course, in the proportion they already had.
+
+   It also settles a second problem: the idiom question is drawn only
+   sometimes, and when it is missing its weight is shared out. At twelve
+   points that meant the same answers could score differently from one sitting
+   to the next; at three the difference is small enough not to matter. */
 const EXAM_PLAN = [
-    { kind: "vocab", deck: "vocab", count: 15, weight: 50, label: "אוצר מילים", grows: true },
-    { kind: "sentence", deck: "sentences", count: 5, weight: 30, label: "הרכבת משפטים", grows: true },
-    { kind: "idiom", deck: "idioms", count: 1, weight: 12, label: "ניבי לשון", grows: false, sometimes: true },
+    { kind: "vocab", deck: "vocab", count: 15, weight: 56, label: "אוצר מילים", grows: true },
+    { kind: "sentence", deck: "sentences", count: 5, weight: 33, label: "הרכבת משפטים", grows: true },
+    { kind: "idiom", deck: "idioms", count: 1, weight: 3, label: "ניבי לשון", grows: false, sometimes: true },
     { kind: "letter", deck: "letters", count: 8, weight: 8, label: "אלף-בית", grows: false },
 ];
 const EXAM_TOTAL = 31;
@@ -7797,9 +7809,7 @@ function LoginScreen({ theme, onToggleTheme, notice }) {
                             title: theme === "dark" ? "מצב יום" : "מצב לילה",
                             "aria-label": theme === "dark" ? "מצב יום" : "מצב לילה" },
                             React.createElement(theme === "dark" ? Sun : Moon, { size: 19 }))),
-                    React.createElement("img", { className: "zl-login-logo", src: STAMP(theme === "dark"), alt: "קסבה" }),
-                    React.createElement("h1", { className: "zl-brand-title", style: { fontSize: "1.5rem" } }, "قصبة"),
-                    React.createElement("p", { style: { fontSize: "0.82rem", color: "var(--band-ink-soft)", marginTop: 6 } }, "התחבר כדי להמשיך")),
+                    React.createElement("img", { className: "zl-login-logo", src: STAMP(theme === "dark"), alt: "קסבה" })),
                 React.createElement("div", { className: "zl-login-body" },
                     notice ? React.createElement("p", { className: "zl-anim", style: {
                         background: "var(--bad-bg)", color: "var(--bad)", fontWeight: 600,
