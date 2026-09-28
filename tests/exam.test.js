@@ -4,7 +4,7 @@ const { loadApp } = require('./harness.js');
 const { api: g } = loadApp(
   'examLength, buildExamTasks, buildMorningTasks, buildDeck, composeSession, ' +
   'meetingReadiness, withProgressFields, itemMeeting, isTypeable, meetingShares, ' +
-  'DEFAULT_VOCAB, ALPHABET, SENTENCES, IDIOMS, EXAM_MIN, EXAM_MAX, EXAM_TOTAL, TOTAL_MEETINGS');
+  'DEFAULT_VOCAB, ALPHABET, SENTENCES, IDIOMS, EXAM_MIN, EXAM_MAX, EXAM_TOTAL, TOTAL_MEETINGS' + ', EXAM_PLAN');
 
 let bad = 0;
 const check = (label, cond, detail) => {
@@ -147,6 +147,23 @@ const counter = tab.slice(tab.indexOf('05DE\\u05E6\\u05D9\\u05D2') - 400,
 check('the "all N words" label counts the unlocked subset',
       /\+ inPlay\.length \+/.test(counter) && !/\+ vocab\.length \+/.test(counter));
 check('the filtered label does too', (counter.match(/inPlay\.length/g) || []).length >= 2);
+
+console.log('\n=== weight bears some relation to question count');
+/* Idioms were one question worth twelve points, four times a vocabulary
+   question and more than the whole alphabet. One wrong idiom cost more than
+   five wrong words. No section may be worth more than twice the per-question
+   value of the heaviest multi-question section. */
+{
+  const per = g.EXAM_PLAN.map((s) => ({ kind: s.kind, v: s.weight / s.count }));
+  const multi = per.filter((s) => g.EXAM_PLAN.find((p) => p.kind === s.kind).count > 1);
+  const ceiling = Math.max(...multi.map((s) => s.v)) * 2;
+  const over = per.filter((s) => s.v > ceiling);
+  check('no section is worth more than twice the heaviest multi-question one',
+        over.length === 0,
+        over.map((s) => s.kind + ' at ' + s.v.toFixed(1) + ' vs ceiling ' + ceiling.toFixed(1)).join(', '));
+  check('the weights still add to 100',
+        g.EXAM_PLAN.reduce((a, s) => a + s.weight, 0) === 100);
+}
 
 console.log(bad ? '\n' + bad + ' CHECK(S) FAILED' : '\nALL EXAM CHECKS PASSED');
 process.exit(bad ? 1 : 0);
