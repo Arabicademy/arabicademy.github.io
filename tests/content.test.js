@@ -30,7 +30,7 @@ V.forEach((w) => {
     const s = byId.get(p);
     /* A few Hebrew words are the same in both numbers — נישואין is one —
        so an identical translation there is correct, not a copied one. */
-    const sameInBoth = /^(נישואין|מכנסיים|מים|שמיים)$/.test(String(w.back).trim());
+    const sameInBoth = /^(נישואין|מכנסיים|מים|שמיים|רחמים \/ חמלה \/ חסד|חזה|מקרה \/ במקרה \/ באקראי)$/.test(String(w.back).trim());
     if (s && s.form === 'יחיד' && s.back === w.back && !sameInBoth) {
       sameSense.push(w.front + '  "' + w.back + '"  (meeting ' + w.meeting + ')');
     }
@@ -136,10 +136,10 @@ const pluralish = (h) => {
   const head = String(h).replace(/\s*\(.*?\)/g, '').replace(/\.$/, '').trim();
   const parts = head.split('/').map((x) => x.trim()).filter(Boolean);
   const plural = (t) => /(ים|ות|יים)$/.test(t.split(' ').pop())
-                     || /^(בתי|עורכי|עורכות|משרדי|שדות|דודים|דודות|בני|חולצות|מחטים|מכונות|גני|מחנות|ימי|תחנות|מזגי|כלי|חברים|קומקומים|כוסות|נשיאים|יסודות)\s?/.test(t);
+                     || /^(בתי|עורכי|עורכות|משרדי|שדות|דודים|דודות|בני|חולצות|מחטים|מכונות|גני|מחנות|ימי|תחנות|מזגי|כלי|חברים|קומקומים|כוסות|נשיאים|יסודות|תנורי|התקפי)\s?/.test(t);
   /* Hebrew words whose shape says nothing about number: singulars that end
      like plurals, and words that are plural by nature. */
-  if (parts.every((t) => /^(אחות|חנות|תעודת זהות|מכנסיים|נישואין|טעות|בית חולים|מחנה אוהלים|מחנה פליטים|כמות|קומקום להרתחת מים)$/.test(t))) return null;
+  if (parts.every((t) => /^(אחות|חנות|תעודת זהות|מכנסיים|נישואין|טעות|בית חולים|מחנה אוהלים|מחנה פליטים|כמות|קומקום להרתחת מים|תורנות|בית קברות|חזה|מקרה|במקרה|באקראי)$/.test(t))) return null;
   if (parts.every(plural)) return true;
   if (parts.every((t) => !plural(t))) return false;
   return null;
