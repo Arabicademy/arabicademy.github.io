@@ -184,7 +184,7 @@ try {
     throw new Error("React / ReactDOM לא נטענו מה-CDN (בדוק חיבור לאינטרנט או חסימת סקריפטים).");
   }
 "use strict";
-const APP_BUILD = "29.09 · 107";   // bump this every time the file is replaced
+const APP_BUILD = "29.09 · 108";   // bump this every time the file is replaced
 
 /* The institute logo, carried inline so the page stays a single file.
    STAMP is the round seal (full-screen waits); LOCKUP is the horizontal name
@@ -389,7 +389,7 @@ const GLOBAL_CSS = `
     }
     .zl-root * { box-sizing:border-box; }
     /* ---- the poster behind everything ---- */
-    .zl-root { position:relative; isolation:isolate; overflow-x:clip; }
+    .zl-root { position:relative; isolation:isolate; overflow-x:clip; padding:16px 16px 60px; }
     /* iPhone: Safari zooms into any field whose text is under 16px and does
        not zoom back out. */
     @media (max-width:699px) {
@@ -794,7 +794,9 @@ const GLOBAL_CSS = `
       .zl-tabs-pill { border-radius:17px; }
       .zl-tab-long { display:none; }
       .zl-tab-short { display:block; max-width:100%; overflow:hidden; text-overflow:ellipsis; }
-      .zl-root { padding-bottom:calc(88px + env(safe-area-inset-bottom, 0px)); }
+      .zl-root { padding-bottom:calc(92px + env(safe-area-inset-bottom, 0px)); }
+      .zl-root[data-session="true"] .zl-tabs { display:none; }
+      .zl-root[data-session="true"] { padding-bottom:calc(32px + env(safe-area-inset-bottom, 0px)); }
     }
     /* A tablet held upright fits six labels only with less padding. */
     @media (min-width:700px) and (max-width:900px) {
@@ -2018,7 +2020,7 @@ const DEFAULT_VOCAB = [
     { id: 613, front: "מַכְּשוּפֶה", back: "גלויה / חשופה", topic: "תארים", form: "יחיד", pair: [614], meeting: 6, gender: "f", mate: 611 },
     { id: 614, front: "מַכְּשוּפַאת", back: "גלויות / חשופות", topic: "תארים", form: "רבים", pair: [613], meeting: 6, gender: "f", mate: 612 },
     { id: 615, front: "אִ(ל)רַّמְלֶה", back: "רמלה", topic: "מקומות", meeting: 6 },
-    { id: 616, front: "אִ(ל)לִّדّ", back: "לוד", topic: "מקומות", meeting: 6 },
+    { id: 616, front: "אִ(ל)לִّדّ", back: "לוד", topic: "מקומות", meeting: 6 },
     { id: 617, front: "יַאפַא", back: "יפו", topic: "מקומות", meeting: 6 },
     { id: 618, front: "חֵיפַא", back: "חיפה", topic: "מקומות", meeting: 6 },
     { id: 619, front: "אִלְקֻדְס", back: "ירושלים", topic: "מקומות", meeting: 6 },
@@ -2521,9 +2523,9 @@ const DEFAULT_VOCAB = [
     { id: 1123, front: "אַלַאפ", back: "אלפים", topic: "מספרים", form: "רבים", pair: [1122], meeting: 9 },
     { id: 1124, front: "תַעְוִיצ'", back: "פיצוי", topic: "כללי", form: "יחיד", pair: [1125], meeting: 9 },
     { id: 1125, front: "תַעְוִיצַ'את", back: "פיצויים", topic: "כללי", form: "רבים", pair: [1124], meeting: 9 },
-    { id: 1548, front: "אִנִّי", back: "שאני", topic: "מילות קישור", meeting: 9 },
-    { id: 1549, front: "אִנַّכּ", back: "שאתה", topic: "מילות קישור", meeting: 9 },
-    { id: 1550, front: "אִנֵّכּ", back: "שאת", topic: "מילות קישור", meeting: 9 },
+    { id: 1548, front: "אִנִّי", back: "שאני", topic: "מילות קישור", meeting: 9 },
+    { id: 1549, front: "אִנַّכּ", back: "שאתה", topic: "מילות קישור", meeting: 9 },
+    { id: 1550, front: "אִנֵّכּ", back: "שאת", topic: "מילות קישור", meeting: 9 },
     { id: 1126, front: "אִנّוֹ", back: "שהוא", topic: "מילות קישור", meeting: 9 },
     { id: 1127, front: "חִ'לַאל", back: "במהלך (זמן)", topic: "זמן", meeting: 9 },
     { id: 1128, front: "טַלַבּ", back: "בקשה / הזמנה", topic: "כללי", form: "יחיד", pair: [1129], meeting: 9 },
@@ -2787,7 +2789,7 @@ const DEFAULT_VOCAB = [
     { id: 1392, front: "וַטַן", back: "מולדת / לאום", topic: "כללי", form: "יחיד", pair: [1393], meeting: 11 },
     { id: 1393, front: "אַוְטַאן", back: "לאומים", topic: "כללי", form: "רבים", pair: [1392], meeting: 11 },
     { id: 1394, front: "וַטַנִי", back: "לאומי / לאומני", topic: "תארים", meeting: 11 },
-    { id: 1396, front: "קַצִ'יֶّה", back: "סוגיה / נושא", topic: "כללי", form: "יחיד", pair: [1397], meeting: 11 },
+    { id: 1396, front: "קַצִ'יֶّה", back: "סוגיה / נושא", topic: "כללי", form: "יחיד", pair: [1397], meeting: 11 },
     { id: 1397, front: "קַצַ'איַא", back: "סוגיות / נושאים", topic: "כללי", form: "רבים", pair: [1396], meeting: 11 },
     { id: 1398, front: "רֻבַּאעִי", back: "בעל ארבע", topic: "כללי", meeting: 11 },
     { id: 1399, front: "מֻסְתַנַד", back: "מסמך / אסמכתא / תעודה", topic: "כללי", form: "יחיד", pair: [1400], meeting: 11 },
@@ -2804,19 +2806,19 @@ const DEFAULT_VOCAB = [
     { id: 1410, front: "חַדַא", back: "אדם כלשהו", topic: "כללי", meeting: 11 },
     { id: 1411, front: "מִשְוַאר", back: "נסיעה / הליכה לסידורים / טיול", topic: "כללי", form: "יחיד", pair: [1412], meeting: 11 },
     { id: 1412, front: "מַשַאוִיר", back: "נסיעות / טיולים", topic: "כללי", form: "רבים", pair: [1411], meeting: 11 },
-    { id: 1413, front: "כַּמִּיֶّה", back: "כמות", topic: "כללי", form: "יחיד", pair: [1414], meeting: 11 },
+    { id: 1413, front: "כַּמִּיֶّה", back: "כמות", topic: "כללי", form: "יחיד", pair: [1414], meeting: 11 },
     { id: 1414, front: "כַּמִּיّאת", back: "כמויות", topic: "כללי", form: "רבים", pair: [1413], meeting: 11 },
     { id: 1415, front: "גֻ'מְלֶה", back: "סיטונאות / כמות כללית / משפט", topic: "כללי", meeting: 11 },
     { id: 1416, front: "מְפַרַّק", back: "מחולק / קמעונאי", topic: "כללי", meeting: 11 },
     { id: 1417, front: "שַרְט", back: "תנאי", topic: "כללי", form: "יחיד", pair: [1418], meeting: 11 },
     { id: 1418, front: "שֻרוּט", back: "תנאים", topic: "כללי", form: "רבים", pair: [1417], meeting: 11 },
     { id: 1419, front: "מִנְשַאן", back: "בשביל / כדי ש..", topic: "מילות קישור", meeting: 11 },
-    { id: 1420, front: "חַנַפִיֶّה", back: "ברז", topic: "חפצים", form: "יחיד", pair: [1421], meeting: 11 },
+    { id: 1420, front: "חַנַפִיֶّה", back: "ברז", topic: "חפצים", form: "יחיד", pair: [1421], meeting: 11 },
     { id: 1421, front: "חַנַפִיַّאת", back: "ברזים", topic: "חפצים", form: "רבים", pair: [1420], meeting: 11 },
     { id: 1422, front: "צִנַאעַה", back: "תעשייה", topic: "כללי", form: "יחיד", pair: [1423], meeting: 11 },
     { id: 1423, front: "צִנַאעַאת", back: "תעשיות", topic: "כללי", form: "רבים", pair: [1422], meeting: 11 },
     { id: 1424, front: "צִנַאעִי", back: "תעשייתי", topic: "תארים", meeting: 11, gender: "m" },
-    { id: 1425, front: "צִנַאעִיֶّה", back: "תעשייתית", topic: "תארים", meeting: 11, gender: "f" },
+    { id: 1425, front: "צִנַאעִיֶّה", back: "תעשייתית", topic: "תארים", meeting: 11, gender: "f" },
     { id: 1426, front: "וַרְשַה", back: "בית מלאכה / סדנה", topic: "מקומות", form: "יחיד", pair: [1427], meeting: 11 },
     { id: 1427, front: "וַרְשַאת", back: "בתי מלאכה / סדנאות", topic: "מקומות", form: "רבים", pair: [1426], meeting: 11 },
     { id: 1428, front: "יַמַّא", back: "שם חיבה לאמא", topic: "אנשים ותפקידים", meeting: 11 },
@@ -2855,7 +2857,7 @@ const DEFAULT_VOCAB = [
     { id: 1460, front: "רִחְלַאת", back: "נסיעות / מסעות", topic: "כללי", form: "רבים", pair: [1459], meeting: 12 },
     { id: 1461, front: "אַלְמַאנְיַא", back: "גרמניה", topic: "מקומות", meeting: 12 },
     { id: 1462, front: "מֻסְתַוַא", back: "רמה (של חיים, איכות)", topic: "כללי", meeting: 12 },
-    { id: 1463, front: "גִ'דַّן", back: "מאוד", topic: "כללי", meeting: 12 },
+    { id: 1463, front: "גִ'דַّן", back: "מאוד", topic: "כללי", meeting: 12 },
     { id: 1464, front: "חַ'יַّאט", back: "חייט", topic: "אנשים ותפקידים", form: "יחיד", pair: [1465], meeting: 12 },
     { id: 1465, front: "חַ'יַّאטִין", back: "חייטים", topic: "אנשים ותפקידים", form: "רבים", pair: [1464], meeting: 12 },
     { id: 1466, front: "נִצַ'אל", back: "מאבק / שם של גבר", topic: "כללי", meeting: 12 },
@@ -2898,13 +2900,13 @@ const DEFAULT_VOCAB = [
     { id: 1505, front: "מַחַלִّי", back: "מקומי", topic: "תארים", form: "יחיד", pair: [1506], meeting: 12, gender: "m", mate: 1507 },
     { id: 1506, front: "מַחַלִّיִין", back: "מקומיים", topic: "תארים", form: "רבים", pair: [1505], meeting: 12, gender: "m" },
     { id: 1507, front: "מַחַלִّיֶה", back: "מקומית", topic: "תארים", meeting: 12, gender: "f", mate: 1505 },
-    { id: 1510, front: "בֻּנְיֶה תַחְתִיֶّה", back: "תשתית", topic: "כללי", form: "יחיד", pair: [1511], meeting: 12 },
-    { id: 1511, front: "בֻּנַא תַחְתִיֶّה", back: "תשתיות", topic: "כללי", form: "רבים", pair: [1510], meeting: 12 },
+    { id: 1510, front: "בֻּנְיֶה תַחְתִיֶّה", back: "תשתית", topic: "כללי", form: "יחיד", pair: [1511], meeting: 12 },
+    { id: 1511, front: "בֻּנַא תַחְתִיֶّה", back: "תשתיות", topic: "כללי", form: "רבים", pair: [1510], meeting: 12 },
     { id: 1512, front: "מַגַ'ארִי", back: "ביוב", topic: "כללי", meeting: 12 },
-    { id: 1513, front: "בַּכִּّיר", back: "מוקדם", topic: "זמן", meeting: 12 },
+    { id: 1513, front: "בַּכִּّיר", back: "מוקדם", topic: "זמן", meeting: 12 },
     { id: 1514, front: "בַּדְרִי", back: "מוקדם", topic: "זמן", meeting: 12 },
     { id: 1515, front: "בַּדַן", back: "גוף", topic: "כללי", meeting: 12 },
-    { id: 1516, front: "צֻ'הְרִיַّאת", back: "שעות הצהריים", topic: "זמן", meeting: 12 },
+    { id: 1516, front: "צֻ'הְרִיַّאת", back: "שעות הצהריים", topic: "זמן", meeting: 12 },
     { id: 1517, front: "וַגְ'בֶּה", back: "ארוחה / מנה", topic: "אוכל", form: "יחיד", pair: [1518], meeting: 12 },
     { id: 1518, front: "וַגְ'בַּאת", back: "ארוחות / מנות", topic: "אוכל", form: "רבים", pair: [1517], meeting: 12 },
     { id: 1519, front: "עַ'דַא", back: "ארוחת צהריים", topic: "אוכל", meeting: 12 },
@@ -2919,8 +2921,8 @@ const DEFAULT_VOCAB = [
     { id: 1528, front: "קֹרְנֶה", back: "פינה / זווית", topic: "כללי", form: "יחיד", pair: [1529], meeting: 12 },
     { id: 1529, front: "קֻרַן", back: "פינות / זוויות", topic: "כללי", form: "רבים", pair: [1528], meeting: 12 },
     { id: 1530, front: "זְבַּאלֶה", back: "זבל / אשפה", topic: "כללי", meeting: 12 },
-    { id: 1531, front: "עַ'לַّאי", back: "קומקום להרתחת מים", topic: "חפצים", form: "יחיד", pair: [1532], meeting: 12 },
-    { id: 1532, front: "עַ'לַّאיַאת", back: "קומקומים", topic: "חפצים", form: "רבים", pair: [1531], meeting: 12 },
+    { id: 1531, front: "עַ'לַّאי", back: "קומקום להרתחת מים", topic: "חפצים", form: "יחיד", pair: [1532], meeting: 12 },
+    { id: 1532, front: "עַ'לַّאיַאת", back: "קומקומים", topic: "חפצים", form: "רבים", pair: [1531], meeting: 12 },
     { id: 1533, front: "פִנְגַ'אן", back: "כוס קטנה לשתיית קפה", topic: "חפצים", form: "יחיד", pair: [1534], meeting: 12 },
     { id: 1534, front: "פַנַאגִ'ין", back: "כוסות", topic: "חפצים", form: "רבים", pair: [1533], meeting: 12 },
     { id: 1535, front: "מִילַאד", back: "מולד / לידה", topic: "כללי", meeting: 12 },
@@ -2928,8 +2930,8 @@ const DEFAULT_VOCAB = [
     { id: 1537, front: "מַא עַדַא", back: "חוץ מ / פרט ל / למעט", topic: "כללי", meeting: 12 },
     { id: 1538, front: "מְצִיבֶּה", back: "אסון / צרה", topic: "כללי", form: "יחיד", pair: [1539], meeting: 12 },
     { id: 1539, front: "מַצַאיֶבּ", back: "אסונות / צרות", topic: "כללי", form: "רבים", pair: [1538], meeting: 12 },
-    { id: 1540, front: "עַמַלִיֶّה גֵ'רַאחִיֶّה", back: "ניתוח כירורגי", topic: "כללי", meeting: 12 },
-    { id: 1541, front: "עַמַלִיֶّה", back: "ניתוח / פיגוע / מבצע", topic: "כללי", form: "יחיד", pair: [1542], meeting: 12 },
+    { id: 1540, front: "עַמַלִיֶّה גֵ'רַאחִיֶّה", back: "ניתוח כירורגי", topic: "כללי", meeting: 12 },
+    { id: 1541, front: "עַמַלִיֶّה", back: "ניתוח / פיגוע / מבצע", topic: "כללי", form: "יחיד", pair: [1542], meeting: 12 },
     { id: 1542, front: "עַמַלִיַّאת", back: "ניתוחים / פיגועים / מבצעים", topic: "כללי", form: "רבים", pair: [1541], meeting: 12 },
     { id: 1543, front: "חַלַאוִיַאת", back: "שם למתוקים מזרחיים", topic: "אוכל", meeting: 12 },
     { id: 1544, front: "כִּילוֹ", back: "קילו / קילומטר", topic: "כללי", form: "יחיד", pair: [1545], meeting: 12 },
@@ -3047,7 +3049,7 @@ const SENTENCES = [
 
     // ---- meeting 3, page 40: preposition drills ----
     { id: 65, hebrew: "הקורס הוא אודות ההיסטוריה האסלאמית.", arabic: "אִ(ל)דַّוְרַה הִיֶّ עַנִ (אל)תַّארִיח' אִ(ל)אִסְלַאמִי.", meeting: 3 },
-    { id: 66, hebrew: "תחנת המוניות בבניין על צד ימין.", arabic: "מַחַטִّת (אל)תַّכְּסִיַאת פִי (א)לְעַמַארַה עַלַא (א)לְיַמִין.", meeting: 3 },
+    { id: 66, hebrew: "תחנת המוניות בבניין על צד ימין.", arabic: "מַחַטִّת (אל)תַّכְּסִיַאת פִי (א)לְעַמַארַה עַלַא (א)לְיַמִין.", meeting: 3 },
     { id: 67, hebrew: "השולחן והכיסאות על גג הבית.", arabic: "אִ(ל)טַّאוְלֶה וִ(א)לְכַּרַאסִי עַלַא סַטְחִ (א)לְבֵּית.", meeting: 3 },
     { id: 68, hebrew: "האשמה לא עליך האשמה עלי.", arabic: "אִלְחַקّ מֶש עַלֵיכּ, אִלְחַקّ עַלַיّ.", meeting: 3 },
     { id: 69, hebrew: "הוא כתב את הסיפור אודותיכם, לא אודותם.", arabic: "הֻוֶّ כַּתַבִּ (א)לְקֻצַّה עַנְכֹּם, מֶש עַנְהֹם.", meeting: 3 },
@@ -3089,7 +3091,7 @@ const SENTENCES = [
     { id: 101, hebrew: "הארנק החדש עמך? הארנק לא עימי, נמצא במכונית.", arabic: "אִ(ל)גֻ'ّזְדַאן (א)לִגְ'דִיד מַעַכּ? אִ(ל)גֻ'ّזְדַאן מֶש מַעִי, מַוְגּ'וד עִנְדִי בִּ(אל)סַיַّארַה.", meeting: 5, readOnly: true },
     { id: 102, hebrew: "יש לכם טלוויזיה בבית? אין לנו טלוויזיה בבית, רק בבית אבי.", arabic: "אִנְתוּ אִלְכֹּם תֵלֵפִזְיוֹן בִּ(אל)דַّאר? מַלְנַאש תֵלֵפִזְיוֹן בִּ(אל)דַّאר, בַּסّ פִי בֵּית אַבּוּי.", meeting: 5, readOnly: true },
     { id: 103, hebrew: "יש לנו חברים באוניברסיטה, הם סטודנטים חדשים.", arabic: "אִלְנַא אַצְחַאבּ פִי (אל)גַ'אמְעַה, הֵמّ טֻלַّאבּ גְ'דַאד.", meeting: 5 },
-    { id: 104, hebrew: "יש להם קרובים אצלנו ביישוב, אנשים טובים.", arabic: "אִלְהֹם קַרַאיֶבּ עִנַّא פִי (א)לְבַּלַד, נַאס טַיְّבִּין.", meeting: 5 },
+    { id: 104, hebrew: "יש להם קרובים אצלנו ביישוב, אנשים טובים.", arabic: "אִלְהֹם קַרַאיֶבּ עִנַّא פִי (א)לְבַּלַד, נַאס טַיְّבִּין.", meeting: 5 },
     { id: 105, hebrew: "יש להם רק 20 שקל, בסדר?", arabic: "(הֻםّ) מַעְהֹם בַּסّ עִשְרִין שֵיכֶּל, מַאשִי?", meeting: 5 },
     { id: 106, hebrew: "אחיך לא אצלנו, הלך לפני שעתיים, הכל בסדר?", arabic: "אַחְ'וּכִּי מֶש עִנַّא, רַאח קַבֶּל סַאעְתֵין, כֻּלّ שִי תַמַאם?", meeting: 5, readOnly: true },
     { id: 107, hebrew: "אחרי השיחה, יש להם דאגה גדולה.", arabic: "בַּעִד (א)לְמֻכַּאלַמֶה, אִלְהֹם הַםّ כְּבִּיר.", meeting: 5 },
@@ -3103,32 +3105,32 @@ const SENTENCES = [
     { id: 115, hebrew: "מדויק או לא מדויק, הכל הולך, אתה רואה?", arabic: "מַטְ'בּוּט וִלַא מֶש מַטְ'בּוּט כֻּלّוֹ מַאשִי, שַאיֶפ?", meeting: 5 },
 
     // ---- meeting 6, page 91: the past tense ----
-    { id: 116, hebrew: "אני מצטער, אין פה נאצר, זאת טעות במספר, אחותי.", arabic: "אַנַא אַאסֶפ, מַפִשّ נַאצֶר הוֹן, אִ(ל)נֻّמְרַה עַ'לַט יַא-חְ'תִי.", meeting: 6 },
-    { id: 117, hebrew: "זה, מה יש לו? לא רואה את הדרך? מכוניתו פגעה במכוניתם, תודה לאל אין פצועים.", arabic: "הַאדַא מַא לוֹ? מֻש שַאיֶפ (אל)טַّרִיק? סַיַّארְתוֹ צַ'רְבַּת סַיַّארִתְהֹם, אלְחַמְדֻלִלַّה מַפִש גְ'רְחַא.", meeting: 6, readOnly: true },
+    { id: 116, hebrew: "אני מצטער, אין פה נאצר, זאת טעות במספר, אחותי.", arabic: "אַנַא אַאסֶפ, מַפִשّ נַאצֶר הוֹן, אִ(ל)נֻّמְרַה עַ'לַט יַא-חְ'תִי.", meeting: 6 },
+    { id: 117, hebrew: "זה, מה יש לו? לא רואה את הדרך? מכוניתו פגעה במכוניתם, תודה לאל אין פצועים.", arabic: "הַאדַא מַא לוֹ? מֻש שַאיֶפ (אל)טַّרִיק? סַיַّארְתוֹ צַ'רְבַּת סַיַّארִתְהֹם, אלְחַמְדֻלִלַّה מַפִש גְ'רְחַא.", meeting: 6, readOnly: true },
     { id: 118, hebrew: "אנחנו הגענו ליישוב אחר הצהריים והם רק יצאו מהבית.", arabic: "אִחְנַא וְצִלְנַא עַ (א)לְבַּלַד בַּעַדִ (אל)צֻ'הֻר וְהֹםّ בַּסّ חַ'רַג'וּ מִנִ (אל)דַّאר.", meeting: 6, readOnly: true },
     { id: 119, hebrew: "האמת אחי, מצבנו על הפנים, חשבוננו במינוס.", arabic: "וַללַّהִ יַא-חְ'י, חַאלִתְנַא בִּ(א)לְוֵיל, חְסַאבְּנַא עַ (א)לְמַכְּשוּפ.", meeting: 6 },
-    { id: 120, hebrew: "נסענו באוטובוס קו רמלה מלוד עד התחנה המרכזית.", arabic: "רְכִּבְּנַא (א)לְבַּאצ חַ'טִّ (אל)רַמְלֶה מְנִّ (אל)לִّדّ לַחַדִّ (א)לְמַחַטّה (א)לְמַרְכַּזִיֶّה.", meeting: 6, readOnly: true },
-    { id: 121, hebrew: "אחיו של חברי, פגעה בו מכונית שלשום ולאחר מכן ברחה ממקום התאונה.", arabic: "אַחוּה לַצַאחְבִּי צַ'רְבַּתוֹ סַיַّארַה אַוّל אִמְבַּארֶח וְבַּעַדְהַא הַרְבַּת מִנְّ מַחַלִّ (א)לְחַאדֶס.", meeting: 6, readOnly: true },
+    { id: 120, hebrew: "נסענו באוטובוס קו רמלה מלוד עד התחנה המרכזית.", arabic: "רְכִּבְּנַא (א)לְבַּאצ חַ'טִّ (אל)רַמְלֶה מְנִّ (אל)לִّדّ לַחַדִّ (א)לְמַחַטّה (א)לְמַרְכַּזִיֶّה.", meeting: 6, readOnly: true },
+    { id: 121, hebrew: "אחיו של חברי, פגעה בו מכונית שלשום ולאחר מכן ברחה ממקום התאונה.", arabic: "אַחוּה לַצַאחְבִּי צַ'רְבַּתוֹ סַיַّארַה אַוّל אִמְבַּארֶח וְבַּעַדְהַא הַרְבַּת מִנְّ מַחַלִّ (א)לְחַאדֶס.", meeting: 6, readOnly: true },
     { id: 122, hebrew: "אני ביקשתי ממנו אלף פעמים, חבל על הסיפור הזה!", arabic: "אַנַא טַלֵבְּת מִנّוֹ אַלְפ מַרַّה, חַ'רַאם הַאדַא (א)לְחַכִּי!", meeting: 6 },
-    { id: 123, hebrew: "ישבנו אצלם, שתינו קפה ויצאנו מהם לאחר שעה.", arabic: "קַעַדְנַא עִנְדְהֹם שְרִבְּנַא קַהְוֶה וִטְלִעְנַא מִנְّהֹם בַּעַד סֵיעַה.", meeting: 6 },
+    { id: 123, hebrew: "ישבנו אצלם, שתינו קפה ויצאנו מהם לאחר שעה.", arabic: "קַעַדְנַא עִנְדְהֹם שְרִבְּנַא קַהְוֶה וִטְלִעְנַא מִנְّהֹם בַּעַד סֵיעַה.", meeting: 6 },
     { id: 124, hebrew: "יום שישי שלחנו את הפקס, הגיע רק ביום שני.", arabic: "יוֹם (אל)גֻ'מְעַה בַּעַתְנַא (א)לְפַכְּס וִצֵל בַּסّ יוֹם (אל)תְנֵין.", meeting: 6 },
     { id: 125, hebrew: "המורה הסבירה את השיעור והתלמידים הבינו הכל.", arabic: "לִמְעַלְמֶה שַרְחַתִ (אל)דַרְס וְ(אל)תַّלַאמִיז פְהְמוּ כֻּלّ שִי.", meeting: 6 },
-    { id: 126, hebrew: "שכנתנו לקחה מאיתנו סיר ובישלה בו מקלובה למסיבת בתה.", arabic: "גַ'ארִתְנַא אַחְ'דַת מִנַّא טַנְגַ'רַה וְטַבְּחַ'ת פִיהַא מַקְלוּבֶּה לַחַפְלֶת בִּנְתְהַא.", meeting: 6, readOnly: true },
+    { id: 126, hebrew: "שכנתנו לקחה מאיתנו סיר ובישלה בו מקלובה למסיבת בתה.", arabic: "גַ'ארִתְנַא אַחְ'דַת מִנַّא טַנְגַ'רַה וְטַבְּחַ'ת פִיהַא מַקְלוּבֶּה לַחַפְלֶת בִּנְתְהַא.", meeting: 6, readOnly: true },
     { id: 127, hebrew: "יום חמישי כל ילדי כיתתי לבשו את בגדי החג.", arabic: "יוֹם (א)לְחַ'מִיס כֻּלّ וְלַאד צַפִּّי לִבְּסוּ אַוַאעִי (א)לְעִיד.", meeting: 6 },
     { id: 128, hebrew: "העבירו את משרד הנסיעות למרכז היישוב.", arabic: "נַקַלוּ מַכְּתַבִּ (אל)סַפַרִיַّאת עַלַא קַלְבִּ (א)לְבַּלַד.", meeting: 6 },
     { id: 129, hebrew: "אתמול ירדנו למרכז היישוב, נכנסנו למסעדת אלבסתאן ואכלנו שם מקלובה.", arabic: "אִמְבַּארֶח נְזִלְנַא עַ מַרְכַּז (א)לְבַּלַד דַחַ'לְנַא מַטְעַם \"אִלְבֻּסְתַאן\" וְאַכַּלְנַא הֻנַאכּ מַקְלוּבֶּה.", meeting: 6, readOnly: true },
-    { id: 130, hebrew: "רק פתחו את חנות המתוקים החדשה, הסתערו עליה כולם.", arabic: "בַּסّ פַתַחוּ מַחַלִّ (א)לְחַלַוִיַّאת (א)לִגְ'דִיד הַגְ'מַת עַלֵיה כֻּלִّ (א)לְעַאלַם.", meeting: 6, readOnly: true },
+    { id: 130, hebrew: "רק פתחו את חנות המתוקים החדשה, הסתערו עליה כולם.", arabic: "בַּסّ פַתַחוּ מַחַלִّ (א)לְחַלַוִיַّאת (א)לִגְ'דִיד הַגְ'מַת עַלֵיה כֻּלִّ (א)לְעַאלַם.", meeting: 6, readOnly: true },
 
     // ---- meeting 7: comparatives, and negating the past ----
     { id: 131, hebrew: "הסחורה הזאת נקייה, אבל ההיא נקייה וזולה יותר, שילמנו עליה 20 שקל פחות.", arabic: "הַאדִי (א)לְבְּצַ'אעַה נְצִ'יפֶה, אַמַّא הַדִיכּ אַנְצַ'פ וְאַרְחַ'צ, יַעְנִי דַפַעְנַא עַלֵיהַא עִשְרִין שֵיכֶּל אַקַלّ.", meeting: 7, readOnly: true },
-    { id: 132, hebrew: "החולצות האלו גדולות! אין משהו קטן יותר? אני רוצה את הכי קטן.", arabic: "הַדוֹל (א)לְקֻמְצַאן כְּבַּאר! מַא פִי אַזְעַ'ר? בִּדִّי אַזְעַ'ר אִשִי, אַללַה יְחַ'לִّיכּ.", meeting: 7, readOnly: true },
+    { id: 132, hebrew: "החולצות האלו גדולות! אין משהו קטן יותר? אני רוצה את הכי קטן.", arabic: "הַדוֹל (א)לְקֻמְצַאן כְּבַּאר! מַא פִי אַזְעַ'ר? בִּדִّי אַזְעַ'ר אִשִי, אַללַה יְחַ'לִّיכּ.", meeting: 7, readOnly: true },
     { id: 133, hebrew: "אמג'ד הוא הכי גדול אצלנו בכיתה, היום המורה שאל שאלה והוא היחיד שידע את התשובה.", arabic: "אַמְגַ'ד, הֻוֶّ אַכְּבַּّר וַאחַד עִנַّא בִּ(אל)צַפّ, אִלְיִום (א)לְאֻסְתַאז סַאל סֻאַאל וְהֻוֶّ (א)לְוַחִיד אִלִّי עִרֶפ (אל)גַ'ّוַאבּ.", meeting: 7, readOnly: true },
     { id: 134, hebrew: "שנה שעברה התארחנו במלון הילטון, באמת המלון הכי טוב בעמאן.", arabic: "אִ(ל)סַّנֶה אִלִّי פַאתַת נְזִלְנַא עַלַא אוֹתֵיל הִילְתוֹן, וַלְלַّהִ אַחְלַא אוֹתֵיל פִי עַמַّאן.", meeting: 7, readOnly: true },
     { id: 135, hebrew: "יש לנו מספר רופאים אבל הוא הרופא הכי טוב אצלנו במרפאה.", arabic: "פִי עִנַّא עִדֶّת דַכַּאתְרַה, אַמַّא הֻוֶّ אַחְסַן דוֹכְּתוֹר עִנַّא בִּ(א)לְעִיַאדֶה.", meeting: 7, readOnly: true },
     { id: 136, hebrew: "יקירי, בבקשה, האפשרויות פתוחות, מה יותר נוח לך, אחי?", arabic: "יַא חַבִּיבִּי תְפַצַ'ّל, אִלְאִמְכַּאנִיַّאת מַפְתוּחַה, אִנְתֶ שוּ אַרְיַחְלַכּ, יַאחְ'י?", meeting: 7, readOnly: true },
     { id: 137, hebrew: "בכנות, המחירים אצלם יקרים מאוד, הם המקום הכי יקר ביישוב.", arabic: "אִ(ל)צַّרַאחַה, אִלְאַסְעַאר עִנְדְהֹם עַ'אלְיֶה כְּתִיר, יַעְנִי הֻםّ אַעְ'לַא מַחַלّ פִי (א)לְבַּלַד.", meeting: 7, readOnly: true },
     { id: 138, hebrew: "אשרף נכשל במבחן, קיבל את הציון הכי נמוך בקורס. באמת המבחן הכי קשה שהיה לנו.", arabic: "אַשְרַפ חַ'בַּצ בִּ(א)לְאִמְתִחַאן, אַחַ'ד אַוְטַא עַלַאמֶה בִּ(אל)דّוֹרַה. פִעְלַן אַצְעַבּ אִמְתִחַאן אִלִי כַּאן אִלְנַא.", meeting: 7, readOnly: true },
-    { id: 139, hebrew: "הגנב השפל הזה נכנס לחנות וגנב מאיתנו דברים, רק יום לאחר מכן גילינו את הגניבה.", arabic: "הַאדַא (א)לְחַרַאמִי (א)לְוַאטִי, דַחַ'ל עַ(אל)דֻכַּّאן וְסַרַק מִנַّא אַעְ'רַאצ'. בַּסّ בַּעַדְהַא בְּיוֹם, כַּשַפְנַא (אל)סִّרְקַה.", meeting: 7, readOnly: true },
+    { id: 139, hebrew: "הגנב השפל הזה נכנס לחנות וגנב מאיתנו דברים, רק יום לאחר מכן גילינו את הגניבה.", arabic: "הַאדַא (א)לְחַרַאמִי (א)לְוַאטִי, דַחַ'ל עַ(אל)דֻכַּّאן וְסַרַק מִנַّא אַעְ'רַאצ'. בַּסّ בַּעַדְהַא בְּיוֹם, כַּשַפְנַא (אל)סִّרְקַה.", meeting: 7, readOnly: true },
     { id: 140, hebrew: "כיבסנו את הכביסה במכונת הכביסה, יצאה מלוכלכת יותר. אנחנו צריכים מכונת כביסה חדשה.", arabic: "עַ'סַלְנַא (א)לְעַ'סִיל פִי (א)לְעַ'סַّאלֶה טְלֶע אַוְסַח', בִּדְנַא עַ'סַّאלֶה גְ'דִידֶה.", meeting: 7, readOnly: true },
     { id: 141, hebrew: "האמת, לא ידעתי על כך. זה ודאי הדבר הזה?", arabic: "אִלְמַטְ'בּוט, מַעְרִפְתֶש הַאדַא (א)לְאִשִי. אַכִּיד הַאדַא (א)לְחַכִּי?", meeting: 7 },
     { id: 142, hebrew: "לא לקחו את בן דודי עימם, ברח מהמקום לפני.", arabic: "מַאחַ'דוּש אִבְּן עַמִّי מַעְהֹם. הַרַבּ מִן (א)לְמַחַלّ קַבֶּל.", meeting: 7 },
@@ -3155,7 +3157,7 @@ const SENTENCES = [
     { id: 161, hebrew: "עד מתי פתוחה תחנת הדלק?", arabic: "לַאֵימְתַא פַאתְחַה (א)לְכַּאזִיֶّה, יַא עַמִّי?", meeting: 8 },
     { id: 162, hebrew: "בוקר טוב, המוסך פתוח או עדיין לא?", arabic: "צַבַּאח (א)לְחֵ'יר, פַאתֶח (א)לְכַּרַאג'? וְלַא בַּעְדוֹ?", meeting: 8 },
     { id: 163, hebrew: "עד מתי? שנה הבאה? אוי, הגיוני הסיפור הזה? מוזר באמת!", arabic: "לַחַדّ אֵימְתַא? סַנַת (אל)גַ'אי? וַלַ, מַעְקוּל הַ(א)לְחַכִּי? עַ'רִיבּ וַאללַה!", meeting: 8, readOnly: true },
-    { id: 164, hebrew: "מה לגבי המפעל הזה? מחובר לחשמל או מה?", arabic: "שוּ בִּ(אל)נִّסְבֶּה לַלְמַצְנַע הַאדַא? מַוְצוּל בִּ(א)לְכַּהְרַבַּא וְלַא כִּיפ?", meeting: 8 },
+    { id: 164, hebrew: "מה לגבי המפעל הזה? מחובר לחשמל או מה?", arabic: "שוּ בִּ(אל)נִّסְבֶּה לַלְמַצְנַע הַאדַא? מַוְצוּל בִּ(א)לְכַּהְרַבַּא וְלַא כִּיפ?", meeting: 8 },
     { id: 165, hebrew: "לאיזה פסטיבל אתה מוזמן אליו? מתי הוא? עוד חודש?", arabic: "אַיّ מִהְרַגַ'אן מַעְזוּם עַלֵיה אִנְתֶ? אֵימְתַא הֻוֶّ? אֻחְ'רַא שַהֵר?", meeting: 8, readOnly: true },
     { id: 166, hebrew: "אני לא מבין אותך, בכלל, למה אתה עושה (מתנהג) כך?", arabic: "אַנַא מֶש פַאהֶם עַלֵיכּ בִּ(א)לְמַרַّה, אִנְתֶ לֵיש עַאמֶל הֵיכּ?", meeting: 8, readOnly: true },
     { id: 167, hebrew: "בן אדם, הדבר הזה לא נכון, מהיכן הבאת את האלו?", arabic: "יַא זַלַמֶה, הַאדַא (א)לְאִישִי מֶש צַחִיח, מְנֵין (א)לְכַּלַאם הַאד?", meeting: 8, readOnly: true },
@@ -3195,7 +3197,7 @@ const SENTENCES = [
     { id: 197, hebrew: "אתם לבדכם במאפיה? נראה שבעל הבית סומך עליכם, \"כיף לכם\".", arabic: "אִנְתוּ לַחַאלְכֹּם בִּ(א)לְמַחְ'בַּז? מְבַּיֶّן (א)לִמְעַלֶّם בִּרְכֶּן עַלֵיכֹּם, נִיַّאלְכֹּם.", meeting: 10 },
     { id: 198, hebrew: "אלו אוכלים (ארוחות בוקר) כל יום חמישי במסעדת (אל)גְ'נֵינַה, אולי נתפוס אותם שם.", arabic: "הַדוֹל בִפְטַרוּ כֻּלّ יוֹם (א)לְחַ'מִיס פִי מַטְעַם (א)לִגְ'נֵינֶה, מֻמְכֵּן נִמְסִכְּהֹם הֻנַאכּ.", meeting: 10, readOnly: true },
     { id: 199, hebrew: "אני לא יכול לבוא אליכם לבית הבד, תוכלו לשלוח לי מיכל שמן זית לבית?", arabic: "אַנַא בַקְדַרֵש אַאגִ'י עַלֵיכֹּם עַ(א)לְמַעְצַרַה, בִתִקְדַרוּ תִבְּעַתוּ לִי תַנַכֶּת זֵית זֵיתוּן עַ(אל)דַّאר?", meeting: 10, readOnly: true },
-    { id: 200, hebrew: "הסמיטריילר מלא בברזל אנחנו לא נוכל להיכנס (ב)שער המסגריה אנחנו צריכים מנוף.", arabic: "אִ(ל)סֵّמִיטְרֵילֵיר מַלַאן בִּ(א)לְחַדִיד מְנִקְדַרֵש נֹדְחֹ'ל בַּאבִּ (א)לְמַחְדַדֵה, בִּדְנַא וִנְש.", meeting: 10, readOnly: true },
+    { id: 200, hebrew: "הסמיטריילר מלא בברזל אנחנו לא נוכל להיכנס (ב)שער המסגריה אנחנו צריכים מנוף.", arabic: "אִ(ל)סֵّמִיטְרֵילֵיר מַלַאן בִּ(א)לְחַדִיד מְנִקְדַרֵש נֹדְחֹ'ל בַּאבִּ (א)לְמַחְדַדֵה, בִּדְנַא וִנְש.", meeting: 10, readOnly: true },
     { id: 201, hebrew: "בן דודתי (מצד אימי) משחק כדורגל בקבוצת בני סח'נין, (הוא) משחק שוער (שומר שער).", arabic: "אִבֶּן חַ'אלְתִי בִּלְעַבּ פוּתְבּוֹל פִי פַרִיק אַבְּנַאא סַחְ'נִין, בִּלְעַבּ חַארֶס מַרְמַא.", meeting: 10, readOnly: true },
     { id: 202, hebrew: "היו אנשים רבים בתור והתחילו לדחוף אחד את השני והתחילה קטטה, איזה עולם! הורגים/מרביצים אחד לשני ללא סיבה (לחינם).", arabic: "כַּאנוּ נַאס כְּתַאר פִי דוֹר וְצַארוּ יִדְפַשוּ בַּעַצ' וֻבִּדְיַת טוֹשֶה, אַמַّא עַאלַם! בֹּקֹתְלוּ בַּעַצ' עַ(א)לְפַאצִ'י.", meeting: 10, readOnly: true },
     { id: 203, hebrew: "באלוהים אני כועס עליך, באמת אני מתחרט שביקשתי ממך את הטובה הזאת, איפה האחריות שלך?", arabic: "וַלְלַّהִ בַּזְעַל מִנַּכּ, פִעְלַן בַּנְדַם אִנּוֹ טַלַבֵּת מִנַּכּ הַ(א)לְמַעְרוּפ, וֵין (א)לְמַסְאוּלִיֶّה תַעַכּ?", meeting: 10, readOnly: true },
@@ -8497,6 +8499,19 @@ const GREETING_MAX_MS = 6000;
 function ArabicLearningApp() {
     const [tab, setTab] = useState("routine");
     const [practiceScreen, setPracticeScreen] = useState(null);
+    /* On a phone the header band is most of a screen tall, so a session
+       opened from below it started half off the bottom. Bring it up. */
+    useEffect(() => {
+        if (!practiceScreen || tab !== "practice") return;
+        if (!window.matchMedia || !window.matchMedia("(max-width:699px)").matches) return;
+        const id = requestAnimationFrame(() => {
+            const band = document.querySelector(".zl-appbar");
+            if (!band) return;
+            const y = band.getBoundingClientRect().bottom + window.scrollY - 8;
+            if (window.scrollY < y) window.scrollTo({ top: y, behavior: "smooth" });
+        });
+        return () => cancelAnimationFrame(id);
+    }, [practiceScreen, tab]);
     const [vocab, setVocab] = usePersistedState("vocab-data-v5", useMemo(initialVocab, []), (raw) => mergeDefaults(raw, DEFAULT_VOCAB));
     const [letters, setLetters] = usePersistedState("letters-data-v2", withProgressFields(ALPHABET), (raw) => mergeDefaults(raw, ALPHABET));
     const [sentences, setSentences] = usePersistedState("sentences-data-v1", withProgressFields(SENTENCES), (raw) => mergeDefaults(raw, SENTENCES));
@@ -8804,7 +8819,10 @@ function ArabicLearningApp() {
             className: "zl-root", "data-theme": theme,
             /* Lets the stylesheet make room for the tour card. */
             "data-tour": guideOpen ? "true" : "false",
-            style: { padding: "16px 16px 60px" },
+            /* A session is running: on a phone the tab bar steps aside so it
+               cannot sit over the answers or ride up on the keyboard. The
+               way out is the back link at the top of every session. */
+            "data-session": tab === "practice" && practiceScreen ? "true" : "false",
         },
         React.createElement(GlobalStyle, null),
         /* Above everything, so it is the first thing a new account meets. */
