@@ -184,7 +184,7 @@ try {
     throw new Error("React / ReactDOM לא נטענו מה-CDN (בדוק חיבור לאינטרנט או חסימת סקריפטים).");
   }
 "use strict";
-const APP_BUILD = "01.10 · 112";   // bump this every time the file is replaced
+const APP_BUILD = "01.10 · 113";   // bump this every time the file is replaced
 
 /* The institute logo, carried inline so the page stays a single file.
    STAMP is the round seal (full-screen waits); LOCKUP is the horizontal name
@@ -5116,6 +5116,7 @@ function cardFaces(item, reversed) {
             back: reversed ? item.letter : item.name,
             frontArabic: !reversed,
             backArabic: reversed,
+            frontLang: "ar", backLang: "ar",
             note: (item.hebrew ? item.hebrew + " · " : "") + item.sound,
         };
     }
@@ -5124,6 +5125,7 @@ function cardFaces(item, reversed) {
             front: reversed ? item.hebrew : item.arabic,
             back: reversed ? item.arabic : item.hebrew,
             frontArabic: false, backArabic: false, note: "",
+            frontLang: reversed ? "he" : "ar", backLang: reversed ? "ar" : "he",
         };
     }
     if (item._deck === "idioms") {
@@ -5131,6 +5133,7 @@ function cardFaces(item, reversed) {
             front: reversed ? item.meaning : item.arabic,
             back: reversed ? item.arabic : item.meaning,
             frontArabic: false, backArabic: false,
+            frontLang: reversed ? "he" : "ar", backLang: reversed ? "ar" : "he",
             note: "פירוש מילולי: " + item.literal,
         };
     }
@@ -5139,6 +5142,11 @@ function cardFaces(item, reversed) {
         front: reversed ? sense : item.front,
         back: reversed ? item.front : sense,
         frontArabic: false, backArabic: false, note: "",
+        /* Which side is which is known here, from the direction, so the
+           language mark never has to guess from the text. A Hebrew gloss can
+           carry vowel points for clarity — סַפָּר, the barber, not ספר, the
+           book — and the old guess labelled every such card Arabic. */
+        frontLang: reversed ? "he" : "ar", backLang: reversed ? "ar" : "he",
     };
 }
 
@@ -5326,7 +5334,7 @@ function FlashcardPractice({ deckKind, banks, applyResult, onBack, dir, setDir, 
                         position: "relative",
                         boxShadow: "var(--shadow-sm)",
                     } },
-                    React.createElement(LangMark, { text: flipped ? face.back : face.front }),
+                    React.createElement(LangMark, { text: flipped ? face.back : face.front, lang: flipped ? face.backLang : face.frontLang }),
                     !flipped
                     ? React.createElement(React.Fragment, null,
                         React.createElement("div", { className: face.frontArabic ? "zl-arabic" : "zl-display", style: { fontSize: faceSize(face.front, face.frontArabic), fontWeight: 700, marginBottom: 8, lineHeight: 1.55 } }, face.front),
@@ -5379,6 +5387,7 @@ function buildQuestion(deck, item, dir) {
         correctAnswer: correctAnswer,
         promptIsLetter: face.frontArabic,
         answersAreLetters: face.backArabic,
+        promptLang: face.frontLang,
         sense: sense,
     };
 }
@@ -5423,13 +5432,13 @@ function langTag(text) {
     return /[\u05B0-\u05BC\u05C1\u05C2\u0651]/.test(String(text || "")) ? "ar" : "he";
 }
 
-function LangMark({ text }) {
-    const ar = langTag(text) === "ar";
+function LangMark({ text, lang }) {
+    const ar = (lang || langTag(text)) === "ar";
     return React.createElement("span", { className: "zl-lang", "data-ar": ar ? "true" : "false" },
         ar ? "عربي" : "עברית");
 }
 
-function PromptBox({ text, isLetter }) {
+function PromptBox({ text, isLetter, lang }) {
     return React.createElement("div", { className: isLetter ? "zl-arabic" : "zl-display", style: {
             position: "relative",
             textAlign: "center",
@@ -5442,7 +5451,7 @@ function PromptBox({ text, isLetter }) {
             marginBottom: 18,
             border: "1px solid var(--line)",
         } },
-        isLetter ? null : React.createElement(LangMark, { text: text }),
+        isLetter ? null : React.createElement(LangMark, { text: text, lang: lang }),
         text);
 }
 
@@ -5525,7 +5534,7 @@ function AmericanQuiz({ deckKind, banks, applyResult, onBack, dir, setDir, onSes
                     "מבחן אמריקאי · " + (DECK_LABELS[deckKind] || "")),
                 React.createElement(DirectionToggle, { value: dir, onChange: setDir })),
             React.createElement(SessionBar, { pos: pos + 1, total: order.length }),
-            React.createElement(PromptBox, { text: question.prompt, isLetter: question.promptIsLetter }),
+            React.createElement(PromptBox, { text: question.prompt, isLetter: question.promptIsLetter, lang: question.promptLang }),
             React.createElement(ChoiceGrid, { question: question, chosen: selected, locked: !!selected, onChoose: choose }))));
 }
 
@@ -5690,7 +5699,7 @@ function MorningDrill({ banks, applyResult, onBack, onSessionDone, plan, title }
             React.createElement(SessionBar, { pos: pos + 1, total: tasks.length }),
             React.createElement("p", { style: { color: "var(--ink-muted)", fontSize: "0.85rem", marginBottom: 10 } },
                 task.open ? "כתוב את התרגום:" : "בחר את התרגום:"),
-            React.createElement(PromptBox, { text: prompt, isLetter: false }),
+            React.createElement(PromptBox, { text: prompt, isLetter: false, lang: task.open ? faces.frontLang : (question && question.promptLang) }),
             task.open
                 ? React.createElement("div", null,
                     React.createElement("input", {
@@ -6346,6 +6355,7 @@ function DailyReview({ banks, applyResult, onBack, onSessionDone }) {
 
             React.createElement(PromptBox, {
                 text: (task.mode === "card" && flipped) ? faces.back : faces.front,
+                lang: (task.mode === "card" && flipped) ? faces.backLang : faces.frontLang,
                 isLetter: false,
             }),
 
@@ -6897,7 +6907,7 @@ function ClockGame({ banks, applyResult, onBack, dir, setDir, onSessionDone }) {
                         width: Math.round((left / GAME_SIZES.clock) * 100) + "%",
                         background: low ? "var(--bad)" : "var(--navy)", transition: "width 1s linear" } })),
                 React.createElement("span", { className: "zl-session-num" }, score.correct + " / " + score.total)),
-            React.createElement(PromptBox, { text: question.prompt, isLetter: question.promptIsLetter }),
+            React.createElement(PromptBox, { text: question.prompt, isLetter: question.promptIsLetter, lang: question.promptLang }),
             React.createElement(ChoiceGrid, { question: question, chosen: selected, locked: !!selected, onChoose: choose }))));
 }
 
@@ -7915,7 +7925,7 @@ function FullExam({ banks, profile, onBack, onExamStart, onExamFinish, applyResu
                 : React.createElement(React.Fragment, null,
                     React.createElement("div", { style: { fontSize: "0.75rem", fontWeight: 700, color: "var(--accent)", marginBottom: 8 } },
                         task.open ? "שאלה פתוחה — הקלד את התרגום" : "בחר את התשובה הנכונה"),
-                    React.createElement(PromptBox, { text: task.question.prompt, isLetter: task.question.promptIsLetter }),
+                    React.createElement(PromptBox, { text: task.question.prompt, isLetter: task.question.promptIsLetter, lang: task.question.promptLang }),
                     task.open
                         ? React.createElement("div", null,
                             React.createElement("input", {
