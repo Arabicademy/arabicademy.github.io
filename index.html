@@ -184,7 +184,7 @@ try {
     throw new Error("React / ReactDOM לא נטענו מה-CDN (בדוק חיבור לאינטרנט או חסימת סקריפטים).");
   }
 "use strict";
-const APP_BUILD = "01.10 · 110";   // bump this every time the file is replaced
+const APP_BUILD = "01.10 · 112";   // bump this every time the file is replaced
 
 /* The institute logo, carried inline so the page stays a single file.
    STAMP is the round seal (full-screen waits); LOCKUP is the horizontal name
@@ -4201,6 +4201,15 @@ const ArrowButton = ({ onClick, title }) => (React.createElement("button", { typ
     } },
     React.createElement(ChevronLeft, { size: 16 })));
 
+/* Where a running session will return to. A session opened from the daily
+   routine goes back to the routine, one opened from the practice tab goes
+   back there; the link at the top says which, so every session's own label
+   ("חזרה לשיטות תרגול") is translated here rather than at forty call sites. */
+const ReturnContext = React.createContext ? React.createContext("practice") : null;
+const backLabel = (text) => {
+    const where = ReturnContext && React.useContext ? React.useContext(ReturnContext) : "practice";
+    return where === "routine" && text === "חזרה לשיטות תרגול" ? "חזרה לרוטינה" : text;
+};
 const BackLink = ({ onClick, children }) => (React.createElement("button", { type: "button", onClick: onClick, style: {
         display: "inline-flex",
         alignItems: "center",
@@ -4214,7 +4223,7 @@ const BackLink = ({ onClick, children }) => (React.createElement("button", { typ
         padding: 0,
     } },
     React.createElement(ChevronRight, { size: 15 }),
-    children));
+    backLabel(children)));
 
 const Card = ({ children, style }) => (React.createElement("div", { style: {
         background: "var(--surface)",
@@ -6465,6 +6474,8 @@ const SPELLING_VARIANTS = [
     ["אוניברסיטה", "אוניברסיטא"],
     ["כיתה", "כתה"],
     ["מסעדה", "מיסעדה"],
+    /* The dish is known by its own name in Hebrew too (card 685). */
+    ["תבשיל אורז וירקות", "מקלובה"],
 ];
 
 function spellingVariants(text) {
@@ -7365,13 +7376,23 @@ function MethodSheet({ method, onClose, onPick }) {
     return host && ReactDOM.createPortal ? ReactDOM.createPortal(sheet, host) : sheet;
 }
 
-function PracticeTab({ screen, setScreen, banks, profile, applyResult, onSessionDone, onExamStart, onExamFinish, onNumberResult }) {
+function PracticeTab(props) {
+    const from = props.screen && props.screen.from === "routine" ? "routine" : "practice";
+    const inner = React.createElement(PracticeTabInner, props);
+    return ReturnContext ? React.createElement(ReturnContext.Provider, { value: from }, inner) : inner;
+}
+
+function PracticeTabInner({ screen, setScreen, banks, profile, applyResult, onSessionDone, onExamStart, onExamFinish, onNumberResult, onReturnToRoutine }) {
     const [openMethod, setOpenMethod] = useState(null);
     /* One direction setting for every mode, reset to "ערבוב" on each visit. */
     const [dir, setDir] = useState("mix");
 
-    const backToList = (methodId) => () => {
-        setOpenMethod(methodId);
+    /* Finishing or leaving a session returns to where it was opened from:
+       the routine for a routine task, otherwise the practice tiles, closed —
+       not with the method's sheet reopened as though a choice were pending. */
+    const backToList = () => () => {
+        if (screen && screen.from === "routine" && onReturnToRoutine) { onReturnToRoutine(); return; }
+        setOpenMethod(null);
         setScreen(null);
     };
 
@@ -7423,7 +7444,7 @@ function PracticeTab({ screen, setScreen, banks, profile, applyResult, onSession
     if (screen && screen.screen === "due") {
         return React.createElement(DailyReview, {
             banks: banks, applyResult: applyResult,
-            onBack: () => setScreen(null),
+            onBack: () => (screen.from === "routine" && onReturnToRoutine ? onReturnToRoutine() : setScreen(null)),
             onSessionDone: (info) => onSessionDone("morning", info),
         });
     }
@@ -8998,7 +9019,12 @@ function ArabicLearningApp() {
 
     const navigateFromRoutine = (target) => {
         setTab("practice");
-        setPracticeScreen(target);
+        setPracticeScreen({ ...target, from: "routine" });
+    };
+    const returnToRoutine = () => {
+        setPracticeScreen(null);
+        setTab("routine");
+        try { window.scrollTo({ top: 0, behavior: "smooth" }); } catch (e) {}
     };
 
     const toggleTheme = () => setTheme(theme === "dark" ? "light" : "dark");
@@ -9182,6 +9208,7 @@ function ArabicLearningApp() {
                 onSessionDone: markRoutineDone,
                 onNumberResult: recordNumber,
                 onExamStart: startExam, onExamFinish: finishExam,
+                onReturnToRoutine: returnToRoutine,
             })),
             tab === "vocab" && React.createElement(VocabTab, { vocab: vocab, setVocab: setVocab, meeting: profileMeeting(profile) }),
             tab === "alphabet" && React.createElement(AlphabetTab, { letters: letters }),
