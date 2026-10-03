@@ -213,5 +213,40 @@ const accW = new Set();
 g.allMeanings(wrong).forEach((m2) => g.acceptableAnswers(m2).forEach((k) => accW.add(k)));
 check('a genuinely wrong answer is still wrong', !accW.has(g.normAnswer('מסעדה')));
 
+
+console.log('\n=== the language mark follows the direction, not the look of the text');
+/* A Hebrew gloss may carry vowel points to tell two words apart — סַפָּר,
+   the barber — and the mark once guessed from the points, so such a card,
+   asked from Hebrew, was labelled Arabic over a row of Arabic answers. */
+{
+  const { api: q } = loadApp('DEFAULT_VOCAB, SENTENCES, IDIOMS, ALPHABET, withProgressFields, buildDeck, buildQuestion, cardFaces');
+  const banksQ = { vocab: q.withProgressFields(q.DEFAULT_VOCAB), letters: q.withProgressFields(q.ALPHABET),
+    sentences: q.withProgressFields(q.SENTENCES), idioms: q.withProgressFields(q.IDIOMS), meeting: 15 };
+  let wrong = [];
+  ['vocab', 'sentences', 'idioms'].forEach((kind) => {
+    const deck = q.buildDeck(kind, banksQ);
+    deck.forEach((item) => {
+      [['he2ar', 'he'], ['ar2he', 'ar']].forEach(([dir, want]) => {
+        const f = q.cardFaces(item, dir === 'he2ar');
+        if (f.frontLang !== want) wrong.push(kind + ' ' + (item.front || item.id) + ' ' + dir);
+      });
+    });
+  });
+  const marked = q.DEFAULT_VOCAB.filter((w) => /[\u05B0-\u05BC\u05C1\u05C2\u0651]/.test(w.back));
+  const deckV = q.buildDeck('vocab', banksQ);
+  marked.forEach((w) => {
+    const item = deckV.find((d) => d.id === w.id);
+    if (!item) return;
+    const qq = q.buildQuestion(deckV, item, 'he2ar');
+    if (qq.promptLang !== 'he') wrong.push('question ' + w.front);
+  });
+  check('every prompt knows its language from the direction', wrong.length === 0, wrong.slice(0, 5).join(', '));
+  check(marked.length + ' pointed Hebrew glosses ask as Hebrew', true);
+  const promptCalls = (html.match(/React\.createElement\(PromptBox, \{[^}]*\}/g) || []);
+  const learner = promptCalls.filter((c) => /question|faces|prompt: prompt|text: prompt/.test(c) && !/spellNumber|task\.task\.prompt|text: task\.prompt/.test(c));
+  check('every learner-facing prompt passes its language', learner.every((c) => /lang:/.test(c)),
+        learner.filter((c) => !/lang:/.test(c)).join(' | '));
+}
+
 console.log(bad ? '\n' + bad + ' CHECK(S) FAILED' : '\nALL SWEEP CHECKS PASSED');
 process.exit(bad ? 1 : 0);
