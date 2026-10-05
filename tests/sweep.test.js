@@ -248,5 +248,22 @@ console.log('\n=== the language mark follows the direction, not the look of the 
         learner.filter((c) => !/lang:/.test(c)).join(' | '));
 }
 
+
+console.log('\n=== sentences run Hebrew to Arabic');
+/* The Hebrew sentence is given whole and the Arabic is built or completed,
+   in assembly, in fill-the-gap and in the exam. Reading is the exception. */
+{
+  let wrongDir = 0;
+  for (let t = 0; t < 30; t++) {
+    g.buildExamTasks(banksAt(5)).filter((x) => x.kind === 'sentence').forEach((x) => { if (x.dir !== 'he2ar') wrongDir++; });
+  }
+  check('every exam sentence asks from Hebrew', wrongDir === 0);
+  const body = (fn) => { const i = html.indexOf('function ' + fn); return html.slice(i, html.indexOf('\nfunction ', i + 10)); };
+  ['SentenceBuilderSession', 'BlankGame'].forEach((fn) => {
+    check(fn + ' has no direction switch', !/DirectionToggle/.test(body(fn)));
+    check(fn + ' never draws a random direction', !/resolveDir\(/.test(body(fn)));
+  });
+}
+
 console.log(bad ? '\n' + bad + ' CHECK(S) FAILED' : '\nALL SWEEP CHECKS PASSED');
 process.exit(bad ? 1 : 0);
