@@ -160,6 +160,13 @@
 
 <script>
   function showBootError(title, err) {
+    /* Once the app is on screen, faults are caught where they happen and
+       logged; a late error must never cover a running session with the
+       start-up error box. The box is for the moment before the app exists. */
+    if (window.ZL_APP_LIVE) {
+      try { console.error('[kasba] ' + title, err); } catch (e) {}
+      return;
+    }
     var box = document.getElementById('boot-error');
     box.style.display = 'block';
     var name = (err && err.name) ? err.name : 'Error';
@@ -184,7 +191,7 @@ try {
     throw new Error("React / ReactDOM לא נטענו מה-CDN (בדוק חיבור לאינטרנט או חסימת סקריפטים).");
   }
 "use strict";
-const APP_BUILD = "01.10 · 114";   // bump this every time the file is replaced
+const APP_BUILD = "13.10 · 115";   // bump this every time the file is replaced
 
 /* The institute logo, carried inline so the page stays a single file.
    STAMP is the round seal (full-screen waits); LOCKUP is the horizontal name
@@ -1223,6 +1230,11 @@ const GLOBAL_CSS = `
                  0 0 0 30px color-mix(in srgb, var(--surface) 5%, transparent);
       pointer-events:none;
     }
+
+    /* ---- a part of the screen that failed and was contained ---- */
+    .zl-fault { border:1px dashed var(--line); border-radius:var(--r-md); padding:var(--s4); background:var(--bg); text-align:center; margin:var(--s3) 0; }
+    .zl-fault-title { font-weight:800; margin:0 0 4px; color:var(--ink); }
+    .zl-fault-note { font-size:var(--t-sm); color:var(--ink-muted); margin:0 0 var(--s3); }
 
     /* ---- tiles: the statistics card, made pressable ---- */
     .zl-tile-grid {
@@ -4200,6 +4212,42 @@ const ArrowButton = ({ onClick, title }) => (React.createElement("button", { typ
         e.currentTarget.style.borderColor = "var(--line)";
     } },
     React.createElement(ChevronLeft, { size: 16 })));
+
+/* A fault inside one part of the screen stays inside that part.
+
+   Without a boundary, any error while drawing unmounts the whole app and the
+   page turns into the red error box — mid-exam, that throws away every answer
+   already given. With one, the part that failed is replaced by a short note
+   and a way forward, and everything around it keeps its state. `resetKey`
+   clears the fault when the part moves on (the next question, another tab). */
+/* Runs a builder function as a component of its own, one level below the
+   boundary. A boundary catches faults in its descendants only, never in its
+   own render, so the builder must not be called from the boundary itself. */
+const BoundaryPart = ({ build }) => build();
+const ErrorBoundary = (React && React.Component) ? class ErrorBoundary extends React.Component {
+    constructor(props) { super(props); this.state = { failed: false }; }
+    static getDerivedStateFromError() { return { failed: true }; }
+    componentDidCatch(error, info) {
+        try { console.error("[kasba] caught:", error, info && info.componentStack); } catch (e) {}
+        try { window.ZL_LAST_ERROR = String((error && error.message) || error); } catch (e) {}
+    }
+    componentDidUpdate(prev) {
+        if (this.state.failed && prev.resetKey !== this.props.resetKey) this.setState({ failed: false });
+    }
+    render() {
+        /* Children may be a function. Then the part is built by BoundaryPart,
+           below the boundary, and a fault while building it is caught; children
+           built by the parent and handed in would fail in the parent's own
+           render, which is above the boundary and out of its reach. */
+        if (!this.state.failed) return typeof this.props.children === "function"
+            ? React.createElement(BoundaryPart, { build: this.props.children })
+            : this.props.children;
+        return this.props.fallback ? this.props.fallback() : React.createElement("div", {
+            className: "zl-fault", role: "alert" },
+            React.createElement("p", { className: "zl-fault-title" }, "משהו השתבש בחלק הזה של המסך"),
+            React.createElement("p", { className: "zl-fault-note" }, "ההתקדמות שלך שמורה. אפשר להמשיך כרגיל."));
+    }
+} : (({ children }) => children);
 
 /* Where a running session will return to. A session opened from the daily
    routine goes back to the routine, one opened from the practice tab goes
@@ -7616,6 +7664,30 @@ function numberShare(profile) {
     return 0.10 - (0.07 * known);      // 10% down to 3%
 }
 
+/* The right answer to an exam question, as it is shown after a miss.
+
+   The exam holds four shapes of question and only the vocabulary, letter and
+   idiom ones carry a `question` object. The feedback line read
+   task.question.correctAnswer for all of them, so the first wrong answer to a
+   numbers question threw, React unmounted the page, and the exam was lost.
+   Every shape is answered here, and nothing reads the shapes directly. */
+function examAnswerText(task) {
+    if (!task) return "";
+    if (task.kind === "number") {
+        if (task.numberKind === "ordinal") return (task.task && task.task.answer) || "";
+        return task.value != null ? String(task.value) : "";
+    }
+    if (task.question && task.question.correctAnswer != null) return String(task.question.correctAnswer);
+    if (task.kind === "sentence" && task.item) return task.dir === "he2ar" ? task.item.arabic : task.item.hebrew;
+    return "";
+}
+
+function examFeedbackText(task, result) {
+    if (result === "correct") return "נכון!";
+    const answer = examAnswerText(task);
+    return answer ? "לא נכון — התשובה: " + answer : "לא נכון";
+}
+
 function buildNumberExamTasks(count, profile) {
     const out = [];
     /* Weighted towards the bands that are least known, so the exam asks about
@@ -7895,6 +7967,15 @@ function FullExam({ banks, profile, onBack, onExamStart, onExamFinish, applyResu
                 React.createElement("span", { className: "zl-examtag" }, meta.label)),
             React.createElement(SessionBar, { pos: pos + 1, total: tasks.length }),
 
+            /* One question at a time inside its own boundary, keyed on the
+               position: if anything in a question fails, only that question
+               is lost — it is skipped, not scored — and the exam goes on. */
+            React.createElement(ErrorBoundary, { key: "q" + pos, resetKey: pos,
+                fallback: () => React.createElement("div", { className: "zl-fault", role: "alert" },
+                    React.createElement("p", { className: "zl-fault-title" }, "השאלה הזו לא הוצגה כראוי"),
+                    React.createElement("p", { className: "zl-fault-note" }, "היא לא תיחשב בציון. שאר המבחן ממשיך כרגיל."),
+                    React.createElement(PrimaryButton, { onClick: next }, pos + 1 >= tasks.length ? "סיים וקבל ציון" : "לשאלה הבאה")) },
+            () => React.createElement(React.Fragment, null,
             task.kind === "number"
                 ? React.createElement(React.Fragment, null,
                     React.createElement("div", { style: { fontSize: "0.75rem", fontWeight: 700, color: "var(--accent)", marginBottom: 8 } },
@@ -7949,8 +8030,8 @@ function FullExam({ banks, profile, onBack, onExamStart, onExamFinish, applyResu
 
             result ? React.createElement("div", { className: result === "correct" ? "zl-pop" : "zl-shake", style: { marginTop: 14 } },
                 task.kind !== "sentence" ? React.createElement("p", { style: { fontWeight: 700, marginBottom: 8, lineHeight: 1.6, color: result === "correct" ? "var(--ok)" : "var(--bad)" } },
-                    result === "correct" ? "נכון!" : "לא נכון — התשובה: " + task.question.correctAnswer) : null,
-                React.createElement(PrimaryButton, { onClick: next }, pos + 1 >= tasks.length ? "סיים וקבל ציון" : "השאלה הבאה")) : null),
+                    examFeedbackText(task, result)) : null,
+                React.createElement(PrimaryButton, { onClick: next }, pos + 1 >= tasks.length ? "סיים וקבל ציון" : "השאלה הבאה")) : null))),
 
         confirmQuit ? React.createElement("div", { className: "zl-overlay", onClick: () => setConfirmQuit(false) },
             React.createElement("div", { className: "zl-sheet zl-anim", onClick: (e) => e.stopPropagation() },
@@ -8838,6 +8919,7 @@ const GREETING_MAX_MS = 6000;
 
 function ArabicLearningApp() {
     const [tab, setTab] = useState("routine");
+    useEffect(() => { window.ZL_APP_LIVE = true; }, []);
     const [practiceScreen, setPracticeScreen] = useState(null);
     /* On a phone the header band is most of a screen tall, so a session
        opened from below it started half off the bottom. Bring it up. */
@@ -9213,6 +9295,7 @@ function ArabicLearningApp() {
                 },
                 onAccount: () => setAccountOpen(true),
                 syncOk: sync.status === "synced" }),
+            React.createElement(ErrorBoundary, { key: "tab-" + tab, resetKey: tab + "|" + (practiceScreen ? practiceScreen.screen : "") },
             tab === "routine" && (React.createElement(RoutineTab, { checklist: checklist, setChecklist: setChecklist, navigateTo: navigateFromRoutine, vocab: vocab, letters: letters, upTo: profile.meeting })),
             tab === "practice" && (React.createElement(PracticeTab, {
                 screen: practiceScreen, setScreen: setPracticeScreen,
@@ -9225,7 +9308,7 @@ function ArabicLearningApp() {
             })),
             tab === "vocab" && React.createElement(VocabTab, { vocab: vocab, setVocab: setVocab, meeting: profileMeeting(profile) }),
             tab === "alphabet" && React.createElement(AlphabetTab, { letters: letters }),
-            tab === "stats" && React.createElement(StatsTab, { vocab: vocab, letters: letters, sentences: sentences, idioms: idioms, checklist: checklist, meeting: meeting, profile: profile }))));
+            tab === "stats" && React.createElement(StatsTab, { vocab: vocab, letters: letters, sentences: sentences, idioms: idioms, checklist: checklist, meeting: meeting, profile: profile })))));
 }
 
 ReactDOM.createRoot(document.getElementById("root")).render(React.createElement(ArabicLearningApp, null));
