@@ -165,5 +165,57 @@ console.log('\n=== weight bears some relation to question count');
         g.EXAM_PLAN.reduce((a, s) => a + s.weight, 0) === 100);
 }
 
+
+/* The crash of 13.10: a wrong answer to a numbers question read
+   task.question.correctAnswer, which number tasks do not have, and the
+   TypeError took the whole exam down. Every kind of task must now yield a
+   readable answer, and the exam must stay inside its safety nets. */
+console.log('\n=== every exam question can show its answer after a mistake');
+{
+  const { api: x } = loadApp('buildExamTasks, examAnswerText, examFeedbackText, withProgressFields, ' +
+    'DEFAULT_VOCAB, ALPHABET, SENTENCES, IDIOMS, TOTAL_MEETINGS');
+  const banks = { vocab: x.withProgressFields(x.DEFAULT_VOCAB), letters: x.withProgressFields(x.ALPHABET),
+    sentences: x.withProgressFields(x.SENTENCES), idioms: x.withProgressFields(x.IDIOMS), meeting: x.TOTAL_MEETINGS };
+  const seen = {}; const blank = []; const threw = [];
+  for (let run = 0; run < 40; run++) {
+    x.buildExamTasks(banks).forEach((t) => {
+      const k = t.kind + (t.numberKind ? ':' + t.numberKind : '');
+      seen[k] = (seen[k] || 0) + 1;
+      try {
+        const ans = x.examAnswerText(t);
+        const wrong = x.examFeedbackText(t, 'wrong');
+        if (!ans || !String(ans).trim()) blank.push(k);
+        if (x.examFeedbackText(t, 'correct') !== 'נכון!') blank.push(k + ' (correct)');
+        if (ans && wrong.indexOf(ans) < 0) blank.push(k + ' (feedback lacks answer)');
+      } catch (e) { threw.push(k + ': ' + e.message); }
+    });
+  }
+  console.log('   kinds seen: ' + JSON.stringify(seen));
+  check('number questions are among them, both kinds', seen['number:digits'] > 0 && seen['number:ordinal'] > 0,
+        Object.keys(seen).filter((k) => k.startsWith('number')).join(', '));
+  check('no task kind throws while building its feedback', threw.length === 0, threw.slice(0, 3).join(' | '));
+  check('every task kind has a non-empty answer to show', blank.length === 0, [...new Set(blank)].slice(0, 5).join(', '));
+  check('a missing task gives an empty answer, not a crash', x.examAnswerText(null) === '' && x.examFeedbackText({}, 'wrong') === 'לא נכון');
+}
+
+console.log('\n=== and a fault in one question cannot end the exam');
+{
+  const html = require('fs').readFileSync(require('path').join(__dirname, '..', 'index.html'), 'utf8');
+  const start = html.indexOf('function FullExam');
+  const body = html.slice(start, html.indexOf('\nfunction ', start + 20));
+  check('the exam feedback never reads task.question directly', !/task\.question\.correctAnswer\)\s*:/.test(body) && !/"לא נכון — התשובה: " \+ task\.question/.test(body));
+  check('the exam feedback goes through examFeedbackText', body.indexOf('examFeedbackText(task, result)') > 0);
+  check('each question sits in its own error boundary, keyed on its position',
+        /React\.createElement\(ErrorBoundary, \{ key: "q" \+ pos, resetKey: pos/.test(body));
+  check('that boundary builds the question below itself, where it can catch',
+        /const BoundaryPart = \(\{ build \}\) => build\(\);/.test(html) &&
+        /React\.createElement\(BoundaryPart, \{ build: this\.props\.children \}\)/.test(html));
+  check('its fallback lets the learner move on', /השאלה הזו לא הוצגה כראוי[\s\S]{0,300}PrimaryButton, \{ onClick: next \}/.test(body));
+  check('the whole tab area has a boundary too', /React\.createElement\(ErrorBoundary, \{ key: "tab-" \+ tab/.test(html));
+  check('the start-up error box stays away once the app is live',
+        /function showBootError[\s\S]{0,400}if \(window\.ZL_APP_LIVE\)[\s\S]{0,120}return;/.test(html) &&
+        /window\.ZL_APP_LIVE = true/.test(html));
+}
+
 console.log(bad ? '\n' + bad + ' CHECK(S) FAILED' : '\nALL EXAM CHECKS PASSED');
 process.exit(bad ? 1 : 0);
