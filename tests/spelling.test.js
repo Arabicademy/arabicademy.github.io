@@ -74,3 +74,42 @@ if (flagged) {
   process.exit(1);
 }
 console.log('no card can fail on a spelling preference');
+
+/* Answers Emanuel reported as marked wrong (21.10). Each one is typed here
+   against the card it was given for, through the same path the app uses. */
+console.log('\n=== answers that were once marked wrong');
+{
+  const { api: q } = loadApp('DEFAULT_VOCAB, SENTENCES, acceptableAnswers, normAnswer, allMeanings, buildQuestion, withProgressFields, buildDeck');
+  const card = (id) => q.DEFAULT_VOCAB.find((x) => x.id === id);
+  const takes = (id, typed) => {
+    const ok = new Set();
+    q.allMeanings(card(id)).forEach((m) => q.acceptableAnswers(m).forEach((k) => ok.add(k)));
+    return ok.has(q.normAnswer(typed));
+  };
+  const cases = [
+    [714, 'היתה'], [714, 'הייתה'],
+    [658, 'אחיות רפואיות'], [658, 'אחיות רפואייות'], [658, 'אחיות (רפואיות)'], [658, 'אחיות‏ רפואיות'],
+    [584, 'כיף'], [1102, 'איחור'], [1103, 'איחורים'],
+    [998, 'קצת'], [999, 'קצת'], [1081, 'אש'],
+    [1096, 'סטודנט'], [1096, 'מבקש'], [17, 'מבקש'], [17, 'סטודנט'],
+    [1018, 'מזמינים'], [1040, 'מוזמן'],
+  ];
+  let miss = 0;
+  cases.forEach(([id, t]) => {
+    const r = takes(id, t);
+    if (!r) miss++;
+    console.log('  ' + (r ? 'ok   ' : 'FAIL ') + id + ' ' + card(id).front + '  ←  ' + t);
+  });
+  /* A second meaning must never come back as a wrong option. */
+  const banks = { vocab: q.withProgressFields(q.DEFAULT_VOCAB), letters: [], sentences: [], idioms: [], meeting: 15 };
+  const deck = q.buildDeck('vocab', banks);
+  const talib = deck.find((d) => d.id === 1096);
+  let clash = 0;
+  for (let i = 0; i < 400; i++) {
+    const qq = q.buildQuestion(deck, talib, 'ar2he');
+    if (qq.options.filter((o) => o === 'סטודנט' || o === 'מבקש').length > 1) clash++;
+  }
+  console.log('  ' + (clash ? 'FAIL ' : 'ok   ') + 'טַאלֶבּ never offers its other meaning as a wrong option' + (clash ? '  (' + clash + ' of 400)' : ''));
+  if (miss || clash) { console.log('\nREPORTED ANSWERS STILL FAIL'); process.exit(1); }
+  console.log('every reported answer is accepted');
+}
