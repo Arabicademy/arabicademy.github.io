@@ -191,7 +191,7 @@ try {
     throw new Error("React / ReactDOM לא נטענו מה-CDN (בדוק חיבור לאינטרנט או חסימת סקריפטים).");
   }
 "use strict";
-const APP_BUILD = "13.10 · 115";   // bump this every time the file is replaced
+const APP_BUILD = "21.10 · 116";   // bump this every time the file is replaced
 
 /* The institute logo, carried inline so the page stays a single file.
    STAMP is the round seal (full-screen waits); LOCKUP is the horizontal name
@@ -1422,7 +1422,7 @@ const DEFAULT_VOCAB = [
     { id: 14, front: "פִי", back: "ב...", alts: ["יש"], topic: "מילות יחס", meeting: 1 },
     { id: 15, front: "מַע", back: "עם", topic: "מילות יחס", meeting: 1 },
     { id: 16, front: "דַוְרַה", back: "קורס", topic: "לימודים ומוסדות", form: "יחיד", pair: [74], meeting: 1 },
-    { id: 17, front: "טַאלֵבּ", back: "סטודנט", topic: "אנשים ותפקידים", form: "יחיד", pair: [75], meeting: 1, gender: "m", mate: 18 },
+    { id: 17, front: "טַאלֵבּ", back: "סטודנט", alts: ["מבקש"], topic: "אנשים ותפקידים", form: "יחיד", pair: [75], meeting: 1, gender: "m", mate: 18 },
     { id: 18, front: "טַאלְבֵּה", back: "סטודנטית", topic: "אנשים ותפקידים", form: "יחיד", pair: [76], meeting: 1, gender: "f", mate: 17 },
     { id: 19, front: "גַ'אמְעַה", back: "אוניברסיטה", topic: "לימודים ומוסדות", form: "יחיד", pair: [77], meeting: 1 },
     { id: 20, front: "סֵכְּרֵתֵירַא", back: "מזכירה", topic: "אנשים ותפקידים", form: "יחיד", pair: [78], meeting: 1, gender: "f", mate: 21 },
@@ -1998,7 +1998,7 @@ const DEFAULT_VOCAB = [
     { id: 581, front: "חַאל", back: "מצב / מקרה", topic: "כללי", form: "יחיד", pair: [582], meeting: 5 },
     { id: 582, front: "אַחְוַאל", back: "מצבים / מקרים", topic: "כללי", form: "רבים", pair: [581], meeting: 5 },
     { id: 583, front: "כִּיפ", back: "איך", topic: "מילות שאלה", meeting: 5 },
-    { id: 584, front: "כֵּיפ", back: "הנאה / תענוג", topic: "כללי", meeting: 5 },
+    { id: 584, front: "כֵּיפ", back: "הנאה / תענוג / כיף", topic: "כללי", meeting: 5 },
     { id: 585, front: "מַאשִי", back: "הולך", topic: "כללי", form: "יחיד", pair: [586], meeting: 5, gender: "m", mate: 587 },
     { id: 586, front: "מַאשְיִין", back: "הולכים", topic: "כללי", form: "רבים", pair: [585], meeting: 5, gender: "m", mate: 588 },
     { id: 587, front: "מַאשְיֶה", back: "הולכת", topic: "כללי", form: "יחיד", pair: [588], meeting: 5, gender: "f", mate: 585 },
@@ -2408,8 +2408,8 @@ const DEFAULT_VOCAB = [
     { id: 995, front: "בַּלַדִיֶّה", back: "עירייה", topic: "מקומות", form: "יחיד", pair: [996], meeting: 8 },
     { id: 996, front: "בַּלַדִיַّאת", back: "עיריות", topic: "מקומות", form: "רבים", pair: [995], meeting: 8 },
     { id: 997, front: "בַּלַדִי", back: "מקומי (אדם או תוצר)", topic: "כללי", meeting: 8 },
-    { id: 998, front: "שְוַיّ", back: "מעט / לאט", topic: "כללי", meeting: 8 },
-    { id: 999, front: "שְוַיֶّה", back: "מעט / לאט", topic: "כללי", meeting: 8 },
+    { id: 998, front: "שְוַיّ", back: "מעט / קצת / לאט", topic: "כללי", meeting: 8 },
+    { id: 999, front: "שְוַיֶّה", back: "מעט / קצת / לאט", topic: "כללי", meeting: 8 },
     { id: 1000, front: "וַאצֵ'ח", back: "ברור / גלוי / נראה לעין", topic: "תארים", meeting: 8 },
     { id: 1001, front: "סַאמֶע", back: "שומע", topic: "כללי", form: "יחיד", pair: [1002], meeting: 8, gender: "m", mate: 1003 },
     { id: 1002, front: "סַאמְעִין", back: "שומעים", topic: "כללי", form: "רבים", pair: [1001], meeting: 8, gender: "m" },
@@ -2428,9 +2428,9 @@ const DEFAULT_VOCAB = [
     { id: 1015, front: "עַאמְלֶה", back: "עושה / עובדת", topic: "כללי", form: "יחיד", pair: [1016], meeting: 8, gender: "f", mate: 1013 },
     { id: 1016, front: "עַאמְלַאת", back: "עושות / עובדות", topic: "כללי", form: "רבים", pair: [1015], meeting: 8, gender: "f" },
     { id: 1017, front: "חַאגֶ'ז", back: "מזמין (מקום)", topic: "כללי", form: "יחיד", pair: [1018], meeting: 8, gender: "m", mate: 1019 },
-    { id: 1018, front: "חַאגְ'זִין", back: "מזמינים", topic: "כללי", form: "רבים", pair: [1017], meeting: 8, gender: "m" },
-    { id: 1019, front: "חַאגְ'זֶה", back: "מזמינה / ות מקום", topic: "כללי", form: "יחיד", pair: [1020], meeting: 8, gender: "f", mate: 1017 },
-    { id: 1020, front: "חַאגְ'זַאת", back: "מזמינות", topic: "כללי", form: "רבים", pair: [1019], meeting: 8, gender: "f" },
+    { id: 1018, front: "חַאגְ'זִין", back: "מזמינים (מקום)", topic: "כללי", form: "רבים", pair: [1017], meeting: 8, gender: "m" },
+    { id: 1019, front: "חַאגְ'זֶה", back: "מזמינה (מקום)", topic: "כללי", form: "יחיד", pair: [1020], meeting: 8, gender: "f", mate: 1017 },
+    { id: 1020, front: "חַאגְ'זַאת", back: "מזמינות (מקום)", topic: "כללי", form: "רבים", pair: [1019], meeting: 8, gender: "f" },
     { id: 1021, front: "תַזְכַּרַה", back: "כרטיס", topic: "חפצים", form: "יחיד", pair: [1022], meeting: 8 },
     { id: 1022, front: "תַזַאכֶּר", back: "כרטיסים", topic: "חפצים", form: "רבים", pair: [1021], meeting: 8 },
     { id: 1023, front: "מַעְרַצ'", back: "תערוכה / תצוגה / יריד", topic: "מקומות", form: "יחיד", pair: [1024], meeting: 8 },
@@ -2439,7 +2439,7 @@ const DEFAULT_VOCAB = [
     { id: 1026, front: "כַּאזִיַّאת", back: "תחנות דלק", topic: "מקומות", form: "רבים", pair: [1025], meeting: 8 },
     { id: 1027, front: "כַּרַאג'", back: "מוסך / חניון", topic: "מקומות", form: "יחיד", pair: [1028], meeting: 8 },
     { id: 1028, front: "כַּרַאגַ'את", back: "מוסכים / חניונים", topic: "מקומות", form: "רבים", pair: [1027], meeting: 8 },
-    { id: 1029, front: "וְלַ", back: "אוי..", topic: "ביטויים", meeting: 8 },
+    { id: 1029, front: "וַלְ", back: "אוי..", topic: "ביטויים", meeting: 8 },
     { id: 1030, front: "מַעְקוּל", back: "הגיוני / עושה שכל", topic: "תארים", meeting: 8 },
     { id: 1031, front: "נִסְבֶּה", back: "יחס / אחוז / שיעור", topic: "כללי", meeting: 8 },
     { id: 1032, front: "מַצְנַע", back: "מפעל", topic: "מקומות", form: "יחיד", pair: [1033], meeting: 8 },
@@ -2450,10 +2450,10 @@ const DEFAULT_VOCAB = [
     { id: 1037, front: "מַוְצוּלַאת", back: "מחוברות / מתמשכות", topic: "תארים", form: "רבים", pair: [1036], meeting: 8, gender: "f" },
     { id: 1038, front: "מִהְרַגַ'אן", back: "פסטיבל / עצרת", topic: "כללי", form: "יחיד", pair: [1039], meeting: 8 },
     { id: 1039, front: "מִהְרַגַ'אנַאת", back: "פסטיבלים / עצרות", topic: "כללי", form: "רבים", pair: [1038], meeting: 8 },
-    { id: 1040, front: "מַעְזוּם", back: "מוזמן", topic: "כללי", form: "יחיד", pair: [1041], meeting: 8, gender: "m", mate: 1042 },
-    { id: 1041, front: "מַעַאזִים", back: "מוזמנים", topic: "כללי", form: "רבים", pair: [1040], meeting: 8, gender: "m" },
-    { id: 1042, front: "מַעְזוּמֶה", back: "מוזמנת", topic: "כללי", form: "יחיד", pair: [1043], meeting: 8, gender: "f", mate: 1040 },
-    { id: 1043, front: "מַעְזוּמַאת", back: "מוזמנות", topic: "כללי", form: "רבים", pair: [1042], meeting: 8, gender: "f" },
+    { id: 1040, front: "מַעְזוּם", back: "מוזמן (אדם)", topic: "כללי", form: "יחיד", pair: [1041], meeting: 8, gender: "m", mate: 1042 },
+    { id: 1041, front: "מַעַאזִים", back: "מוזמנים (אדם)", topic: "כללי", form: "רבים", pair: [1040], meeting: 8, gender: "m" },
+    { id: 1042, front: "מַעְזוּמֶה", back: "מוזמנת (אדם)", topic: "כללי", form: "יחיד", pair: [1043], meeting: 8, gender: "f", mate: 1040 },
+    { id: 1043, front: "מַעְזוּמַאת", back: "מוזמנות (אדם)", topic: "כללי", form: "רבים", pair: [1042], meeting: 8, gender: "f" },
     { id: 1044, front: "אֻחְ'רַא", back: "עוד / בעוד / בנוסף", topic: "כללי", meeting: 8 },
     { id: 1045, front: "פַאהֶם", back: "מבין", topic: "כללי", form: "יחיד", pair: [1046], meeting: 8, gender: "m", mate: 1047 },
     { id: 1046, front: "פַאהְמִין", back: "מבינים", topic: "כללי", form: "רבים", pair: [1045], meeting: 8, gender: "m" },
@@ -2489,7 +2489,7 @@ const DEFAULT_VOCAB = [
     { id: 1078, front: "בַּרְדַאן", back: "אחד שקר לו", topic: "תארים", meeting: 8, gender: "m", mate: 1079 },
     { id: 1079, front: "בַּרְדַאנֶה", back: "אחת שקר לה", topic: "תארים", meeting: 8, gender: "f", mate: 1078 },
     { id: 1080, front: "נַאר", back: "אש", topic: "כללי", form: "יחיד", pair: [1081], meeting: 8 },
-    { id: 1081, front: "נִירַאן", back: "אשים", topic: "כללי", form: "רבים", pair: [1080], meeting: 8 },
+    { id: 1081, front: "נִירַאן", back: "אש", topic: "כללי", form: "רבים", pair: [1080], meeting: 8 },
     { id: 1082, front: "עַ'רִיבּ", back: "זר / מוזר", topic: "תארים", form: "יחיד", pair: [1083], meeting: 8 },
     { id: 1083, front: "עֻ'רַבַּא", back: "זרים / מוזרים", topic: "תארים", form: "רבים", pair: [1082], meeting: 8 },
     { id: 1084, front: "טַקֶס", back: "מזג אוויר", topic: "כללי", form: "יחיד", pair: [1085], meeting: 8 },
@@ -2505,14 +2505,14 @@ const DEFAULT_VOCAB = [
     // ---- meeting 9 ----
     { id: 1094, front: "תַאְמִין", back: "ביטוח / אבטחה", topic: "כללי", form: "יחיד", pair: [1095], meeting: 9 },
     { id: 1095, front: "תַאְמִינַאת", back: "ביטוחים", topic: "כללי", form: "רבים", pair: [1094], meeting: 9 },
-    { id: 1096, front: "טַאלֶבּ", back: "מבקש", topic: "כללי", form: "יחיד", pair: [1097], meeting: 9 },
+    { id: 1096, front: "טַאלֶבּ", back: "מבקש", alts: ["סטודנט"], topic: "כללי", form: "יחיד", pair: [1097], meeting: 9 },
     { id: 1097, front: "טַאלְבִּין", back: "מבקשים", topic: "כללי", form: "רבים", pair: [1096], meeting: 9 },
     { id: 1098, front: "תַפְצִיל", back: "פרט", topic: "כללי", form: "יחיד", pair: [1099], meeting: 9 },
     { id: 1099, front: "תַפַאצִיל", back: "פרטים", topic: "כללי", form: "רבים", pair: [1098], meeting: 9 },
     { id: 1100, front: "אַוّל", back: "התחלה / ראשון", topic: "כללי", form: "יחיד", pair: [1101], meeting: 9 },
     { id: 1101, front: "אַוַאאֶל", back: "התחלות", topic: "כללי", form: "רבים", pair: [1100], meeting: 9 },
-    { id: 1102, front: "תַאְחִ'יר", back: "דחייה / עיכוב", topic: "כללי", form: "יחיד", pair: [1103], meeting: 9 },
-    { id: 1103, front: "תַאְחִ'ירַאת", back: "דחיות / עיכובים", topic: "כללי", form: "רבים", pair: [1102], meeting: 9 },
+    { id: 1102, front: "תַאְחִ'יר", back: "דחייה / עיכוב / איחור", topic: "כללי", form: "יחיד", pair: [1103], meeting: 9 },
+    { id: 1103, front: "תַאְחִ'ירַאת", back: "דחיות / עיכובים / איחורים", topic: "כללי", form: "רבים", pair: [1102], meeting: 9 },
     { id: 1104, front: "דַפֵע", back: "תשלום", topic: "כללי", form: "יחיד", pair: [1105], meeting: 9 },
     { id: 1105, front: "דַפְעַאת", back: "תשלומים", topic: "כללי", form: "רבים", pair: [1104], meeting: 9 },
     { id: 1106, front: "טַבְּעַן", back: "כמובן", topic: "כללי", meeting: 9 },
@@ -5420,8 +5420,13 @@ function buildQuestion(deck, item, dir) {
     /* Several words share a translation — כַּאְסֶה and כְּבַּאיֶה are both "כוס".
        Anything that asks the same thing, or answers the same thing, is kept
        out of the options so a correct pick can never be scored wrong. */
+    /* And a word with a second meaning (טַאלֶבּ is "מבקש" and also "סטודנט")
+       must not meet another card carrying that meaning as a wrong option:
+       any card sharing a meaning with this one stays out of the options. */
+    const senses = item._deck === "vocab" ? new Set(allMeanings(item)) : null;
+    const sharesSense = (d) => !!senses && d._deck === "vocab" && allMeanings(d).some((m) => senses.has(m));
     const pool = deck.filter((d) => d._deck === item._deck && d._key !== item._key
-        && faceOf(d).back !== correctAnswer && faceOf(d).front !== asked);
+        && faceOf(d).back !== correctAnswer && faceOf(d).front !== asked && !sharesSense(d));
     const seen = new Set();
     const distractors = [];
     shuffle(pool).forEach((d) => {
@@ -6448,6 +6453,14 @@ function DailyReview({ banks, applyResult, onBack, onSessionDone }) {
 function normAnswer(text) {
     return String(text || "")
         .replace(/[\u0591-\u05C7\u0610-\u065F]/g, "")   // vowel points and shadda
+        /* Invisible marks a phone can slip in (direction marks, zero-width
+           joiners, a soft hyphen) and the Yiddish ligatures some keyboards
+           produce for a doubled letter. */
+        .replace(/[\u00AD\u200B-\u200F\u202A-\u202E\u2066-\u2069\uFEFF]/g, "")
+        .replace(/\u05F0/g, "וו").replace(/\u05F1/g, "וי").replace(/\u05F2/g, "יי")
+        /* Hebrew writes a consonantal yod or vav once or twice — רפואיות and
+           רפואייות, אויר and אוויר — so a doubled letter counts as one. */
+        .replace(/יי+/g, "י").replace(/וו+/g, "ו")
         /* A phone keyboard is not a typewriter: iOS folds "..." into a single
            ellipsis, quotes come out curly, and the Hebrew geresh has its own
            codepoint. All of them are stripped so a right answer typed on a
@@ -6534,6 +6547,8 @@ const SPELLING_VARIANTS = [
     ["מסעדה", "מיסעדה"],
     /* The dish is known by its own name in Hebrew too (card 685). */
     ["תבשיל אורז וירקות", "מקלובה"],
+    /* כַּאנַת, card 714: Hebrew writes "was" with one yod or two. */
+    ["הייתה", "היתה"],
 ];
 
 function spellingVariants(text) {
