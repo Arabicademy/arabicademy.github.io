@@ -191,7 +191,7 @@ try {
     throw new Error("React / ReactDOM לא נטענו מה-CDN (בדוק חיבור לאינטרנט או חסימת סקריפטים).");
   }
 "use strict";
-const APP_BUILD = "21.10 · 116";   // bump this every time the file is replaced
+const APP_BUILD = "27.10 · 118";   // bump this every time the file is replaced
 
 /* The institute logo, carried inline so the page stays a single file.
    STAMP is the round seal (full-screen waits); LOCKUP is the horizontal name
@@ -1717,7 +1717,7 @@ const DEFAULT_VOCAB = [
     { id: 305, front: "אִבְּרֵה", back: "מחט / זריקה", topic: "חפצים", form: "יחיד", pair: [306], meeting: 3 },
     { id: 306, front: "אִבַּר", back: "מחטים / זריקות", topic: "חפצים", form: "רבים", pair: [305], meeting: 3 },
     { id: 307, front: "אַחְ'צַ'ר", back: "ירוק", topic: "צבעים", form: "יחיד", pair: [308], meeting: 3, gender: "m", mate: 309 },
-    { id: 308, front: "חֹ'צֶ'ר", back: "ירוקים / ירוקות", topic: "צבעים", form: "רבים", pair: [307, 309], meeting: 3, gender: "m" },
+    { id: 308, front: "חֻ'צֻ'ר", back: "ירוקים / ירוקות", topic: "צבעים", form: "רבים", pair: [307, 309], meeting: 3, gender: "m" },
     { id: 309, front: "חַ'צְ'רַא", back: "ירוקה", topic: "צבעים", form: "יחיד", pair: [308], meeting: 3, gender: "f", mate: 307 },
     { id: 310, front: "שֵיח'", back: "שיח'", topic: "אנשים ותפקידים", form: "יחיד", pair: [311, 312], meeting: 3 },
     { id: 311, front: "שְיוּח'", back: "שיח'ים", topic: "אנשים ותפקידים", form: "רבים", pair: [310], meeting: 3 },
@@ -2369,7 +2369,7 @@ const DEFAULT_VOCAB = [
     { id: 957, front: "בַּטוּנִי", back: "בצבע בטון", topic: "צבעים", meeting: 5 },
     { id: 958, front: "שַפַّאפ", back: "שקוף", topic: "צבעים", meeting: 5 },
     { id: 959, front: "מְלַוַّן", back: "צבעוני", topic: "צבעים", meeting: 5 },
-    { id: 960, front: "פַאתֶח", back: "בהיר", topic: "צבעים", meeting: 5 },
+    { id: 960, front: "פַאתֶח", back: "בהיר", alts: ["פתוח"], topic: "צבעים", meeting: 5 },
     { id: 961, front: "עַ'אמֶק", back: "כהה", topic: "צבעים", meeting: 5 },
     { id: 962, front: "לַאמֶע", back: "בוהק / מבריק", topic: "צבעים", meeting: 5 },
 
@@ -6549,6 +6549,14 @@ const SPELLING_VARIANTS = [
     ["תבשיל אורז וירקות", "מקלובה"],
     /* כַּאנַת, card 714: Hebrew writes "was" with one yod or two. */
     ["הייתה", "היתה"],
+    /* A chirik written with a yod or without: כיסא and כסא, אימא and אמא —
+       both in use, so neither may fail (reported for card 49, 27.10). */
+    ["כיסאות", "כסאות"],
+    ["כיסא", "כסא"],
+    ["טיפשות", "טפשות"],
+    ["אימהות", "אמהות"],
+    ["אימא", "אמא"],
+    ["פירסום", "פרסום"],
 ];
 
 function spellingVariants(text) {
