@@ -191,7 +191,7 @@ try {
     throw new Error("React / ReactDOM לא נטענו מה-CDN (בדוק חיבור לאינטרנט או חסימת סקריפטים).");
   }
 "use strict";
-const APP_BUILD = "27.10 · 118";   // bump this every time the file is replaced
+const APP_BUILD = "11.11 · 120";   // bump this every time the file is replaced
 
 /* The institute logo, carried inline so the page stays a single file.
    STAMP is the round seal (full-screen waits); LOCKUP is the horizontal name
@@ -227,6 +227,9 @@ const Plus = (p) => React.createElement("svg", { ...iconBase(p) },
     React.createElement("path", { d: "M12 5v14M5 12h14" }));
 const X = (p) => React.createElement("svg", { ...iconBase(p) },
     React.createElement("path", { d: "M18 6L6 18M6 6l12 12" }));
+const Flag = (p) => React.createElement("svg", { ...iconBase(p) },
+    React.createElement("path", { d: "M5 21V4" }),
+    React.createElement("path", { d: "M5 4h12l-2.5 4L17 12H5" }));
 const Check = (p) => React.createElement("svg", { ...iconBase(p) },
     React.createElement("path", { d: "M20 6L9 17l-5-5" }));
 const RotateCcw = (p) => React.createElement("svg", { ...iconBase(p) },
@@ -821,6 +824,23 @@ const GLOBAL_CSS = `
     .zl-session-track { flex:1; height:6px; background:var(--line); border-radius:4px; overflow:hidden; }
     .zl-session-fill { display:block; height:100%; background:var(--navy); border-radius:4px; transition:width .3s ease; }
     .zl-session-num { font-size:0.8rem; font-weight:700; color:var(--ink-muted); flex:0 0 auto; }
+
+    /* ---- report a mistake ---- */
+    .zl-flag { display:inline-flex; align-items:center; gap:4px; flex:0 0 auto; border:1px solid var(--line); background:var(--surface); color:var(--ink-muted); border-radius:999px; padding:4px 10px; min-height:30px; font:inherit; font-size:0.72rem; font-weight:700; cursor:pointer; }
+    .zl-flag[data-on="true"] { color:var(--accent); border-color:var(--accent); }
+    .zl-flag:focus-visible { outline:2px solid var(--focus); outline-offset:2px; }
+    .zl-report-word { border:1px solid var(--line); border-radius:var(--r-md); background:var(--bg); padding:12px 14px; margin-bottom:14px; }
+    .zl-report-front { font-size:1.15rem; font-weight:700; line-height:1.7; }
+    .zl-report-back { font-size:0.9rem; color:var(--ink-muted); margin-top:2px; }
+    .zl-report-meta { font-size:0.72rem; color:var(--ink-muted); margin-top:6px; }
+    .zl-report-kinds { display:flex; flex-wrap:wrap; gap:8px; margin:6px 0 12px; }
+    .zl-report-kind { border:1px solid var(--line); background:var(--surface); color:var(--ink); border-radius:999px; padding:7px 14px; min-height:36px; font:inherit; font-size:0.85rem; font-weight:700; cursor:pointer; }
+    .zl-report-kind[data-on="true"] { background:var(--navy); color:var(--surface); border-color:var(--navy); }
+    .zl-report-note { width:100%; min-height:76px; padding:10px 12px; border:1px solid var(--line); border-radius:10px; font:inherit; font-size:16px; background:var(--surface); color:var(--ink); resize:vertical; margin-bottom:14px; }
+    .zl-report-row { display:flex; gap:10px; align-items:flex-start; padding:10px 0; border-bottom:1px solid var(--line); }
+    .zl-report-row:last-child { border-bottom:none; }
+    .zl-report-row-body { flex:1; min-width:0; }
+    .zl-report-fixed { display:inline-block; font-size:0.7rem; font-weight:800; color:var(--ok); border:1px solid var(--ok); border-radius:999px; padding:1px 8px; margin-inline-start:6px; }
 
     /* ---- routine week ---- */
     .zl-weeknav {
@@ -2032,7 +2052,7 @@ const DEFAULT_VOCAB = [
     { id: 613, front: "מַכְּשוּפֶה", back: "גלויה / חשופה", topic: "תארים", form: "יחיד", pair: [614], meeting: 6, gender: "f", mate: 611 },
     { id: 614, front: "מַכְּשוּפַאת", back: "גלויות / חשופות", topic: "תארים", form: "רבים", pair: [613], meeting: 6, gender: "f", mate: 612 },
     { id: 615, front: "אִ(ל)רַّמְלֶה", back: "רמלה", topic: "מקומות", meeting: 6 },
-    { id: 616, front: "אִ(ל)לִّדّ", back: "לוד", topic: "מקומות", meeting: 6 },
+    { id: 616, front: "אִ(ל)לִّדّ", back: "לוד", topic: "מקומות", meeting: 6 },
     { id: 617, front: "יַאפַא", back: "יפו", topic: "מקומות", meeting: 6 },
     { id: 618, front: "חֵיפַא", back: "חיפה", topic: "מקומות", meeting: 6 },
     { id: 619, front: "אִלְקֻדְס", back: "ירושלים", topic: "מקומות", meeting: 6 },
@@ -2535,9 +2555,9 @@ const DEFAULT_VOCAB = [
     { id: 1123, front: "אַלַאפ", back: "אלפים", topic: "מספרים", form: "רבים", pair: [1122], meeting: 9 },
     { id: 1124, front: "תַעְוִיצ'", back: "פיצוי", topic: "כללי", form: "יחיד", pair: [1125], meeting: 9 },
     { id: 1125, front: "תַעְוִיצַ'את", back: "פיצויים", topic: "כללי", form: "רבים", pair: [1124], meeting: 9 },
-    { id: 1548, front: "אִנִّי", back: "שאני", topic: "מילות קישור", meeting: 9 },
-    { id: 1549, front: "אִנַّכּ", back: "שאתה", topic: "מילות קישור", meeting: 9 },
-    { id: 1550, front: "אִנֵّכּ", back: "שאת", topic: "מילות קישור", meeting: 9 },
+    { id: 1548, front: "אִנִّי", back: "שאני", topic: "מילות קישור", meeting: 9 },
+    { id: 1549, front: "אִנַّכּ", back: "שאתה", topic: "מילות קישור", meeting: 9 },
+    { id: 1550, front: "אִנֵّכּ", back: "שאת", topic: "מילות קישור", meeting: 9 },
     { id: 1126, front: "אִנّוֹ", back: "שהוא", topic: "מילות קישור", meeting: 9 },
     { id: 1127, front: "חִ'לַאל", back: "במהלך (זמן)", topic: "זמן", meeting: 9 },
     { id: 1128, front: "טַלַבּ", back: "בקשה / הזמנה", topic: "כללי", form: "יחיד", pair: [1129], meeting: 9 },
@@ -2724,11 +2744,11 @@ const DEFAULT_VOCAB = [
     { id: 1315, front: "בַּאכֵּית", back: "חפיסה / חבילה", topic: "חפצים", form: "יחיד", pair: [1316], meeting: 10 },
     { id: 1316, front: "בַּאכֵּיתַאת", back: "חפיסות / חבילות", topic: "חפצים", form: "רבים", pair: [1315], meeting: 10 },
     { id: 1317, front: "דֻחַ'אן", back: "סיגריות", topic: "חפצים", meeting: 10 },
-    { id: 1318, front: "צִחّה", back: "בריאות", topic: "כללי", meeting: 10 },
+    { id: 1318, front: "צַחַّה", back: "בריאות", topic: "כללי", meeting: 10 },
     { id: 1319, front: "מַוְסֶם", back: "עונה / יבול", topic: "זמן", form: "יחיד", pair: [1320], meeting: 10 },
     { id: 1320, front: "מַוַאסֶם", back: "עונות / יבולים", topic: "זמן", form: "רבים", pair: [1319], meeting: 10 },
     { id: 1321, front: "שִתַא", back: "חורף / גשם", topic: "זמן", meeting: 10 },
-    { id: 1322, front: "גְ'וְעַאן", back: "רעב", topic: "תארים", meeting: 10 },
+    { id: 1322, front: "גַ'וְעַאן", back: "רעב", topic: "תארים", meeting: 10 },
     { id: 1323, front: "עַטְשַאן", back: "צמא", topic: "תארים", meeting: 10 },
     { id: 1324, front: "מַאיֵת", back: "מת", topic: "כללי", meeting: 10 },
     { id: 1325, front: "גּ'וֹע", back: "רעב", topic: "כללי", meeting: 10 },
@@ -2801,7 +2821,7 @@ const DEFAULT_VOCAB = [
     { id: 1392, front: "וַטַן", back: "מולדת / לאום", topic: "כללי", form: "יחיד", pair: [1393], meeting: 11 },
     { id: 1393, front: "אַוְטַאן", back: "לאומים", topic: "כללי", form: "רבים", pair: [1392], meeting: 11 },
     { id: 1394, front: "וַטַנִי", back: "לאומי / לאומני", topic: "תארים", meeting: 11 },
-    { id: 1396, front: "קַצִ'יֶّה", back: "סוגיה / נושא", topic: "כללי", form: "יחיד", pair: [1397], meeting: 11 },
+    { id: 1396, front: "קַצִ'יֶّה", back: "סוגיה / נושא", topic: "כללי", form: "יחיד", pair: [1397], meeting: 11 },
     { id: 1397, front: "קַצַ'איַא", back: "סוגיות / נושאים", topic: "כללי", form: "רבים", pair: [1396], meeting: 11 },
     { id: 1398, front: "רֻבַּאעִי", back: "בעל ארבע", topic: "כללי", meeting: 11 },
     { id: 1399, front: "מֻסְתַנַד", back: "מסמך / אסמכתא / תעודה", topic: "כללי", form: "יחיד", pair: [1400], meeting: 11 },
@@ -2818,19 +2838,19 @@ const DEFAULT_VOCAB = [
     { id: 1410, front: "חַדַא", back: "אדם כלשהו", topic: "כללי", meeting: 11 },
     { id: 1411, front: "מִשְוַאר", back: "נסיעה / הליכה לסידורים / טיול", topic: "כללי", form: "יחיד", pair: [1412], meeting: 11 },
     { id: 1412, front: "מַשַאוִיר", back: "נסיעות / טיולים", topic: "כללי", form: "רבים", pair: [1411], meeting: 11 },
-    { id: 1413, front: "כַּמִּיֶّה", back: "כמות", topic: "כללי", form: "יחיד", pair: [1414], meeting: 11 },
+    { id: 1413, front: "כַּמִּיֶّה", back: "כמות", topic: "כללי", form: "יחיד", pair: [1414], meeting: 11 },
     { id: 1414, front: "כַּמִּיّאת", back: "כמויות", topic: "כללי", form: "רבים", pair: [1413], meeting: 11 },
     { id: 1415, front: "גֻ'מְלֶה", back: "סיטונאות / כמות כללית / משפט", topic: "כללי", meeting: 11 },
     { id: 1416, front: "מְפַרַّק", back: "מחולק / קמעונאי", topic: "כללי", meeting: 11 },
     { id: 1417, front: "שַרְט", back: "תנאי", topic: "כללי", form: "יחיד", pair: [1418], meeting: 11 },
     { id: 1418, front: "שֻרוּט", back: "תנאים", topic: "כללי", form: "רבים", pair: [1417], meeting: 11 },
     { id: 1419, front: "מִנְשַאן", back: "בשביל / כדי ש..", topic: "מילות קישור", meeting: 11 },
-    { id: 1420, front: "חַנַפִיֶّה", back: "ברז", topic: "חפצים", form: "יחיד", pair: [1421], meeting: 11 },
+    { id: 1420, front: "חַנַפִיֶّה", back: "ברז", topic: "חפצים", form: "יחיד", pair: [1421], meeting: 11 },
     { id: 1421, front: "חַנַפִיַّאת", back: "ברזים", topic: "חפצים", form: "רבים", pair: [1420], meeting: 11 },
     { id: 1422, front: "צִנַאעַה", back: "תעשייה", topic: "כללי", form: "יחיד", pair: [1423], meeting: 11 },
     { id: 1423, front: "צִנַאעַאת", back: "תעשיות", topic: "כללי", form: "רבים", pair: [1422], meeting: 11 },
     { id: 1424, front: "צִנַאעִי", back: "תעשייתי", topic: "תארים", meeting: 11, gender: "m" },
-    { id: 1425, front: "צִנַאעִיֶّה", back: "תעשייתית", topic: "תארים", meeting: 11, gender: "f" },
+    { id: 1425, front: "צִנַאעִיֶّה", back: "תעשייתית", topic: "תארים", meeting: 11, gender: "f" },
     { id: 1426, front: "וַרְשַה", back: "בית מלאכה / סדנה", topic: "מקומות", form: "יחיד", pair: [1427], meeting: 11 },
     { id: 1427, front: "וַרְשַאת", back: "בתי מלאכה / סדנאות", topic: "מקומות", form: "רבים", pair: [1426], meeting: 11 },
     { id: 1428, front: "יַמַّא", back: "שם חיבה לאמא", topic: "אנשים ותפקידים", meeting: 11 },
@@ -2869,7 +2889,7 @@ const DEFAULT_VOCAB = [
     { id: 1460, front: "רִחְלַאת", back: "נסיעות / מסעות", topic: "כללי", form: "רבים", pair: [1459], meeting: 12 },
     { id: 1461, front: "אַלְמַאנְיַא", back: "גרמניה", topic: "מקומות", meeting: 12 },
     { id: 1462, front: "מֻסְתַוַא", back: "רמה (של חיים, איכות)", topic: "כללי", meeting: 12 },
-    { id: 1463, front: "גִ'דַّן", back: "מאוד", topic: "כללי", meeting: 12 },
+    { id: 1463, front: "גִ'דַّן", back: "מאוד", topic: "כללי", meeting: 12 },
     { id: 1464, front: "חַ'יַّאט", back: "חייט", topic: "אנשים ותפקידים", form: "יחיד", pair: [1465], meeting: 12 },
     { id: 1465, front: "חַ'יַّאטִין", back: "חייטים", topic: "אנשים ותפקידים", form: "רבים", pair: [1464], meeting: 12 },
     { id: 1466, front: "נִצַ'אל", back: "מאבק / שם של גבר", topic: "כללי", meeting: 12 },
@@ -2912,13 +2932,13 @@ const DEFAULT_VOCAB = [
     { id: 1505, front: "מַחַלִّי", back: "מקומי", topic: "תארים", form: "יחיד", pair: [1506], meeting: 12, gender: "m", mate: 1507 },
     { id: 1506, front: "מַחַלִّיִין", back: "מקומיים", topic: "תארים", form: "רבים", pair: [1505], meeting: 12, gender: "m" },
     { id: 1507, front: "מַחַלִّיֶה", back: "מקומית", topic: "תארים", meeting: 12, gender: "f", mate: 1505 },
-    { id: 1510, front: "בֻּנְיֶה תַחְתִיֶّה", back: "תשתית", topic: "כללי", form: "יחיד", pair: [1511], meeting: 12 },
-    { id: 1511, front: "בֻּנַא תַחְתִיֶّה", back: "תשתיות", topic: "כללי", form: "רבים", pair: [1510], meeting: 12 },
+    { id: 1510, front: "בֻּנְיֶה תַחְתִיֶّה", back: "תשתית", topic: "כללי", form: "יחיד", pair: [1511], meeting: 12 },
+    { id: 1511, front: "בֻּנַא תַחְתִיֶّה", back: "תשתיות", topic: "כללי", form: "רבים", pair: [1510], meeting: 12 },
     { id: 1512, front: "מַגַ'ארִי", back: "ביוב", topic: "כללי", meeting: 12 },
-    { id: 1513, front: "בַּכִּّיר", back: "מוקדם", topic: "זמן", meeting: 12 },
+    { id: 1513, front: "בַּכִּّיר", back: "מוקדם", topic: "זמן", meeting: 12 },
     { id: 1514, front: "בַּדְרִי", back: "מוקדם", topic: "זמן", meeting: 12 },
     { id: 1515, front: "בַּדַן", back: "גוף", topic: "כללי", meeting: 12 },
-    { id: 1516, front: "צֻ'הְרִיַّאת", back: "שעות הצהריים", topic: "זמן", meeting: 12 },
+    { id: 1516, front: "צֻ'הְרִיַّאת", back: "שעות הצהריים", topic: "זמן", meeting: 12 },
     { id: 1517, front: "וַגְ'בֶּה", back: "ארוחה / מנה", topic: "אוכל", form: "יחיד", pair: [1518], meeting: 12 },
     { id: 1518, front: "וַגְ'בַּאת", back: "ארוחות / מנות", topic: "אוכל", form: "רבים", pair: [1517], meeting: 12 },
     { id: 1519, front: "עַ'דַא", back: "ארוחת צהריים", topic: "אוכל", meeting: 12 },
@@ -2933,8 +2953,8 @@ const DEFAULT_VOCAB = [
     { id: 1528, front: "קֹרְנֶה", back: "פינה / זווית", topic: "כללי", form: "יחיד", pair: [1529], meeting: 12 },
     { id: 1529, front: "קֻרַן", back: "פינות / זוויות", topic: "כללי", form: "רבים", pair: [1528], meeting: 12 },
     { id: 1530, front: "זְבַּאלֶה", back: "זבל / אשפה", topic: "כללי", meeting: 12 },
-    { id: 1531, front: "עַ'לַّאי", back: "קומקום להרתחת מים", topic: "חפצים", form: "יחיד", pair: [1532], meeting: 12 },
-    { id: 1532, front: "עַ'לַّאיַאת", back: "קומקומים", topic: "חפצים", form: "רבים", pair: [1531], meeting: 12 },
+    { id: 1531, front: "עַ'לַّאי", back: "קומקום להרתחת מים", topic: "חפצים", form: "יחיד", pair: [1532], meeting: 12 },
+    { id: 1532, front: "עַ'לַّאיַאת", back: "קומקומים", topic: "חפצים", form: "רבים", pair: [1531], meeting: 12 },
     { id: 1533, front: "פִנְגַ'אן", back: "כוס קטנה לשתיית קפה", topic: "חפצים", form: "יחיד", pair: [1534], meeting: 12 },
     { id: 1534, front: "פַנַאגִ'ין", back: "כוסות", topic: "חפצים", form: "רבים", pair: [1533], meeting: 12 },
     { id: 1535, front: "מִילַאד", back: "מולד / לידה", topic: "כללי", meeting: 12 },
@@ -2942,8 +2962,8 @@ const DEFAULT_VOCAB = [
     { id: 1537, front: "מַא עַדַא", back: "חוץ מ / פרט ל / למעט", topic: "כללי", meeting: 12 },
     { id: 1538, front: "מְצִיבֶּה", back: "אסון / צרה", topic: "כללי", form: "יחיד", pair: [1539], meeting: 12 },
     { id: 1539, front: "מַצַאיֶבּ", back: "אסונות / צרות", topic: "כללי", form: "רבים", pair: [1538], meeting: 12 },
-    { id: 1540, front: "עַמַלִיֶّה גֵ'רַאחִיֶّה", back: "ניתוח כירורגי", topic: "כללי", meeting: 12 },
-    { id: 1541, front: "עַמַלִיֶّה", back: "ניתוח / פיגוע / מבצע", topic: "כללי", form: "יחיד", pair: [1542], meeting: 12 },
+    { id: 1540, front: "עַמַלִיֶّה גֵ'רַאחִיֶّה", back: "ניתוח כירורגי", topic: "כללי", meeting: 12 },
+    { id: 1541, front: "עַמַלִיֶّה", back: "ניתוח / פיגוע / מבצע", topic: "כללי", form: "יחיד", pair: [1542], meeting: 12 },
     { id: 1542, front: "עַמַלִיַّאת", back: "ניתוחים / פיגועים / מבצעים", topic: "כללי", form: "רבים", pair: [1541], meeting: 12 },
     { id: 1543, front: "חַלַאוִיַאת", back: "שם למתוקים מזרחיים", topic: "אוכל", meeting: 12 },
     { id: 1544, front: "כִּילוֹ", back: "קילו / קילומטר", topic: "כללי", form: "יחיד", pair: [1545], meeting: 12 },
@@ -3367,7 +3387,7 @@ const SENTENCES = [
 
     // ---- meeting 3, page 40: preposition drills ----
     { id: 65, hebrew: "הקורס הוא אודות ההיסטוריה האסלאמית.", arabic: "אִ(ל)דַّוְרַה הִיֶّ עַנִ (אל)תַّארִיח' אִ(ל)אִסְלַאמִי.", meeting: 3 },
-    { id: 66, hebrew: "תחנת המוניות בבניין על צד ימין.", arabic: "מַחַטִّת (אל)תַّכְּסִיַאת פִי (א)לְעַמַארַה עַלַא (א)לְיַמִין.", meeting: 3 },
+    { id: 66, hebrew: "תחנת המוניות בבניין על צד ימין.", arabic: "מַחַטִّת (אל)תַّכְּסִיַאת פִי (א)לְעַמַארַה עַלַא (א)לְיַמִין.", meeting: 3 },
     { id: 67, hebrew: "השולחן והכיסאות על גג הבית.", arabic: "אִ(ל)טַّאוְלֶה וִ(א)לְכַּרַאסִי עַלַא סַטְחִ (א)לְבֵּית.", meeting: 3 },
     { id: 68, hebrew: "האשמה לא עליך האשמה עלי.", arabic: "אִלְחַקّ מֶש עַלֵיכּ, אִלְחַקّ עַלַיّ.", meeting: 3 },
     { id: 69, hebrew: "הוא כתב את הסיפור אודותיכם, לא אודותם.", arabic: "הֻוֶّ כַּתַבִּ (א)לְקֻצַّה עַנְכֹּם, מֶש עַנְהֹם.", meeting: 3 },
@@ -3409,7 +3429,7 @@ const SENTENCES = [
     { id: 101, hebrew: "הארנק החדש עמך? הארנק לא עימי, נמצא במכונית.", arabic: "אִ(ל)גֻ'ّזְדַאן (א)לִגְ'דִיד מַעַכּ? אִ(ל)גֻ'ّזְדַאן מֶש מַעִי, מַוְגּ'וד עִנְדִי בִּ(אל)סַיַّארַה.", meeting: 5, readOnly: true },
     { id: 102, hebrew: "יש לכם טלוויזיה בבית? אין לנו טלוויזיה בבית, רק בבית אבי.", arabic: "אִנְתוּ אִלְכֹּם תֵלֵפִזְיוֹן בִּ(אל)דַّאר? מַלְנַאש תֵלֵפִזְיוֹן בִּ(אל)דַّאר, בַּסّ פִי בֵּית אַבּוּי.", meeting: 5, readOnly: true },
     { id: 103, hebrew: "יש לנו חברים באוניברסיטה, הם סטודנטים חדשים.", arabic: "אִלְנַא אַצְחַאבּ פִי (אל)גַ'אמְעַה, הֵמّ טֻלַّאבּ גְ'דַאד.", meeting: 5 },
-    { id: 104, hebrew: "יש להם קרובים אצלנו ביישוב, אנשים טובים.", arabic: "אִלְהֹם קַרַאיֶבּ עִנַّא פִי (א)לְבַּלַד, נַאס טַיְّבִּין.", meeting: 5 },
+    { id: 104, hebrew: "יש להם קרובים אצלנו ביישוב, אנשים טובים.", arabic: "אִלְהֹם קַרַאיֶבּ עִנַّא פִי (א)לְבַּלַד, נַאס טַיְّבִּין.", meeting: 5 },
     { id: 105, hebrew: "יש להם רק 20 שקל, בסדר?", arabic: "(הֻםّ) מַעְהֹם בַּסّ עִשְרִין שֵיכֶּל, מַאשִי?", meeting: 5 },
     { id: 106, hebrew: "אחיך לא אצלנו, הלך לפני שעתיים, הכל בסדר?", arabic: "אַחְ'וּכִּי מֶש עִנַّא, רַאח קַבֶּל סַאעְתֵין, כֻּלّ שִי תַמַאם?", meeting: 5, readOnly: true },
     { id: 107, hebrew: "אחרי השיחה, יש להם דאגה גדולה.", arabic: "בַּעִד (א)לְמֻכַּאלַמֶה, אִלְהֹם הַםّ כְּבִּיר.", meeting: 5 },
@@ -3423,32 +3443,32 @@ const SENTENCES = [
     { id: 115, hebrew: "מדויק או לא מדויק, הכל הולך, אתה רואה?", arabic: "מַטְ'בּוּט וִלַא מֶש מַטְ'בּוּט כֻּלّוֹ מַאשִי, שַאיֶפ?", meeting: 5 },
 
     // ---- meeting 6, page 91: the past tense ----
-    { id: 116, hebrew: "אני מצטער, אין פה נאצר, זאת טעות במספר, אחותי.", arabic: "אַנַא אַאסֶפ, מַפִשّ נַאצֶר הוֹן, אִ(ל)נֻّמְרַה עַ'לַט יַא-חְ'תִי.", meeting: 6 },
-    { id: 117, hebrew: "זה, מה יש לו? לא רואה את הדרך? מכוניתו פגעה במכוניתם, תודה לאל אין פצועים.", arabic: "הַאדַא מַא לוֹ? מֻש שַאיֶפ (אל)טַّרִיק? סַיַّארְתוֹ צַ'רְבַּת סַיַّארִתְהֹם, אלְחַמְדֻלִלַّה מַפִש גְ'רְחַא.", meeting: 6, readOnly: true },
+    { id: 116, hebrew: "אני מצטער, אין פה נאצר, זאת טעות במספר, אחותי.", arabic: "אַנַא אַאסֶפ, מַפִשّ נַאצֶר הוֹן, אִ(ל)נֻّמְרַה עַ'לַט יַא-חְ'תִי.", meeting: 6 },
+    { id: 117, hebrew: "זה, מה יש לו? לא רואה את הדרך? מכוניתו פגעה במכוניתם, תודה לאל אין פצועים.", arabic: "הַאדַא מַא לוֹ? מֻש שַאיֶפ (אל)טַّרִיק? סַיַّארְתוֹ צַ'רְבַּת סַיַّארִתְהֹם, אלְחַמְדֻלִלַّה מַפִש גְ'רְחַא.", meeting: 6, readOnly: true },
     { id: 118, hebrew: "אנחנו הגענו ליישוב אחר הצהריים והם רק יצאו מהבית.", arabic: "אִחְנַא וְצִלְנַא עַ (א)לְבַּלַד בַּעַדִ (אל)צֻ'הֻר וְהֹםّ בַּסّ חַ'רַג'וּ מִנִ (אל)דַّאר.", meeting: 6, readOnly: true },
     { id: 119, hebrew: "האמת אחי, מצבנו על הפנים, חשבוננו במינוס.", arabic: "וַללַّהִ יַא-חְ'י, חַאלִתְנַא בִּ(א)לְוֵיל, חְסַאבְּנַא עַ (א)לְמַכְּשוּפ.", meeting: 6 },
-    { id: 120, hebrew: "נסענו באוטובוס קו רמלה מלוד עד התחנה המרכזית.", arabic: "רְכִּבְּנַא (א)לְבַּאצ חַ'טִّ (אל)רַמְלֶה מְנִّ (אל)לִّדّ לַחַדִّ (א)לְמַחַטّה (א)לְמַרְכַּזִיֶّה.", meeting: 6, readOnly: true },
-    { id: 121, hebrew: "אחיו של חברי, פגעה בו מכונית שלשום ולאחר מכן ברחה ממקום התאונה.", arabic: "אַחוּה לַצַאחְבִּי צַ'רְבַּתוֹ סַיַّארַה אַוّל אִמְבַּארֶח וְבַּעַדְהַא הַרְבַּת מִנְّ מַחַלִّ (א)לְחַאדֶס.", meeting: 6, readOnly: true },
+    { id: 120, hebrew: "נסענו באוטובוס קו רמלה מלוד עד התחנה המרכזית.", arabic: "רְכִּבְּנַא (א)לְבַּאצ חַ'טִّ (אל)רַמְלֶה מְנִّ (אל)לִّדّ לַחַדִّ (א)לְמַחַטّה (א)לְמַרְכַּזִיֶّה.", meeting: 6, readOnly: true },
+    { id: 121, hebrew: "אחיו של חברי, פגעה בו מכונית שלשום ולאחר מכן ברחה ממקום התאונה.", arabic: "אַחוּה לַצַאחְבִּי צַ'רְבַּתוֹ סַיַّארַה אַוّל אִמְבַּארֶח וְבַּעַדְהַא הַרְבַּת מִנְّ מַחַלִّ (א)לְחַאדֶס.", meeting: 6, readOnly: true },
     { id: 122, hebrew: "אני ביקשתי ממנו אלף פעמים, חבל על הסיפור הזה!", arabic: "אַנַא טַלֵבְּת מִנّוֹ אַלְפ מַרַّה, חַ'רַאם הַאדַא (א)לְחַכִּי!", meeting: 6 },
-    { id: 123, hebrew: "ישבנו אצלם, שתינו קפה ויצאנו מהם לאחר שעה.", arabic: "קַעַדְנַא עִנְדְהֹם שְרִבְּנַא קַהְוֶה וִטְלִעְנַא מִנְّהֹם בַּעַד סֵיעַה.", meeting: 6 },
+    { id: 123, hebrew: "ישבנו אצלם, שתינו קפה ויצאנו מהם לאחר שעה.", arabic: "קַעַדְנַא עִנְדְהֹם שְרִבְּנַא קַהְוֶה וִטְלִעְנַא מִנְّהֹם בַּעַד סֵיעַה.", meeting: 6 },
     { id: 124, hebrew: "יום שישי שלחנו את הפקס, הגיע רק ביום שני.", arabic: "יוֹם (אל)גֻ'מְעַה בַּעַתְנַא (א)לְפַכְּס וִצֵל בַּסّ יוֹם (אל)תְנֵין.", meeting: 6 },
     { id: 125, hebrew: "המורה הסבירה את השיעור והתלמידים הבינו הכל.", arabic: "לִמְעַלְמֶה שַרְחַתִ (אל)דַרְס וְ(אל)תַّלַאמִיז פְהְמוּ כֻּלّ שִי.", meeting: 6 },
-    { id: 126, hebrew: "שכנתנו לקחה מאיתנו סיר ובישלה בו מקלובה למסיבת בתה.", arabic: "גַ'ארִתְנַא אַחְ'דַת מִנַّא טַנְגַ'רַה וְטַבְּחַ'ת פִיהַא מַקְלוּבֶּה לַחַפְלֶת בִּנְתְהַא.", meeting: 6, readOnly: true },
+    { id: 126, hebrew: "שכנתנו לקחה מאיתנו סיר ובישלה בו מקלובה למסיבת בתה.", arabic: "גַ'ארִתְנַא אַחְ'דַת מִנַّא טַנְגַ'רַה וְטַבְּחַ'ת פִיהַא מַקְלוּבֶּה לַחַפְלֶת בִּנְתְהַא.", meeting: 6, readOnly: true },
     { id: 127, hebrew: "יום חמישי כל ילדי כיתתי לבשו את בגדי החג.", arabic: "יוֹם (א)לְחַ'מִיס כֻּלّ וְלַאד צַפִּّי לִבְּסוּ אַוַאעִי (א)לְעִיד.", meeting: 6 },
     { id: 128, hebrew: "העבירו את משרד הנסיעות למרכז היישוב.", arabic: "נַקַלוּ מַכְּתַבִּ (אל)סַפַרִיַّאת עַלַא קַלְבִּ (א)לְבַּלַד.", meeting: 6 },
     { id: 129, hebrew: "אתמול ירדנו למרכז היישוב, נכנסנו למסעדת אלבסתאן ואכלנו שם מקלובה.", arabic: "אִמְבַּארֶח נְזִלְנַא עַ מַרְכַּז (א)לְבַּלַד דַחַ'לְנַא מַטְעַם \"אִלְבֻּסְתַאן\" וְאַכַּלְנַא הֻנַאכּ מַקְלוּבֶּה.", meeting: 6, readOnly: true },
-    { id: 130, hebrew: "רק פתחו את חנות המתוקים החדשה, הסתערו עליה כולם.", arabic: "בַּסّ פַתַחוּ מַחַלִّ (א)לְחַלַוִיַّאת (א)לִגְ'דִיד הַגְ'מַת עַלֵיה כֻּלִّ (א)לְעַאלַם.", meeting: 6, readOnly: true },
+    { id: 130, hebrew: "רק פתחו את חנות המתוקים החדשה, הסתערו עליה כולם.", arabic: "בַּסّ פַתַחוּ מַחַלִّ (א)לְחַלַוִיַّאת (א)לִגְ'דִיד הַגְ'מַת עַלֵיה כֻּלִّ (א)לְעַאלַם.", meeting: 6, readOnly: true },
 
     // ---- meeting 7: comparatives, and negating the past ----
     { id: 131, hebrew: "הסחורה הזאת נקייה, אבל ההיא נקייה וזולה יותר, שילמנו עליה 20 שקל פחות.", arabic: "הַאדִי (א)לְבְּצַ'אעַה נְצִ'יפֶה, אַמַّא הַדִיכּ אַנְצַ'פ וְאַרְחַ'צ, יַעְנִי דַפַעְנַא עַלֵיהַא עִשְרִין שֵיכֶּל אַקַלّ.", meeting: 7, readOnly: true },
-    { id: 132, hebrew: "החולצות האלו גדולות! אין משהו קטן יותר? אני רוצה את הכי קטן.", arabic: "הַדוֹל (א)לְקֻמְצַאן כְּבַּאר! מַא פִי אַזְעַ'ר? בִּדִّי אַזְעַ'ר אִשִי, אַללַה יְחַ'לִّיכּ.", meeting: 7, readOnly: true },
+    { id: 132, hebrew: "החולצות האלו גדולות! אין משהו קטן יותר? אני רוצה את הכי קטן.", arabic: "הַדוֹל (א)לְקֻמְצַאן כְּבַּאר! מַא פִי אַזְעַ'ר? בִּדִّי אַזְעַ'ר אִשִי, אַללַה יְחַ'לִّיכּ.", meeting: 7, readOnly: true },
     { id: 133, hebrew: "אמג'ד הוא הכי גדול אצלנו בכיתה, היום המורה שאל שאלה והוא היחיד שידע את התשובה.", arabic: "אַמְגַ'ד, הֻוֶّ אַכְּבַּّר וַאחַד עִנַّא בִּ(אל)צַפّ, אִלְיִום (א)לְאֻסְתַאז סַאל סֻאַאל וְהֻוֶّ (א)לְוַחִיד אִלִّי עִרֶפ (אל)גַ'ّוַאבּ.", meeting: 7, readOnly: true },
     { id: 134, hebrew: "שנה שעברה התארחנו במלון הילטון, באמת המלון הכי טוב בעמאן.", arabic: "אִ(ל)סַّנֶה אִלִّי פַאתַת נְזִלְנַא עַלַא אוֹתֵיל הִילְתוֹן, וַלְלַّהִ אַחְלַא אוֹתֵיל פִי עַמַّאן.", meeting: 7, readOnly: true },
     { id: 135, hebrew: "יש לנו מספר רופאים אבל הוא הרופא הכי טוב אצלנו במרפאה.", arabic: "פִי עִנַّא עִדֶّת דַכַּאתְרַה, אַמַّא הֻוֶّ אַחְסַן דוֹכְּתוֹר עִנַّא בִּ(א)לְעִיַאדֶה.", meeting: 7, readOnly: true },
     { id: 136, hebrew: "יקירי, בבקשה, האפשרויות פתוחות, מה יותר נוח לך, אחי?", arabic: "יַא חַבִּיבִּי תְפַצַ'ّל, אִלְאִמְכַּאנִיַّאת מַפְתוּחַה, אִנְתֶ שוּ אַרְיַחְלַכּ, יַאחְ'י?", meeting: 7, readOnly: true },
     { id: 137, hebrew: "בכנות, המחירים אצלם יקרים מאוד, הם המקום הכי יקר ביישוב.", arabic: "אִ(ל)צַّרַאחַה, אִלְאַסְעַאר עִנְדְהֹם עַ'אלְיֶה כְּתִיר, יַעְנִי הֻםّ אַעְ'לַא מַחַלّ פִי (א)לְבַּלַד.", meeting: 7, readOnly: true },
     { id: 138, hebrew: "אשרף נכשל במבחן, קיבל את הציון הכי נמוך בקורס. באמת המבחן הכי קשה שהיה לנו.", arabic: "אַשְרַפ חַ'בַּצ בִּ(א)לְאִמְתִחַאן, אַחַ'ד אַוְטַא עַלַאמֶה בִּ(אל)דّוֹרַה. פִעְלַן אַצְעַבּ אִמְתִחַאן אִלִי כַּאן אִלְנַא.", meeting: 7, readOnly: true },
-    { id: 139, hebrew: "הגנב השפל הזה נכנס לחנות וגנב מאיתנו דברים, רק יום לאחר מכן גילינו את הגניבה.", arabic: "הַאדַא (א)לְחַרַאמִי (א)לְוַאטִי, דַחַ'ל עַ(אל)דֻכַּّאן וְסַרַק מִנַّא אַעְ'רַאצ'. בַּסّ בַּעַדְהַא בְּיוֹם, כַּשַפְנַא (אל)סִّרְקַה.", meeting: 7, readOnly: true },
+    { id: 139, hebrew: "הגנב השפל הזה נכנס לחנות וגנב מאיתנו דברים, רק יום לאחר מכן גילינו את הגניבה.", arabic: "הַאדַא (א)לְחַרַאמִי (א)לְוַאטִי, דַחַ'ל עַ(אל)דֻכַּّאן וְסַרַק מִנַّא אַעְ'רַאצ'. בַּסّ בַּעַדְהַא בְּיוֹם, כַּשַפְנַא (אל)סִّרְקַה.", meeting: 7, readOnly: true },
     { id: 140, hebrew: "כיבסנו את הכביסה במכונת הכביסה, יצאה מלוכלכת יותר. אנחנו צריכים מכונת כביסה חדשה.", arabic: "עַ'סַלְנַא (א)לְעַ'סִיל פִי (א)לְעַ'סַّאלֶה טְלֶע אַוְסַח', בִּדְנַא עַ'סַّאלֶה גְ'דִידֶה.", meeting: 7, readOnly: true },
     { id: 141, hebrew: "האמת, לא ידעתי על כך. זה ודאי הדבר הזה?", arabic: "אִלְמַטְ'בּוט, מַעְרִפְתֶש הַאדַא (א)לְאִשִי. אַכִּיד הַאדַא (א)לְחַכִּי?", meeting: 7 },
     { id: 142, hebrew: "לא לקחו את בן דודי עימם, ברח מהמקום לפני.", arabic: "מַאחַ'דוּש אִבְּן עַמִّי מַעְהֹם. הַרַבּ מִן (א)לְמַחַלّ קַבֶּל.", meeting: 7 },
@@ -3475,7 +3495,7 @@ const SENTENCES = [
     { id: 161, hebrew: "עד מתי פתוחה תחנת הדלק?", arabic: "לַאֵימְתַא פַאתְחַה (א)לְכַּאזִיֶّה, יַא עַמִّי?", meeting: 8 },
     { id: 162, hebrew: "בוקר טוב, המוסך פתוח או עדיין לא?", arabic: "צַבַּאח (א)לְחֵ'יר, פַאתֶח (א)לְכַּרַאג'? וְלַא בַּעְדוֹ?", meeting: 8 },
     { id: 163, hebrew: "עד מתי? שנה הבאה? אוי, הגיוני הסיפור הזה? מוזר באמת!", arabic: "לַחַדّ אֵימְתַא? סַנַת (אל)גַ'אי? וַלַ, מַעְקוּל הַ(א)לְחַכִּי? עַ'רִיבּ וַאללַה!", meeting: 8, readOnly: true },
-    { id: 164, hebrew: "מה לגבי המפעל הזה? מחובר לחשמל או מה?", arabic: "שוּ בִּ(אל)נִّסְבֶּה לַלְמַצְנַע הַאדַא? מַוְצוּל בִּ(א)לְכַּהְרַבַּא וְלַא כִּיפ?", meeting: 8 },
+    { id: 164, hebrew: "מה לגבי המפעל הזה? מחובר לחשמל או מה?", arabic: "שוּ בִּ(אל)נִّסְבֶּה לַלְמַצְנַע הַאדַא? מַוְצוּל בִּ(א)לְכַּהְרַבַּא וְלַא כִּיפ?", meeting: 8 },
     { id: 165, hebrew: "לאיזה פסטיבל אתה מוזמן אליו? מתי הוא? עוד חודש?", arabic: "אַיّ מִהְרַגַ'אן מַעְזוּם עַלֵיה אִנְתֶ? אֵימְתַא הֻוֶّ? אֻחְ'רַא שַהֵר?", meeting: 8, readOnly: true },
     { id: 166, hebrew: "אני לא מבין אותך, בכלל, למה אתה עושה (מתנהג) כך?", arabic: "אַנַא מֶש פַאהֶם עַלֵיכּ בִּ(א)לְמַרַّה, אִנְתֶ לֵיש עַאמֶל הֵיכּ?", meeting: 8, readOnly: true },
     { id: 167, hebrew: "בן אדם, הדבר הזה לא נכון, מהיכן הבאת את האלו?", arabic: "יַא זַלַמֶה, הַאדַא (א)לְאִישִי מֶש צַחִיח, מְנֵין (א)לְכַּלַאם הַאד?", meeting: 8, readOnly: true },
@@ -3503,7 +3523,7 @@ const SENTENCES = [
     { id: 187, hebrew: "מה בקשר לקנס שהוטל עליכם? אני רואה שהחשבוניות עדיין לא משולמים אותה.", arabic: "שוּ בִּ(אל)נִסְבֶּה לַלְעַ'רַאמֶה אִלִّי חַכַּמוּהַא עַלֵיכֹּם? שַאיֶפ אִנּוֹ (א)לְפַוַאתִיר, לִסַّא מֶש דַאפְעִינְהַא.", meeting: 9, readOnly: true },
     { id: 188, hebrew: "נחת המסוק הצבאי ויצאו ממנו חיילים בריצה, נראים כוחות מיוחדות, כל אחד נשא על גופו כלי נשק בכמות גדולה (כמו כל העולם), רובה ואקדח ופצצות ועוד (חוץ מזה..).", arabic: "הַבַּטַת (א)לְמַרְוַחִיֶّה (א)לְעַסְכַּרִיֶّה וְטְלְעוּ מִנְהַא גְ'נוּד רַאכְּצִ'ין, שַכְּלְהֹם קֻוַّאת חַ'אצַّה, כֻּלّ וַאחַד חַאמֶל עַ גִ'סְמוֹ סְלַאח קַדّ (אל)דֻנְיַא, בַּארוּדֶה וְפַרְד וְקַנַאבֶּל וְעֵ'ירוֹ.", meeting: 9, readOnly: true },
     { id: 189, hebrew: "משכורתי לא קיבלתי אלוהים עדי, שהתאמצתי בסבלנות איתך הרבה, כבר תקופה, אבל מספיק, הגעתי לשלב שאין עימי אפילו לא גרוש בכיסי.", arabic: "מַעַאשִי מֶש קַאבְּצ'וֹ אַנַא! אַללַה וַכִּילַכּ, אַנַא צַבַּרְת עַלֵיכּ כְּתִיר, צַארְלִי פַתְרַה, אַמַّא חַ'לַצ, וְצִלֶת לַמַרְחַלֶה אִנّוֹ מַעִיש וְלַא קִרְש בְּגֵ'יבְּתִי.", meeting: 9, readOnly: true },
-    { id: 190, hebrew: "המודעה, כשעורידים אותה (מפרסמים) בעיתון, הכותרת שלה בולטת מאוד, אתה רואה אותה או לא רואה אותה?", arabic: "אִלְאִעְלַאן אִלִّי נַאזְלִינוֹ פִי (אל)גַ'רִידֶה, עִנְוַאנוֹ בַּארֶז כְּתִיר,", meeting: 9 },
+    { id: 190, hebrew: "המודעה, שמורידים אותה (מפרסמים) בעיתון, הכותרת שלה בולטת מאוד, אתה רואה אותה או לא רואה אותה?", arabic: "אִלְאִעְלַאן אִלִّי נַאזְלִינוֹ פִי (אל)גַ'רִידֶה, עִנְוַאנוֹ בַּארֶז כְּתִיר, שַאיְפוֹ וְלַא מֶש שַאיְפוֹ?", meeting: 9, readOnly: true },
 
     // ---- meeting 10 ----
     { id: 191, hebrew: "דודתי (מצד אימי) תולה את הכביסה על החבל, עוד שלוש שעות (היא) תתייבש.", arabic: "חַ'אלְתִי קַאעְדֶה בְתֹנְשֹר (א)לְעַ'סִיל עַ (א)לְחִבֵל, אֻחְ'רַא תַלַת סַעַאת בִּנְשַפ.", meeting: 10, readOnly: true },
@@ -3515,7 +3535,7 @@ const SENTENCES = [
     { id: 197, hebrew: "אתם לבדכם במאפיה? נראה שבעל הבית סומך עליכם, \"כיף לכם\".", arabic: "אִנְתוּ לַחַאלְכֹּם בִּ(א)לְמַחְ'בַּז? מְבַּיֶّן (א)לִמְעַלֶّם בִּרְכֶּן עַלֵיכֹּם, נִיַّאלְכֹּם.", meeting: 10 },
     { id: 198, hebrew: "אלו אוכלים (ארוחות בוקר) כל יום חמישי במסעדת (אל)גְ'נֵינַה, אולי נתפוס אותם שם.", arabic: "הַדוֹל בִפְטַרוּ כֻּלّ יוֹם (א)לְחַ'מִיס פִי מַטְעַם (א)לִגְ'נֵינֶה, מֻמְכֵּן נִמְסִכְּהֹם הֻנַאכּ.", meeting: 10, readOnly: true },
     { id: 199, hebrew: "אני לא יכול לבוא אליכם לבית הבד, תוכלו לשלוח לי מיכל שמן זית לבית?", arabic: "אַנַא בַקְדַרֵש אַאגִ'י עַלֵיכֹּם עַ(א)לְמַעְצַרַה, בִתִקְדַרוּ תִבְּעַתוּ לִי תַנַכֶּת זֵית זֵיתוּן עַ(אל)דַّאר?", meeting: 10, readOnly: true },
-    { id: 200, hebrew: "הסמיטריילר מלא בברזל אנחנו לא נוכל להיכנס (ב)שער המסגריה אנחנו צריכים מנוף.", arabic: "אִ(ל)סֵّמִיטְרֵילֵיר מַלַאן בִּ(א)לְחַדִיד מְנִקְדַרֵש נֹדְחֹ'ל בַּאבִּ (א)לְמַחְדַדֵה, בִּדְנַא וִנְש.", meeting: 10, readOnly: true },
+    { id: 200, hebrew: "הסמיטריילר מלא בברזל אנחנו לא נוכל להיכנס (ב)שער המסגריה אנחנו צריכים מנוף.", arabic: "אִ(ל)סֵّמִיטְרֵילֵיר מַלַאן בִּ(א)לְחַדִיד מְנִקְדַרֵש נֹדְחֹ'ל בַּאבִּ (א)לְמַחְדַדֵה, בִּדְנַא וִנְש.", meeting: 10, readOnly: true },
     { id: 201, hebrew: "בן דודתי (מצד אימי) משחק כדורגל בקבוצת בני סח'נין, (הוא) משחק שוער (שומר שער).", arabic: "אִבֶּן חַ'אלְתִי בִּלְעַבּ פוּתְבּוֹל פִי פַרִיק אַבְּנַאא סַחְ'נִין, בִּלְעַבּ חַארֶס מַרְמַא.", meeting: 10, readOnly: true },
     { id: 202, hebrew: "היו אנשים רבים בתור והתחילו לדחוף אחד את השני והתחילה קטטה, איזה עולם! הורגים/מרביצים אחד לשני ללא סיבה (לחינם).", arabic: "כַּאנוּ נַאס כְּתַאר פִי דוֹר וְצַארוּ יִדְפַשוּ בַּעַצ' וֻבִּדְיַת טוֹשֶה, אַמַّא עַאלַם! בֹּקֹתְלוּ בַּעַצ' עַ(א)לְפַאצִ'י.", meeting: 10, readOnly: true },
     { id: 203, hebrew: "באלוהים אני כועס עליך, באמת אני מתחרט שביקשתי ממך את הטובה הזאת, איפה האחריות שלך?", arabic: "וַלְלַّהִ בַּזְעַל מִנַּכּ, פִעְלַן בַּנְדַם אִנּוֹ טַלַבֵּת מִנַּכּ הַ(א)לְמַעְרוּפ, וֵין (א)לְמַסְאוּלִיֶّה תַעַכּ?", meeting: 10, readOnly: true },
@@ -4762,7 +4782,7 @@ function ExamDetailSheet({ exam, index, onClose }) {
                         (exam.cats && Object.keys(exam.cats).length) ? examNotes(cats) : exam.notes)))));
 }
 
-function AccountSheet({ vocab, letters, sentences, idioms, checklist, exams, profile,
+function AccountSheet({ vocab, letters, sentences, idioms, checklist, exams, reports, profile,
                         setVocab, setLetters, setSentences, setIdioms, setChecklist, setProfile, setExams,
                         user, syncStatus, onClose, onLogout, onMeetingUp, onShowGuide,
                         pane, setPane, theme, onToggleTheme }) {
@@ -4776,6 +4796,7 @@ function AccountSheet({ vocab, letters, sentences, idioms, checklist, exams, pro
     const [meetingSaved, setMeetingSaved] = useState(false);
     const [pickMeeting, setPickMeeting] = useState(false);
     const [showExams, setShowExams] = useState(false);
+    const [showReports, setShowReports] = useState(false);
     const [confirmJump, setConfirmJump] = useState(null);
     const [saved, setSaved] = useState(false);
     const [openExam, setOpenExam] = useState(null);
@@ -4990,6 +5011,19 @@ function AccountSheet({ vocab, letters, sentences, idioms, checklist, exams, pro
                         }));
                 })(),
 
+                /* --- reported mistakes --- */
+                React.createElement("div", { className: "zl-avg" },
+                    React.createElement("span", { className: "zl-avg-num", style: { color: "var(--accent)", display: "flex", alignItems: "center" } },
+                        React.createElement(Flag, { size: 22 })),
+                    React.createElement("span", { className: "zl-avg-note" },
+                        (function () {
+                            const n = (reports || []).length;
+                            const fixed = (reports || []).filter(reportIsFixed).length;
+                            if (!n) return "דיווחים על טעויות · אין";
+                            return "דיווחים על טעויות · " + n + (fixed ? " (" + fixed + " תוקנו)" : "");
+                        })()),
+                    React.createElement(ArrowButton, { title: "דיווחים על טעויות", onClick: () => setShowReports(true) })),
+
                 /* --- exam history, behind a button --- */
                 /* With no exams yet there is no average banner to hang the
                    arrow on, so the list keeps a plain entry of its own. */
@@ -5093,6 +5127,7 @@ function AccountSheet({ vocab, letters, sentences, idioms, checklist, exams, pro
                         React.createElement("span", { className: "zl-option-chev" },
                             React.createElement(ChevronLeft, { size: 16 })))))) : null,
 
+        showReports ? React.createElement(ReportsSheet, { onClose: () => setShowReports(false) }) : null,
         openExam ? React.createElement(ExamDetailSheet, {
             exam: openExam.exam, index: openExam.index, onClose: () => setOpenExam(null),
         }) : null,
@@ -5213,12 +5248,222 @@ function faceSize(text, isArabicLetter) {
    Every mode shows the same progress strip and the same closing summary, so
    finishing always looks and feels the same.
    ========================================================================= */
-function SessionBar({ pos, total }) {
+/* =========================================================================
+   REPORTING A MISTAKE
+   Any card on screen can be flagged as wrong — its nikud, spelling,
+   translation or form. The report is kept in the learner's account (and
+   synced like the rest of their data), listed in the personal area, and
+   copied from there in one go to be fixed and locked. A report notices by
+   itself when the word it names has since been changed, and says "תוקן".
+   ========================================================================= */
+const ReportContext = React.createContext ? React.createContext(null) : null;
+const useReports = () => (ReportContext && React.useContext ? React.useContext(ReportContext) : null);
+const REPORT_KINDS = ["ניקוד", "כתיב", "תרגום", "צורה / מין", "אחר"];
+
+function reportDeckOf(item) {
+    if (!item) return null;
+    if (item._deck) return item._deck;
+    if (item.letter) return "letters";
+    if (item.arabic && (item.meaning || item.literal)) return "idioms";
+    if (item.arabic) return "sentences";
+    return "vocab";
+}
+/* What the report shows and remembers: the two faces exactly as they stood
+   when it was made, so a later fix can be recognised. */
+function reportFaces(deck, item) {
+    if (!item) return { front: "", back: "" };
+    if (deck === "sentences") return { front: item.arabic || "", back: item.hebrew || "" };
+    if (deck === "idioms") return { front: item.arabic || "", back: item.meaning || "" };
+    if (deck === "letters") return { front: ((item.letter || "") + " " + (item.name || "")).trim(), back: item.hebrew || "" };
+    return { front: item.front || "", back: item.back || "" };
+}
+function reportKey(deck, id) { return deck + ":" + id; }
+function reportFromItem(item) {
+    const deck = reportDeckOf(item);
+    if (!deck || item.id == null) return null;
+    const f = reportFaces(deck, item);
+    return { key: reportKey(deck, item.id), deck: deck, id: item.id,
+             meeting: item.meeting || null, front: f.front, back: f.back };
+}
+const REPORT_BANKS = () => ({ vocab: DEFAULT_VOCAB, sentences: SENTENCES, letters: ALPHABET, idioms: IDIOMS });
+/* The card as it stands now in the built-in store, or null for a word the
+   learner added themselves. */
+function reportCurrent(r) {
+    const bank = REPORT_BANKS()[r.deck] || [];
+    const item = bank.find((x) => x.id === r.id);
+    return item ? reportFaces(r.deck, item) : null;
+}
+function reportIsFixed(r) {
+    const now = reportCurrent(r);
+    return !!now && (now.front !== r.front || now.back !== r.back);
+}
+const REPORT_DECK_NAMES = { vocab: "מילה", sentences: "משפט", letters: "אות", idioms: "ניב" };
+/* The list as plain text, numbered, ready to paste into a message. */
+function reportsText(list) {
+    const lines = ["דיווחים על טעויות — קסבה · גרסה " + APP_BUILD, ""];
+    (list || []).forEach((r, i) => {
+        const head = (i + 1) + ". " + (r.meeting ? "מפגש " + r.meeting + " · " : "")
+            + (REPORT_DECK_NAMES[r.deck] || r.deck) + " #" + r.id
+            + (reportIsFixed(r) ? " · תוקן" : "");
+        lines.push(head);
+        lines.push("   " + r.front + "  =  " + r.back);
+        const what = [(r.kinds || []).join(", "), (r.note || "").trim()].filter(Boolean).join(" — ");
+        if (what) lines.push("   " + what);
+        lines.push("");
+    });
+    return lines.join("\n").trim() + "\n";
+}
+
+function ReportSheet({ target, onClose }) {
+    const api = useReports();
+    const existing = api ? api.get(target.key) : null;
+    const [kinds, setKinds] = useState(existing ? existing.kinds || [] : []);
+    const [note, setNote] = useState(existing ? existing.note || "" : "");
+    const toggle = (k) => setKinds((prev) => (prev.indexOf(k) >= 0 ? prev.filter((x) => x !== k) : prev.concat([k])));
+    const save = () => {
+        if (!api) return;
+        api.save({ ...target, kinds: kinds, note: note.trim(), at: Date.now(), build: APP_BUILD });
+        onClose(true);
+    };
+    const remove = () => { if (api) api.remove(target.key); onClose(false); };
+    return React.createElement("div", { className: "zl-overlay", onClick: () => onClose(false) },
+        React.createElement("div", { className: "zl-sheet zl-anim", role: "dialog", "aria-label": "דיווח על טעות",
+            onClick: (e) => e.stopPropagation() },
+            React.createElement("div", { style: { display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 12 } },
+                React.createElement("h3", { className: "zl-sheet-title" }, existing ? "עדכון דיווח" : "דיווח על טעות"),
+                React.createElement("button", { type: "button", onClick: () => onClose(false), "aria-label": "סגור",
+                    style: { background: "none", border: "none", cursor: "pointer", padding: 4, color: "var(--ink)" } },
+                    React.createElement(X, { size: 18 }))),
+            React.createElement("div", { className: "zl-report-word" },
+                React.createElement("div", { className: "zl-report-front" }, target.front),
+                React.createElement("div", { className: "zl-report-back" }, target.back),
+                React.createElement("div", { className: "zl-report-meta" },
+                    (target.meeting ? "מפגש " + target.meeting + " · " : "") + (REPORT_DECK_NAMES[target.deck] || "") + " #" + target.id)),
+            React.createElement("span", { style: { display: "block", fontSize: "0.8rem", fontWeight: 700 } }, "מה לא תקין?"),
+            React.createElement("div", { className: "zl-report-kinds" },
+                REPORT_KINDS.map((k) => React.createElement("button", {
+                    key: k, type: "button", className: "zl-report-kind",
+                    "data-on": kinds.indexOf(k) >= 0 ? "true" : "false",
+                    "aria-pressed": kinds.indexOf(k) >= 0 ? "true" : "false",
+                    onClick: () => toggle(k),
+                }, k))),
+            React.createElement("textarea", {
+                className: "zl-report-note", value: note, dir: "rtl",
+                placeholder: "פירוט (לא חובה) — למשל: ח בפתח ושדה, ה בלי ניקוד",
+                onChange: (e) => setNote(e.target.value),
+            }),
+            React.createElement("div", { style: { display: "flex", gap: 8, flexWrap: "wrap" } },
+                React.createElement(PrimaryButton, { onClick: save, disabled: kinds.length === 0 && !note.trim(),
+                    style: { flex: 1, justifyContent: "center" } }, existing ? "עדכן דיווח" : "שמור דיווח"),
+                existing
+                    ? React.createElement(PrimaryButton, { variant: "outline", onClick: remove, style: { flex: 1, justifyContent: "center" } }, "הסר דיווח")
+                    : React.createElement(PrimaryButton, { variant: "outline", onClick: () => onClose(false), style: { flex: 1, justifyContent: "center" } }, "ביטול"))));
+}
+
+/* The small flag beside a card. It takes a snapshot of the card when it is
+   pressed, so a session that moves on underneath does not change what is
+   being reported. */
+function ReportButton({ item }) {
+    const api = useReports();
+    const [open, setOpen] = useState(null);
+    const [thanks, setThanks] = useState(false);
+    useEffect(() => {
+        if (!thanks) return;
+        const t = setTimeout(() => setThanks(false), 1800);
+        return () => clearTimeout(t);
+    }, [thanks]);
+    const target = reportFromItem(item);
+    if (!api || !target) return null;
+    const on = api.has(target.key);
+    return React.createElement(React.Fragment, null,
+        React.createElement("button", {
+            type: "button", className: "zl-flag", "data-on": on ? "true" : "false",
+            title: on ? "דווח — לחץ לעדכון" : "דווח על טעות", "aria-label": on ? "דווח — לחץ לעדכון" : "דווח על טעות",
+            onClick: (e) => { e.stopPropagation(); setOpen(target); },
+        },
+            React.createElement(Flag, { size: 13 }),
+            React.createElement("span", null, thanks ? "נשמר" : on ? "דווח" : "טעות?")),
+        open ? React.createElement(ReportSheet, { target: open, onClose: (saved) => { setOpen(null); if (saved) setThanks(true); } }) : null);
+}
+
+/* The list of reports, from the personal area. */
+function ReportsSheet({ onClose }) {
+    const api = useReports();
+    const [copied, setCopied] = useState("");
+    const [editing, setEditing] = useState(null);
+    const [confirmClear, setConfirmClear] = useState(false);
+    const list = api ? api.list.slice().sort((a, b) => (b.at || 0) - (a.at || 0)) : [];
+    const fixedCount = list.filter(reportIsFixed).length;
+    const copy = () => {
+        const text = reportsText(list);
+        const done = (how) => { setCopied(how); setTimeout(() => setCopied(""), 2200); };
+        if (navigator.share && /iPhone|iPad|Android/i.test(navigator.userAgent || "")) {
+            navigator.share({ text: text }).then(() => done("shared")).catch(() => {});
+            return;
+        }
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+            navigator.clipboard.writeText(text).then(() => done("copied")).catch(() => fallback());
+        } else fallback();
+        function fallback() {
+            const ta = document.createElement("textarea");
+            ta.value = text; ta.setAttribute("readonly", ""); ta.style.position = "fixed"; ta.style.opacity = "0";
+            document.body.appendChild(ta); ta.select();
+            try { document.execCommand("copy"); done("copied"); } catch (e) {}
+            document.body.removeChild(ta);
+        }
+    };
+    return React.createElement("div", { className: "zl-overlay", onClick: onClose },
+        React.createElement("div", { className: "zl-sheet zl-anim", onClick: (e) => e.stopPropagation() },
+            React.createElement("div", { style: { display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 6 } },
+                React.createElement("h3", { className: "zl-sheet-title" }, "דיווחים על טעויות"),
+                React.createElement("button", { type: "button", onClick: onClose, "aria-label": "סגור",
+                    style: { background: "none", border: "none", cursor: "pointer", padding: 4, color: "var(--ink)" } },
+                    React.createElement(X, { size: 18 }))),
+            list.length === 0
+                ? React.createElement("p", { style: { fontSize: "0.85rem", color: "var(--ink-muted)", lineHeight: 1.6 } },
+                    "אין דיווחים. בכל תרגול ובכל מילה ברשימת אוצר המילים יש כפתור \"טעות?\" — לחיצה עליו שומרת את המילה כאן.")
+                : React.createElement(React.Fragment, null,
+                    React.createElement("p", { style: { fontSize: "0.8rem", color: "var(--ink-muted)", marginBottom: 10, lineHeight: 1.6 } },
+                        list.length + (list.length === 1 ? " דיווח" : " דיווחים")
+                        + (fixedCount ? " · " + fixedCount + " כבר תוקנו" : "")
+                        + ". העתק את הרשימה ושלח אותה לתיקון."),
+                    React.createElement("div", { style: { display: "flex", gap: 8, marginBottom: 8, flexWrap: "wrap" } },
+                        React.createElement(PrimaryButton, { onClick: copy, style: { flex: 1, justifyContent: "center" } },
+                            copied === "copied" ? "הועתק" : copied === "shared" ? "נשלח" : "העתק את הרשימה"),
+                        fixedCount ? React.createElement(PrimaryButton, { variant: "outline", style: { flex: 1, justifyContent: "center" },
+                            onClick: () => api.clearFixed() }, "נקה את שתוקנו") : null),
+                    list.map((r) => {
+                        const fixed = reportIsFixed(r);
+                        const now = fixed ? reportCurrent(r) : null;
+                        return React.createElement("div", { key: r.key, className: "zl-report-row" },
+                            React.createElement("div", { className: "zl-report-row-body" },
+                                React.createElement("div", { style: { fontWeight: 700, lineHeight: 1.7 } },
+                                    r.front, fixed ? React.createElement("span", { className: "zl-report-fixed" }, "תוקן") : null),
+                                React.createElement("div", { style: { fontSize: "0.85rem" } }, r.back),
+                                fixed ? React.createElement("div", { style: { fontSize: "0.8rem", color: "var(--ok)", marginTop: 2 } },
+                                    "עכשיו: " + now.front + "  =  " + now.back) : null,
+                                React.createElement("div", { className: "zl-report-meta" },
+                                    [(r.meeting ? "מפגש " + r.meeting : ""), (REPORT_DECK_NAMES[r.deck] || "") + " #" + r.id,
+                                     (r.kinds || []).join(", "), (r.note || "").trim()].filter(Boolean).join(" · "))),
+                            React.createElement("button", { type: "button", className: "zl-mini", onClick: () => setEditing(r) }, "עריכה"));
+                    }),
+                    confirmClear
+                        ? React.createElement("div", { style: { display: "flex", gap: 8, alignItems: "center", flexWrap: "wrap", marginTop: 12 } },
+                            React.createElement("span", { style: { fontWeight: 700, fontSize: "0.85rem" } }, "למחוק את כל הדיווחים?"),
+                            React.createElement(PrimaryButton, { variant: "danger", onClick: () => { api.clearAll(); setConfirmClear(false); } }, "כן, מחק"),
+                            React.createElement(PrimaryButton, { variant: "outline", onClick: () => setConfirmClear(false) }, "ביטול"))
+                        : React.createElement("button", { type: "button", className: "zl-mini",
+                            style: { marginTop: 12, width: "100%", justifyContent: "center" }, onClick: () => setConfirmClear(true) }, "מחק את כל הדיווחים")),
+            editing ? React.createElement(ReportSheet, { target: editing, onClose: () => setEditing(null) }) : null));
+}
+
+function SessionBar({ pos, total, item }) {
     const pct = total ? Math.round((pos / total) * 100) : 0;
     return (React.createElement("div", { className: "zl-session" },
         React.createElement("span", { className: "zl-session-track" },
             React.createElement("span", { className: "zl-session-fill", style: { width: pct + "%" } })),
-        React.createElement("span", { className: "zl-session-num" }, pos + " / " + total)));
+        React.createElement("span", { className: "zl-session-num" }, pos + " / " + total),
+        item ? React.createElement(ReportButton, { item: item }) : null));
 }
 
 function SessionSummary({ title, total, right, wrong, onRestart, onBack, restartLabel }) {
@@ -5363,7 +5608,7 @@ function FlashcardPractice({ deckKind, banks, applyResult, onBack, dir, setDir, 
                 React.createElement("h2", { className: "zl-display", style: { fontSize: "1.15rem", fontWeight: 800 } },
                     "כרטיסיות · " + (DECK_LABELS[deckKind] || "")),
                 React.createElement(DirectionToggle, { value: dir, onChange: setDir })),
-            React.createElement(SessionBar, { pos: pos + 1, total: order.length }),
+            React.createElement(SessionBar, { pos: pos + 1, total: order.length, item: item }),
             noneDue ? React.createElement("p", { style: { fontSize: "0.82rem", color: "var(--accent)", fontWeight: 600, marginBottom: 10 } },
                 "אין פריטים שממתינים לחזרה — תרגול חופשי") : null,
             React.createElement("div", { onClick: () => setFlipped((f) => !f), style: { minHeight: 230, margin: "4px 0 18px", cursor: "pointer" } },
@@ -5586,7 +5831,7 @@ function AmericanQuiz({ deckKind, banks, applyResult, onBack, dir, setDir, onSes
                 React.createElement("h2", { className: "zl-display", style: { fontSize: "1.15rem", fontWeight: 800 } },
                     "מבחן אמריקאי · " + (DECK_LABELS[deckKind] || "")),
                 React.createElement(DirectionToggle, { value: dir, onChange: setDir })),
-            React.createElement(SessionBar, { pos: pos + 1, total: order.length }),
+            React.createElement(SessionBar, { pos: pos + 1, total: order.length, item: currentItem }),
             React.createElement(PromptBox, { text: question.prompt, isLetter: question.promptIsLetter, lang: question.promptLang }),
             React.createElement(ChoiceGrid, { question: question, chosen: selected, locked: !!selected, onChoose: choose }))));
 }
@@ -5749,7 +5994,7 @@ function MorningDrill({ banks, applyResult, onBack, onSessionDone, plan, title }
         React.createElement(Card, null,
             React.createElement("h2", { className: "zl-display", style: { fontSize: "1.15rem", fontWeight: 800, marginBottom: 12 } },
                 title || "תרגול בוקר · אוצר מילים"),
-            React.createElement(SessionBar, { pos: pos + 1, total: tasks.length }),
+            React.createElement(SessionBar, { pos: pos + 1, total: tasks.length, item: task && task.item }),
             React.createElement("p", { style: { color: "var(--ink-muted)", fontSize: "0.85rem", marginBottom: 10 } },
                 task.open ? "כתוב את התרגום:" : "בחר את התרגום:"),
             React.createElement(PromptBox, { text: prompt, isLetter: false, lang: task.open ? faces.frontLang : (question && question.promptLang) }),
@@ -6403,7 +6648,7 @@ function DailyReview({ banks, applyResult, onBack, onSessionDone }) {
         React.createElement(Card, null,
             React.createElement("h2", { className: "zl-display", style: { fontSize: "1.15rem", fontWeight: 800, marginBottom: 12 } },
                 "חזרה יומית"),
-            React.createElement(SessionBar, { pos: pos + 1, total: tasks.length }),
+            React.createElement(SessionBar, { pos: pos + 1, total: tasks.length, item: task && task.item }),
             React.createElement("p", { style: { color: "var(--ink-muted)", fontSize: "0.85rem", marginBottom: 10 } }, label),
 
             React.createElement(PromptBox, {
@@ -6749,7 +6994,7 @@ function SentenceBuilderSession({ banks, applyResult, onBack, dir, setDir, onSes
         React.createElement(Card, null,
             React.createElement("div", { style: { display: "flex", justifyContent: "space-between", alignItems: "center", gap: 10, flexWrap: "wrap", marginBottom: 12 } },
                 React.createElement("h3", { className: "zl-display", style: { fontSize: "1.15rem", fontWeight: 800 } }, "הרכבת משפטים")),
-            React.createElement(SessionBar, { pos: pos + 1, total: order.length }),
+            React.createElement(SessionBar, { pos: pos + 1, total: order.length, item: item }),
             React.createElement(SentenceTask, { item: item, dir: taskDir, onResult: record, locked: !!result, result: result, pool: data }),
             result ? React.createElement(PrimaryButton, { variant: "gold", onClick: next }, "המשפט הבא") : null)));
 }
@@ -7134,7 +7379,7 @@ function BlankGame({ banks, applyResult, onBack, dir, setDir, onSessionDone }) {
         React.createElement(Card, null,
             React.createElement("div", { style: { display: "flex", justifyContent: "space-between", alignItems: "center", gap: 10, flexWrap: "wrap", marginBottom: 12 } },
                 React.createElement("h2", { className: "zl-display", style: { fontSize: "1.15rem", fontWeight: 800 } }, "השלמת משפט")),
-            React.createElement(SessionBar, { pos: pos + 1, total: order.length }),
+            React.createElement(SessionBar, { pos: pos + 1, total: order.length, item: item }),
             /* The Hebrew sentence is the source, so it sits where every other
                question sits; the Arabic with its gap follows. */
             React.createElement(PromptBox, { text: task.prompt, isLetter: false, lang: "he" }),
@@ -7988,7 +8233,7 @@ function FullExam({ banks, profile, onBack, onExamStart, onExamFinish, applyResu
             React.createElement("div", { style: { display: "flex", justifyContent: "space-between", alignItems: "center", gap: 10, flexWrap: "wrap", marginBottom: 12 } },
                 React.createElement("h2", { className: "zl-display", style: { fontSize: "1.15rem", fontWeight: 800 } }, "מבחן מלא"),
                 React.createElement("span", { className: "zl-examtag" }, meta.label)),
-            React.createElement(SessionBar, { pos: pos + 1, total: tasks.length }),
+            React.createElement(SessionBar, { pos: pos + 1, total: tasks.length, item: task && task.item }),
 
             /* One question at a time inside its own boundary, keyed on the
                position: if anything in a question fails, only that question
@@ -8315,9 +8560,11 @@ function VocabTab({ vocab, setVocab, meeting }) {
                             React.createElement("span", { style: { fontWeight: 700, fontSize: "0.85rem" } }, "למחוק לצמיתות?"),
                             React.createElement(PrimaryButton, { variant: "danger", onClick: () => removeWord(item.id) }, "כן, מחק"),
                             React.createElement(PrimaryButton, { variant: "outline", onClick: () => setConfirmDelete(null) }, "ביטול"))
-                        : React.createElement("div", { style: { display: "flex", gap: 8 } },
+                        : React.createElement("div", { style: { display: "flex", gap: 8, alignItems: "center" } },
                             React.createElement(PrimaryButton, { onClick: () => startEdit(item) }, "ערוך"),
-                            React.createElement(PrimaryButton, { variant: "danger", onClick: () => setConfirmDelete(item.id) }, "מחק"))));
+                            React.createElement(PrimaryButton, { variant: "danger", onClick: () => setConfirmDelete(item.id) }, "מחק"),
+                            React.createElement("span", { style: { flex: 1 } }),
+                            React.createElement(ReportButton, { item: { ...item, _deck: "vocab" } }))));
         })(),
         modalOpen && (React.createElement("div", { onClick: closeModal, style: { position: "fixed", inset: 0, background: "rgba(36,32,27,0.45)", display: "flex", alignItems: "center", justifyContent: "center", padding: 16, zIndex: 1000 } },
             React.createElement("div", { onClick: (e) => e.stopPropagation(), style: { background: "var(--surface)", borderRadius: 14, padding: 22, width: "100%", maxWidth: 420 } },
@@ -8849,6 +9096,69 @@ const FAREWELL_MS = 1800;
 const PROMOTED_MS = 2200;
 
 const SYNC_STAMP_KEY = "sync-updated-at";
+/* When this device last changed something that has not reached the cloud
+   yet. Cleared by a successful upload that already carried that change. */
+const SYNC_DIRTY_KEY = "sync-dirty-at";
+
+/* Two copies of the exam history are joined, never replaced. An exam is
+   written the moment it starts, marked failed, and rewritten when it
+   finishes — so one copy may still hold the failed start while the other
+   holds the finished result. The finished one always wins. */
+function mergeExams(a, b) {
+    const byId = new Map();
+    (a || []).concat(b || []).forEach((ex) => {
+        if (!ex || !ex.id) return;
+        const prev = byId.get(ex.id);
+        if (!prev || (prev.aborted && !ex.aborted)) byId.set(ex.id, ex);
+    });
+    return Array.from(byId.values()).sort((x, y) => (y.at || 0) - (x.at || 0)).slice(0, EXAM_HISTORY_LIMIT);
+}
+
+/* When both copies changed since they last met, each item keeps the side
+   that practised it most recently, so neither device's work is thrown away. */
+function mergeProgress(local, cloud) {
+    const cloudById = new Map((cloud || []).map((it) => [it.id, it]));
+    const out = (local || []).map((it) => {
+        const other = cloudById.get(it.id);
+        cloudById.delete(it.id);
+        if (!other) return it;
+        return (other.lastSeen || 0) > (it.lastSeen || 0) ? other : it;
+    });
+    cloudById.forEach((it) => out.push(it));
+    return out;
+}
+
+/* Decides what a device keeps when it signs in, from the local copy, the
+   cloud copy and the two bookmarks. Kept apart from the hook so the rules
+   can be tested on their own.
+     · nothing local is waiting  → the cloud copy, if it is at least as new
+     · local work is waiting and the cloud has not moved since → local
+     · both moved → item by item, the most recent practice wins
+   Exams are always joined, whichever way the rest goes. */
+function resolveSync(local, cloud, localStamp, dirtyAt) {
+    if (!cloud || !Array.isArray(cloud.vocab)) return { take: "local", data: local };
+    const cloudAt = cloud.updatedAt || 0;
+    const waiting = dirtyAt > localStamp;
+    if (!waiting && cloudAt >= localStamp) {
+        return { take: "cloud", data: { ...cloud, exams: mergeExams(cloud.exams, local.exams) } };
+    }
+    if (cloudAt <= localStamp) {
+        return { take: "local", data: { ...local, exams: mergeExams(local.exams, cloud.exams) } };
+    }
+    const lists = ["vocab", "letters", "sentences", "idioms"];
+    const data = { ...local };
+    lists.forEach((k) => { data[k] = mergeProgress(local[k], Array.isArray(cloud[k]) ? cloud[k] : []); });
+    data.exams = mergeExams(local.exams, cloud.exams);
+    /* Reports from either device are kept; the same card keeps the newer one. */
+    const reps = new Map();
+    (Array.isArray(cloud.reports) ? cloud.reports : []).concat(local.reports || []).forEach((r) => {
+        if (!r || !r.key) return;
+        const prev = reps.get(r.key);
+        if (!prev || (r.at || 0) >= (prev.at || 0)) reps.set(r.key, r);
+    });
+    data.reports = Array.from(reps.values());
+    return { take: "merge", data: data };
+}
 
 /* Whichever copy was written last wins. The stamp is kept next to the local
    data, so a device that practised offline still uploads its work when it
@@ -8858,6 +9168,7 @@ function useCloudSync(user, state, setters) {
     const [detail, setDetail] = useState("");
     const ready = useRef(false);
     const docRef = useRef(null);
+    const pushing = useRef(false);
     const latest = useRef(state);
     latest.current = state;
 
@@ -8872,6 +9183,7 @@ function useCloudSync(user, state, setters) {
     const push = (snapshot) => {
         if (!docRef.current) return Promise.resolve();
         const stamp = Date.now();
+        pushing.current = true;
         const payload = stripUndefined({
             vocab: snapshot.vocab,
             letters: snapshot.letters,
@@ -8879,15 +9191,22 @@ function useCloudSync(user, state, setters) {
             idioms: snapshot.idioms,
             checklist: snapshot.checklist,
             exams: snapshot.exams,
+            reports: Array.isArray(snapshot.reports) ? snapshot.reports : [],
             profile: snapshot.profile,
             updatedAt: stamp,
         });
         return docRef.current.set(payload, { merge: true })
             .then(() => {
-                try { window.localStorage.setItem(SYNC_STAMP_KEY, String(stamp)); } catch (e) {}
+                pushing.current = false;
+                try {
+                    window.localStorage.setItem(SYNC_STAMP_KEY, String(stamp));
+                    /* Only clear the flag if nothing changed while uploading. */
+                    if (Number(window.localStorage.getItem(SYNC_DIRTY_KEY) || 0) <= stamp) window.localStorage.removeItem(SYNC_DIRTY_KEY);
+                } catch (e) {}
                 setStatus("synced");
             })
             .catch((err) => {
+                pushing.current = false;
                 setStatus("error");
                 setDetail((err && (err.code || err.message)) || "שגיאה לא ידועה");
             });
@@ -8900,19 +9219,29 @@ function useCloudSync(user, state, setters) {
         setStatus("loading");
         docRef.current.get().then((snap) => {
             const localStamp = Number(window.localStorage.getItem(SYNC_STAMP_KEY) || 0);
+            const dirtyAt = Number(window.localStorage.getItem(SYNC_DIRTY_KEY) || 0);
             const cloud = snap.exists ? snap.data() : null;
-            if (cloud && Array.isArray(cloud.vocab) && (cloud.updatedAt || 0) >= localStamp) {
-                setters.setVocab(mergeDefaults(cloud.vocab, DEFAULT_VOCAB));
-                setters.setLetters(mergeDefaults(Array.isArray(cloud.letters) ? cloud.letters : [], ALPHABET));
-                setters.setSentences(mergeDefaults(Array.isArray(cloud.sentences) ? cloud.sentences : [], SENTENCES));
-                setters.setIdioms(mergeDefaults(Array.isArray(cloud.idioms) ? cloud.idioms : [], IDIOMS));
-                if (cloud.checklist && typeof cloud.checklist === "object") setters.setChecklist(cloud.checklist);
-                if (Array.isArray(cloud.exams)) setters.setExams(cloud.exams);
-                if (cloud.profile && typeof cloud.profile === "object") setters.setProfile(cloud.profile);
+            /* Until 11.11 a tie went to the cloud, so anything done in the
+               last second before the app closed — the end of an exam above
+               all — was overwritten by the older cloud copy on the next
+               visit. Local work still waiting to upload now wins. */
+            const plan = resolveSync(latest.current, cloud, localStamp, dirtyAt);
+            if (plan.take !== "local") {
+                const d = plan.data;
+                setters.setVocab(mergeDefaults(d.vocab, DEFAULT_VOCAB));
+                setters.setLetters(mergeDefaults(Array.isArray(d.letters) ? d.letters : [], ALPHABET));
+                setters.setSentences(mergeDefaults(Array.isArray(d.sentences) ? d.sentences : [], SENTENCES));
+                setters.setIdioms(mergeDefaults(Array.isArray(d.idioms) ? d.idioms : [], IDIOMS));
+                if (d.checklist && typeof d.checklist === "object") setters.setChecklist(d.checklist);
+                if (Array.isArray(d.exams)) setters.setExams(d.exams);
+                if (Array.isArray(d.reports) && setters.setReports) setters.setReports(d.reports);
+                if (d.profile && typeof d.profile === "object") setters.setProfile(d.profile);
                 try { window.localStorage.setItem(SYNC_STAMP_KEY, String(cloud.updatedAt || Date.now())); } catch (e) {}
-                setStatus("synced");
+                if (plan.take === "merge") push({ ...latest.current, ...d });
+                else setStatus("synced");
             } else {
-                push(latest.current);   // first sign-in, or this device is ahead
+                if (Array.isArray(plan.data.exams)) setters.setExams(plan.data.exams);
+                push(plan.data);   // first sign-in, or this device is ahead
             }
             ready.current = true;
         }).catch((err) => {
@@ -8925,10 +9254,33 @@ function useCloudSync(user, state, setters) {
 
     useEffect(() => {
         if (!user || !ready.current) return;
+        try { window.localStorage.setItem(SYNC_DIRTY_KEY, String(Date.now())); } catch (e) {}
         const timer = setTimeout(() => push(latest.current), 1200);
         return () => clearTimeout(timer);
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [state.vocab, state.letters, state.sentences, state.idioms, state.checklist, state.exams, state.profile, user]);
+    }, [state.vocab, state.letters, state.sentences, state.idioms, state.checklist, state.exams, state.reports, state.profile, user]);
+
+    /* A phone freezes the page the moment the app goes to the background, so
+       the delayed upload above may never run. Send at once on the way out. */
+    useEffect(() => {
+        if (!user) return;
+        const flush = () => {
+            if (!ready.current || pushing.current) return;
+            let waiting = false;
+            try { waiting = !!window.localStorage.getItem(SYNC_DIRTY_KEY); } catch (e) {}
+            if (waiting) push(latest.current);
+        };
+        const onHide = () => { if (document.visibilityState === "hidden") flush(); };
+        document.addEventListener("visibilitychange", onHide);
+        window.addEventListener("pagehide", flush);
+        window.ZL_FLUSH_SYNC = flush;
+        return () => {
+            document.removeEventListener("visibilitychange", onHide);
+            window.removeEventListener("pagehide", flush);
+            if (window.ZL_FLUSH_SYNC === flush) window.ZL_FLUSH_SYNC = null;
+        };
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [user]);
 
     return { status: status, detail: detail };
 }
@@ -8963,6 +9315,7 @@ function ArabicLearningApp() {
     const [idioms, setIdioms] = usePersistedState("idioms-data-v1", withProgressFields(IDIOMS), (raw) => mergeDefaults(raw, IDIOMS));
     const [checklist, setChecklist] = usePersistedState("routine-checklist", {});
     const [exams, setExams] = usePersistedState("exams-v1", []);
+    const [reports, setReports] = usePersistedState("reports-v1", []);
     const [profile, setProfile] = usePersistedState("profile-v1", { name: "" });
     const [theme, setTheme] = usePersistedState("theme", "light");
     const [user, setUser] = useState(undefined);        // undefined = still checking
@@ -8986,10 +9339,23 @@ function ArabicLearningApp() {
        remembering that we saw one tells a login apart from a page reload. */
     const wasSignedOut = useRef(false);
 
-    const syncState = { vocab, letters, sentences, idioms, checklist, exams, profile };
+    const syncState = { vocab, letters, sentences, idioms, checklist, exams, reports, profile };
     const sync = useCloudSync(user, syncState, {
-        setVocab, setLetters, setSentences, setIdioms, setChecklist, setExams, setProfile,
+        setVocab, setLetters, setSentences, setIdioms, setChecklist, setExams, setReports, setProfile,
     });
+    const reportApi = useMemo(() => {
+        const list = Array.isArray(reports) ? reports : [];
+        return {
+            list: list,
+            has: (key) => list.some((r) => r.key === key),
+            get: (key) => list.find((r) => r.key === key) || null,
+            save: (r) => setReports((prev) => [r].concat((prev || []).filter((x) => x.key !== r.key))),
+            remove: (key) => setReports((prev) => (prev || []).filter((x) => x.key !== key)),
+            clearFixed: () => setReports((prev) => (prev || []).filter((x) => !reportIsFixed(x))),
+            clearAll: () => setReports([]),
+        };
+    }, [reports]);
+    const withReports = (el) => (ReportContext ? React.createElement(ReportContext.Provider, { value: reportApi }, el) : el);
 
     useEffect(() => {
         if (!window.ZL_FIREBASE_READY) { setUser(null); return; }
@@ -9129,10 +9495,21 @@ function ArabicLearningApp() {
         return id;
     };
     const finishExam = (id, payload) => {
-        setExams((prev) => (prev || []).map((ex) => (ex.id === id
-            ? { ...ex, score: payload.score, cats: payload.cats, aborted: false,
-                questions: payload.questions, notes: examNotes(payload.cats) }
-            : ex)));
+        setExams((prev) => {
+            const list = prev || [];
+            const done = { score: payload.score, cats: payload.cats, aborted: false,
+                questions: payload.questions, notes: examNotes(payload.cats) };
+            /* If the started entry is missing (another copy replaced the
+               history mid-exam), the result is added rather than lost. */
+            if (!list.some((ex) => ex.id === id)) {
+                return [{ id: id, at: Date.now(), meeting: profileMeeting(profile), ...done }]
+                    .concat(list).slice(0, EXAM_HISTORY_LIMIT);
+            }
+            return list.map((ex) => (ex.id === id ? { ...ex, ...done } : ex));
+        });
+        /* The result is uploaded straight away instead of after the usual
+           pause, so closing the app on the score screen cannot lose it. */
+        setTimeout(() => { if (window.ZL_FLUSH_SYNC) window.ZL_FLUSH_SYNC(); }, 300);
     };
 
     const navigateFromRoutine = (target) => {
@@ -9265,7 +9642,7 @@ function ArabicLearningApp() {
             })));
     }
 
-    return (React.createElement("div", {
+    return withReports(React.createElement("div", {
             className: "zl-root", "data-theme": theme,
             /* Lets the stylesheet make room for the tour card. */
             "data-tour": guideOpen ? "true" : "false",
@@ -9288,7 +9665,7 @@ function ArabicLearningApp() {
         }) : null,
         accountOpen ? React.createElement(AccountSheet, {
             vocab: vocab, letters: letters, sentences: sentences, idioms: idioms,
-            checklist: checklist, exams: exams, profile: profile,
+            checklist: checklist, exams: exams, reports: reports, profile: profile,
             setVocab: setVocab, setLetters: setLetters, setSentences: setSentences,
             setIdioms: setIdioms, setChecklist: setChecklist, setProfile: setProfile, setExams: setExams,
             user: user, syncStatus: sync, onClose: () => setAccountOpen(false),
