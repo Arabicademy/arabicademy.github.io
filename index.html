@@ -191,7 +191,7 @@ try {
     throw new Error("React / ReactDOM לא נטענו מה-CDN (בדוק חיבור לאינטרנט או חסימת סקריפטים).");
   }
 "use strict";
-const APP_BUILD = "13.11 · 121";   // bump this every time the file is replaced
+const APP_BUILD = "13.11 · 122";   // bump this every time the file is replaced
 
 /* The institute logo, carried inline so the page stays a single file.
    STAMP is the round seal (full-screen waits); LOCKUP is the horizontal name
@@ -9442,6 +9442,59 @@ function StatsTab({ vocab, letters, sentences, idioms, verbs, checklist, meeting
                             } })),
                         React.createElement("span", { className: "zl-catrow-val" }, pct + "%"));
                 }));
+        })(),
+
+        /* --- past and future ---
+
+           Measured on its own, like the numbers: the verbs opened so far,
+           how well each template is held, how each meeting's verbs stand,
+           and the verbs that trip most often. The templates are the point of
+           the drill — a weak one means a group of verbs whose future is
+           being guessed rather than remembered. */
+        (function () {
+            if (upTo < VERBS_FROM) return null;
+            const open = (verbs || []).filter((v) => isUnlocked(v, upTo));
+            if (open.length === 0) return null;
+            const overall = knowledgeScore(open);
+            const masteredV = open.filter(isMastered).length;
+            const untouched = open.filter((v) => !((v.correctCount || 0) + (v.wrongCount || 0))).length;
+            const bar = (key, label, items) => {
+                const pct = items.length ? knowledgeScore(items) : 0;
+                return React.createElement("div", { key: key, className: "zl-catrow" },
+                    React.createElement("span", { className: "zl-catrow-name" }, label),
+                    React.createElement("span", { className: "zl-catrow-track" },
+                        React.createElement("span", { className: "zl-catrow-fill", style: {
+                            width: pct + "%", background: pct >= READY_PCT ? "var(--ok)" : "var(--focus)" } })),
+                    React.createElement("span", { className: "zl-catrow-val" }, pct + "% · " + items.length));
+            };
+            const sub = (text) => React.createElement("p", { style: { fontSize: "0.78rem", fontWeight: 700, margin: "12px 0 4px" } }, text);
+            const byTemplate = [["o", "יֹפְעֹל [סֹ]"], ["a", "יִפְעַל [סַ]"], ["e", "יִפְעֵל [סֵ]"]].map(([k, label]) =>
+                bar("t" + k, label, open.filter((v) => verbTemplates(v).indexOf(k) !== -1)));
+            const byPast = [["A", "פַעַל"], ["I", "פִעֵל"]].map(([k, label]) =>
+                bar("p" + k, label, open.filter((v) => v.pattern === k)));
+            const meetings = [];
+            for (let m = VERBS_FROM; m <= upTo; m++) {
+                const items = open.filter((v) => v.meeting === m);
+                if (items.length) meetings.push(bar("m" + m, "מפגש " + m, items));
+            }
+            const tripping = open
+                .filter((v) => (v.wrongCount || 0) > 0 && !isMastered(v))
+                .sort((a, b) => (b.wrongCount || 0) - (a.wrongCount || 0))
+                .slice(0, 5);
+            return React.createElement(Card, { style: { marginBottom: 14 } },
+                React.createElement("div", { style: { display: "flex", alignItems: "baseline", justifyContent: "space-between", marginBottom: 4 } },
+                    React.createElement("h3", { className: "zl-display", style: { fontWeight: 700, fontSize: "1rem" } }, "עבר/עתיד"),
+                    React.createElement("span", { style: { fontSize: "1.3rem", fontWeight: 800,
+                        color: overall >= READY_PCT ? "var(--ok)" : "var(--accent)" } }, overall + "%")),
+                React.createElement("p", { style: { fontSize: "0.8rem", color: "var(--ink-muted)", lineHeight: 1.6 } },
+                    open.length + " פעלים פתוחים · " + masteredV + " בשליטה מלאה · " + untouched + " טרם תורגלו"),
+                sub("לפי תבנית העתיד"), byTemplate,
+                sub("לפי משקל העבר"), byPast,
+                meetings.length > 1 ? sub("לפי המפגש שבו נפתחו") : null, meetings.length > 1 ? meetings : null,
+                tripping.length ? sub("הפעלים שהכי מפילים אותך") : null,
+                tripping.map((v) => React.createElement("div", { key: v.id, style: { display: "flex", justifyContent: "space-between", gap: 8, fontSize: "0.88rem", padding: "4px 0", borderBottom: "1px solid var(--line)" } },
+                    React.createElement("span", { className: "zl-display", style: { fontWeight: 700 } }, v.past + "  ←  " + v.futures.join(" / ")),
+                    React.createElement("span", { style: { color: "var(--ink-muted)", textAlign: "left" } }, v.hebrew + " · " + (v.wrongCount === 1 ? "טעות אחת" : v.wrongCount + " טעויות")))));
         })(),
 
         /* --- where the mistakes are coming from ---
