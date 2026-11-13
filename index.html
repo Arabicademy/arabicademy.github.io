@@ -191,7 +191,7 @@ try {
     throw new Error("React / ReactDOM לא נטענו מה-CDN (בדוק חיבור לאינטרנט או חסימת סקריפטים).");
   }
 "use strict";
-const APP_BUILD = "11.11 · 120";   // bump this every time the file is replaced
+const APP_BUILD = "13.11 · 121";   // bump this every time the file is replaced
 
 /* The institute logo, carried inline so the page stays a single file.
    STAMP is the round seal (full-screen waits); LOCKUP is the horizontal name
@@ -249,6 +249,12 @@ const BookOpen = (p) => React.createElement("svg", { ...iconBase(p) },
 /* 1 2 3, drawn rather than typeset: a single glyph sat oddly beside the
    line-drawn icons around it, and ٣ alone read as decoration rather than as
    "numbers". Three strokes at three heights, in the same weight as the rest. */
+/* Two arrows passing each other: back to the past, on to the future. */
+const VerbIcon = (p) => React.createElement("svg", { ...iconBase(p) },
+    React.createElement("path", { d: "M20 8H6" }),
+    React.createElement("path", { d: "M9 4.5L5.5 8 9 11.5" }),
+    React.createElement("path", { d: "M4 16h14" }),
+    React.createElement("path", { d: "M15 12.5l3.5 3.5-3.5 3.5" }));
 const NumberIcon = (p) => React.createElement("svg", { ...iconBase(p) },
     /* 1 */
     React.createElement("path", { d: "M3.6 9.4L5.4 8v8" }),
@@ -824,6 +830,20 @@ const GLOBAL_CSS = `
     .zl-session-track { flex:1; height:6px; background:var(--line); border-radius:4px; overflow:hidden; }
     .zl-session-fill { display:block; height:100%; background:var(--navy); border-radius:4px; transition:width .3s ease; }
     .zl-session-num { font-size:0.8rem; font-weight:700; color:var(--ink-muted); flex:0 0 auto; }
+
+    /* ---- past / future ---- */
+    .zl-verb-prompt { position:relative; text-align:center; padding:24px 14px 18px; background:var(--bg); border:1px solid var(--line); border-radius:var(--r-md); margin-bottom:16px; }
+    .zl-verb-word { font-size:2rem; font-weight:800; line-height:1.5; }
+    .zl-verb-gloss { font-size:0.95rem; color:var(--ink-muted); margin-top:4px; }
+    .zl-verb-tense { font-size:0.7rem; font-weight:700; color:var(--ink-muted); letter-spacing:0.02em; margin-top:8px; }
+    .zl-verb-options { display:grid; grid-template-columns:repeat(3, 1fr); gap:10px; }
+    .zl-verb-options[data-count="2"] { grid-template-columns:repeat(2, 1fr); }
+    .zl-verb-option { padding:16px 8px; border-radius:10px; border:1px solid var(--line); background:var(--surface); color:var(--ink); font-size:1.3rem; font-weight:700; cursor:pointer; box-shadow:var(--shadow-sm); min-height:56px; }
+    .zl-verb-option[data-state="right"] { background:var(--ok); border-color:var(--ok); color:#fff; box-shadow:none; }
+    .zl-verb-option[data-state="wrong"] { background:var(--bad); border-color:var(--bad); color:#fff; box-shadow:none; }
+    .zl-verb-option:disabled { cursor:default; }
+    .zl-verb-answer { text-align:center; font-size:1.7rem; font-weight:800; margin:4px 0 16px; color:var(--ok); }
+    @media (max-width: 420px) { .zl-verb-option { font-size:1.1rem; padding:14px 4px; } .zl-verb-word { font-size:1.7rem; } }
 
     /* ---- report a mistake ---- */
     .zl-flag { display:inline-flex; align-items:center; gap:4px; flex:0 0 auto; border:1px solid var(--line); background:var(--surface); color:var(--ink-muted); border-radius:999px; padding:4px 10px; min-height:30px; font:inherit; font-size:0.72rem; font-weight:700; cursor:pointer; }
@@ -3580,6 +3600,307 @@ const SENTENCES = [
     { id: 238, hebrew: "שלשום היה מבצע מעצרים בשכונה הדרומית, דובר המשטרה אמר שהמעצרים האלו מגינים על תושבי היישוב ממעשי האלימות.", arabic: "קַבֶּל אִמְבַּארֶח כַּאנַת חַמְלֶת אִעְתִקַאלַאת פִי (א)לְחַיّ (אל)גַ'נוּבִּי, נַאטֶק (אל)שֻרְטַה קַאל אִנּוֹ הַאדִי (א)לְאִעְתִקַאלַאת בְּתִחַמִّי סֻכַּّאן (א)לְבַּלַד מִן אַעְמַאל (א)לְעֻנְפ.", meeting: 12, readOnly: true },
 ];
 
+/* =========================================================================
+   VERBS — past and future, "הוא"
+   The first-form verbs from the course table (pages 258–262), one card per
+   verb: the same letters and vowels across rows are one verb whatever the
+   gloss. `futures` holds every future the table marks as correct — some
+   verbs take two templates and both are accepted. `pattern` is the past
+   template, A = פַעַל and I = פִעֵל. `meeting` is when the verb opens:
+   meeting 10 for a verb whose root was already met in an earlier word,
+   otherwise the meeting that word arrives in, or a share of 11–15.
+   Every form here is approved and locked in corrections.json (verbs[]).
+   ========================================================================= */
+const VERBS_FROM = 10;
+const VERBS = [
+    { id: 5001, past: "חַ'זַן", futures: ["יִחְ'זֵן"], pattern: "A", hebrew: "אחסן, אגר", rows: [1], meeting: 10 },
+    { id: 5002, past: "פַקַד", futures: ["יִפְקֵד"], pattern: "A", hebrew: "איבד", rows: [2], meeting: 11 },
+    { id: 5003, past: "חַצַל", futures: ["יֹחְצֹל"], pattern: "A", hebrew: "אירע, קרה", rows: [3], meeting: 13 },
+    { id: 5004, past: "אַכַּל", futures: ["יֹאְכֹּל"], pattern: "A", hebrew: "אכל", rows: [4], meeting: 10 },
+    { id: 5005, past: "גַ'מַע", futures: ["יִגְ'מַע"], pattern: "A", hebrew: "אסף", rows: [5], meeting: 10 },
+    { id: 5006, past: "מַנַע", futures: ["יִמְנַע"], pattern: "A", hebrew: "אסר", rows: [6], meeting: 10 },
+    { id: 5007, past: "חַ'בַּז", futures: ["יִחְ'בֵּז"], pattern: "A", hebrew: "אפה", rows: [7], meeting: 10 },
+    { id: 5008, past: "פַחַצ", futures: ["יִפְחַצ"], pattern: "A", hebrew: "בדק / חיפש", rows: [8, 87], meeting: 10 },
+    { id: 5009, past: "צַרַף", futures: ["יֹצְרֹף"], pattern: "A", hebrew: "בזבז / המיר / הוציא כסף", rows: [9], meeting: 15 },
+    { id: 5010, past: "פַצַ'ח", futures: ["יִפְצַ'ח"], pattern: "A", hebrew: "בייש", rows: [10], meeting: 13 },
+    { id: 5011, past: "טַלַבּ", futures: ["יֹטְלֹבּ"], pattern: "A", hebrew: "ביקש", rows: [11], meeting: 10 },
+    { id: 5012, past: "טַבַּח'", futures: ["יֹטְבֹּח'"], pattern: "A", hebrew: "בישל", rows: [12], meeting: 10 },
+    { id: 5013, past: "בַּלַע", futures: ["יִבְּלַע"], pattern: "A", hebrew: "בלע", rows: [13], meeting: 13 },
+    { id: 5014, past: "הַרַבּ", futures: ["יֹהְרֹבּ"], pattern: "A", hebrew: "ברח", rows: [14], meeting: 10 },
+    { id: 5015, past: "שַרַד", futures: ["יֹשְרֹד"], pattern: "A", hebrew: "ברח", rows: [14], meeting: 14 },
+    { id: 5016, past: "פַרַג'", futures: ["יִפְרֵג'", "יֹפְרֹג'"], pattern: "A", hebrew: "גאל, הקל", rows: [15], meeting: 10 },
+    { id: 5017, past: "כַּשַף", futures: ["יִכְּשֵף"], pattern: "A", hebrew: "גילה", rows: [16], meeting: 10 },
+    { id: 5018, past: "טַרַד", futures: ["יֹטְרֹד"], pattern: "A", hebrew: "גירש", rows: [17], meeting: 12 },
+    { id: 5019, past: "סַרַק", futures: ["יֹסְרֹק"], pattern: "A", hebrew: "גנב", rows: [18], meeting: 10 },
+    { id: 5020, past: "סַכַּן", futures: ["יֹסְכֹּן"], pattern: "A", hebrew: "גר", rows: [19], meeting: 10 },
+    { id: 5021, past: "דַפַע", futures: ["יִדְפַע"], pattern: "A", hebrew: "דחף", rows: [20], meeting: 10 },
+    { id: 5022, past: "דַפַש", futures: ["יֹדְפֹש"], pattern: "A", hebrew: "דחף", rows: [20], meeting: 10 },
+    { id: 5023, past: "צַ'בַּט", futures: ["יֹצְ'בֹּט"], pattern: "A", hebrew: "דייק", rows: [21], meeting: 14 },
+    { id: 5024, past: "פַשַק", futures: ["יֹפְשֹק"], pattern: "A", hebrew: "דילג", rows: [22], meeting: 11 },
+    { id: 5025, past: "דַעַס", futures: ["יִדְעַס"], pattern: "A", hebrew: "דרך", rows: [23], meeting: 12 },
+    { id: 5026, past: "דַהַס", futures: ["יִדְהֵס"], pattern: "A", hebrew: "דרס", rows: [24], meeting: 14 },
+    { id: 5027, past: "וַעַד", futures: ["יִוְעֵד"], pattern: "A", hebrew: "הבטיח", rows: [25], meeting: 10 },
+    { id: 5028, past: "לַמַע", futures: ["יִלְמַע"], pattern: "A", hebrew: "הבריק", rows: [26], meeting: 10 },
+    { id: 5029, past: "לַפַט'", futures: ["יֹלְפֹט'"], pattern: "A", hebrew: "הגה", rows: [27], meeting: 12 },
+    { id: 5030, past: "לַדַע'", futures: ["יִלְדַע'"], pattern: "A", hebrew: "הגה לא נכון", rows: [28], meeting: 13 },
+    { id: 5031, past: "טַבַּע", futures: ["יִטְבַּע"], pattern: "A", hebrew: "הדפיס", rows: [29], meeting: 11 },
+    { id: 5032, past: "שַכַּר", futures: ["יֹשְכֹּר"], pattern: "A", hebrew: "הודה", rows: [30], meeting: 10 },
+    { id: 5033, past: "טַ'הַר", futures: ["יִטְ'הַר"], pattern: "A", hebrew: "הופיע, נגלה", rows: [31], meeting: 11 },
+    { id: 5034, past: "כַּלַח", futures: ["יִכְּלַח"], pattern: "A", hebrew: "דהה", rows: [32], meeting: 12 },
+    { id: 5035, past: "נַפַע", futures: ["יִנְפַע"], pattern: "A", hebrew: "הועיל", rows: [33], meeting: 10 },
+    { id: 5036, past: "זַכַּר", futures: ["יֹזְכֹּר"], pattern: "A", hebrew: "הזכיר", rows: [34], meeting: 10 },
+    { id: 5037, past: "עַזַם", futures: ["יִעְזֵם"], pattern: "A", hebrew: "הזמין (מישהו)", rows: [35], meeting: 10 },
+    { id: 5038, past: "חַגַ'ז", futures: ["יִחְגֵ'ז"], pattern: "A", hebrew: "הזמין (מקום)", rows: [36], meeting: 10 },
+    { id: 5039, past: "חַקַן", futures: ["יֹחְקֹן"], pattern: "A", hebrew: "הזריק", rows: [37], meeting: 14 },
+    { id: 5040, past: "חַ'צַם", futures: ["יֹחְ'צֹם"], pattern: "A", hebrew: "החסיר, נתן הנחה", rows: [38], meeting: 11 },
+    { id: 5041, past: "שַחַן", futures: ["יִשְחַן"], pattern: "A", hebrew: "הטעין", rows: [39], meeting: 10 },
+    { id: 5042, past: "חַ'בַּט", futures: ["יֹחְ'בֹּט"], pattern: "A", hebrew: "היכה", rows: [40], meeting: 12 },
+    { id: 5043, past: "לַפַת", futures: ["יִלְפֵת", "יֹלְפֹת"], pattern: "A", hebrew: "היפנה (תשומת לב)", rows: [41], meeting: 14 },
+    { id: 5044, past: "סַמַח", futures: ["יִסְמַח"], pattern: "A", hebrew: "הירשה / הרשה", rows: [42, 67], meeting: 11 },
+    { id: 5045, past: "שַרַט", futures: ["יֹשְרֹט"], pattern: "A", hebrew: "היתנה", rows: [43], meeting: 11 },
+    { id: 5046, past: "לַחַם", futures: ["יִלְחֵם"], pattern: "A", hebrew: "הלחים", rows: [44], meeting: 11 },
+    { id: 5047, past: "צַ'רַבּ", futures: ["יֹצְ'רֹבּ"], pattern: "A", hebrew: "הכה", rows: [45], meeting: 10 },
+    { id: 5048, past: "קַרַצ", futures: ["יֹקְרֹצ"], pattern: "A", hebrew: "הכיש, עקץ, צבט", rows: [46], meeting: 13 },
+    { id: 5049, past: "גַ'בַּר", futures: ["יֹגְ'בֹּר"], pattern: "A", hebrew: "הכריח", rows: [47], meeting: 14 },
+    { id: 5050, past: "פַסַד", futures: ["יִפְסֵד"], pattern: "A", hebrew: "הלשין, השמיץ", rows: [48], meeting: 11 },
+    { id: 5051, past: "שַרַח", futures: ["יִשְרַח"], pattern: "A", hebrew: "הסביר", rows: [49], meeting: 10 },
+    { id: 5052, past: "הַגַ'ם", futures: ["יֹהְגֹ'ם", "יִהְגֵ'ם"], pattern: "A", hebrew: "הסתער, התקיף / התקיף, התנפל", rows: [50, 78], meeting: 10 },
+    { id: 5053, past: "חַלַק", futures: ["יִחְלֵק"], pattern: "A", hebrew: "הסתפר / התגלח, הסתפר", rows: [51, 74], meeting: 10 },
+    { id: 5054, past: "נַקַל", futures: ["יֹנְקֹל"], pattern: "A", hebrew: "העביר", rows: [52], meeting: 10 },
+    { id: 5055, past: "מַנַח", futures: ["יִמְנַח"], pattern: "A", hebrew: "העניק", rows: [53], meeting: 11 },
+    { id: 5056, past: "קַלַבּ", futures: ["יִקְלֵבּ"], pattern: "A", hebrew: "הפך", rows: [54], meeting: 10 },
+    { id: 5057, past: "עַגַ'בּ", futures: ["יִעְגֵ'בּ"], pattern: "A", hebrew: "הפליא, הפתיע", rows: [55], meeting: 10 },
+    { id: 5058, past: "צַ'רַט", futures: ["יֹצְ'רֹט"], pattern: "A", hebrew: "הפליץ", rows: [56], meeting: 13 },
+    { id: 5059, past: "פַצַ'ל", futures: ["יִפְצֵ'ל"], pattern: "A", hebrew: "הפריד", rows: [57], meeting: 10 },
+    { id: 5060, past: "קַטַע", futures: ["יִקְטַע"], pattern: "A", hebrew: "הפסיק / חצה / חתך", rows: [58, 93, 95], meeting: 15 },
+    { id: 5061, past: "בַּדַע", futures: ["יִבְּדֵע"], pattern: "A", hebrew: "הצטיין", rows: [59], meeting: 11 },
+    { id: 5062, past: "עַרַצ'", futures: ["יֹעְרֹצ'"], pattern: "A", hebrew: "הציג (תערוכה / הצגה) / הציע (הצעה)", rows: [60, 61], meeting: 10 },
+    { id: 5063, past: "סַבַּק", futures: ["יֹסְבֹּק"], pattern: "A", hebrew: "הקדים", rows: [62], meeting: 14 },
+    { id: 5064, past: "קַתַל", futures: ["יֹקְתֹל"], pattern: "A", hebrew: "הרג", rows: [63], meeting: 10 },
+    { id: 5065, past: "שַעַר", futures: ["יֹשְעֹר"], pattern: "A", hebrew: "הרגיש, חש", rows: [64], meeting: 11 },
+    { id: 5066, past: "רַפַע", futures: ["יִרְפַע"], pattern: "A", hebrew: "הרים", rows: [65], meeting: 10 },
+    { id: 5067, past: "הַדַם", futures: ["יִהְדֵם"], pattern: "A", hebrew: "הרס", rows: [66], meeting: 12 },
+    { id: 5068, past: "חַ'רַבּ", futures: ["יִחְ'רֵבּ"], pattern: "A", hebrew: "הרס", rows: [66], meeting: 10 },
+    { id: 5069, past: "נַקַע", futures: ["יִנְקַע"], pattern: "A", hebrew: "השרה בנוזל", rows: [68], meeting: 13 },
+    { id: 5070, past: "קַבַּצ'", futures: ["יֹקְבֹּצ'"], pattern: "A", hebrew: "השתכר (משכורת)", rows: [69], meeting: 10 },
+    { id: 5071, past: "סַעַל", futures: ["יֹסְעֹל"], pattern: "A", hebrew: "השתעל", rows: [70], meeting: 15 },
+    { id: 5072, past: "צַבַּר", futures: ["יֹצְבֹּר"], pattern: "A", hebrew: "התאזר בסבלנות", rows: [71], meeting: 10 },
+    { id: 5073, past: "חַ'טַבּ", futures: ["יֹחְ'טֹבּ"], pattern: "A", hebrew: "התארס", rows: [72], meeting: 10 },
+    { id: 5074, past: "מַזַח", futures: ["יִמְזַח"], pattern: "A", hebrew: "התבדח", rows: [73], meeting: 13 },
+    { id: 5075, past: "קַצַד", futures: ["יֹקְצֹד"], pattern: "A", hebrew: "התכוון", rows: [75], meeting: 11 },
+    { id: 5076, past: "עַטַס", futures: ["יֹעְטֹס"], pattern: "A", hebrew: "התעטש", rows: [76], meeting: 15 },
+    { id: 5077, past: "פַעַט", futures: ["יִפְעַט"], pattern: "A", hebrew: "התפזר, ברח", rows: [77], meeting: 11 },
+    { id: 5078, past: "בַּרַד", futures: ["יֹבְּרֹד"], pattern: "A", hebrew: "התקרר", rows: [79], meeting: 10 },
+    { id: 5079, past: "זַחַף", futures: ["יִזְחַף"], pattern: "A", hebrew: "זחל", rows: [80], meeting: 13 },
+    { id: 5080, past: "זַרַע", futures: ["יִזְרַע"], pattern: "A", hebrew: "זרע", rows: [81], meeting: 15 },
+    { id: 5081, past: "חַ'זַק", futures: ["יִחְ'זֵק"], pattern: "A", hebrew: "חורר, עשה חור", rows: [82], meeting: 12 },
+    { id: 5082, past: "חַ'טַף", futures: ["יֹחְ'טֹף"], pattern: "A", hebrew: "חטף", rows: [83], meeting: 14 },
+    { id: 5083, past: "עַבַּט", futures: ["יֹעְבֹּט"], pattern: "A", hebrew: "חיבק", rows: [84], meeting: 11 },
+    { id: 5084, past: "קַסַם", futures: ["יִקְסֵם", "יֹקְסֹם"], pattern: "A", hebrew: "חילק", rows: [85], meeting: 10 },
+    { id: 5085, past: "טַפַח", futures: ["יִטְפַח"], pattern: "A", hebrew: "חיסר, הגיש, הציג", rows: [86], meeting: 12 },
+    { id: 5086, past: "חַסַבּ", futures: ["יִחְסֵבּ"], pattern: "A", hebrew: "חישב", rows: [88], meeting: 10 },
+    { id: 5087, past: "חַלַבּ", futures: ["יִחְלֵבּ"], pattern: "A", hebrew: "חָלַב", rows: [89], meeting: 15 },
+    { id: 5088, past: "סַרַח", futures: ["יִסְרַח"], pattern: "A", hebrew: "חלם בהקיץ", rows: [90], meeting: 13 },
+    { id: 5089, past: "חַ'נַק", futures: ["יִחְ'נֵק"], pattern: "A", hebrew: "חנק", rows: [91], meeting: 14 },
+    { id: 5090, past: "חַפַר", futures: ["יֹחְפֹר"], pattern: "A", hebrew: "חפר", rows: [92], meeting: 15 },
+    { id: 5091, past: "נַקַש", futures: ["יֹנְקֹש"], pattern: "A", hebrew: "חרט", rows: [94], meeting: 11 },
+    { id: 5092, past: "חַ'תַם", futures: ["יִחְ'תֵם"], pattern: "A", hebrew: "חתם, נעל", rows: [96], meeting: 12 },
+    { id: 5093, past: "טַחַן", futures: ["יִטְחַן"], pattern: "A", hebrew: "טחן", rows: [97], meeting: 13 },
+    { id: 5094, past: "דַפַן", futures: ["יִדְפֵן", "יֹדְפֹן"], pattern: "A", hebrew: "טמן", rows: [98], meeting: 14 },
+    { id: 5095, past: "נַצַח", futures: ["יִנְצַח"], pattern: "A", hebrew: "ייעץ", rows: [100], meeting: 10 },
+    { id: 5096, past: "חַ'רַג'", futures: ["יֹחְ'רֹג'"], pattern: "A", hebrew: "יצא", rows: [101], meeting: 10 },
+    { id: 5097, past: "צַדַר", futures: ["יֹצְדֹר"], pattern: "A", hebrew: "יצא לאור", rows: [102], meeting: 15 },
+    { id: 5098, past: "בַּזַק", futures: ["יֹבְּזֹק"], pattern: "A", hebrew: "ירק", rows: [103], meeting: 11 },
+    { id: 5099, past: "קַעַד", futures: ["יֹקְעֹד"], pattern: "A", hebrew: "ישב", rows: [104], meeting: 10 },
+    { id: 5100, past: "גַ'לַס", futures: ["יִגְ'לֵס"], pattern: "A", hebrew: "ישב", rows: [104], meeting: 12 },
+    { id: 5101, past: "כַּבַּס", futures: ["יִכְּבֵּס"], pattern: "A", hebrew: "כבש (חמוצים)", rows: [105], meeting: 12 },
+    { id: 5102, past: "טַעַג'", futures: ["יִטְעַג'"], pattern: "A", hebrew: "כופף", rows: [106], meeting: 13 },
+    { id: 5103, past: "סַחַר", futures: ["יִסְחַר"], pattern: "A", hebrew: "כישף", rows: [107], meeting: 14 },
+    { id: 5104, past: "חַבַּס", futures: ["יִחְבֵּס"], pattern: "A", hebrew: "כלא", rows: [108], meeting: 15 },
+    { id: 5105, past: "פַרַצ'", futures: ["יִפְרֵצ'"], pattern: "A", hebrew: "כפה", rows: [109], meeting: 11 },
+    { id: 5106, past: "פִטֵר", futures: ["יִפְטֵר"], pattern: "I", hebrew: "אכל ארוחת בוקר", rows: [1], meeting: 10 },
+    { id: 5107, past: "סִהֵר", futures: ["יִסְהַר"], pattern: "I", hebrew: "בילה בלילה", rows: [2], meeting: 12 },
+    { id: 5108, past: "טִוֵל", futures: ["יִטְוַל"], pattern: "I", hebrew: "גבה", rows: [3], meeting: 10 },
+    { id: 5109, past: "כִּבֵּר", futures: ["יִכְּבַּר"], pattern: "I", hebrew: "גדל", rows: [4], meeting: 10 },
+    { id: 5110, past: "קִלֵק", futures: ["יִקְלַק"], pattern: "I", hebrew: "דאג", rows: [5], meeting: 14 },
+    { id: 5111, past: "שִבֵּה", futures: ["יִשְבַּה"], pattern: "I", hebrew: "דמה ל", rows: [6], meeting: 14 },
+    { id: 5112, past: "פִהֵם", futures: ["יִפְהַם"], pattern: "I", hebrew: "הבין", rows: [7], meeting: 10 },
+    { id: 5113, past: "וִצֵל", futures: ["יִוְצַל"], pattern: "I", hebrew: "הגיע", rows: [8], meeting: 10 },
+    { id: 5114, past: "חִ'גֵ'ל", futures: ["יִחְ'גַ'ל"], pattern: "I", hebrew: "הובך, התבייש", rows: [9], meeting: 11 },
+    { id: 5115, past: "הִלֵכּ", futures: ["יִהְלַכּ"], pattern: "I", hebrew: "הותש", rows: [10], meeting: 12 },
+    { id: 5116, past: "מִסֵכּ", futures: ["יִמְסֵכּ"], pattern: "I", hebrew: "החזיק / תפס", rows: [11, 84], meeting: 10 },
+    { id: 5117, past: "לִזֵם", futures: ["יִלְזַם"], pattern: "I", hebrew: "היה נחוץ", rows: [12], meeting: 11 },
+    { id: 5118, past: "נִקֵצ", futures: ["יֹנְקֹצ", "יִנְקַצ"], pattern: "I", hebrew: "היה חסר / חָסר", rows: [13, 39], meeting: 10 },
+    { id: 5119, past: "עִרֵף", futures: ["יִעְרַף", "יִעְרֵף"], pattern: "I", hebrew: "הכיר / ידע", rows: [14, 42], meeting: 10 },
+    { id: 5120, past: "לִחֵק", futures: ["יִלְחַק"], pattern: "I", hebrew: "הלך בעקבות / הספיק / השיג (מישהו)", rows: [15, 17, 22], meeting: 15 },
+    { id: 5121, past: "קִבֵּל", futures: ["יִקְבַּל"], pattern: "I", hebrew: "הסכים / קבל", rows: [16, 72], meeting: 11 },
+    { id: 5122, past: "שִהֵד", futures: ["יִשְהַד"], pattern: "I", hebrew: "העיד", rows: [18], meeting: 10 },
+    { id: 5123, past: "חִ'סֵר", futures: ["יִחְ'סַר"], pattern: "I", hebrew: "הפסיד, איבד", rows: [19], meeting: 13 },
+    { id: 5124, past: "נִגֵ'ח", futures: ["יִנְגַ'ח"], pattern: "I", hebrew: "הצליח", rows: [20], meeting: 13 },
+    { id: 5125, past: "כִּסֵבּ", futures: ["יִכְּסֵבּ"], pattern: "I", hebrew: "הרויח", rows: [21], meeting: 15 },
+    { id: 5126, past: "רִבֵּח", futures: ["יִרְבַּח"], pattern: "I", hebrew: "הרויח", rows: [21], meeting: 13 },
+    { id: 5127, past: "חִצֵל", futures: ["יִחְצַל"], pattern: "I", hebrew: "השיג (משהו) / קבל", rows: [23, 72], meeting: 13 },
+    { id: 5128, past: "נִצֵח", futures: ["יִנְצַח"], pattern: "I", hebrew: "השמין", rows: [24], meeting: 10 },
+    { id: 5129, past: "סִכֵּר", futures: ["יִסְכַּר"], pattern: "I", hebrew: "השתכר", rows: [25], meeting: 15 },
+    { id: 5130, past: "עִשֵק", futures: ["יִעְשַק"], pattern: "I", hebrew: "התאהב", rows: [26], meeting: 11 },
+    { id: 5131, past: "צִלֵח", futures: ["יִצְלַח"], pattern: "I", hebrew: "התאים, היה טוב", rows: [27], meeting: 10 },
+    { id: 5132, past: "נִדֵם", futures: ["יִנְדַם"], pattern: "I", hebrew: "התחרט, הצטער", rows: [28], meeting: 10 },
+    { id: 5133, past: "נִשֵף", futures: ["יִנְשַף"], pattern: "I", hebrew: "התייבש", rows: [29], meeting: 14 },
+    { id: 5134, past: "יִבֵּס", futures: ["יִיְבַּס"], pattern: "I", hebrew: "התייבש", rows: [29], meeting: 15 },
+    { id: 5135, past: "תִעֵבּ", futures: ["יִתְעַבּ"], pattern: "I", hebrew: "התעייף / עָיֵף", rows: [30, 65], meeting: 10 },
+    { id: 5136, past: "רִזֵק", futures: ["יִרְזַק"], pattern: "I", hebrew: "התפרנס", rows: [31], meeting: 11 },
+    { id: 5137, past: "שִלֵח", futures: ["יִשְלַח"], pattern: "I", hebrew: "התפשט", rows: [32], meeting: 13 },
+    { id: 5138, past: "כִּתֵר", futures: ["יִכְּתַר"], pattern: "I", hebrew: "התרבה", rows: [33], meeting: 10 },
+    { id: 5139, past: "רִגֵ'ע", futures: ["יִרְגַ'ע"], pattern: "I", hebrew: "חזר", rows: [34], meeting: 10 },
+    { id: 5140, past: "מִרֵצ'", futures: ["יִמְרַצ'"], pattern: "I", hebrew: "חלה", rows: [36], meeting: 10 },
+    { id: 5141, past: "חִלֵם", futures: ["יִחְלֵם"], pattern: "I", hebrew: "חלם", rows: [37], meeting: 15 },
+    { id: 5142, past: "פִלֵת", futures: ["יִפְלַת"], pattern: "I", hebrew: "חמק, ברח", rows: [38], meeting: 11 },
+    { id: 5143, past: "עִ'רֵק", futures: ["יִעְ'רַק"], pattern: "I", hebrew: "טבע", rows: [40], meeting: 13 },
+    { id: 5144, past: "עִ'לֵט", futures: ["יִעְ'לַט"], pattern: "I", hebrew: "טעה", rows: [41], meeting: 10 },
+    { id: 5145, past: "קִדֵר", futures: ["יִקְדַר"], pattern: "I", hebrew: "יכל", rows: [43], meeting: 13 },
+    { id: 5146, past: "עִ'דֵר", futures: ["יִעְ'דַר"], pattern: "I", hebrew: "יכל", rows: [43], meeting: 15 },
+    { id: 5147, past: "רִצֵ'ע", futures: ["יִרְצַ'ע"], pattern: "I", hebrew: "ינק", rows: [44], meeting: 12 },
+    { id: 5148, past: "טִלֵע", futures: ["יִטְלַע"], pattern: "I", hebrew: "יצא / עלה", rows: [45, 66], meeting: 10 },
+    { id: 5149, past: "נִזֵל", futures: ["יִנְזֵל"], pattern: "I", hebrew: "ירד", rows: [46], meeting: 10 },
+    { id: 5150, past: "וִרֵת", futures: ["יִוְרַת"], pattern: "I", hebrew: "ירש", rows: [47], meeting: 15 },
+    { id: 5151, past: "עִ'פֵל", futures: ["יִעְ'פַל"], pattern: "I", hebrew: "ישנוני, לא שם לב", rows: [48], meeting: 12 },
+    { id: 5152, past: "זִעֵל", futures: ["יִזְעַל"], pattern: "I", hebrew: "כעס", rows: [49], meeting: 10 },
+    { id: 5153, past: "עִ'צֵ'בּ", futures: ["יִעְ'צַ'בּ"], pattern: "I", hebrew: "כעס", rows: [49], meeting: 13 },
+    { id: 5154, past: "לִבֵּס", futures: ["יִלְבַּס"], pattern: "I", hebrew: "לבש", rows: [50], meeting: 10 },
+    { id: 5155, past: "זִהֵק", futures: ["יִזְהַק"], pattern: "I", hebrew: "מאס ב.. / נמאס לו מ..", rows: [51, 60], meeting: 14 },
+    { id: 5156, past: "דִבֵּל", futures: ["יִדְבַּל"], pattern: "I", hebrew: "נבל (פרח)", rows: [52], meeting: 15 },
+    { id: 5157, past: "קִרֵף", futures: ["יִקְרַף"], pattern: "I", hebrew: "נגעל", rows: [53], meeting: 12 },
+    { id: 5158, past: "חִ'רֵבּ", futures: ["יִחְ'רַבּ"], pattern: "I", hebrew: "נהרס", rows: [54], meeting: 10 },
+    { id: 5159, past: "וִלֵד", futures: ["יִוְלַד"], pattern: "I", hebrew: "נולד", rows: [55], meeting: 10 },
+    { id: 5160, past: "חִ'לֵק", futures: ["יִחְ'לֵק", "יֹחְ'לֹק"], pattern: "I", hebrew: "נולד", rows: [55], meeting: 14 },
+    { id: 5161, past: "צִ'עֵף", futures: ["יִצְ'עַף"], pattern: "I", hebrew: "נחלש", rows: [56], meeting: 10 },
+    { id: 5162, past: "חִזֵר", futures: ["יִחְזֵר"], pattern: "I", hebrew: "ניחש", rows: [57], meeting: 14 },
+    { id: 5163, past: "חִצֵ'ר", futures: ["יִחְצַ'ר"], pattern: "I", hebrew: "נכח", rows: [58], meeting: 10 },
+    { id: 5164, past: "פִשֵל", futures: ["יִפְשַל"], pattern: "I", hebrew: "נכשל / פישל", rows: [59, 69], meeting: 12 },
+    { id: 5165, past: "נִעֵס", futures: ["יִנְעַס"], pattern: "I", hebrew: "נמנם", rows: [61], meeting: 13 },
+    { id: 5166, past: "וִקֵע", futures: ["יִוְקַע"], pattern: "I", hebrew: "נפל", rows: [62], meeting: 15 },
+    { id: 5167, past: "חִמֵל", futures: ["יִחְמַל"], pattern: "I", hebrew: "נשא, הרים", rows: [63], meeting: 10 },
+    { id: 5168, past: "חִ'לֵצ", futures: ["יֹחְ'לֹצ"], pattern: "I", hebrew: "סיים", rows: [64], meeting: 10 },
+    { id: 5169, past: "וִקֵף", futures: ["יִוְקַף"], pattern: "I", hebrew: "עמד", rows: [67], meeting: 10 },
+    { id: 5170, past: "עִמֵל", futures: ["יִעְמַל", "יִעְמֵל"], pattern: "I", hebrew: "עשה", rows: [68], meeting: 14 },
+    { id: 5171, past: "צִ'חֵכּ", futures: ["יִצְ'חַכּ"], pattern: "I", hebrew: "צחק", rows: [70], meeting: 11 },
+    { id: 5172, past: "עִטֵש", futures: ["יִעְטַש"], pattern: "I", hebrew: "נהיה צמא", rows: [71], meeting: 10 },
+    { id: 5173, past: "שִפֵק", futures: ["יִשְפַק"], pattern: "I", hebrew: "ריחם", rows: [73], meeting: 12 },
+    { id: 5174, past: "רִכֵּבּ", futures: ["יִרְכַּבּ"], pattern: "I", hebrew: "רכב, נסע", rows: [74], meeting: 13 },
+    { id: 5175, past: "שִבֵּע", futures: ["יִשְבַּע"], pattern: "I", hebrew: "שבע", rows: [75], meeting: 14 },
+    { id: 5176, past: "לִעֵבּ", futures: ["יִלְעַבּ"], pattern: "I", hebrew: "שיחק", rows: [76], meeting: 10 },
+    { id: 5177, past: "פִרֵח", futures: ["יִפְרַח"], pattern: "I", hebrew: "שמח", rows: [77], meeting: 10 },
+    { id: 5178, past: "שִמֵת", futures: ["יִשְמַת"], pattern: "I", hebrew: "שמח לאיד", rows: [78], meeting: 12 },
+    { id: 5179, past: "סִמֵע", futures: ["יִסְמַע"], pattern: "I", hebrew: "שמע", rows: [79], meeting: 10 },
+    { id: 5180, past: "חִפֵז", futures: ["יִחְפַז"], pattern: "I", hebrew: "שמר, נזהר", rows: [80], meeting: 14 },
+    { id: 5181, past: "כִּרֵה", futures: ["יִכְּרַה"], pattern: "I", hebrew: "שנא", rows: [81], meeting: 11 },
+    { id: 5182, past: "שִרֵבּ", futures: ["יִשְרַבּ"], pattern: "I", hebrew: "שתה", rows: [82], meeting: 13 },
+    { id: 5183, past: "חִ'רֵס", futures: ["יִחְ'רַס"], pattern: "I", hebrew: "שתק", rows: [83], meeting: 15 },
+];
+
+/* ---- deriving the forms ----
+   A verb is three root letters, each with its geresh if it has one. The
+   future is the root poured into a template, exactly as the table states:
+   פ is the first root letter, ע the second, ל the third.
+     [סֹ] יֹפְעֹל   [סַ] יִפְעַל   [סֵ] יִפְעֵל
+   ב and כ keep their dagesh, as everywhere in the store. A final-form letter
+   in the middle of a word takes its ordinary shape. */
+const VERB_POINT = { sheva: "\u05B0", patah: "\u05B7", tsere: "\u05B5", holam: "\u05B9", hiriq: "\u05B4", dagesh: "\u05BC" };
+const VERB_TEMPLATES = { o: "יֹפְעֹל", a: "יִפְעַל", e: "יִפְעֵל" };
+const VERB_FINAL_TO_PLAIN = { "ן": "נ", "ם": "מ", "ף": "פ", "ץ": "צ", "ך": "כ" };
+
+function verbRadicals(past) {
+    const out = [];
+    const w = String(past || "");
+    let i = 0;
+    while (i < w.length) {
+        const ch = w[i]; i++;
+        while (i < w.length && w[i] >= "\u0591" && w[i] <= "\u05C7") i++;
+        let geresh = "";
+        if (w[i] === "'") { geresh = "'"; i++; }
+        out.push({ letter: ch, geresh: geresh });
+    }
+    return out;
+}
+
+function verbWord(rads, vowels, prefix) {
+    let s = prefix ? "י" + prefix : "";
+    rads.forEach((r, k) => {
+        const base = k < rads.length - 1 ? (VERB_FINAL_TO_PLAIN[r.letter] || r.letter) : r.letter;
+        const dagesh = (base === "ב" || base === "כ") ? VERB_POINT.dagesh : "";
+        s += base + (vowels[k] || "") + dagesh + r.geresh;
+    });
+    return s;
+}
+
+/* All three futures a root could take, keyed by template. */
+function verbFutureForms(past) {
+    const r = verbRadicals(past);
+    const P = VERB_POINT;
+    return {
+        o: verbWord(r, [P.sheva, P.holam, ""], P.holam),
+        a: verbWord(r, [P.sheva, P.patah, ""], P.hiriq),
+        e: verbWord(r, [P.sheva, P.tsere, ""], P.hiriq),
+    };
+}
+
+/* Both pasts a root could take: פַעַל and פִעֵל. */
+function verbPastForms(past) {
+    const r = verbRadicals(past);
+    const P = VERB_POINT;
+    return { A: verbWord(r, [P.patah, P.patah, ""]), I: verbWord(r, [P.hiriq, P.tsere, ""]) };
+}
+
+/* Which templates a verb takes, read back from its stored futures. */
+function verbTemplates(verb) {
+    const all = verbFutureForms(verb.past);
+    return Object.keys(all).filter((k) => (verb.futures || []).indexOf(all[k]) !== -1);
+}
+
+/* One question about a verb.
+
+   Past → future offers the three futures the root could take; any of the
+   verb's own futures is right, so a verb with two templates has two right
+   answers among the three. Future → past offers its two possible pasts. The
+   gloss is shown underneath, because the same letters can be two verbs. */
+function buildVerbQuestion(verb, dir) {
+    const d = dir || (Math.random() < 0.5 ? "p2f" : "f2p");
+    if (d === "p2f") {
+        const all = verbFutureForms(verb.past);
+        return {
+            dir: "p2f", prompt: verb.past, promptLang: "ar",
+            ask: "מה צורת העתיד?",
+            options: shuffle([all.o, all.a, all.e]),
+            correct: (verb.futures || []).slice(),
+        };
+    }
+    const futures = verb.futures || [];
+    const shown = futures[Math.floor(Math.random() * futures.length)];
+    const pasts = verbPastForms(verb.past);
+    return {
+        dir: "f2p", prompt: shown, promptLang: "ar",
+        ask: "מה צורת העבר?",
+        options: shuffle([pasts.A, pasts.I]),
+        correct: [verb.past],
+    };
+}
+
+/* The same verb as a set of tasks: multiple choice, flashcards, or the two
+   taking turns. */
+function buildVerbTasks(deck, meeting, size, mode) {
+    const picked = composeSession(deck, meeting, Math.min(size, deck.length)).map((i) => deck[i]);
+    return picked.map((item, i) => {
+        const kind = mode === "mix" ? (i % 2 === 0 ? "choice" : "card") : mode;
+        return { item: item, kind: kind, question: buildVerbQuestion(item) };
+    });
+}
+
+/* How well the verbs opened in one meeting are known. */
+function verbsReadiness(verbs, meeting) {
+    const items = (verbs || []).filter((v) => itemMeeting(v) === meeting);
+    return { total: items.length, pct: items.length ? knowledgeScore(items) / 100 : null };
+}
+
 const IDIOMS = [
     { id: 1, arabic: "לָאזֶם תִּתְעַ'דָّא פִי, קַבַּל מָא יִתְעַשָّא פִיכּ", literal: "תאכל אותו לארוחת צהריים, לפני שהוא יאכל אותך לארוחת ערב.", meaning: "תקדים תרופה למכה." },
     { id: 2, arabic: "אִלִי כַּתַבּוֹ רַבַּנָא בִּידוֹ יְצִיר", literal: "מה שכתב הבורא, זה מה שיקרה.", meaning: "מה שיהיה - יהיה." },
@@ -3674,6 +3995,7 @@ const DECK_LABELS = {
     letters: "אלף-בית",
     sentences: "משפטים",
     idioms: "ניבי לשון",
+    verbs: "עבר/עתיד",
     mix: "ערבוב",
 };
 
@@ -3696,6 +4018,9 @@ const SESSION_SIZES = {
     builder: 10,
     reading: 5,
     idioms: 5,
+    verbs: 15,
+    /* The verbs part of the midday task. */
+    verbsNoon: 10,
 };
 
 function isDue(item) {
@@ -4504,6 +4829,44 @@ function noonPlanFor(dateKey) {
     return { mode: "games", games: [order[0], order[1]] };
 }
 
+/* The midday task as a list of parts. From meeting 10 the day's reading or
+   games are followed by ten past/future questions, alternating multiple
+   choice and flashcards; before that the task is unchanged. */
+function noonParts(dateKey, meeting) {
+    const plan = noonPlanFor(dateKey);
+    const parts = plan.mode === "games"
+        ? plan.games.map((g) => ({ screen: g.screen, kind: g.kind, label: g.label }))
+        : [{ screen: "flashcards", deck: "sentences", size: SESSION_SIZES.reading, label: "קריאה" }];
+    if ((meeting || 1) >= VERBS_FROM) {
+        parts.push({ screen: "verbs", mode: "mix", size: SESSION_SIZES.verbsNoon, label: "עבר/עתיד" });
+    }
+    return parts;
+}
+
+/* Which practice mode finishes a part — the same name the session reports. */
+function partMode(part) {
+    if (part.screen === "flashcards") return "reading";
+    return part.screen;
+}
+
+/* Which midday parts are done today. Finishes are kept by mode, so doing
+   the verbs before the games ticks the verbs, not whichever part came first.
+   Days recorded before this only have a count, and are read the old way. */
+function noonPartsDone(parts, dayState) {
+    const modes = (dayState && dayState.noonModes) || null;
+    if (!modes) {
+        const n = (dayState && dayState.noonCount) || 0;
+        return parts.map((_, i) => i < n);
+    }
+    const left = {};
+    modes.forEach((m) => { left[m] = (left[m] || 0) + 1; });
+    return parts.map((part) => {
+        const m = partMode(part);
+        if (left[m] > 0) { left[m]--; return true; }
+        return false;
+    });
+}
+
 const ROUTINE_ITEMS = [
     { key: "morning", label: "בוקר", desc: MORNING_PLAN.choice + " שאלות אמריקאיות ו-" + MORNING_PLAN.typed + " פתוחות", target: { screen: "morning" } },
     { key: "noon", label: "צהריים", desc: "תרגול הבנה: קריאה או משחקים", target: { screen: "flashcards", deck: "sentences", size: SESSION_SIZES.reading } },
@@ -4630,22 +4993,31 @@ function RoutineTab({ checklist, setChecklist, navigateTo, vocab, letters, upTo 
                    reading session, some days two games. The evening runs the
                    assembly and then a numbers drill, drawn for the day. */
                 const noon = item.key === "noon" ? noonPlanFor(today) : null;
+                const noonList = item.key === "noon" ? noonParts(today, upTo) : null;
+                const withVerbs = !!noonList && noonList.some((p) => p.screen === "verbs");
                 const games = noon && noon.mode === "games" ? noon.games : null;
                 const numbers = item.second ? eveningNumberFor(today) : null;
                 const desc = games
-                    ? "שני משחקים"
-                    : (numbers ? "הרכבת משפטים ו" + numbers.label : item.desc);
-                const doneCount = games ? (todayState.noonCount || 0)
+                    ? (withVerbs ? "שני משחקים ועבר/עתיד" : "שני משחקים")
+                    : (numbers ? "הרכבת משפטים ו" + numbers.label
+                        : (withVerbs ? "קריאה ועבר/עתיד" : item.desc));
+                const doneCount = item.key === "noon" ? (todayState.noonCount || 0)
                     : (numbers ? (todayState.eveningCount || 0) : 0);
-                const parts = games || (numbers
+                const partDone = item.key === "noon" && noonList
+                    ? noonPartsDone(noonList, todayState)
+                    : null;
+                /* A single reading session needs no list of parts; with the
+                   verbs after it, it does. */
+                const parts = (noonList && (games || withVerbs)) ? noonList : (numbers
                     ? [{ screen: "builder", label: "משפטים" }, { screen: numbers.screen, label: numbers.label }]
                     : null);
                 const done = !!todayState[item.key];
                 const hero = idx === heroIdx;
                 const go = () => {
                     if (!parts) { navigateTo(item.target); return; }
-                    const next = parts[Math.min(doneCount, parts.length - 1)];
-                    navigateTo({ screen: next.screen, kind: next.kind });
+                    const open = partDone ? partDone.indexOf(false) : -1;
+                    const next = open >= 0 ? parts[open] : parts[Math.min(doneCount, parts.length - 1)];
+                    navigateTo({ screen: next.screen, kind: next.kind, deck: next.deck, size: next.size, mode: next.mode });
                 };
                 return React.createElement("div", {
                     key: item.key, className: "zl-stat zl-tile zl-task",
@@ -4672,11 +5044,11 @@ function RoutineTab({ checklist, setChecklist, navigateTo, vocab, letters, upTo 
                         parts ? React.createElement("span", { className: "zl-task-parts" },
                             parts.map((part, i) => React.createElement("button", {
                                 key: i, type: "button", className: "zl-task-part",
-                                "data-done": done || i < doneCount ? "true" : "false",
-                                onClick: (e) => { e.stopPropagation(); navigateTo({ screen: part.screen, kind: part.kind }); },
+                                "data-done": done || (partDone ? partDone[i] : i < doneCount) ? "true" : "false",
+                                onClick: (e) => { e.stopPropagation(); navigateTo({ screen: part.screen, kind: part.kind, deck: part.deck, size: part.size, mode: part.mode }); },
                                 onKeyDown: (e) => e.stopPropagation(),
                             },
-                                done || i < doneCount ? React.createElement(Check, { size: 12 }) : null,
+                                done || (partDone ? partDone[i] : i < doneCount) ? React.createElement(Check, { size: 12 }) : null,
                                 part.label))) : null));
             }));
         })(),
@@ -4740,11 +5112,18 @@ function profileMeeting(profile) {
    it, and a bar nobody can clear is noise rather than information. Readiness
    asks the question that marking the next meeting actually raises: do I know
    this well enough to build on it. */
-function meetingReadiness(vocab, sentences, meeting) {
+/* From meeting 10 the verbs opened in a meeting count for a quarter of it:
+   the words and sentences make up the other three quarters. A meeting can
+   then not be passed on its words alone, however well they are known. */
+const VERBS_SHARE = 0.25;
+
+function meetingReadiness(vocab, sentences, meeting, verbs) {
     const items = (vocab || []).concat(sentences || [])
         .filter((it) => itemMeeting(it) === meeting);
     if (items.length === 0) return { total: 0, mastered: 0, pct: 1, ready: true };
-    const pct = knowledgeScore(items) / 100;
+    const material = knowledgeScore(items) / 100;
+    const v = meeting >= VERBS_FROM ? verbsReadiness(verbs, meeting) : { total: 0, pct: null };
+    const pct = v.total > 0 ? (1 - VERBS_SHARE) * material + VERBS_SHARE * v.pct : material;
     return {
         total: items.length,
         mastered: items.filter(isMastered).length,
@@ -4777,12 +5156,12 @@ function ExamDetailSheet({ exam, index, onClose }) {
                 ? React.createElement("p", { className: "zl-note", style: { textAlign: "center" } },
                     "המבחן לא הושלם ולכן נרשם כנכשל. אין פירוט קטגוריות למבחן שלא הסתיים.")
                 : React.createElement(React.Fragment, null,
-                    React.createElement(ExamBreakdown, { cats: cats }),
+                    React.createElement(ExamBreakdown, { cats: cats, meeting: exam.meeting }),
                     React.createElement("div", { className: "zl-note", style: { marginTop: 14 } },
-                        (exam.cats && Object.keys(exam.cats).length) ? examNotes(cats) : exam.notes)))));
+                        (exam.cats && Object.keys(exam.cats).length) ? examNotes(cats, exam.meeting) : exam.notes)))));
 }
 
-function AccountSheet({ vocab, letters, sentences, idioms, checklist, exams, reports, profile,
+function AccountSheet({ vocab, letters, sentences, idioms, verbs, checklist, exams, reports, profile,
                         setVocab, setLetters, setSentences, setIdioms, setChecklist, setProfile, setExams,
                         user, syncStatus, onClose, onLogout, onMeetingUp, onShowGuide,
                         pane, setPane, theme, onToggleTheme }) {
@@ -4825,7 +5204,7 @@ function AccountSheet({ vocab, letters, sentences, idioms, checklist, exams, rep
     const saveMeeting = () => {
         const current = profileMeeting(profile);
         if (meeting > current) {
-            const behind = meetingReadiness(vocab, sentences, current);
+            const behind = meetingReadiness(vocab, sentences, current, verbs);
             if (behind.total > 0 && !behind.ready) {
                 setConfirmJump({ from: current, to: meeting, pct: Math.round(behind.pct * 100) });
                 return;
@@ -4955,11 +5334,11 @@ function AccountSheet({ vocab, letters, sentences, idioms, checklist, exams, rep
                    your own progress. */
                 (function () {
                     const now = profileMeeting(profile);
-                    const r = meetingReadiness(vocab, sentences, now);
+                    const r = meetingReadiness(vocab, sentences, now, verbs);
                     const pct = Math.round(r.pct * 100);
                     const past = [];
                     for (let m = 1; m < now; m++) {
-                        const past_r = meetingReadiness(vocab, sentences, m);
+                        const past_r = meetingReadiness(vocab, sentences, m, verbs);
                         if (past_r.total > 0) past.push({ m: m, pct: Math.round(past_r.pct * 100) });
                     }
                     return React.createElement("div", { style: { marginBottom: 16 } },
@@ -5074,7 +5453,7 @@ function AccountSheet({ vocab, letters, sentences, idioms, checklist, exams, rep
                     "התרגול יישען על החומר עד המפגש שתבחר, עם דגש על החדש."),
                 React.createElement("div", { className: "zl-meetings zl-scrollbar" },
                     Array.from({ length: TOTAL_MEETINGS }, (_, i) => i + 1).map((n) => {
-                        const r = meetingReadiness(vocab, sentences, n);
+                        const r = meetingReadiness(vocab, sentences, n, verbs);
                         const open = n <= profileMeeting(profile);
                         const pct = open ? Math.round(r.pct * 100) : 0;
                         return React.createElement("button", {
@@ -5263,6 +5642,7 @@ const REPORT_KINDS = ["ניקוד", "כתיב", "תרגום", "צורה / מין
 function reportDeckOf(item) {
     if (!item) return null;
     if (item._deck) return item._deck;
+    if (item.past && item.futures) return "verbs";
     if (item.letter) return "letters";
     if (item.arabic && (item.meaning || item.literal)) return "idioms";
     if (item.arabic) return "sentences";
@@ -5275,6 +5655,8 @@ function reportFaces(deck, item) {
     if (deck === "sentences") return { front: item.arabic || "", back: item.hebrew || "" };
     if (deck === "idioms") return { front: item.arabic || "", back: item.meaning || "" };
     if (deck === "letters") return { front: ((item.letter || "") + " " + (item.name || "")).trim(), back: item.hebrew || "" };
+    /* A verb is reported with both tenses: the fault may be in either. */
+    if (deck === "verbs") return { front: (item.past || "") + "  ←  " + (item.futures || []).join(" / "), back: item.hebrew || "" };
     return { front: item.front || "", back: item.back || "" };
 }
 function reportKey(deck, id) { return deck + ":" + id; }
@@ -5285,7 +5667,7 @@ function reportFromItem(item) {
     return { key: reportKey(deck, item.id), deck: deck, id: item.id,
              meeting: item.meeting || null, front: f.front, back: f.back };
 }
-const REPORT_BANKS = () => ({ vocab: DEFAULT_VOCAB, sentences: SENTENCES, letters: ALPHABET, idioms: IDIOMS });
+const REPORT_BANKS = () => ({ vocab: DEFAULT_VOCAB, sentences: SENTENCES, letters: ALPHABET, idioms: IDIOMS, verbs: VERBS });
 /* The card as it stands now in the built-in store, or null for a word the
    learner added themselves. */
 function reportCurrent(r) {
@@ -5297,7 +5679,7 @@ function reportIsFixed(r) {
     const now = reportCurrent(r);
     return !!now && (now.front !== r.front || now.back !== r.back);
 }
-const REPORT_DECK_NAMES = { vocab: "מילה", sentences: "משפט", letters: "אות", idioms: "ניב" };
+const REPORT_DECK_NAMES = { vocab: "מילה", sentences: "משפט", letters: "אות", idioms: "ניב", verbs: "פועל" };
 /* The list as plain text, numbered, ready to paste into a message. */
 function reportsText(list) {
     const lines = ["דיווחים על טעויות — קסבה · גרסה " + APP_BUILD, ""];
@@ -5647,6 +6029,121 @@ function FlashcardPractice({ deckKind, banks, applyResult, onBack, dir, setDir, 
                             React.createElement(Check, { size: 16 }), "ידעתי")),
                     React.createElement("p", { style: { textAlign: "center", fontSize: "0.8rem", color: "var(--ink-muted)", marginTop: 12 } },
                         "הצלחות: " + Math.round(item.correctCount || 0) + " | כשלונות: " + (item.wrongCount || 0))))));
+}
+
+/* =========================================================================
+   PAST / FUTURE (עבר/עתיד)
+   A verb in the past, asked for its future — or the other way round. Shown
+   as multiple choice, as a flashcard, or the two taking turns. The answer is
+   never typed: it has to carry its vowels, and a phone keyboard cannot.
+   ========================================================================= */
+function VerbChoice({ question, chosen, locked, onChoose }) {
+    const right = new Set(question.correct);
+    return React.createElement("div", { className: "zl-verb-options", "data-count": question.options.length },
+        question.options.map((opt) => {
+            const isRight = right.has(opt);
+            const isChosen = opt === chosen;
+            let state = "idle";
+            if (locked) state = isRight ? "right" : (isChosen ? "wrong" : "idle");
+            return React.createElement("button", {
+                key: opt, type: "button", className: "zl-verb-option zl-display" + (locked && isRight ? " zl-pop" : (locked && isChosen ? " zl-shake" : "")),
+                "data-state": state, disabled: !!locked, onClick: () => onChoose(opt),
+            }, opt);
+        }));
+}
+
+function VerbPrompt({ question, item }) {
+    return React.createElement(React.Fragment, null,
+        React.createElement("div", { style: { fontSize: "0.75rem", fontWeight: 700, color: "var(--accent)", marginBottom: 8 } },
+            question.ask),
+        React.createElement("div", { className: "zl-verb-prompt" },
+            React.createElement(LangMark, { text: question.prompt, lang: "ar" }),
+            React.createElement("div", { className: "zl-display zl-verb-word" }, question.prompt),
+            React.createElement("div", { className: "zl-verb-gloss" }, item.hebrew),
+            React.createElement("div", { className: "zl-verb-tense" }, question.dir === "p2f" ? "הוא · עבר" : "הוא · עתיד")));
+}
+
+function VerbSession({ banks, applyResult, onBack, onSessionDone, mode, size }) {
+    const deck = useMemo(() => buildDeck("verbs", banks), [banks]);
+    const total = size || SESSION_SIZES.verbs;
+    const kind = mode || "mix";
+    const [tasks, setTasks] = useState(() => buildVerbTasks(deck, banks.meeting, total, kind));
+    const [pos, setPos] = useState(0);
+    const [chosen, setChosen] = useState(null);
+    const [shown, setShown] = useState(false);
+    const [score, setScore] = useState({ correct: 0, total: 0 });
+    const [finished, setFinished] = useState(false);
+
+    useEffect(() => {
+        if (finished && onSessionDone) onSessionDone({ mode: "verbs", right: score.correct, total: score.total });
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [finished]);
+
+    const restart = () => {
+        setTasks(buildVerbTasks(deck, banks.meeting, total, kind));
+        setPos(0); setChosen(null); setShown(false);
+        setScore({ correct: 0, total: 0 }); setFinished(false);
+    };
+
+    if (deck.length === 0) {
+        return React.createElement("div", { className: "zl-anim" },
+            React.createElement(BackLink, { onClick: onBack }, "חזרה לשיטות תרגול"),
+            React.createElement(Card, null, "תרגול עבר/עתיד נפתח ממפגש " + VERBS_FROM + "."));
+    }
+    if (finished) {
+        return React.createElement(SessionSummary, {
+            title: "סיימת את תרגול עבר/עתיד",
+            total: score.total, right: score.correct, wrong: score.total - score.correct,
+            restartLabel: "סשן נוסף", onRestart: restart, onBack: onBack,
+        });
+    }
+    const task = tasks[pos];
+    if (!task) return null;
+    const item = task.item, q = task.question;
+    const answered = task.kind === "choice" ? chosen !== null : false;
+
+    const settle = (correct, how) => {
+        setScore((s) => ({ correct: s.correct + (correct ? 1 : 0), total: s.total + 1 }));
+        applyResult(item, correct, how);
+    };
+    const next = () => {
+        if (pos + 1 >= tasks.length) { setFinished(true); return; }
+        setPos(pos + 1); setChosen(null); setShown(false);
+    };
+    const choose = (opt) => {
+        if (chosen !== null) return;
+        setChosen(opt);
+        settle(q.correct.indexOf(opt) !== -1, "choice");
+    };
+    const mark = (knew) => { settle(knew, "card"); next(); };
+
+    return React.createElement("div", { className: "zl-anim" },
+        React.createElement(BackLink, { onClick: onBack }, "חזרה לשיטות תרגול"),
+        React.createElement(Card, null,
+            React.createElement("div", { style: { display: "flex", justifyContent: "space-between", alignItems: "center", gap: 10, flexWrap: "wrap", marginBottom: 12 } },
+                React.createElement("h2", { className: "zl-display", style: { fontSize: "1.15rem", fontWeight: 800 } }, "עבר/עתיד"),
+                React.createElement("span", { className: "zl-examtag" }, task.kind === "choice" ? "אמריקאי" : "כרטיסייה")),
+            React.createElement(SessionBar, { pos: pos + 1, total: tasks.length, item: item }),
+            React.createElement(VerbPrompt, { question: q, item: item }),
+            task.kind === "choice"
+                ? React.createElement(React.Fragment, null,
+                    React.createElement(VerbChoice, { question: q, chosen: chosen, locked: answered, onChoose: choose }),
+                    answered ? React.createElement("div", { style: { marginTop: 14, textAlign: "center" } },
+                        React.createElement("p", { style: { fontWeight: 700, marginBottom: 10, color: q.correct.indexOf(chosen) !== -1 ? "var(--ok)" : "var(--bad)" } },
+                            q.correct.indexOf(chosen) !== -1
+                                ? (q.correct.length > 1 ? "נכון! גם " + q.correct.filter((c) => c !== chosen).join(" / ") + " נכון" : "נכון!")
+                                : "לא נכון — " + q.correct.join(" / ")),
+                        React.createElement(PrimaryButton, { onClick: next }, pos + 1 >= tasks.length ? "סיום" : "הבא")) : null)
+                : (!shown
+                    ? React.createElement("div", { style: { textAlign: "center" } },
+                        React.createElement(PrimaryButton, { onClick: () => setShown(true) }, "הצג תשובה"))
+                    : React.createElement(React.Fragment, null,
+                        React.createElement("div", { className: "zl-verb-answer zl-display zl-anim" }, q.correct.join("  /  ")),
+                        React.createElement("div", { style: { display: "flex", justifyContent: "center", gap: 12 } },
+                            React.createElement(PrimaryButton, { variant: "danger", onClick: () => mark(false) },
+                                React.createElement(X, { size: 16 }), "לא ידעתי"),
+                            React.createElement(PrimaryButton, { variant: "success", onClick: () => mark(true) },
+                                React.createElement(Check, { size: 16 }), "ידעתי"))))));
 }
 
 /* =========================================================================
@@ -7611,6 +8108,19 @@ const PRACTICE_METHODS = [
         ],
     },
     {
+        id: "verbs",
+        title: "עבר/עתיד",
+        desc: "פועל בעבר — מה העתיד שלו, ולהפך. " + SESSION_SIZES.verbs + " שאלות.",
+        Icon: VerbIcon,
+        /* Opens with the meeting the verbs start in, not before. */
+        fromMeeting: VERBS_FROM,
+        options: [
+            { key: "mix", title: "ערבוב", desc: "אמריקאי וכרטיסיות לסירוגין.", target: { screen: "verbs", mode: "mix" } },
+            { key: "choice", title: "מבחן אמריקאי", desc: "בחירה מבין תבניות העתיד (או העבר).", target: { screen: "verbs", mode: "choice" } },
+            { key: "card", title: "כרטיסיות", desc: "הפועל, ואחריו הצורה השנייה — ידעתי או לא.", target: { screen: "verbs", mode: "card" } },
+        ],
+    },
+    {
         id: "exam",
         title: "מבחן מלא",
         desc: "מילים, משפטים, ניבים ואותיות — עם ציון סופי.",
@@ -7656,12 +8166,13 @@ const METHOD_MODES = {
     exam: ["exam"],
     games: ["pairs", "clock", "blank", "num-order"],
     sentences: ["builder", "reading"],
+    verbs: ["verbs"],
 };
 
 function leastPractised(profile) {
     const stats = (profile && profile.modeStats) || {};
     let pick = null;
-    PRACTICE_METHODS.forEach((m) => {
+    PRACTICE_METHODS.filter((m) => !m.fromMeeting || profileMeeting(profile) >= m.fromMeeting).forEach((m) => {
         const runs = (METHOD_MODES[m.id] || []).reduce((n, k) => n + ((stats[k] && stats[k].runs) || 0), 0);
         if (!pick || runs < pick.runs) pick = { id: m.id, runs: runs };
     });
@@ -7810,6 +8321,13 @@ function PracticeTabInner({ screen, setScreen, banks, profile, applyResult, onSe
             dir: dir, setDir: setDir, onSessionDone: (info) => onSessionDone("noon", info),
         });
     }
+    if (screen && screen.screen === "verbs") {
+        return React.createElement(VerbSession, {
+            banks: banks, applyResult: applyResult, onBack: backToList("verbs"),
+            mode: screen.mode || "mix", size: screen.size,
+            onSessionDone: (info) => onSessionDone("noon", info),
+        });
+    }
     if (screen && screen.screen === "exam") {
         return React.createElement(FullExam, {
             banks: banks, profile: profile, onBack: backToList("exam"),
@@ -7833,7 +8351,7 @@ function PracticeTabInner({ screen, setScreen, banks, profile, applyResult, onSe
             const sheet = PRACTICE_METHODS.find((m) => m.id === openMethod && m.options);
             return React.createElement(React.Fragment, null,
                 React.createElement("div", { className: "zl-tile-grid" },
-                    PRACTICE_METHODS.map((m) => React.createElement(MethodTile, {
+                    PRACTICE_METHODS.filter((m) => !m.fromMeeting || (banks.meeting || 1) >= m.fromMeeting).map((m) => React.createElement(MethodTile, {
                         key: m.id, method: m, hero: m.id === hero,
                         onOpen: () => (m.target ? setScreen(m.target) : setOpenMethod(m.id)),
                     }))),
@@ -7903,13 +8421,53 @@ const EXAM_PLAN = [
 ];
 const EXAM_TOTAL = 31;
 
+/* From meeting 10 the paper is fixed rather than grown: 84 questions in a set
+   mix that Emanuel chose, and weights to match. A verb is worth about two
+   words — knowing it means recognising the verb and recalling a template
+   that cannot be worked out from anything — and a little less than a
+   sentence, still the hardest question on the paper. */
+const EXAM_PLAN_VERBS = [
+    { kind: "vocab", deck: "vocab", count: 50, weight: 45, label: "אוצר מילים" },
+    { kind: "verb", deck: "verbs", count: 10, weight: 20, label: "עבר/עתיד" },
+    { kind: "sentence", deck: "sentences", count: 10, weight: 22, label: "הרכבת משפטים" },
+    { kind: "number", count: 9, weight: 8, label: "מספרים" },
+    { kind: "letter", deck: "letters", count: 4, weight: 3, label: "אלף-בית" },
+    { kind: "idiom", deck: "idioms", count: 1, weight: 2, label: "ניבי לשון", sometimes: true },
+];
+
+/* Before meeting 10 the numbers questions counted for nothing: right or
+   wrong, the mark was the same. They now carry weight in proportion to how
+   many of them there are, about a point a question. */
+const EXAM_NUMBER_WEIGHT = 8;
+
+function examPlanFor(meeting) {
+    if ((meeting || 1) >= VERBS_FROM) return EXAM_PLAN_VERBS;
+    return EXAM_PLAN.concat([{ kind: "number", count: 0, weight: EXAM_NUMBER_WEIGHT, label: "מספרים" }]);
+}
+
+/* The mark out of 100. A part that was not asked this time — the idiom on
+   half the papers, the numbers when the bands are known — gives its weight
+   to the parts that were, in proportion, so a perfect paper is always 100.
+   It used to simply drop out, and the best possible mark was 97. */
+function examScore(cats, meeting) {
+    const plan = examPlanFor(meeting);
+    let earned = 0, possible = 0;
+    plan.forEach((part) => {
+        const row = (cats || {})[part.kind];
+        if (!row || !row.total) return;
+        earned += part.weight * (row.right / row.total);
+        possible += part.weight;
+    });
+    return possible ? Math.round((earned / possible) * 100) : 0;
+}
+
 /* Numbers are not in EXAM_PLAN — their share is worked out from how well the
    bands are known, not fixed in advance — so their label is supplied here. */
 const EXAM_NUMBER_META = { kind: "number", label: "מספרים", weight: 10, count: 1 };
 
 function examCategoryMeta(kind) {
     if (kind === "number") return EXAM_NUMBER_META;
-    return EXAM_PLAN.filter((p) => p.kind === kind)[0] || { label: kind, weight: 0, count: 1 };
+    return EXAM_PLAN.concat(EXAM_PLAN_VERBS).filter((p) => p.kind === kind)[0] || { label: kind, weight: 0, count: 1 };
 }
 
 /* Draw a fresh set of tasks. Items are chosen by the same weighting the
@@ -7945,6 +8503,7 @@ function examAnswerText(task) {
         if (task.numberKind === "ordinal") return (task.task && task.task.answer) || "";
         return task.value != null ? String(task.value) : "";
     }
+    if (task.kind === "verb" && task.verbQuestion) return task.verbQuestion.correct.join(" / ");
     if (task.question && task.question.correctAnswer != null) return String(task.question.correctAnswer);
     if (task.kind === "sentence" && task.item) return task.dir === "he2ar" ? task.item.arabic : task.item.hebrew;
     return "";
@@ -7986,7 +8545,37 @@ function buildNumberExamTasks(count, profile) {
     return out;
 }
 
+/* One paper from meeting 10: the counts are fixed, each drawn as the rest of
+   the exam is — composed across the meetings, shakiest first. */
+function buildFixedExamTasks(banks, profile) {
+    const tasks = [];
+    EXAM_PLAN_VERBS.forEach((part) => {
+        if (part.sometimes && Math.random() < 0.5) return;
+        if (part.kind === "number") {
+            buildNumberExamTasks(part.count, profile).forEach((t) => tasks.push(t));
+            return;
+        }
+        const deck = part.kind === "sentence"
+            ? buildDeck(part.deck, banks).filter(isAssemblable)
+            : buildDeck(part.deck, banks);
+        if (deck.length === 0) return;
+        const want = Math.min(part.count, deck.length);
+        const picked = composeSession(deck, banks.meeting, want).map((i) => deck[i]);
+        picked.forEach((item, idx) => {
+            const dir = resolveDir("mix");
+            if (part.kind === "sentence") tasks.push({ kind: "sentence", item: item, dir: "he2ar" });
+            else if (part.kind === "verb") tasks.push({ kind: "verb", item: item, verbQuestion: buildVerbQuestion(item) });
+            else if (part.kind === "vocab") {
+                const open = idx % 2 === 1 && dir === "ar2he" && isTypeable(item);
+                tasks.push({ kind: "vocab", item: item, dir: dir, open: open, question: buildQuestion(deck, item, dir) });
+            } else tasks.push({ kind: part.kind, item: item, dir: dir, question: buildQuestion(deck, item, dir) });
+        });
+    });
+    return shuffle(tasks);
+}
+
 function buildExamTasks(banks, profile) {
+    if ((banks.meeting || 1) >= VERBS_FROM) return buildFixedExamTasks(banks, profile);
     const tasks = [];
     /* Every category scales together, so the weighting between them is
        unchanged however long the paper gets. */
@@ -8056,6 +8645,8 @@ const EXAM_TIPS = {
     sentence: "תרגול הרכבת משפטים בכיוון עברית ← ערבית מטפל בזה ישירות.",
     idiom: "הניבים הם הקטגוריה הקטנה — כמה סבבים קצרים והם נסגרים.",
     letter: "סבב כרטיסיות אותיות של חמש דקות בדרך כלל מספיק.",
+    verb: "סבב עבר/עתיד בכרטיסיות — התבנית של כל פועל נזכרת רק מחזרה.",
+    number: "סבב מספרים קצר בערב סוגר את הפער.",
 };
 
 function examVerdict(score) {
@@ -8065,22 +8656,25 @@ function examVerdict(score) {
     return "יש כאן פער שכדאי לסגור.";
 }
 
-function examNotes(cats) {
-    const rows = EXAM_PLAN
-        .filter((part) => cats[part.kind] && cats[part.kind].total > 0)
-        .map((part) => {
+function examNotes(cats, meeting) {
+    const asked = examPlanFor(meeting).filter((part) => cats[part.kind] && cats[part.kind].total > 0);
+    /* Weights are shared out over the parts actually asked (see examScore),
+       so the marks lost in a part are counted on that same scale. */
+    const possible = asked.reduce((n, part) => n + part.weight, 0) || 1;
+    const rows = asked.map((part) => {
             const row = cats[part.kind];
             const pct = row.right / row.total;
             return {
                 kind: part.kind, label: part.label,
                 right: row.right, total: row.total, pct: pct,
-                lost: part.weight * (1 - pct),      // marks given up here
+                lost: (part.weight * 100 / possible) * (1 - pct),      // marks given up here
             };
         });
     if (rows.length === 0) return "אין מספיק נתונים למבחן הזה.";
 
-    const score = Math.round(rows.reduce((sum, r) => sum + examCategoryMeta(r.kind).weight * r.pct, 0));
-    if (score >= 100) return "מבחן מושלם — כל " + EXAM_TOTAL + " השאלות נכונות. אפשר להעלות קצב.";
+    const score = examScore(cats, meeting);
+    const questions = rows.reduce((n, r) => n + r.total, 0);
+    if (score >= 100) return "מבחן מושלם — כל " + questions + " השאלות נכונות. אפשר להעלות קצב.";
 
     const parts = [examVerdict(score)];
     const lost = rows.filter((r) => r.lost > 0).sort((a, b) => b.lost - a.lost);
@@ -8165,12 +8759,7 @@ function FullExam({ banks, profile, onBack, onExamStart, onExamFinish, applyResu
     };
 
     const finish = (finalCats) => {
-        let earned = 0;
-        EXAM_PLAN.forEach((part) => {
-            const row = finalCats[part.kind];
-            if (row && row.total > 0) earned += part.weight * (row.right / row.total);
-        });
-        const score = Math.round(earned);
+        const score = examScore(finalCats, banks.meeting);
         settledRef.current = true;
         onExamFinish(examIdRef.current, { score: score, cats: finalCats, aborted: false, questions: tasks.length });
         /* Also counted among the practice modes: it is the longest session in
@@ -8207,10 +8796,7 @@ function FullExam({ banks, profile, onBack, onExamStart, onExamFinish, applyResu
     }
 
     if (finished) {
-        const score = Math.round(EXAM_PLAN.reduce((sum, part) => {
-            const row = cats[part.kind];
-            return sum + (row && row.total ? part.weight * (row.right / row.total) : 0);
-        }, 0));
+        const score = examScore(cats, banks.meeting);
         return (React.createElement("div", { className: "zl-anim" },
             React.createElement(BackLink, { onClick: onBack }, "חזרה לשיטות תרגול"),
             React.createElement(Card, null,
@@ -8218,8 +8804,8 @@ function FullExam({ banks, profile, onBack, onExamStart, onExamFinish, applyResu
                     React.createElement("span", { className: "zl-score-num" }, score),
                     React.createElement("span", { className: "zl-score-of" }, "מתוך 100")),
                 React.createElement("h2", { className: "zl-display", style: { fontSize: "1.25rem", fontWeight: 800, textAlign: "center", marginBottom: 16 } }, "סיימת את המבחן"),
-                React.createElement(ExamBreakdown, { cats: cats }),
-                React.createElement("div", { className: "zl-note", style: { marginTop: 14 } }, examNotes(cats)),
+                React.createElement(ExamBreakdown, { cats: cats, meeting: banks.meeting }),
+                React.createElement("div", { className: "zl-note", style: { marginTop: 14 } }, examNotes(cats, banks.meeting)),
                 React.createElement("div", { style: { display: "flex", gap: 8, flexWrap: "wrap", justifyContent: "center", marginTop: 16 } },
                     React.createElement(PrimaryButton, { onClick: restart }, "מבחן נוסף"),
                     React.createElement(PrimaryButton, { variant: "outline", onClick: onBack }, "חזרה")))));
@@ -8269,6 +8855,12 @@ function FullExam({ banks, profile, onBack, onExamStart, onExamFinish, applyResu
                             !result ? React.createElement("div", { style: { display: "flex", gap: 8 } },
                                 React.createElement(PrimaryButton, { onClick: submitTyped, disabled: !typed.trim() }, "בדוק"),
                                 React.createElement(PrimaryButton, { variant: "outline", onClick: giveUp }, "לא יודע")) : null))
+            : task.kind === "verb"
+                ? React.createElement(React.Fragment, null,
+                    React.createElement(VerbPrompt, { question: task.verbQuestion, item: task.item }),
+                    React.createElement(VerbChoice, {
+                        question: task.verbQuestion, chosen: typed || null, locked: !!result,
+                        onChoose: (opt) => { setTyped(opt); record(task.verbQuestion.correct.indexOf(opt) !== -1); } }))
             : task.kind === "sentence"
                 ? React.createElement(SentenceTask, {
                     item: task.item, dir: task.dir, onResult: record,
@@ -8312,8 +8904,11 @@ function FullExam({ banks, profile, onBack, onExamStart, onExamFinish, applyResu
 }
 
 /* The per-category bars, shared by the result screen and the history sheet. */
-function ExamBreakdown({ cats }) {
-    return React.createElement("div", null, EXAM_PLAN.map((part) => {
+function ExamBreakdown({ cats, meeting }) {
+    /* The parts of the paper this exam was set from, and only those that
+       were asked: a row of 0/0 says nothing. */
+    const plan = examPlanFor(meeting).filter((part) => cats[part.kind] && cats[part.kind].total);
+    return React.createElement("div", null, plan.map((part) => {
         const row = cats[part.kind] || { right: 0, total: 0 };
         const pct = row.total ? (row.right / row.total) * 100 : 0;
         return React.createElement("div", { key: part.kind, className: "zl-catrow" },
@@ -8690,7 +9285,7 @@ function TopicRow({ name, counts, total }) {
         React.createElement("span", { className: "zl-trow-val" }, counts.mastered + "/" + total)));
 }
 
-function StatsTab({ vocab, letters, sentences, idioms, checklist, meeting, profile }) {
+function StatsTab({ vocab, letters, sentences, idioms, verbs, checklist, meeting, profile }) {
     const upTo = meeting || 1;
     /* Statistics describe the material actually in play, so the numbers match
        what the practice queues are drawing from. */
@@ -8750,7 +9345,11 @@ function StatsTab({ vocab, letters, sentences, idioms, checklist, meeting, profi
             React.createElement(StatCell, { value: accuracy + "%", label: "אחוז הצלחה כללי" }),
             React.createElement(StatCell, { value: streak, label: "רצף ימי לימוד" }),
             React.createElement(StatCell, { value: fresh, label: "מילים שטרם תורגלו" }),
-            React.createElement(StatCell, { value: letters.filter(isMastered).length + "/" + letters.length, label: "אותיות בשליטה" })),
+            React.createElement(StatCell, { value: letters.filter(isMastered).length + "/" + letters.length, label: "אותיות בשליטה" }),
+            (upTo >= VERBS_FROM) ? (function () {
+                const open = (verbs || []).filter((v) => isUnlocked(v, upTo));
+                return React.createElement(StatCell, { value: open.filter(isMastered).length + "/" + open.length, label: "פעלים בשליטה" });
+            })() : null),
 
         React.createElement(Card, { style: { marginBottom: 14 } },
             React.createElement("h3", { className: "zl-display", style: { fontWeight: 700, fontSize: "1rem" } }, "עומס החזרות בשבוע הקרוב"),
@@ -8777,7 +9376,9 @@ function StatsTab({ vocab, letters, sentences, idioms, checklist, meeting, profi
                 React.createElement("p", { style: { fontSize: "0.8rem", color: "var(--ink-muted)", marginBottom: 8 } },
                     "אתה מסומן במפגש " + upTo + ". הקו מסמן " + READY_PCT + "% — הסף המומלץ למעבר למפגש הבא."),
                 groups.map((r) => {
-                    const pct = knowledgeScore(r.items);
+                    /* The same figure the move to the next meeting is judged
+                       by, so from meeting 10 it includes that meeting's verbs. */
+                    const pct = Math.round(meetingReadiness(vocab, sentences, r.m, verbs).pct * 100);
                     const mastered = r.items.filter(isMastered).length;
                     const open = r.m <= upTo;
                     return React.createElement("div", { key: r.m, className: "zl-catrow", style: { opacity: open ? 1 : 0.45 } },
@@ -9145,7 +9746,7 @@ function resolveSync(local, cloud, localStamp, dirtyAt) {
     if (cloudAt <= localStamp) {
         return { take: "local", data: { ...local, exams: mergeExams(local.exams, cloud.exams) } };
     }
-    const lists = ["vocab", "letters", "sentences", "idioms"];
+    const lists = ["vocab", "letters", "sentences", "idioms", "verbs"];
     const data = { ...local };
     lists.forEach((k) => { data[k] = mergeProgress(local[k], Array.isArray(cloud[k]) ? cloud[k] : []); });
     data.exams = mergeExams(local.exams, cloud.exams);
@@ -9189,6 +9790,7 @@ function useCloudSync(user, state, setters) {
             letters: snapshot.letters,
             sentences: snapshot.sentences,
             idioms: snapshot.idioms,
+            verbs: Array.isArray(snapshot.verbs) ? snapshot.verbs : [],
             checklist: snapshot.checklist,
             exams: snapshot.exams,
             reports: Array.isArray(snapshot.reports) ? snapshot.reports : [],
@@ -9232,6 +9834,7 @@ function useCloudSync(user, state, setters) {
                 setters.setLetters(mergeDefaults(Array.isArray(d.letters) ? d.letters : [], ALPHABET));
                 setters.setSentences(mergeDefaults(Array.isArray(d.sentences) ? d.sentences : [], SENTENCES));
                 setters.setIdioms(mergeDefaults(Array.isArray(d.idioms) ? d.idioms : [], IDIOMS));
+                if (setters.setVerbs) setters.setVerbs(mergeDefaults(Array.isArray(d.verbs) ? d.verbs : [], VERBS));
                 if (d.checklist && typeof d.checklist === "object") setters.setChecklist(d.checklist);
                 if (Array.isArray(d.exams)) setters.setExams(d.exams);
                 if (Array.isArray(d.reports) && setters.setReports) setters.setReports(d.reports);
@@ -9258,7 +9861,7 @@ function useCloudSync(user, state, setters) {
         const timer = setTimeout(() => push(latest.current), 1200);
         return () => clearTimeout(timer);
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [state.vocab, state.letters, state.sentences, state.idioms, state.checklist, state.exams, state.reports, state.profile, user]);
+    }, [state.vocab, state.letters, state.sentences, state.idioms, state.verbs, state.checklist, state.exams, state.reports, state.profile, user]);
 
     /* A phone freezes the page the moment the app goes to the background, so
        the delayed upload above may never run. Send at once on the way out. */
@@ -9316,6 +9919,7 @@ function ArabicLearningApp() {
     const [checklist, setChecklist] = usePersistedState("routine-checklist", {});
     const [exams, setExams] = usePersistedState("exams-v1", []);
     const [reports, setReports] = usePersistedState("reports-v1", []);
+    const [verbs, setVerbs] = usePersistedState("verbs-v1", withProgressFields(VERBS), (raw) => mergeDefaults(raw, VERBS));
     const [profile, setProfile] = usePersistedState("profile-v1", { name: "" });
     const [theme, setTheme] = usePersistedState("theme", "light");
     const [user, setUser] = useState(undefined);        // undefined = still checking
@@ -9339,9 +9943,9 @@ function ArabicLearningApp() {
        remembering that we saw one tells a login apart from a page reload. */
     const wasSignedOut = useRef(false);
 
-    const syncState = { vocab, letters, sentences, idioms, checklist, exams, reports, profile };
+    const syncState = { vocab, letters, sentences, idioms, verbs, checklist, exams, reports, profile };
     const sync = useCloudSync(user, syncState, {
-        setVocab, setLetters, setSentences, setIdioms, setChecklist, setExams, setReports, setProfile,
+        setVocab, setLetters, setSentences, setIdioms, setVerbs, setChecklist, setExams, setReports, setProfile,
     });
     const reportApi = useMemo(() => {
         const list = Array.isArray(reports) ? reports : [];
@@ -9414,8 +10018,8 @@ function ArabicLearningApp() {
     /* One place that knows which bank an item came from, so every practice
        mode can score anything without caring where it lives. */
     const meeting = profileMeeting(profile);
-    const banks = { vocab: vocab, letters: letters, sentences: sentences, idioms: idioms, meeting: meeting };
-    const bankSetters = { vocab: setVocab, letters: setLetters, sentences: setSentences, idioms: setIdioms };
+    const banks = { vocab: vocab, letters: letters, sentences: sentences, idioms: idioms, verbs: verbs, meeting: meeting };
+    const bankSetters = { vocab: setVocab, letters: setLetters, sentences: setSentences, idioms: setIdioms, verbs: setVerbs };
 
     /* `kind` says what sort of answer this was, which decides how much credit
        it earns. `schedule` is false for the full exam: sitting an exam counts
@@ -9435,7 +10039,7 @@ function ArabicLearningApp() {
             }
             : d)));
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [setVocab, setLetters, setSentences, setIdioms]);
+    }, [setVocab, setLetters, setSentences, setIdioms, setVerbs]);
 
     /* Finishing a session ticks the matching part of the daily routine.
 
@@ -9461,12 +10065,12 @@ function ArabicLearningApp() {
             const today = prev[day] || {};
             if (today[key]) return prev;
             if (key === "noon") {
-                const plan = noonPlanFor(day);
-                const need = plan.mode === "games" ? plan.games.length : 1;
+                const need = noonParts(day, profileMeeting(profile)).length;
                 const done = (today.noonCount || 0) + 1;
+                const modes = (today.noonModes || []).concat(info && info.mode ? [info.mode] : []);
                 return { ...prev, [day]: done >= need
-                    ? { ...today, noonCount: done, noon: true }
-                    : { ...today, noonCount: done } };
+                    ? { ...today, noonCount: done, noonModes: modes, noon: true }
+                    : { ...today, noonCount: done, noonModes: modes } };
             }
             /* The evening is the assembly and then a numbers drill, so it
                ticks on the second finish rather than the first. */
@@ -9498,7 +10102,7 @@ function ArabicLearningApp() {
         setExams((prev) => {
             const list = prev || [];
             const done = { score: payload.score, cats: payload.cats, aborted: false,
-                questions: payload.questions, notes: examNotes(payload.cats) };
+                questions: payload.questions, notes: examNotes(payload.cats, profileMeeting(profile)) };
             /* If the started entry is missing (another copy replaced the
                history mid-exam), the result is added rather than lost. */
             if (!list.some((ex) => ex.id === id)) {
@@ -9664,7 +10268,7 @@ function ArabicLearningApp() {
             },
         }) : null,
         accountOpen ? React.createElement(AccountSheet, {
-            vocab: vocab, letters: letters, sentences: sentences, idioms: idioms,
+            vocab: vocab, letters: letters, sentences: sentences, idioms: idioms, verbs: verbs,
             checklist: checklist, exams: exams, reports: reports, profile: profile,
             setVocab: setVocab, setLetters: setLetters, setSentences: setSentences,
             setIdioms: setIdioms, setChecklist: setChecklist, setProfile: setProfile, setExams: setExams,
@@ -9708,7 +10312,7 @@ function ArabicLearningApp() {
             })),
             tab === "vocab" && React.createElement(VocabTab, { vocab: vocab, setVocab: setVocab, meeting: profileMeeting(profile) }),
             tab === "alphabet" && React.createElement(AlphabetTab, { letters: letters }),
-            tab === "stats" && React.createElement(StatsTab, { vocab: vocab, letters: letters, sentences: sentences, idioms: idioms, checklist: checklist, meeting: meeting, profile: profile })))));
+            tab === "stats" && React.createElement(StatsTab, { vocab: vocab, letters: letters, sentences: sentences, idioms: idioms, verbs: verbs, checklist: checklist, meeting: meeting, profile: profile })))));
 }
 
 ReactDOM.createRoot(document.getElementById("root")).render(React.createElement(ArabicLearningApp, null));
