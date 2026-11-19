@@ -191,7 +191,7 @@ try {
     throw new Error("React / ReactDOM לא נטענו מה-CDN (בדוק חיבור לאינטרנט או חסימת סקריפטים).");
   }
 "use strict";
-const APP_BUILD = "13.11 · 123";   // bump this every time the file is replaced
+const APP_BUILD = "19.11 · 124";   // bump this every time the file is replaced
 
 /* The institute logo, carried inline so the page stays a single file.
    STAMP is the round seal (full-screen waits); LOCKUP is the horizontal name
@@ -4023,8 +4023,22 @@ const SESSION_SIZES = {
     verbsNoon: 10,
 };
 
+/* Due means due by the end of today — one definition for the counter on the
+   routine tab and for what the review session draws from.
+
+   They used to differ: the counter counted to midnight while the session
+   only took words due by this very minute. A word answered right yesterday
+   evening comes due this evening, so in the morning it was counted but could
+   not be practised — the session found nothing due, fell back to ten random
+   words, and the counter stayed where it was however well they went. */
+function endOfToday() {
+    const d = new Date();
+    d.setHours(23, 59, 59, 999);
+    return d.getTime();
+}
+
 function isDue(item) {
-    return !item.dueAt || item.dueAt <= Date.now();
+    return !item.dueAt || item.dueAt <= endOfToday();
 }
 
 function dueCount(list) {
@@ -4038,12 +4052,9 @@ function dueCount(list) {
    one question. This is the single answer: words the learner has actually
    reached, whose review falls due at any point today. */
 function dueTodayCount(list, upTo) {
-    const endOfDay = new Date();
-    endOfDay.setHours(23, 59, 59, 999);
-    const end = endOfDay.getTime();
     return (list || []).filter((w) => {
         if (upTo !== undefined && !isUnlocked(w, upTo)) return false;
-        return !w.dueAt || w.dueAt <= end;
+        return isDue(w);
     }).length;
 }
 
