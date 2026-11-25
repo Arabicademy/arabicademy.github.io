@@ -191,7 +191,7 @@ try {
     throw new Error("React / ReactDOM לא נטענו מה-CDN (בדוק חיבור לאינטרנט או חסימת סקריפטים).");
   }
 "use strict";
-const APP_BUILD = "25.11 · 127";   // bump this every time the file is replaced
+const APP_BUILD = "25.11 · 128";   // bump this every time the file is replaced
 
 /* The institute logo, carried inline so the page stays a single file.
    STAMP is the round seal (full-screen waits); LOCKUP is the horizontal name
@@ -1804,7 +1804,7 @@ const DEFAULT_VOCAB = [
     { id: 350, front: "יַהוּדִיַّאת", back: "יהודיות", topic: "אנשים ותפקידים", form: "רבים", pair: [349], meeting: 3, gender: "f", mate: 348 },
     { id: 351, front: "מַסִיחִי", back: "נוצרי", topic: "אנשים ותפקידים", form: "יחיד", pair: [352], meeting: 3, gender: "m", mate: 353 },
     { id: 352, front: "מַסִיחִיּוּן", back: "נוצרים", topic: "אנשים ותפקידים", form: "רבים", pair: [351], meeting: 3, gender: "m", mate: 354 },
-    { id: 353, front: "מַסִיחִיֶّה", back: "נוצרייה / נוצרית", topic: "אנשים ותפקידים", form: "יחיד", pair: [354], meeting: 3, gender: "f", mate: 351 },
+    { id: 353, front: "מַסִיחִיֶّה", back: "נוצרייה", accept: ["נוצרית"], topic: "אנשים ותפקידים", form: "יחיד", pair: [354], meeting: 3, gender: "f", mate: 351 },
     { id: 354, front: "מַסִיחִיַّאת", back: "נוצריות", topic: "אנשים ותפקידים", form: "רבים", pair: [353], meeting: 3, gender: "f", mate: 352 },
     { id: 355, front: "תַכְּסִי", back: "מונית", topic: "תחבורה", form: "יחיד", pair: [356], meeting: 3 },
     { id: 356, front: "תַכְּסִיַאת", back: "מוניות", topic: "תחבורה", form: "רבים", pair: [355], meeting: 3 },
@@ -3036,8 +3036,8 @@ const DEFAULT_VOCAB = [
     { id: 1611, front: "וִחְדַאת", back: "יחידות", topic: "כללי", form: "רבים", pair: [1610], meeting: 13 },
     { id: 1612, front: "אַמְן", back: "ביטחון", topic: "כללי", meeting: 13 },
     { id: 1613, front: "וִקַאי", back: "מונע / מסכל", topic: "כללי", meeting: 13 },
-    { id: 1614, front: "בַּסְטַה", back: "בסטה / דוכן / דוכן בשוק", topic: "מקומות", form: "יחיד", pair: [1615], meeting: 13 },
-    { id: 1615, front: "בַּסְטַאת", back: "בסטות / דוכנים / דוכנים בשוק", topic: "מקומות", form: "רבים", pair: [1614], meeting: 13 },
+    { id: 1614, front: "בַּסְטַה", back: "בסטה / דוכן מכירה", accept: ["דוכן", "דוכן בשוק"], topic: "מקומות", form: "יחיד", pair: [1615], meeting: 13 },
+    { id: 1615, front: "בַּסְטַאת", back: "בסטות / דוכנים", accept: ["דוכנים בשוק"], topic: "מקומות", form: "רבים", pair: [1614], meeting: 13 },
     { id: 1616, front: "פַאכְּהַה", back: "פרי", topic: "אוכל", form: "יחיד", pair: [1617], meeting: 13 },
     { id: 1617, front: "פַוַאכִּי", back: "פירות", topic: "אוכל", form: "רבים", pair: [1616], meeting: 13 },
     { id: 1618, front: "בִּדוּן", back: "ללא / בלי", topic: "מילות קישור", meeting: 13 },
@@ -4110,6 +4110,23 @@ function withProgressFields(list) {
    checking a typed answer, every sense is accepted. */
 function allMeanings(item) {
     return [item.back].concat(item.alts || []).filter(Boolean);
+}
+
+/* Everything a typed answer may be: the meanings shown on the card, plus
+   other ways of writing them that are accepted without being shown — from the
+   store (`accept`), or added by the learner from the report sheet ("כתיב
+   נוסף"), which counts at once, before it is locked into the store. */
+const extraAccepted = { map: {} };
+function setExtraAccepted(reports) {
+    const map = {};
+    (reports || []).forEach((r) => {
+        if (r && r.accept && r.key) (map[r.key] = map[r.key] || []).push(r.accept);
+    });
+    extraAccepted.map = map;
+}
+function acceptedMeanings(item) {
+    const own = extraAccepted.map[(item._deck || "vocab") + ":" + item.id] || [];
+    return allMeanings(item).concat(item.accept || [], own);
 }
 
 function pickMeaning(item) {
@@ -5661,6 +5678,8 @@ function faceSize(text, isArabicLetter) {
 const ReportContext = React.createContext ? React.createContext(null) : null;
 const useReports = () => (ReportContext && React.useContext ? React.useContext(ReportContext) : null);
 const REPORT_KINDS = ["ניקוד", "כתיב", "תרגום", "צורה / מין", "אחר"];
+/* Not a mistake in the card: an answer that is right but was marked wrong. */
+const REPORT_ACCEPT = "כתיב נוסף לתשובה";
 
 function reportDeckOf(item) {
     if (!item) return null;
@@ -5700,7 +5719,15 @@ function reportCurrent(r) {
 }
 function reportIsFixed(r) {
     const now = reportCurrent(r);
-    return !!now && (now.front !== r.front || now.back !== r.back);
+    if (!now) return false;
+    /* An extra spelling is done once the store itself accepts it. */
+    if (r.accept) {
+        const item = (REPORT_BANKS()[r.deck] || []).find((x) => x.id === r.id);
+        const ok = new Set();
+        allMeanings(item).concat(item.accept || []).forEach((m) => acceptableAnswers(m).forEach((k) => ok.add(k)));
+        return ok.has(normAnswer(r.accept));
+    }
+    return now.front !== r.front || now.back !== r.back;
 }
 const REPORT_DECK_NAMES = { vocab: "מילה", sentences: "משפט", letters: "אות", idioms: "ניב", verbs: "פועל" };
 /* The list as plain text, numbered, ready to paste into a message. */
@@ -5712,7 +5739,9 @@ function reportsText(list) {
             + (reportIsFixed(r) ? " · תוקן" : "");
         lines.push(head);
         lines.push("   " + r.front + "  =  " + r.back);
-        const what = [(r.kinds || []).join(", "), (r.note || "").trim()].filter(Boolean).join(" — ");
+        const what = r.accept
+            ? REPORT_ACCEPT + " — " + r.accept
+            : [(r.kinds || []).join(", "), (r.note || "").trim()].filter(Boolean).join(" — ");
         if (what) lines.push("   " + what);
         lines.push("");
     });
@@ -5724,10 +5753,17 @@ function ReportSheet({ target, onClose }) {
     const existing = api ? api.get(target.key) : null;
     const [kinds, setKinds] = useState(existing ? existing.kinds || [] : []);
     const [note, setNote] = useState(existing ? existing.note || "" : "");
+    const [accept, setAccept] = useState(existing ? existing.accept || "" : "");
+    const [mode, setMode] = useState(existing && existing.accept ? "accept" : "fault");
+    const canAccept = target.deck === "vocab";
     const toggle = (k) => setKinds((prev) => (prev.indexOf(k) >= 0 ? prev.filter((x) => x !== k) : prev.concat([k])));
     const save = () => {
         if (!api) return;
-        api.save({ ...target, kinds: kinds, note: note.trim(), at: Date.now(), build: APP_BUILD });
+        if (mode === "accept") {
+            api.save({ ...target, kinds: [REPORT_ACCEPT], accept: accept.trim(), note: "", at: Date.now(), build: APP_BUILD });
+        } else {
+            api.save({ ...target, kinds: kinds, note: note.trim(), accept: "", at: Date.now(), build: APP_BUILD });
+        }
         onClose(true);
     };
     const remove = () => { if (api) api.remove(target.key); onClose(false); };
@@ -5744,6 +5780,21 @@ function ReportSheet({ target, onClose }) {
                 React.createElement("div", { className: "zl-report-back" }, target.back),
                 React.createElement("div", { className: "zl-report-meta" },
                     (target.meeting ? "מפגש " + target.meeting + " · " : "") + (REPORT_DECK_NAMES[target.deck] || "") + " #" + target.id)),
+            canAccept ? React.createElement("div", { className: "zl-report-kinds", role: "tablist", style: { marginTop: 0 } },
+                [["fault", "טעות בריבוע"], ["accept", "כתיב נוסף לתשובה"]].map(([k, label]) => React.createElement("button", {
+                    key: k, type: "button", className: "zl-report-kind", role: "tab",
+                    "data-on": mode === k ? "true" : "false", "aria-selected": mode === k ? "true" : "false",
+                    onClick: () => setMode(k),
+                }, label))) : null,
+            mode === "accept"
+                ? React.createElement(React.Fragment, null,
+                    React.createElement("p", { style: { fontSize: "0.8rem", color: "var(--ink-muted)", lineHeight: 1.6, margin: "4px 0 8px" } },
+                        "התשובה שלך נכונה אבל נפסלה? כתוב אותה כאן. היא תתקבל אצלך מעכשיו, והתרגום שעל הריבוע לא ישתנה."),
+                    React.createElement("input", {
+                        className: "zl-report-note", style: { minHeight: 0 }, value: accept, dir: "rtl",
+                        placeholder: "למשל: עפרון", onChange: (e) => setAccept(e.target.value),
+                    }))
+                : React.createElement(React.Fragment, null,
             React.createElement("span", { style: { display: "block", fontSize: "0.8rem", fontWeight: 700 } }, "מה לא תקין?"),
             React.createElement("div", { className: "zl-report-kinds" },
                 REPORT_KINDS.map((k) => React.createElement("button", {
@@ -5756,9 +5807,9 @@ function ReportSheet({ target, onClose }) {
                 className: "zl-report-note", value: note, dir: "rtl",
                 placeholder: "פירוט (לא חובה) — למשל: ח בפתח ושדה, ה בלי ניקוד",
                 onChange: (e) => setNote(e.target.value),
-            }),
+            })),
             React.createElement("div", { style: { display: "flex", gap: 8, flexWrap: "wrap" } },
-                React.createElement(PrimaryButton, { onClick: save, disabled: kinds.length === 0 && !note.trim(),
+                React.createElement(PrimaryButton, { onClick: save, disabled: mode === "accept" ? !accept.trim() : (kinds.length === 0 && !note.trim()),
                     style: { flex: 1, justifyContent: "center" } }, existing ? "עדכן דיווח" : "שמור דיווח"),
                 existing
                     ? React.createElement(PrimaryButton, { variant: "outline", onClick: remove, style: { flex: 1, justifyContent: "center" } }, "הסר דיווח")
@@ -5849,7 +5900,8 @@ function ReportsSheet({ onClose }) {
                                     "עכשיו: " + now.front + "  =  " + now.back) : null,
                                 React.createElement("div", { className: "zl-report-meta" },
                                     [(r.meeting ? "מפגש " + r.meeting : ""), (REPORT_DECK_NAMES[r.deck] || "") + " #" + r.id,
-                                     (r.kinds || []).join(", "), (r.note || "").trim()].filter(Boolean).join(" · "))),
+                                     r.accept ? REPORT_ACCEPT + ": " + r.accept : (r.kinds || []).join(", "),
+                                     r.accept ? "" : (r.note || "").trim()].filter(Boolean).join(" · "))),
                             React.createElement("button", { type: "button", className: "zl-mini", onClick: () => setEditing(r) }, "עריכה"));
                     }),
                     confirmClear
@@ -6495,7 +6547,7 @@ function MorningDrill({ banks, applyResult, onBack, onSessionDone, plan, title }
     const submitTyped = () => {
         if (result || !typed.trim()) return;
         const accepted = new Set();
-        allMeanings(task.item).forEach((sense) => acceptableAnswers(sense).forEach((k) => accepted.add(k)));
+        acceptedMeanings(task.item).forEach((sense) => acceptableAnswers(sense).forEach((k) => accepted.add(k)));
         record(accepted.has(normAnswer(typed)), "typed");
         advance(1400);
     };
@@ -7155,7 +7207,7 @@ function DailyReview({ banks, applyResult, onBack, onSessionDone }) {
     const submitTyped = () => {
         if (result || !typed.trim()) return;
         const accepted = new Set();
-        allMeanings(task.item).forEach((sense) => acceptableAnswers(sense).forEach((k) => accepted.add(k)));
+        acceptedMeanings(task.item).forEach((sense) => acceptableAnswers(sense).forEach((k) => accepted.add(k)));
         record(accepted.has(normAnswer(typed)), "typed");
         advance(1400);
     };
@@ -8783,7 +8835,7 @@ function FullExam({ banks, profile, onBack, onExamStart, onExamFinish, applyResu
             return;
         }
         const accepted = new Set();
-        allMeanings(task.item).forEach((sense) => acceptableAnswers(sense).forEach((k) => accepted.add(k)));
+        acceptedMeanings(task.item).forEach((sense) => acceptableAnswers(sense).forEach((k) => accepted.add(k)));
         record(accepted.has(normAnswer(typed)));
     };
 
@@ -10041,6 +10093,7 @@ function ArabicLearningApp() {
             clearAll: () => setReports([]),
         };
     }, [reports]);
+    setExtraAccepted(reports);
     const withReports = (el) => (ReportContext ? React.createElement(ReportContext.Provider, { value: reportApi }, el) : el);
 
     useEffect(() => {
